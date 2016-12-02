@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:id="@+id/nav_parking_home"
+            android:icon="@drawable/ic_home_white_48dp"
+            android:title="@string/parking_home" />
+        <item
+            android:id="@+id/nav_parking_quanlytaikhoan"
+            android:icon="@mipmap/ic_calendar"
+            android:title="@string/parking_quanlybaido"
+            android:visible="false" />
+        <item
+            android:id="@+id/nav_parking_dangxuat"
+            android:icon="@mipmap/ic_logout"
+            android:title="@string/parking_dangxuat" />
+    </group>
+</menu>

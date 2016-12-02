@@ -1,0 +1,52 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "25.0.1"
+    defaultConfig {
+        applicationId "com.xtel.vparking"
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+
+    //noinspection GradleDependency
+    //noinspection GradleDependency
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    //noinspection GradleDependency
+    compile 'com.android.support:design:24.2.1'
+    //noinspection GradleDependency
+    compile 'com.android.support:cardview-v7:24.2.1'
+    //noinspection GradleDependency
+    compile 'com.google.android.gms:play-services-places:9.8.0'
+    //noinspection GradleDependency
+    compile 'com.google.android.gms:play-services-maps:9.8.0'
+    //noinspection GradleDependency
+    compile 'com.google.android.gms:play-services-location:9.8.0'
+    //noinspection GradleDynamicVersion
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
+    testCompile 'junit:junit:4.12'
+    compile files('libs/picasso-2.5.2.jar')
+    compile 'com.squareup.okhttp3:okhttp:3.4.2'
+    //noinspection GradleDynamicVersion
+    compile 'com.koushikdutta.ion:ion:2.+'
+    compile 'gun0912.ted:tedbottompicker:1.0.3'
+    //noinspection GradleDynamicVersion
+    compile 'com.facebook.android:account-kit-sdk:4.+'
+}
