@@ -50,6 +50,22 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xtel.vparking.R;
+import com.xtel.vparking.callback.DialogListener;
+import com.xtel.vparking.callback.RequestNoResultListener;
+import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.commons.GetNewSession;
+import com.xtel.vparking.dialog.BottomSheet;
+import com.xtel.vparking.dialog.DialogProgressBar;
+import com.xtel.vparking.model.FindModel;
+import com.xtel.vparking.model.ParkingInfoModel;
+import com.xtel.vparking.model.ParkingModel;
+import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.MapModel;
+import com.xtel.vparking.model.entity.MarkerModel;
+import com.xtel.vparking.utils.JsonParse;
+import com.xtel.vparking.utils.SharedPreferencesUtils;
+import com.xtel.vparking.view.activity.FindAdvancedActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,22 +74,6 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import vn.xtel.quanlybaido.R;
-import vn.xtel.quanlybaido.callback.DialogListener;
-import vn.xtel.quanlybaido.callback.GetNewSessionListener;
-import vn.xtel.quanlybaido.commons.Constants;
-import vn.xtel.quanlybaido.commons.GetNewSession;
-import vn.xtel.quanlybaido.data.AppPreferences;
-import vn.xtel.quanlybaido.data.JsonParse;
-import vn.xtel.quanlybaido.data.ParseMap;
-import vn.xtel.quanlybaido.dialog.BottomSheet;
-import vn.xtel.quanlybaido.dialog.DialogProgressBar;
-import vn.xtel.quanlybaido.model.ErrorModel;
-import vn.xtel.quanlybaido.model.FindModel;
-import vn.xtel.quanlybaido.model.MarkerModel;
-import vn.xtel.quanlybaido.model.ParkingInfoModel;
-import vn.xtel.quanlybaido.model.ParkingModel;
-import vn.xtel.quanlybaido.view.activity.FindAdvancedActivity;
 
 /**
  * Created by Lê Công Long Vũ on 11/15/2013.
@@ -101,7 +101,6 @@ public class HomeFragment extends Fragment implements
     private Polyline polyline;
 
     private NestedScrollView nestedScrollView;
-    private AppPreferences appPreferences;
     private BottomSheet dialogBottomSheet;
     //    private DialogParkingDetail dialogParkingDetail;
     private ParkingInfoModel parkingInfoModel;
@@ -586,20 +585,24 @@ public class HomeFragment extends Fragment implements
 
     @SuppressWarnings("SuspiciousMethodCalls")
     private void clearMarker(final int possition) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (possition == -1)
-                    return;
+        try {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (possition == -1)
+                        return;
 
-                for (int i = possition; i > 0; i--) {
-                    markerList.get(i).getMarker().remove();
-                    markerList.remove(i);
-                }
+                    for (int i = possition; i > 0; i--) {
+                        markerList.get(i).getMarker().remove();
+                        markerList.remove(i);
+                    }
 //        }
-                Log.e("pk_clear_marker", "done: " + markerList.size());
-            }
-        }, 100);
+                    Log.e("pk_clear_marker", "done: " + markerList.size());
+                }
+            }, 100);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private class GetParkingAround extends AsyncTask<String, Void, String> {
@@ -653,9 +656,9 @@ public class HomeFragment extends Fragment implements
 
             if (latLng != null)
                 if (s != null) {
-                    ErrorModel errorModel = JsonParse.checkError(s);
-                    if (errorModel != null) {
-                        JsonParse.getCodeError(getActivity(), null, errorModel.getCode(), "Không thể tìm bãi đỗ");
+                    Error error = JsonParse.checkError(s);
+                    if (error != null) {
+                        JsonParse.getCodeError(getActivity(), null, error.getCode(), "Không thể tìm bãi đỗ");
                     } else {
                         ArrayList<ParkingModel> arrayList = JsonParse.getAllParking(s);
 //                        markerList.clear();
@@ -747,8 +750,8 @@ public class HomeFragment extends Fragment implements
 
             if (latLng != null)
                 if (s != null) {
-                    ErrorModel errorModel = JsonParse.checkError(s);
-                    if (errorModel == null) {
+                    Error error = JsonParse.checkError(s);
+                    if (error == null) {
                         ArrayList<ParkingModel> arrayList = JsonParse.getAllParking(s);
 //                        markerList.clear();
 
@@ -790,8 +793,6 @@ public class HomeFragment extends Fragment implements
         @Override
         protected void onPreExecute() {
             isLoadNewParking = 0;
-            if (appPreferences == null)
-                appPreferences = new AppPreferences(getContext());
             if (dialogProgressBar == null)
                 dialogProgressBar = new DialogProgressBar(getContext(), false, false, null, getString(R.string.parking_get_data));
             if (!dialogProgressBar.isShowing())
@@ -806,7 +807,7 @@ public class HomeFragment extends Fragment implements
 
             try {
                 String url = Constants.SERVER_PARKING + Constants.PARKING_INFO + params[0];
-                String session = appPreferences.getStringValue(Constants.USER_SESSION);
+                String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
 
                 Log.e("pk_in_url", url + "     " + session);
                 Request request = new Request.Builder()
@@ -828,13 +829,13 @@ public class HomeFragment extends Fragment implements
             super.onPostExecute(s);
 
             if (s != null) {
-                ErrorModel errorModel = JsonParse.checkError(s);
-                if (errorModel != null) {
-                    if (errorModel.getCode() == 2) {
+                Error error = JsonParse.checkError(s);
+                if (error != null) {
+                    if (error.getCode() == 2) {
                         getNewSessionParkingInfo(id);
                     } else {
                         dialogProgressBar.closeProgressBar();
-                        JsonParse.getCodeError(getContext(), null, errorModel.getCode(), getString(R.string.error_get_parking));
+                        JsonParse.getCodeError(getContext(), null, error.getCode(), getString(R.string.error_get_parking));
                     }
                 } else {
                     dialogProgressBar.closeProgressBar();
@@ -850,7 +851,7 @@ public class HomeFragment extends Fragment implements
 
     private void getNewSessionParkingInfo(final String id) {
         Toast.makeText(getContext(), "Lấy phiên mới", Toast.LENGTH_SHORT).show();
-        GetNewSession.getNewSession(getContext(), new GetNewSessionListener() {
+        GetNewSession.getNewSession(getContext(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
                 new GetParkingInfo().execute(id);
@@ -894,9 +895,9 @@ public class HomeFragment extends Fragment implements
                 polylineOptions = new PolylineOptions();
 
                 if (!content.isEmpty()) {
-                    ParseMap parseMap = gson.fromJson(content, ParseMap.class);
+                    MapModel parseMap = gson.fromJson(content, MapModel.class);
 
-                    ArrayList<ParseMap.Routers.Legs.Steps> steps = parseMap.getRouters().get(0).getLegses().get(0).getStepses();
+                    ArrayList<MapModel.Routers.Legs.Steps> steps = parseMap.getRouters().get(0).getLegses().get(0).getStepses();
 
                     for (int i = 0; i < steps.size(); i++) {
                         List<LatLng> poly = Constants.decodePoly(steps.get(i).getPolyline().getPoints());

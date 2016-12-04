@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import vn.xtel.quanlybaido.R;
+import com.xtel.vparking.R;
 
 /**
  * Created by Lê Công Long Vũ on 11/1/2016.

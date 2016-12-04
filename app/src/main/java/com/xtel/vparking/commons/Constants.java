@@ -67,7 +67,7 @@ public class Constants {
     public static final String AUTHEN_ACCOUNT_KIT = "v1.0/m/user/accountkit/login";
 
 
-    //Server parking
+    //Server home
     public static final String GET_FLAG = "v1.0/user/parking/flag";
 
     public static final String SERVER_UPLOAD = "http://124.158.5.112:9180/s/files/upload";
@@ -118,8 +118,9 @@ public class Constants {
     public static final String INTENT_PARKING_ID = "intent_parking_id";
     public static final int ADD_PARKING_REQUEST = 100, ADD_PARKING_RESULT = 99, FIND_ADVANDCED_RQ = 9, FIND_ADVANDCED_RS = 6;
     public static final String PARKING_MODEL = "parking_model";
+    public static final String TYPE_OF_TRANSPORT = "type_of_transport";
 
-    //    Chi tiết parking
+    //    Chi tiết home
     public static final String PK_MODEL = "parking_model";
     public static final String PK_IMAGE = "parking_image";
 

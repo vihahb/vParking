@@ -2,25 +2,26 @@ package com.xtel.vparking.model.entity;
 
 import com.google.gson.annotations.Expose;
 
-import vn.xtel.quanlybaido.model.ErrorModel;
-
 /**
  * Created by Lê Công Long Vũ on 12/2/2016.
  */
 
 public class RESP_Basic {
     @Expose
-    private ErrorModel error;
+    private Error error;
 
-    public RESP_Basic(ErrorModel error) {
+    public RESP_Basic() {
+    }
+
+    public RESP_Basic(Error error) {
         this.error = error;
     }
 
-    public ErrorModel getError() {
+    public Error getError() {
         return error;
     }
 
-    public void setError(ErrorModel error) {
+    public void setError(Error error) {
         this.error = error;
     }
 

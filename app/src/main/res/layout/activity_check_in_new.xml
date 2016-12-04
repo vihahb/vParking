@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/material_background"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/checkin.new_title"
+        style="@style/CheckIn_TextView_Title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_48"
+        android:text="Check in bãi đỗ" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/checkin.new_bike"
+        style="@style/CheckIn_TextView_Item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_48"
+        android:onClick="bikeClicked"
+        android:text="Xe máy" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/checkin.new_car"
+        style="@style/CheckIn_TextView_Item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_48"
+        android:onClick="carClicked"
+        android:text="Ô tô" />
+
+    <View
+        android:id="@+id/checkin.new_xetai"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/checkin.new_truck"
+        style="@style/CheckIn_TextView_Item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_48"
+        android:onClick="truckClicked"
+        android:text="Xe tải" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/checkin.new_bus"
+        style="@style/CheckIn_TextView_Item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_48"
+        android:onClick="busClicked"
+        android:text="Xe khách" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+</LinearLayout>

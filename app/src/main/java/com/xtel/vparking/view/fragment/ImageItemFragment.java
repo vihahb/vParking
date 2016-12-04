@@ -9,9 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
-
-import vn.xtel.quanlybaido.R;
-import vn.xtel.quanlybaido.commons.Constants;
+import com.xtel.vparking.R;
+import com.xtel.vparking.commons.Constants;
 
 /**
  * Created by Lê Công Long Vũ on 11/10/2016.
@@ -32,7 +31,7 @@ public class ImageItemFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_parking_detail, container, false);
+        return inflater.inflate(R.layout.item_imageview, container, false);
     }
 
     @Override
@@ -40,7 +39,7 @@ public class ImageItemFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (imageView == null)
-            imageView = (ImageView) view.findViewById(R.id.img_parking_detail_fragment);
+            imageView = (ImageView) view.findViewById(R.id.item_imageview);
 
         url = getArguments().getString(Constants.PK_IMAGE);
 

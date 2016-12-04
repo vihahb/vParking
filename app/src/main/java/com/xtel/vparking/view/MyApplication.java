@@ -8,6 +8,7 @@ import android.content.pm.Signature;
 import android.util.Base64;
 import android.util.Log;
 
+import com.facebook.FacebookSdk;
 import com.facebook.accountkit.AccountKit;
 
 import java.security.MessageDigest;
@@ -23,10 +24,11 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        FacebookSdk.sdkInitialize(getApplicationContext());
         AccountKit.initialize(getApplicationContext());
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
-                    "vn.xtelsolution.quanlybaido",
+                    "com.xtel.vparking",
                     PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");

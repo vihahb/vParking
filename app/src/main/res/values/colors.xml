@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!-- Change color Primary, color Accent -->
+    <color name="colorPrimary">#5c5ca7</color>
+    <color name="colorPrimaryDark">#5c5ca7</color>
+    <color name="colorAccent">#FFFFFF</color>
+    <color name="btn_fb_plus">#b385bf</color>
+    <color name="btn_fb_plus_clicked">#C6A4CF</color>
+    <color name="btn_fb_plus_blur">#DFCCE4</color>
+
+    <color name="colorPrimaryClicked">#7676BB</color>
+
+    <!-- Line Bottom EditText -->
+    <color name="colorLine">#FFFFFF</color>
+    <color name="gray_btn">#D3D3D3</color>
+
+    <color name="material_background">#e6e7e8</color>
 </resources>

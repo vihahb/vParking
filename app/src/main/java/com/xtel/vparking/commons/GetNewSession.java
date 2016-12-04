@@ -8,16 +8,15 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.xtel.vparking.callback.RequestNoResultListener;
+import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.utils.JsonHelper;
+import com.xtel.vparking.utils.SharedPreferencesUtils;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-
-import vn.xtel.quanlybaido.callback.GetNewSessionListener;
-import vn.xtel.quanlybaido.data.AppPreferences;
-import vn.xtel.quanlybaido.data.JsonParse;
-import vn.xtel.quanlybaido.model.ErrorModel;
 
 import static android.content.Context.TELEPHONY_SERVICE;
 
@@ -27,7 +26,7 @@ import static android.content.Context.TELEPHONY_SERVICE;
 
 public class GetNewSession {
 
-    public static void getNewSession(final Context context, final GetNewSessionListener getNewSessionListener) {
+    public static void getNewSession(final Context context, final RequestNoResultListener requestNoResultListener) {
         String device_id;
         String device_os_name;
         String device_os_ver;
@@ -51,10 +50,7 @@ public class GetNewSession {
         Log.e("Device info: ", "Name: " + device_vendor + ", Android name: " + device_os_name + ", version: " + device_os_ver + ", id: " + device_id);
 
 
-        final AppPreferences appPreferences = new AppPreferences(context);
-        appPreferences.prepair();
-
-        authentication_id = appPreferences.getStringValue(Constants.USER_AUTH_ID);
+        authentication_id = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_AUTH_ID);
         service_code = "PRK";
 
         JsonObject userAuthentJson = new JsonObject();
@@ -89,17 +85,17 @@ public class GetNewSession {
                             Toast.makeText(context, "Co loi xay ra", Toast.LENGTH_SHORT).show();
                         } else {
                             Log.e("OK: ", result.toString());
-                            ErrorModel errorModel = JsonParse.checkError(result.toString());
-                            if (errorModel != null) {
-                                Log.e("Ma loi: ", String.valueOf(errorModel.getCode()));
-                                getNewSessionListener.onError();
+                            Error error = JsonHelper.getObjectNoException(result.toString(), Error.class);
+                            if (error != null) {
+                                Log.e("Ma loi: ", String.valueOf(error.getCode()));
+                                requestNoResultListener.onError();
                             } else {
                                 Log.e("result: ", result.toString());
                                 String session = result.get("session").getAsString();
                                 long login_time = result.get("login_time").getAsLong();
                                 long expired_time = result.get("expired_time").getAsLong();
-                                appPreferences.putStringValue(Constants.USER_SESSION, session);
-                                getNewSessionListener.onSuccess();
+                                SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_SESSION, session);
+                                requestNoResultListener.onSuccess();
                                 String LoginTime = convertLong2Time(login_time);
                                 String ExpiredTime = convertLong2Time(expired_time);
                                 String TimeSession = "Login Time: " + LoginTime + ", Expired Time: " + ExpiredTime;

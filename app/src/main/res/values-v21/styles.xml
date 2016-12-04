@@ -1,0 +1,31 @@
+<resources>
+
+    <style name="CheckIn_TextView_Title">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">@dimen/size_16</item>
+        <item name="android:paddingEnd">@dimen/size_16</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="CheckIn_TextView_Item">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:paddingStart">@dimen/size_16</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingEnd">@dimen/size_8</item>
+        <item name="android:background">@drawable/button_check_in</item>
+        <item name="android:drawableEnd">@drawable/ic_keyboard_arrow_right_black_36dp</item>
+        <item name="android:textColor">@drawable/textview_scan_qr</item>
+    </style>
+
+    <style name="Scanner_TextView">
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingStart">@dimen/size_16</item>
+        <item name="android:paddingEnd">@dimen/size_16</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+</resources>

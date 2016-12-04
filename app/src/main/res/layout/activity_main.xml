@@ -8,10 +8,64 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.xtel.vparking.view.activity.MainActivity">
+    android:background="@mipmap/ic_bgr"
+    tools:context=".view.activity.MainActivity">
 
-    <TextView
+
+    <ImageView
+        android:src="@mipmap/parking_logo_48"
+        android:scaleType="fitXY"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:id="@+id/img_logo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp" />
+
+    <TextView
+        android:textSize="18sp"
+        android:layout_marginTop="100dp"
+        android:layout_below="@+id/img_logo"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:id="@+id/tv_splash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/spalsh_text"/>
+
+    <LinearLayout
+        android:id="@+id/ln_layout_btn"
+        android:layout_above="@+id/btn_fb_signin"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/btn_Signin"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_48"
+            android:text="@string/signin_mobile"
+            android:layout_margin="10dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/btn_login"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_fb_signin"
+        android:layout_marginLeft="@dimen/margin_fb"
+        android:layout_marginRight="@dimen/margin_fb"
+        android:paddingRight="20dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:drawableLeft="@mipmap/ic_fb_singin"
+        android:text="@string/singin_facebook"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_fb_plus"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_48"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>

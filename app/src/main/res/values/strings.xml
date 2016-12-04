@@ -1,12 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">vParking</string>
 
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Maps</string>
+    <string name="title_activity_home">Tìm bãi đỗ xe</string>
+    <string name="title_activity_tao_bai_do">Tạo bãi đỗ</string>
 
     <string name="spalsh_text">Tìm bãi đỗ xe gần bạn nhất</string>
     <string name="signin_mobile">ĐĂNG NHẬP BẰNG SỐ ĐIỆN THOẠI</string>
@@ -113,6 +114,12 @@
     <string name="error_get_parking">Không thể tải dữ liệu của bãi đỗ</string>
     <string name="error_system">Lỗi hệ thống</string>
     <string name="error_find_advanced">Không thể tìm bãi đỗ</string>
+
+    <!-- Check in -->
+    <string name="check_in">CHECK IN</string>
+    <string name="input_gift_code">Nhập Gift Code</string>
+    <string name="checking" tools:ignore="TypographyEllipsis">Đang check...</string>
+    <string name="put_qr_code_into_the_frame">Đưa QR Code vào đúng khung hình</string>
 
     <!-- Facebook API ID -->
     <string name="facebook_app_id">1623661414599437</string>

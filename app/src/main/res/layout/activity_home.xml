@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawer_layout_parking"
+    android:id="@+id/home.drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -18,7 +18,7 @@
             app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_parking"
+                android:id="@+id/home.toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
@@ -26,25 +26,25 @@
         </android.support.design.widget.AppBarLayout>
 
         <FrameLayout
-            android:id="@+id/frame_layout_parking"
+            android:id="@+id/home.layout_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view_parking"
+        android:id="@+id/home.navigationview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/colorPrimary"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_parking"
+        app:headerLayout="@layout/nav_header_home"
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"
-        app:menu="@menu/activity_parking_drawer">
+        app:menu="@menu/activity_home_drawer">
 
         <Button
-            android:id="@+id/btn_parking_active"
+            android:id="@+id/home.btn_active"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_36"
             android:layout_gravity="bottom"

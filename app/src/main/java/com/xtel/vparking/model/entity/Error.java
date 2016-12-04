@@ -1,4 +1,4 @@
-package com.xtel.vparking.model;
+package com.xtel.vparking.model.entity;
 
 import com.google.gson.annotations.Expose;
 
@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose;
  * Created by Computer on 11/9/2016.
  */
 
-public class ErrorModel {
+public class Error {
     @Expose
     private int code;
     @Expose
@@ -14,7 +14,10 @@ public class ErrorModel {
     @Expose
     private String message;
 
-    public ErrorModel(int code, String type, String message) {
+    public Error() {
+    }
+
+    public Error(int code, String type, String message) {
         this.code = code;
         this.type = type;
         this.message = message;
@@ -46,7 +49,7 @@ public class ErrorModel {
 
     @Override
     public String toString() {
-        return "ErrorModel{" +
+        return "Error{" +
                 "code=" + code +
                 ", type='" + type + '\'' +
                 ", message='" + message + '\'' +
