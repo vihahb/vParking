@@ -69,7 +69,7 @@ public class ParkingManagementFragment extends Fragment {
 
     private void initWidget(View view) {
         progressView = new ProgressView(null, view);
-        progressView.initData(R.mipmap.icon_parking, "Bạn chưa có Parking nào", "Kiểm tra lại", "Đang tải dữ liệu", Color.parseColor("#5c5ca7"));
+        progressView.initData(R.mipmap.icon_parking, "Bạn chưa có RESP_Parking nào", "Kiểm tra lại", "Đang tải dữ liệu", Color.parseColor("#5c5ca7"));
         progressView.setUpWithView(recyclerView);
         progressView.showProgressbar();
 
@@ -154,7 +154,7 @@ public class ParkingManagementFragment extends Fragment {
 
     private void checkListData() {
         if (arrayList.size() == 0) {
-            progressView.updateData(R.mipmap.icon_parking, "Bạn chưa có Parking nào", "Tải lại");
+            progressView.updateData(R.mipmap.icon_parking, "Bạn chưa có RESP_Parking nào", "Tải lại");
             progressView.showData();
         } else {
             recyclerView.getAdapter().notifyDataSetChanged();

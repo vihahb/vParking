@@ -12,8 +12,6 @@ import java.util.List;
 
 public interface AddParkingView {
 
-    public void getListParkingSuccess(List<Object> list);
-    public void getListParkingError(Error error);
-    public void getNewParking(Object object);
+    public void onTakePictureSucces(String url);
     public Activity getActivity();
 }

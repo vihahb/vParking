@@ -24,6 +24,7 @@ import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.ParkingInfoModel;
+import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
@@ -44,7 +45,7 @@ import com.xtel.vparking.view.adapter.AddParkingAdapter;
 
 public class BottomSheet {
     private Context context;
-    private ParkingInfoModel parkingInfoModel;
+    private RESP_Parking_Info parkingInfoModel;
     private FragmentManager fragmentManager;
     private ViewPager viewPager;
     private ImageView img_favorite;
@@ -134,7 +135,7 @@ public class BottomSheet {
         });
     }
 
-    public void initData(ParkingInfoModel parkingInfoModel) {
+    public void initData(RESP_Parking_Info parkingInfoModel) {
         this.parkingInfoModel = parkingInfoModel;
         initHeader();
 

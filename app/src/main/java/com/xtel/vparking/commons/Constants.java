@@ -114,7 +114,7 @@ public class Constants {
     public static final String JSON_URL = "url";
     public static final String JSON_PARKING_ID = "parking_id";
 
-    //    Parking
+    //    RESP_Parking
     public static final String INTENT_PARKING_ID = "intent_parking_id";
     public static final int ADD_PARKING_REQUEST = 100, ADD_PARKING_RESULT = 99, FIND_ADVANDCED_RQ = 9, FIND_ADVANDCED_RS = 6;
     public static final String PARKING_MODEL = "parking_model";
@@ -183,6 +183,6 @@ public class Constants {
         return poly;
     }
 
-    //    Find Parking
+    //    Find RESP_Parking
     public static final String FIND_MODEL = "find_model";
 }

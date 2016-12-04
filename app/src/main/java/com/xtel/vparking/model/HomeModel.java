@@ -1,8 +1,10 @@
 package com.xtel.vparking.model;
 
-import com.xtel.vparking.callback.RequestListener;
+import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by Mr. M.2 on 12/2/2016.
@@ -15,8 +17,8 @@ public class HomeModel extends BasicModel {
         return instance;
     }
 
-    public void activeParkingMaster(RequestListener requestListener) {
+    public void activeParkingMaster(ResponseHandle responseHandle) throws UnsupportedEncodingException {
         String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
-        requestServer.postApi(getParkingApiUrlBase() + Constants.PARKING_ACTIVE, "", session, requestListener);
+        requestServer.postApi(getParkingApiUrlBase() + Constants.PARKING_ACTIVE, "", session, responseHandle);
     }
 }

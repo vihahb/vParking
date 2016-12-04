@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
-import com.xtel.vparking.model.FindModel;
+import com.xtel.vparking.model.entity.Find;
 
 /**
  * Created by  on 11/7/2016.
@@ -110,15 +110,15 @@ public class FindAdvancedActivity extends AppCompatActivity {
 
     public void TimKiem(View view) {
         if (checkData(view)) {
-            FindModel findModel = new FindModel();
-            findModel.setType(getParkingType());
-            findModel.setPlace_empty(Integer.parseInt(edt_place_number.getText().toString()));
+            Find find = new Find();
+            find.setType(getParkingType());
+            find.setPlace_empty(Integer.parseInt(edt_place_number.getText().toString()));
 
             int money = (seekBar_money.getProgress() * 5) * 1000;
-            findModel.setMoney(money);
+            find.setMoney(money);
 
             Intent intent = new Intent();
-            intent.putExtra(Constants.FIND_MODEL, findModel);
+            intent.putExtra(Constants.FIND_MODEL, find);
             setResult(Constants.FIND_ADVANDCED_RS, intent);
             finish();
         }

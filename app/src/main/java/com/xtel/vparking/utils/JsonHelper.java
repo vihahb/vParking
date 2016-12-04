@@ -2,6 +2,11 @@ package com.xtel.vparking.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Mr. M.2 on 12/2/2016.
@@ -28,11 +33,22 @@ public class JsonHelper {
     public static <T> T getObjectNoException(String json, Class<T> clazz) {
         if (json == null || json.isEmpty())
             return null;
-        else
-            try {
-                return gson.fromJson(json, clazz);
-            } catch (Exception e) {
-                return null;
-            }
+
+        try {
+            return gson.fromJson(json, clazz);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static <T> ArrayList<T> getList(String json, Type type) {
+        if (json == null || json.isEmpty())
+            return null;
+
+        try {
+            return gson.fromJson(json, type);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

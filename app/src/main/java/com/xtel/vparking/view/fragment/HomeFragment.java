@@ -1,6 +1,7 @@
 package com.xtel.vparking.view.fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -57,15 +58,18 @@ import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.dialog.BottomSheet;
 import com.xtel.vparking.dialog.DialogProgressBar;
-import com.xtel.vparking.model.FindModel;
 import com.xtel.vparking.model.ParkingInfoModel;
-import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.Find;
 import com.xtel.vparking.model.entity.MapModel;
 import com.xtel.vparking.model.entity.MarkerModel;
+import com.xtel.vparking.model.entity.RESP_Parking;
+import com.xtel.vparking.model.entity.RESP_Parking_Info;
+import com.xtel.vparking.presenter.HomeFragmentPresenter;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.FindAdvancedActivity;
+import com.xtel.vparking.view.activity.inf.HomeFragmentView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,10 +83,12 @@ import okhttp3.Response;
  * Created by Lê Công Long Vũ on 11/15/2013.
  */
 
-public class HomeFragment extends Fragment implements
+public class HomeFragment extends BasicFragment implements
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         GoogleMap.OnMarkerClickListener, GoogleMap.OnMapLongClickListener, LocationListener, View.OnClickListener,
-        GoogleMap.OnCameraIdleListener, GoogleMap.OnMapClickListener {
+        GoogleMap.OnCameraIdleListener, GoogleMap.OnMapClickListener, HomeFragmentView {
+
+    private HomeFragmentPresenter presenter;
 
     private final String TAG = "HomeFragment";
     private GoogleMap mMap, mMap_bottom;
@@ -103,7 +109,7 @@ public class HomeFragment extends Fragment implements
     private NestedScrollView nestedScrollView;
     private BottomSheet dialogBottomSheet;
     //    private DialogParkingDetail dialogParkingDetail;
-    private ParkingInfoModel parkingInfoModel;
+    private RESP_Parking_Info parkingInfoModel;
 
     @Nullable
     @Override
@@ -124,6 +130,7 @@ public class HomeFragment extends Fragment implements
         initBottomSheet(view);
         initGooogleBottomSheet();
         initBottomSheetView(view);
+        presenter = new HomeFragmentPresenter(this);
     }
 
     private void initGoogleMap() {
@@ -399,7 +406,9 @@ public class HomeFragment extends Fragment implements
                         @Override
                         public void run() {
                             Log.e("pk_choose_marker", "ok");
-                            new GetParkingInfo().execute(String.valueOf(markerList.get(finalI).getId()));
+                            showProgressBar(false, false, null, getString(R.string.parking_get_data));
+                            presenter.getParkingInfo(markerList.get(finalI).getId());
+//                            new GetParkingInfo().execute(String.valueOf(markerList.get(finalI).getId()));
                         }
                     }, 200);
                     break;
@@ -558,7 +567,7 @@ public class HomeFragment extends Fragment implements
                 if (checkPermission()) {
                     Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                     if (mLastLocation != null && mMap != null) {
-                        FindModel findModel = (FindModel) data.getExtras().getSerializable(Constants.FIND_MODEL);
+                        Find findModel = (Find) data.getExtras().getSerializable(Constants.FIND_MODEL);
 
                         if (findModel != null) {
                             Toast.makeText(getContext(), "find", Toast.LENGTH_SHORT).show();
@@ -603,6 +612,35 @@ public class HomeFragment extends Fragment implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onGetParkingInfoSuccuss(RESP_Parking_Info resp_parking_info) {
+        closeProgressBar();
+        parkingInfoModel = resp_parking_info;
+        Log.e("pk_parking_id", "null k:" + parkingInfoModel.getId());
+        showDialogParkingDetail();
+    }
+
+    @Override
+    public void onGetParkingInfoError(Error error) {
+        closeProgressBar();
+        showShortToast(JsonParse.getCodeMessage(error.getCode(), getString(R.string.error_get_parking)));
+    }
+
+    @Override
+    public void onGetParkingAroundSuccess(ArrayList<RESP_Parking> arrayList) {
+
+    }
+
+    @Override
+    public void onGetParkingAroundError(Error error) {
+
+    }
+
+    @Override
+    public Activity getFragmentActivity() {
+        return null;
     }
 
     private class GetParkingAround extends AsyncTask<String, Void, String> {
@@ -660,7 +698,7 @@ public class HomeFragment extends Fragment implements
                     if (error != null) {
                         JsonParse.getCodeError(getActivity(), null, error.getCode(), "Không thể tìm bãi đỗ");
                     } else {
-                        ArrayList<ParkingModel> arrayList = JsonParse.getAllParking(s);
+                        ArrayList<RESP_Parking> arrayList = JsonParse.getAllParking(s);
 //                        markerList.clear();
 
                         if (arrayList != null) {
@@ -752,7 +790,7 @@ public class HomeFragment extends Fragment implements
                 if (s != null) {
                     Error error = JsonParse.checkError(s);
                     if (error == null) {
-                        ArrayList<ParkingModel> arrayList = JsonParse.getAllParking(s);
+                        ArrayList<RESP_Parking> arrayList = JsonParse.getAllParking(s);
 //                        markerList.clear();
 
                         if (arrayList != null) {
@@ -785,85 +823,85 @@ public class HomeFragment extends Fragment implements
         }
     }
 
-    private DialogProgressBar dialogProgressBar;
+//    private DialogProgressBar dialogProgressBar;
 
-    private class GetParkingInfo extends AsyncTask<String, Void, String> {
-        private String id;
+//    private class GetParkingInfo extends AsyncTask<String, Void, String> {
+//        private String id;
+//
+//        @Override
+//        protected void onPreExecute() {
+//            isLoadNewParking = 0;
+//            if (dialogProgressBar == null)
+//                dialogProgressBar = new DialogProgressBar(getContext(), false, false, null, getString(R.string.parking_get_data));
+//            if (!dialogProgressBar.isShowing())
+//                dialogProgressBar.showProgressBar();
+//            super.onPreExecute();
+//        }
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//            OkHttpClient client = new OkHttpClient();
+//            this.id = params[0];
+//
+//            try {
+//                String url = Constants.SERVER_PARKING + Constants.PARKING_INFO + params[0];
+//                String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
+//
+//                Log.e("pk_in_url", url + "     " + session);
+//                Request request = new Request.Builder()
+//                        .url(url)
+//                        .header(Constants.JSON_SESSION, session)
+//                        .build();
+//                Response response = client.newCall(request).execute();
+//
+//
+//                return response.body().string();
+//            } catch (Exception e) {
+//                Log.e("pk_loi", e.toString());
+//                return null;
+//            }
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String s) {
+//            super.onPostExecute(s);
+//
+//            if (s != null) {
+//                Error error = JsonParse.checkError(s);
+//                if (error != null) {
+//                    if (error.getCode() == 2) {
+//                        getNewSessionParkingInfo(id);
+//                    } else {
+//                        dialogProgressBar.closeProgressBar();
+//                        JsonParse.getCodeError(getContext(), null, error.getCode(), getString(R.string.error_get_parking));
+//                    }
+//                } else {
+//                    dialogProgressBar.closeProgressBar();
+//                    parkingInfoModel = gson.fromJson(s, new TypeToken<RESP_Parking_Info>() {
+//                    }.getType());
+//
+//                    Log.e("pk_parking_id", "null k:" + parkingInfoModel.getId());
+//                    showDialogParkingDetail();
+//                }
+//            }
+//        }
+//    }
 
-        @Override
-        protected void onPreExecute() {
-            isLoadNewParking = 0;
-            if (dialogProgressBar == null)
-                dialogProgressBar = new DialogProgressBar(getContext(), false, false, null, getString(R.string.parking_get_data));
-            if (!dialogProgressBar.isShowing())
-                dialogProgressBar.showProgressBar();
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            OkHttpClient client = new OkHttpClient();
-            this.id = params[0];
-
-            try {
-                String url = Constants.SERVER_PARKING + Constants.PARKING_INFO + params[0];
-                String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
-
-                Log.e("pk_in_url", url + "     " + session);
-                Request request = new Request.Builder()
-                        .url(url)
-                        .header(Constants.JSON_SESSION, session)
-                        .build();
-                Response response = client.newCall(request).execute();
-
-
-                return response.body().string();
-            } catch (Exception e) {
-                Log.e("pk_loi", e.toString());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            if (s != null) {
-                Error error = JsonParse.checkError(s);
-                if (error != null) {
-                    if (error.getCode() == 2) {
-                        getNewSessionParkingInfo(id);
-                    } else {
-                        dialogProgressBar.closeProgressBar();
-                        JsonParse.getCodeError(getContext(), null, error.getCode(), getString(R.string.error_get_parking));
-                    }
-                } else {
-                    dialogProgressBar.closeProgressBar();
-                    parkingInfoModel = gson.fromJson(s, new TypeToken<ParkingInfoModel>() {
-                    }.getType());
-
-                    Log.e("pk_parking_id", "null k:" + parkingInfoModel.getId());
-                    showDialogParkingDetail();
-                }
-            }
-        }
-    }
-
-    private void getNewSessionParkingInfo(final String id) {
-        Toast.makeText(getContext(), "Lấy phiên mới", Toast.LENGTH_SHORT).show();
-        GetNewSession.getNewSession(getContext(), new RequestNoResultListener() {
-            @Override
-            public void onSuccess() {
-                new GetParkingInfo().execute(id);
-            }
-
-            @Override
-            public void onError() {
-                dialogProgressBar.closeProgressBar();
-                Toast.makeText(getContext(), getString(R.string.error_session_invalid), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    private void getNewSessionParkingInfo(final String id) {
+//        Toast.makeText(getContext(), "Lấy phiên mới", Toast.LENGTH_SHORT).show();
+//        GetNewSession.getNewSession(getContext(), new RequestNoResultListener() {
+//            @Override
+//            public void onSuccess() {
+//                new GetParkingInfo().execute(id);
+//            }
+//
+//            @Override
+//            public void onError() {
+//                dialogProgressBar.closeProgressBar();
+//                Toast.makeText(getContext(), getString(R.string.error_session_invalid), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     public class GetPolyline extends AsyncTask<Double, Void, Void> {
         private PolylineOptions polylineOptions;

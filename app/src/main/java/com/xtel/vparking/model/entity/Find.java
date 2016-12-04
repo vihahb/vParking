@@ -1,4 +1,4 @@
-package com.xtel.vparking.model;
+package com.xtel.vparking.model.entity;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by Lê Công Long Vũ on 11/12/2016.
  */
 
-public class FindModel implements Serializable {
+public class Find implements Serializable {
     private int type;
     private int place_empty;
     private int money;

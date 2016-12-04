@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                                     SharedPreferencesUtils.getInstance().putLongValue(Constants.USER_EXPIRED_TIME, expired_time);
                                     SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_DEV_INFO_STATUS, authenticationid);
 
-                                    //Put authentication to Parking
+                                    //Put authentication to RESP_Parking
                                     SharedPreferencesUtils.getInstance().putStringValue(Constants.DEVICE_ID, device_id);
                                     SharedPreferencesUtils.getInstance().putStringValue(Constants.DEVICE_OS_NAME, device_os_name);
                                     SharedPreferencesUtils.getInstance().putStringValue(Constants.DEVICE_OS_VER, device_os_ver);

@@ -107,6 +107,7 @@
     <string name="controng">Còn trống</string>
     <string name="hetcho">Hết chỗ</string>
 
+    <string name="error">Có lỗi xảy ra</string>
     <string name="error_server_request">Không thể kết nối tới Server</string>
     <string name="error_session_invalid">Bạn đã hết phiên làm việc</string>
     <string name="error_no_permission">Bạn không có quyền hạn này</string>
@@ -116,6 +117,7 @@
     <string name="error_find_advanced">Không thể tìm bãi đỗ</string>
 
     <!-- Check in -->
+    <string name="gift_code">Gift Code </string>
     <string name="check_in">CHECK IN</string>
     <string name="input_gift_code">Nhập Gift Code</string>
     <string name="checking" tools:ignore="TypographyEllipsis">Đang check...</string>

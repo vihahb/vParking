@@ -1,98 +1,54 @@
 package com.xtel.vparking.model;
 
+import com.google.gson.JsonObject;
+import com.xtel.vparking.callback.ResponseHandle;
+import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.RESP_Basic;
+import com.xtel.vparking.model.entity.RESP_Parking_Info;
+import com.xtel.vparking.utils.SharedPreferencesUtils;
+
 /**
- * Created by Computer on 11/5/2016.
+ * Created by Lê Công Long Vũ on 12/4/2016.
  */
 
-public class ParkingModel {
-    private int id;
-    private int uid;
-    private double lat;
-    private double lng;
-    private double type;
-    private double status;
-    private String code;
-    private String begin_time;
-    private String end_time;
-    private String address;
+public class ParkingModel extends BasicModel {
+    private static ParkingModel instanse = new ParkingModel();
 
-    public int getId() {
-        return id;
+    public static ParkingModel getInstanse() {
+        return instanse;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    private ParkingModel() {
     }
 
-    public int getUid() {
-        return uid;
+    public void getParkingByUser() {
+
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void addParking(JsonObject jsonObject) {
+
     }
 
-    public double getLat() {
-        return lat;
+    public void getParkingInfo(int id, ResponseHandle responseHandle) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_INFO + id;
+        String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
+        requestServer.getApi(url, session, responseHandle);
     }
 
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
+    public void getParkingAround(double lat, double lng, int prices, int type, String begin_time, String end_time, ResponseHandle responseHandle) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_FIND +
+                Constants.PARKING_LAT + lat +
+                Constants.PARKING_LNG + lng;
+        if (prices != -1)
+            url += Constants.PARKING_PRICE + prices;
+        if (type != -1)
+            url += Constants.PARKING_TYPE + type;
+        if (begin_time != null)
+            url += Constants.PARKING_BEGIN_TIME + begin_time;
+        if (end_time != null)
+            url += Constants.PARKING_END_TIME + end_time;
 
-    public double getLng() {
-        return lng;
-    }
-
-    public void setLng(double lng) {
-        this.lng = lng;
-    }
-
-    public double getType() {
-        return type;
-    }
-
-    public void setType(double type) {
-        this.type = type;
-    }
-
-    public double getStatus() {
-        return status;
-    }
-
-    public void setStatus(double status) {
-        this.status = status;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getBegin_time() {
-        return begin_time;
-    }
-
-    public void setBegin_time(String begin_time) {
-        this.begin_time = begin_time;
-    }
-
-    public String getEnd_time() {
-        return end_time;
-    }
-
-    public void setEnd_time(String end_time) {
-        this.end_time = end_time;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+        requestServer.getApi(url, null, responseHandle);
     }
 }

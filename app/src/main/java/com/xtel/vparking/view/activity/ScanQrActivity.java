@@ -65,7 +65,7 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
     public void startScanQrCode() {
         layout_gift_code.setVisibility(View.GONE);
         if (!edt_gift_code.getText().toString().isEmpty()) {
-            txt_gift_code.setText(edt_gift_code.getText());
+            txt_gift_code.setText((getString(R.string.gift_code) + edt_gift_code.getText()));
             edt_gift_code.setText(null);
         }
     }
