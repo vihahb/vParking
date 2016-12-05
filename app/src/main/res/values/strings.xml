@@ -8,6 +8,8 @@
     <string name="title_activity_maps">Maps</string>
     <string name="title_activity_home">Tìm bãi đỗ xe</string>
     <string name="title_activity_tao_bai_do">Tạo bãi đỗ</string>
+    <string name="title_activity_check_in">Check in QR</string>
+    <string name="title_activity_favorite">Bãi đỗ yêu thích</string>
 
     <string name="spalsh_text">Tìm bãi đỗ xe gần bạn nhất</string>
     <string name="signin_mobile">ĐĂNG NHẬP BẰNG SỐ ĐIỆN THOẠI</string>
@@ -22,6 +24,7 @@
     <string name="parking_checkin">Check in</string>
     <string name="parking_home">Trang chủ</string>
     <string name="parking_quanlybaido">Quản lý bãi đỗ</string>
+    <string name="parking_favorite">Bãi đỗ yêu thích</string>
     <string name="parking_dangxuat">Đăng xuất</string>
     <string name="parking_timkiemnangcao">Tìm kiếm nâng cao</string>
     <string name="isMaster">Kích hoạt chủ bãi đỗ</string>

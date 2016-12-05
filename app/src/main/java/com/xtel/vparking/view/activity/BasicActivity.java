@@ -1,5 +1,6 @@
 package com.xtel.vparking.view.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xtel.vparking.R;
@@ -22,6 +26,7 @@ import com.xtel.vparking.dialog.DialogProgressBar;
 
 public abstract class BasicActivity extends AppCompatActivity {
     private DialogProgressBar dialogProgressBar;
+    private Dialog dialog;
     boolean isWaitingForExit = false;
 
     public BasicActivity() {
@@ -70,6 +75,40 @@ public abstract class BasicActivity extends AppCompatActivity {
     protected void closeProgressBar() {
         if (dialogProgressBar.isShowing())
             dialogProgressBar.closeProgressBar();
+    }
+
+    protected void showDialog(String title, String content, String button, View.OnClickListener onClickListener) {
+        dialog = new Dialog(BasicActivity.this, R.style.Theme_Transparent);
+        dialog.setContentView(R.layout.dialog_notification);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+
+        TextView txt_title = (TextView) dialog.findViewById(R.id.txt_dialog_notification_title);
+        TextView txt_content = (TextView) dialog.findViewById(R.id.txt_dialog_notification_content);
+        Button btn_ok = (Button) dialog.findViewById(R.id.btn_dialog_notification_ok);
+
+        if (title == null)
+            txt_title.setVisibility(View.GONE);
+        else
+            txt_title.setText(title);
+
+        if (content == null)
+            txt_content.setVisibility(View.GONE);
+        else
+            txt_content.setText(content);
+
+        if (button == null)
+            btn_ok.setVisibility(View.GONE);
+        else
+            btn_ok.setText(button);
+
+        btn_ok.setOnClickListener(onClickListener);
+        dialog.show();
+    }
+
+    public void closeDialog() {
+        dialog.dismiss();
     }
 
     //    Khởi chạy fragment giao diện và add vào stack

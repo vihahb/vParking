@@ -16,7 +16,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -50,24 +49,22 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.DialogListener;
-import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.commons.Constants;
-import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.dialog.BottomSheet;
 import com.xtel.vparking.dialog.DialogProgressBar;
-import com.xtel.vparking.model.ParkingInfoModel;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.Find;
 import com.xtel.vparking.model.entity.MapModel;
 import com.xtel.vparking.model.entity.MarkerModel;
+import com.xtel.vparking.model.entity.Parking;
+import com.xtel.vparking.model.entity.ParkingInfo;
 import com.xtel.vparking.model.entity.RESP_Parking;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.presenter.HomeFragmentPresenter;
+import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.JsonParse;
-import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.FindAdvancedActivity;
 import com.xtel.vparking.view.activity.inf.HomeFragmentView;
 
@@ -101,7 +98,6 @@ public class HomeFragment extends BasicFragment implements
     public BottomSheetBehavior bottomSheetBehavior;
     private boolean isFindMyLocation, isScrollDown, isCanLoadMap = true;
     private int isLoadNewParking = 0;
-    private Gson gson;
 
     private Marker pickMarker;
     private Polyline polyline;
@@ -109,7 +105,7 @@ public class HomeFragment extends BasicFragment implements
     private NestedScrollView nestedScrollView;
     private BottomSheet dialogBottomSheet;
     //    private DialogParkingDetail dialogParkingDetail;
-    private RESP_Parking_Info parkingInfoModel;
+    private RESP_Parking_Info resp_parking_info;
 
     @Nullable
     @Override
@@ -120,8 +116,6 @@ public class HomeFragment extends BasicFragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        gson = new Gson();
 
         createLocationRequest();
         initGoogleMap();
@@ -209,7 +203,7 @@ public class HomeFragment extends BasicFragment implements
                     mMap_bottom.clear();
                     dialogBottomSheet.clearData();
                     dialogBottomSheet.showHeader();
-                    parkingInfoModel = null;
+                    resp_parking_info = null;
                     isLoadNewParking = 0;
 
                     if (!isCanLoadMap)
@@ -287,13 +281,13 @@ public class HomeFragment extends BasicFragment implements
         dialogBottomSheet.onGuidClicked(new DialogListener() {
             @Override
             public void onClicked(Object object) {
-                if (parkingInfoModel != null) {
+                if (resp_parking_info != null) {
                     if (mGoogleApiClient.isConnected()) {
                         if (checkPermission()) {
                             Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                             if (mLastLocation != null && mMap != null) {
                                 new GetPolyline().execute(mLastLocation.getLatitude(), mLastLocation.getLongitude(),
-                                        parkingInfoModel.getLat(), parkingInfoModel.getLng());
+                                        resp_parking_info.getLat(), resp_parking_info.getLng());
                             }
                         }
                     } else
@@ -330,18 +324,18 @@ public class HomeFragment extends BasicFragment implements
         hideFloatingActionButton(fab_thongbao);
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        dialogBottomSheet.initData(parkingInfoModel);
+        dialogBottomSheet.initData(resp_parking_info);
 
-        if (parkingInfoModel.getStatus() == 0) {
+        if (resp_parking_info.getStatus() == 0) {
             mMap_bottom.addMarker(new MarkerOptions()
-                    .position(new LatLng(parkingInfoModel.getLat(), parkingInfoModel.getLng()))
+                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
         } else {
             mMap_bottom.addMarker(new MarkerOptions()
-                    .position(new LatLng(parkingInfoModel.getLat(), parkingInfoModel.getLng()))
+                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
         }
-        mMap_bottom.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(parkingInfoModel.getLat(), parkingInfoModel.getLng()), 15));
+        mMap_bottom.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()), 15));
     }
 
     private boolean checkPermission() {
@@ -391,7 +385,6 @@ public class HomeFragment extends BasicFragment implements
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        if (isCanLoadMap) {
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 mMap_bottom.clear();
@@ -408,13 +401,11 @@ public class HomeFragment extends BasicFragment implements
                             Log.e("pk_choose_marker", "ok");
                             showProgressBar(false, false, null, getString(R.string.parking_get_data));
                             presenter.getParkingInfo(markerList.get(finalI).getId());
-//                            new GetParkingInfo().execute(String.valueOf(markerList.get(finalI).getId()));
                         }
                     }, 200);
                     break;
                 }
             }
-        }
         return false;
     }
 
@@ -617,8 +608,10 @@ public class HomeFragment extends BasicFragment implements
     @Override
     public void onGetParkingInfoSuccuss(RESP_Parking_Info resp_parking_info) {
         closeProgressBar();
-        parkingInfoModel = resp_parking_info;
-        Log.e("pk_parking_id", "null k:" + parkingInfoModel.getId());
+        isLoadNewParking = 0;
+
+        this.resp_parking_info = resp_parking_info;
+        Log.e("pk_parking_id", "null k:" + this.resp_parking_info.getId());
         showDialogParkingDetail();
     }
 
@@ -644,10 +637,11 @@ public class HomeFragment extends BasicFragment implements
     }
 
     private class GetParkingAround extends AsyncTask<String, Void, String> {
-        private LatLng latLng;
+//        private LatLng latLng;
 
         @Override
         protected void onPreExecute() {
+            isCanLoadMap = false;
             if (!isFindMyLocation)
                 isFindMyLocation = true;
             super.onPreExecute();
@@ -676,7 +670,7 @@ public class HomeFragment extends BasicFragment implements
                         .url(url)
                         .build();
 
-                latLng = new LatLng(Double.parseDouble(params[0]), Double.parseDouble(params[1]));
+//                latLng = new LatLng(Double.parseDouble(params[0]), Double.parseDouble(params[1]));
 
                 Response response = client.newCall(request).execute();
                 return response.body().string();
@@ -690,50 +684,57 @@ public class HomeFragment extends BasicFragment implements
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            setOnCameraChangeListener();
+//            if (latLng != null)
+            if (s != null) {
+                Error error = JsonParse.checkError(s);
+                if (error != null) {
+                    JsonParse.getCodeError(getActivity(), null, error.getCode(), "Không thể tìm bãi đỗ");
+                } else {
+                    RESP_Parking resp_parking = JsonHelper.getObjectNoException(s, RESP_Parking.class);
 
-            if (latLng != null)
-                if (s != null) {
-                    Error error = JsonParse.checkError(s);
-                    if (error != null) {
-                        JsonParse.getCodeError(getActivity(), null, error.getCode(), "Không thể tìm bãi đỗ");
-                    } else {
-                        ArrayList<RESP_Parking> arrayList = JsonParse.getAllParking(s);
+                    ArrayList<Parking> arrayList;
+                    if (resp_parking.getError() == null) {
+                        arrayList = resp_parking.getData();
+                    } else
+                        arrayList = new ArrayList<>();
 //                        markerList.clear();
 
-                        if (arrayList != null) {
-                            if (arrayList.size() != 0) {
-                                int possition = markerList.size() - 1;
+                    if (arrayList != null) {
+                        if (arrayList.size() != 0) {
+                            int possition = markerList.size() - 1;
 
-                                for (int i = 0; i < arrayList.size(); i++) {
+                            for (int i = 0; i < arrayList.size(); i++) {
 
-                                    if (arrayList.get(i).getStatus() == 0) {
-                                        Marker marker = mMap.addMarker(new MarkerOptions()
-                                                .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
-                                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
+                                if (arrayList.get(i).getStatus() == 0) {
+                                    Marker marker = mMap.addMarker(new MarkerOptions()
+                                            .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
+                                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
 
-                                        markerList.add(new MarkerModel(marker, arrayList.get(i).getId(), arrayList.get(i).getLat(), arrayList.get(i).getLng()));
-                                    } else {
-                                        Marker marker = mMap.addMarker(new MarkerOptions()
-                                                .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
-                                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
+                                    markerList.add(new MarkerModel(marker, arrayList.get(i).getId(), arrayList.get(i).getLat(), arrayList.get(i).getLng()));
+                                } else {
+                                    Marker marker = mMap.addMarker(new MarkerOptions()
+                                            .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
+                                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
 
-                                        markerList.add(new MarkerModel(marker, arrayList.get(i).getId(), arrayList.get(i).getLat(), arrayList.get(i).getLng()));
-                                    }
+                                    markerList.add(new MarkerModel(marker, arrayList.get(i).getId(), arrayList.get(i).getLat(), arrayList.get(i).getLng()));
                                 }
-
-                                clearMarker(possition);
-                                arrayList.clear();
-                            } else {
-                                Toast.makeText(getContext(), "Không tìm thấy bãi đỗ nào", Toast.LENGTH_SHORT).show();
-                                clearMarker(-2);
                             }
+
+                            clearMarker(possition);
+                            arrayList.clear();
                         } else {
                             Toast.makeText(getContext(), "Không tìm thấy bãi đỗ nào", Toast.LENGTH_SHORT).show();
                             clearMarker(-2);
                         }
+                    } else {
+                        Toast.makeText(getContext(), "Không tìm thấy bãi đỗ nào", Toast.LENGTH_SHORT).show();
+                        clearMarker(-2);
                     }
                 }
+            }
+
+            setOnCameraChangeListener();
+            isCanLoadMap = true;
         }
     }
 
@@ -784,14 +785,19 @@ public class HomeFragment extends BasicFragment implements
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            setOnCameraChangeListener();
+//            setOnCameraChangeListener();
 
             if (latLng != null)
                 if (s != null) {
                     Error error = JsonParse.checkError(s);
                     if (error == null) {
-                        ArrayList<RESP_Parking> arrayList = JsonParse.getAllParking(s);
-//                        markerList.clear();
+                        RESP_Parking resp_parking = JsonHelper.getObjectNoException(s, RESP_Parking.class);
+
+                        ArrayList<Parking> arrayList;
+                        if (resp_parking.getError() == null) {
+                            arrayList = resp_parking.getData();
+                        } else
+                            arrayList = new ArrayList<>();
 
                         if (arrayList != null) {
                             if (arrayList.size() != 0) {
@@ -822,86 +828,6 @@ public class HomeFragment extends BasicFragment implements
                 }
         }
     }
-
-//    private DialogProgressBar dialogProgressBar;
-
-//    private class GetParkingInfo extends AsyncTask<String, Void, String> {
-//        private String id;
-//
-//        @Override
-//        protected void onPreExecute() {
-//            isLoadNewParking = 0;
-//            if (dialogProgressBar == null)
-//                dialogProgressBar = new DialogProgressBar(getContext(), false, false, null, getString(R.string.parking_get_data));
-//            if (!dialogProgressBar.isShowing())
-//                dialogProgressBar.showProgressBar();
-//            super.onPreExecute();
-//        }
-//
-//        @Override
-//        protected String doInBackground(String... params) {
-//            OkHttpClient client = new OkHttpClient();
-//            this.id = params[0];
-//
-//            try {
-//                String url = Constants.SERVER_PARKING + Constants.PARKING_INFO + params[0];
-//                String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
-//
-//                Log.e("pk_in_url", url + "     " + session);
-//                Request request = new Request.Builder()
-//                        .url(url)
-//                        .header(Constants.JSON_SESSION, session)
-//                        .build();
-//                Response response = client.newCall(request).execute();
-//
-//
-//                return response.body().string();
-//            } catch (Exception e) {
-//                Log.e("pk_loi", e.toString());
-//                return null;
-//            }
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String s) {
-//            super.onPostExecute(s);
-//
-//            if (s != null) {
-//                Error error = JsonParse.checkError(s);
-//                if (error != null) {
-//                    if (error.getCode() == 2) {
-//                        getNewSessionParkingInfo(id);
-//                    } else {
-//                        dialogProgressBar.closeProgressBar();
-//                        JsonParse.getCodeError(getContext(), null, error.getCode(), getString(R.string.error_get_parking));
-//                    }
-//                } else {
-//                    dialogProgressBar.closeProgressBar();
-//                    parkingInfoModel = gson.fromJson(s, new TypeToken<RESP_Parking_Info>() {
-//                    }.getType());
-//
-//                    Log.e("pk_parking_id", "null k:" + parkingInfoModel.getId());
-//                    showDialogParkingDetail();
-//                }
-//            }
-//        }
-//    }
-
-//    private void getNewSessionParkingInfo(final String id) {
-//        Toast.makeText(getContext(), "Lấy phiên mới", Toast.LENGTH_SHORT).show();
-//        GetNewSession.getNewSession(getContext(), new RequestNoResultListener() {
-//            @Override
-//            public void onSuccess() {
-//                new GetParkingInfo().execute(id);
-//            }
-//
-//            @Override
-//            public void onError() {
-//                dialogProgressBar.closeProgressBar();
-//                Toast.makeText(getContext(), getString(R.string.error_session_invalid), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
 
     public class GetPolyline extends AsyncTask<Double, Void, Void> {
         private PolylineOptions polylineOptions;
@@ -965,13 +891,13 @@ public class HomeFragment extends BasicFragment implements
                 dialogProgressBar_2.closeProgressBar();
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-                if (parkingInfoModel.getStatus() == 0) {
+                if (resp_parking_info.getStatus() == 0) {
                     mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(parkingInfoModel.getLat(), parkingInfoModel.getLng()))
+                            .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
                 } else {
                     mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(parkingInfoModel.getLat(), parkingInfoModel.getLng()))
+                            .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
                 }
 

@@ -2,109 +2,21 @@ package com.xtel.vparking.model.entity;
 
 import com.google.gson.annotations.Expose;
 
+import java.util.ArrayList;
+
 /**
  * Created by Computer on 11/5/2016.
  */
 
 public class RESP_Parking extends RESP_Basic {
     @Expose
-    private int id;
-    @Expose
-    private int uid;
-    @Expose
-    private double lat;
-    @Expose
-    private double lng;
-    @Expose
-    private double type;
-    @Expose
-    private double status;
-    @Expose
-    private String code;
-    @Expose
-    private String begin_time;
-    @Expose
-    private String end_time;
-    @Expose
-    private String address;
+    private ArrayList<Parking> data;
 
-    public int getId() {
-        return id;
+    public ArrayList<Parking> getData() {
+        return data;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    public double getLng() {
-        return lng;
-    }
-
-    public void setLng(double lng) {
-        this.lng = lng;
-    }
-
-    public double getType() {
-        return type;
-    }
-
-    public void setType(double type) {
-        this.type = type;
-    }
-
-    public double getStatus() {
-        return status;
-    }
-
-    public void setStatus(double status) {
-        this.status = status;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getBegin_time() {
-        return begin_time;
-    }
-
-    public void setBegin_time(String begin_time) {
-        this.begin_time = begin_time;
-    }
-
-    public String getEnd_time() {
-        return end_time;
-    }
-
-    public void setEnd_time(String end_time) {
-        this.end_time = end_time;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setData(ArrayList<Parking> data) {
+        this.data = data;
     }
 }

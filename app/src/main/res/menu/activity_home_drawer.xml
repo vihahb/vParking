@@ -11,6 +11,10 @@
             android:title="@string/parking_quanlybaido"
             android:visible="false" />
         <item
+            android:id="@+id/nav_parking_favorite"
+            android:icon="@drawable/ic_favorite_border_black_36dp"
+            android:title="@string/parking_favorite" />
+        <item
             android:id="@+id/nav_parking_dangxuat"
             android:icon="@mipmap/ic_logout"
             android:title="@string/parking_dangxuat" />

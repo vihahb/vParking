@@ -5,10 +5,13 @@ import android.widget.Toast;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
+import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
+import com.xtel.vparking.model.entity.RESP_Parking_Info_List;
+import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.inf.HomeFragmentView;
 
 /**
@@ -23,7 +26,10 @@ public class HomeFragmentPresenter {
     }
 
     public void getParkingInfo(final int id) {
-        ParkingModel.getInstanse().getParkingInfo(id, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_INFO + id;
+        String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
+
+        ParkingModel.getInstanse().getParkingInfo(url, session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
             public void onSuccess(RESP_Parking_Info obj) {
                 view.onGetParkingInfoSuccuss(obj);

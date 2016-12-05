@@ -1,11 +1,7 @@
 package com.xtel.vparking.model;
 
-import com.google.gson.JsonObject;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
-import com.xtel.vparking.model.entity.Error;
-import com.xtel.vparking.model.entity.RESP_Basic;
-import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 
 /**
@@ -22,17 +18,11 @@ public class ParkingModel extends BasicModel {
     private ParkingModel() {
     }
 
-    public void getParkingByUser() {
-
+    public void getParkingInfo(String url, String session, ResponseHandle responseHandle) {
+        requestServer.getApi(url, session, responseHandle);
     }
 
-    public void addParking(JsonObject jsonObject) {
-
-    }
-
-    public void getParkingInfo(int id, ResponseHandle responseHandle) {
-        String url = Constants.SERVER_PARKING + Constants.PARKING_INFO + id;
-        String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
+    public void getParkingByUser(String url, String session, ResponseHandle responseHandle) {
         requestServer.getApi(url, session, responseHandle);
     }
 
@@ -50,5 +40,9 @@ public class ParkingModel extends BasicModel {
             url += Constants.PARKING_END_TIME + end_time;
 
         requestServer.getApi(url, null, responseHandle);
+    }
+
+    public void addParking(String url, String json, String session, ResponseHandle responseHandle) {
+        requestServer.postApi(url, json, session, responseHandle);
     }
 }

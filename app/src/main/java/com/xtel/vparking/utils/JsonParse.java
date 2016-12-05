@@ -42,36 +42,36 @@ public class JsonParse {
         return null;
     }
 
-    public static ArrayList<RESP_Parking> getAllParking(String data) {
-        try {
-            JSONArray jsonArray = new JSONArray(data);
-            ArrayList<RESP_Parking> arrayList = new ArrayList<>();
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject parking = jsonArray.getJSONObject(i);
-
-                RESP_Parking RESPRESPParking = new RESP_Parking();
-                RESPRESPParking.setId(parking.getInt(Constants.JSON_ID));
-                RESPRESPParking.setUid(parking.getInt(Constants.JSON_UID));
-                RESPRESPParking.setLat(parking.getDouble(Constants.JSON_LAT));
-                RESPRESPParking.setLng(parking.getDouble(Constants.JSON_LNG));
-                RESPRESPParking.setType(parking.getDouble(Constants.JSON_TYPE));
-                RESPRESPParking.setStatus(parking.getDouble(Constants.JSON_STATUS));
-                RESPRESPParking.setCode(parking.getString(Constants.JSON_CODE));
-                RESPRESPParking.setBegin_time(parking.getString(Constants.JSON_BEGIN_TIME));
-                RESPRESPParking.setEnd_time(parking.getString(Constants.JSON_END_TIME));
-                RESPRESPParking.setAddress(parking.getString(Constants.JSON_ADDRESS));
-
-                arrayList.add(RESPRESPParking);
-            }
-
-            return arrayList;
-        } catch (Exception e) {
-            Log.e("pk_json_loi", e.toString());
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    public static ArrayList<RESP_Parking> getAllParking(String data) {
+//        try {
+//            JSONArray jsonArray = new JSONArray(data);
+//            ArrayList<RESP_Parking> arrayList = new ArrayList<>();
+//
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                JSONObject parking = jsonArray.getJSONObject(i);
+//
+//                RESP_Parking RESPRESPParking = new RESP_Parking();
+//                RESPRESPParking.setId(parking.getInt(Constants.JSON_ID));
+//                RESPRESPParking.setUid(parking.getInt(Constants.JSON_UID));
+//                RESPRESPParking.setLat(parking.getDouble(Constants.JSON_LAT));
+//                RESPRESPParking.setLng(parking.getDouble(Constants.JSON_LNG));
+//                RESPRESPParking.setType(parking.getDouble(Constants.JSON_TYPE));
+//                RESPRESPParking.setStatus(parking.getDouble(Constants.JSON_STATUS));
+//                RESPRESPParking.setCode(parking.getString(Constants.JSON_CODE));
+//                RESPRESPParking.setBegin_time(parking.getString(Constants.JSON_BEGIN_TIME));
+//                RESPRESPParking.setEnd_time(parking.getString(Constants.JSON_END_TIME));
+//                RESPRESPParking.setAddress(parking.getString(Constants.JSON_ADDRESS));
+//
+//                arrayList.add(RESPRESPParking);
+//            }
+//
+//            return arrayList;
+//        } catch (Exception e) {
+//            Log.e("pk_json_loi", e.toString());
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     public static void getCodeError(Context activity, View view, int code, String content) {
         if (code == 3) {

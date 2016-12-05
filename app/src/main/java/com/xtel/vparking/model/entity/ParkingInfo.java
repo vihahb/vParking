@@ -1,5 +1,6 @@
-package com.xtel.vparking.model;
+package com.xtel.vparking.model.entity;
 
+import com.google.gson.annotations.Expose;
 import com.xtel.vparking.model.entity.Pictures;
 import com.xtel.vparking.model.entity.Prices;
 
@@ -10,25 +11,44 @@ import java.util.ArrayList;
  * Created by Lê Công Long Vũ on 11/10/2016.
  */
 
-public class ParkingInfoModel implements Serializable {
+public class ParkingInfo implements Serializable {
+    @Expose
     private int id;
+    @Expose
     private double uid;
+    @Expose
     private double lat;
+    @Expose
     private double lng;
+    @Expose
     private double type;
+    @Expose
     private double status;
+    @Expose
     private String code;
+    @Expose
     private String begin_time;
+    @Expose
     private String end_time;
+    @Expose
     private String address;
+    @Expose
     private String parking_name;
+    @Expose
     private String parking_desc;
+    @Expose
     private String total_place;
+    @Expose
     private String empty_number;
+    @Expose
     private String qr_code;
+    @Expose
     private String bar_code;
+    @Expose
     private ArrayList<Prices> prices;
+    @Expose
     private ArrayList<Pictures> pictures;
+    @Expose
     private int favorite;
 
     public int getId() {

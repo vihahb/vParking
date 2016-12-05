@@ -129,8 +129,18 @@
         <!-- android:name=".view.activity.ChiTietActivity" -->
         <!-- android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize" -->
         <!-- android:label="@string/title_activity_chi_tiet" /> -->
-        <activity android:name=".view.activity.CheckInActivity" />
-        <activity android:name=".view.activity.ScanQrActivity"></activity>
+        <activity
+            android:name=".view.activity.CheckInActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:label="@string/title_activity_check_in" />
+        <activity
+            android:name=".view.activity.ScanQrActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".view.activity.FavoriteActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:label="@string/title_activity_favorite" />
     </application>
 
 </manifest>

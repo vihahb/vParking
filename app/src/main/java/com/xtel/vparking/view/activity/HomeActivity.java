@@ -140,6 +140,8 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
                 menu.findItem(R.id.nav_parking_add).setVisible(true);
                 menu.findItem(R.id.nav_parking_checkin).setVisible(false);
             }
+        } else if (id == R.id.nav_parking_favorite) {
+            startActivity(FavoriteActivity.class);
         } else if (id == R.id.nav_parking_dangxuat) {
             LoginManager.getInstance().logOut();
             SharedPreferencesUtils.getInstance().clearData();

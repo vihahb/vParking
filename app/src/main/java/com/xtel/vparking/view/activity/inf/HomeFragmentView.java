@@ -3,6 +3,7 @@ package com.xtel.vparking.view.activity.inf;
 import android.app.Activity;
 
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.ParkingInfo;
 import com.xtel.vparking.model.entity.RESP_Parking;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 

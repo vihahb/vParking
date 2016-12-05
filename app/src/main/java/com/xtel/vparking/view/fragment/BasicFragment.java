@@ -1,5 +1,6 @@
 package com.xtel.vparking.view.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -7,18 +8,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.xtel.vparking.R;
 import com.xtel.vparking.callback.DialogListener;
 import com.xtel.vparking.dialog.DialogNotification;
 import com.xtel.vparking.dialog.DialogProgressBar;
 
 /**
- * Created by Mr. M.2 on 12/4/2016.
+ * Created by Lê Công Long Vũ on 12/4/2016.
  */
 
 public abstract class BasicFragment extends Fragment {
 
-    private DialogProgressBar dialogProgressBar;
-    boolean isWaitingForExit = false;
+    private ProgressDialog progressDialog;
 
     public BasicFragment() {
     }
@@ -48,13 +49,21 @@ public abstract class BasicFragment extends Fragment {
     }
 
     protected void showProgressBar(boolean isTouchOutside, boolean isCancel, String title, String message) {
-        dialogProgressBar = new DialogProgressBar(getContext(), isTouchOutside, isCancel, title, message);
-        dialogProgressBar.showProgressBar();
+        progressDialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
+        progressDialog.setCanceledOnTouchOutside(isTouchOutside);
+        progressDialog.setCancelable(isCancel);
+
+        if (title != null)
+            progressDialog.setTitle(title);
+        if (message != null)
+            progressDialog.setMessage(message);
+
+        progressDialog.show();
     }
 
     protected void closeProgressBar() {
-        if (dialogProgressBar.isShowing())
-            dialogProgressBar.closeProgressBar();
+        if (progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 
     //    Khởi chạy fragment giao diện và add vào stack

@@ -77,6 +77,7 @@ public class Constants {
     public static final String PARKING_FIND = "v1.0/find";
     public static final String PARKING_INFO = "v1.0/info/";
     public static final String PARKING_ADD_PARKING = "v1.0/admin/parking";
+    public static final String PARKING_GET_FAVORITE = "v1.0/user/favorite";
     public static final String PARKING_LAT = "?lat=";
     public static final String PARKING_LNG = "&lng=";
     public static final String PARKING_PRICE = "&price=";

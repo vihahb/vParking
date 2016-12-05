@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
-import com.xtel.vparking.model.ParkingInfoModel;
+import com.xtel.vparking.model.entity.ParkingInfo;
 
 import java.util.ArrayList;
 
@@ -23,9 +23,9 @@ import java.util.ArrayList;
 
 public class QuanLyBaiDoAdapter extends RecyclerView.Adapter<QuanLyBaiDoAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<ParkingInfoModel> arrayList;
+    private ArrayList<ParkingInfo> arrayList;
 
-    public QuanLyBaiDoAdapter(Context context, ArrayList<ParkingInfoModel> arrayList) {
+    public QuanLyBaiDoAdapter(Context context, ArrayList<ParkingInfo> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
     }
@@ -37,10 +37,10 @@ public class QuanLyBaiDoAdapter extends RecyclerView.Adapter<QuanLyBaiDoAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ParkingInfoModel parkingInfoModel = arrayList.get(position);
+        ParkingInfo parkingInfo = arrayList.get(position);
 
-        if (parkingInfoModel.getPictures() != null && parkingInfoModel.getPictures().size() > 0) {
-            String picture = parkingInfoModel.getPictures().get(0).getUrl();
+        if (parkingInfo.getPictures() != null && parkingInfo.getPictures().size() > 0) {
+            String picture = parkingInfo.getPictures().get(0).getUrl();
 
             if (picture != null && !picture.isEmpty())
                 Picasso.with(context)
@@ -53,12 +53,12 @@ public class QuanLyBaiDoAdapter extends RecyclerView.Adapter<QuanLyBaiDoAdapter.
         } else
             holder.img_avatar.setImageResource(R.mipmap.ic_parking_background);
 
-        Log.e("adapter_number_place", "null k: " + parkingInfoModel.getEmpty_number());
+        Log.e("adapter_number_place", "null k: " + parkingInfo.getEmpty_number());
 
-        holder.txt_name.setText(parkingInfoModel.getParking_name());
-        holder.txt_address.setText(parkingInfoModel.getAddress());
-        holder.txt_number.setText(Constants.getPlaceNumber(context, parkingInfoModel.getEmpty_number()));
-        setStatus(holder.txt_empty, parkingInfoModel.getStatus());
+        holder.txt_name.setText(parkingInfo.getParking_name());
+        holder.txt_address.setText(parkingInfo.getAddress());
+        holder.txt_number.setText(Constants.getPlaceNumber(context, parkingInfo.getEmpty_number()));
+        setStatus(holder.txt_empty, parkingInfo.getStatus());
     }
 
     private void setStatus(TextView textView, double status) {
@@ -95,8 +95,8 @@ public class QuanLyBaiDoAdapter extends RecyclerView.Adapter<QuanLyBaiDoAdapter.
         }
     }
 
-    public void addNewItem(ParkingInfoModel parkingInfoModel) {
-//        arrayList.add(parkingInfoModel);
+    public void addNewItem(ParkingInfo parkingInfo) {
+//        arrayList.add(parkingInfo);
         notifyItemInserted(arrayList.size() - 1);
     }
 }

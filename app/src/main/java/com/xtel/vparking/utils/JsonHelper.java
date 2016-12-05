@@ -40,15 +40,4 @@ public class JsonHelper {
             return null;
         }
     }
-
-    public static <T> ArrayList<T> getList(String json, Type type) {
-        if (json == null || json.isEmpty())
-            return null;
-
-        try {
-            return gson.fromJson(json, type);
-        } catch (Exception e) {
-            return null;
-        }
-    }
 }

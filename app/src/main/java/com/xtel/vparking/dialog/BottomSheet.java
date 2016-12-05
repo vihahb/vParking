@@ -23,7 +23,7 @@ import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.model.entity.Error;
-import com.xtel.vparking.model.ParkingInfoModel;
+import com.xtel.vparking.model.entity.ParkingInfo;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.JsonParse;
@@ -45,7 +45,7 @@ import com.xtel.vparking.view.adapter.AddParkingAdapter;
 
 public class BottomSheet {
     private Context context;
-    private RESP_Parking_Info parkingInfoModel;
+    private RESP_Parking_Info resp_parking_info;
     private FragmentManager fragmentManager;
     private ViewPager viewPager;
     private ImageView img_favorite;
@@ -98,7 +98,7 @@ public class BottomSheet {
             @Override
             public void onClick(View v) {
                 if (!addingToFavorite)
-                    new AddToFavorite(v).execute(parkingInfoModel.getId());
+                    new AddToFavorite(v).execute(resp_parking_info.getId());
             }
         });
 
@@ -106,7 +106,7 @@ public class BottomSheet {
             @Override
             public void onClick(View v) {
                 if (!addingToFavorite)
-                    new AddToFavorite(v).execute(parkingInfoModel.getId());
+                    new AddToFavorite(v).execute(resp_parking_info.getId());
             }
         });
     }
@@ -135,36 +135,36 @@ public class BottomSheet {
         });
     }
 
-    public void initData(RESP_Parking_Info parkingInfoModel) {
-        this.parkingInfoModel = parkingInfoModel;
+    public void initData(RESP_Parking_Info resp_parking_info) {
+        this.resp_parking_info = resp_parking_info;
         initHeader();
 
         arrayList_bottom_sheet.clear();
 
-        if (parkingInfoModel.getPictures().size() > 0)
-            for (int i = 0; i < parkingInfoModel.getPictures().size(); i++) {
-                arrayList_bottom_sheet.add(parkingInfoModel.getPictures().get(i).getUrl());
+        if (resp_parking_info.getPictures().size() > 0)
+            for (int i = 0; i < resp_parking_info.getPictures().size(); i++) {
+                arrayList_bottom_sheet.add(resp_parking_info.getPictures().get(i).getUrl());
             }
         else
             arrayList_bottom_sheet.add(null);
 
         viewPager.getAdapter().notifyDataSetChanged();
 
-        this.parkingInfoModel = parkingInfoModel;
+        this.resp_parking_info = resp_parking_info;
         String picture_count = "1/" + arrayList_bottom_sheet.size();
 
         txt_picture_count.setText(picture_count);
-        txt_address.setText(parkingInfoModel.getAddress());
+        txt_address.setText(resp_parking_info.getAddress());
         txt_user_name.setText("No name");
         txt_user_age.setText("No age");
-        txt_time.setText(Constants.getTime(parkingInfoModel.getBegin_time(), parkingInfoModel.getEnd_time()));
-        txt_parking_name.setText(parkingInfoModel.getParking_name());
-        txt_cho_trong.setText(Constants.getPlaceNumber(context, parkingInfoModel.getEmpty_number()));
+        txt_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
+        txt_parking_name.setText(resp_parking_info.getParking_name());
+        txt_cho_trong.setText(Constants.getPlaceNumber(context, resp_parking_info.getEmpty_number()));
 
-        txt_money.setText((parkingInfoModel.getPrices().get(0).getPrice() + " K"));
+        txt_money.setText((resp_parking_info.getPrices().get(0).getPrice() + " K"));
         txt_dat_cho.setText("12,000");
 
-        if (this.parkingInfoModel.getFavorite() == 1) {
+        if (this.resp_parking_info.getFavorite() == 1) {
             img_favorite.setImageResource(R.mipmap.ic_favorite_red);
         } else {
             img_favorite.setImageResource(R.mipmap.ic_favorite_gray);
@@ -175,13 +175,13 @@ public class BottomSheet {
         if (view_header.getVisibility() == View.GONE)
             view_header.setVisibility(View.VISIBLE);
 
-        txt_header_name.setText(parkingInfoModel.getParking_name());
-        txt_header_time.setText(Constants.getTime(parkingInfoModel.getBegin_time(), parkingInfoModel.getEnd_time()));
-        txt_header_address.setText(parkingInfoModel.getAddress());
-        txt_header_empty.setText(Constants.getPlaceNumberAndTotal(context, parkingInfoModel.getEmpty_number(), parkingInfoModel.getTotal_place()));
-        txt_header_money.setText((parkingInfoModel.getPrices().get(0).getPrice() + " K"));
+        txt_header_name.setText(resp_parking_info.getParking_name());
+        txt_header_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
+        txt_header_address.setText(resp_parking_info.getAddress());
+        txt_header_empty.setText(Constants.getPlaceNumberAndTotal(context, resp_parking_info.getEmpty_number(), resp_parking_info.getTotal_place()));
+        txt_header_money.setText((resp_parking_info.getPrices().get(0).getPrice() + " K"));
 
-        if (this.parkingInfoModel.getFavorite() == 1) {
+        if (this.resp_parking_info.getFavorite() == 1) {
             img_header_favorite.setImageResource(R.mipmap.ic_favorite_red);
         } else {
             img_header_favorite.setImageResource(R.mipmap.ic_favorite_gray);
@@ -213,7 +213,7 @@ public class BottomSheet {
         btn_danduong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogListener.onClicked(parkingInfoModel);
+                dialogListener.onClicked(resp_parking_info);
             }
         });
     }
@@ -286,13 +286,13 @@ public class BottomSheet {
             Log.e("pk_fa_result", "null k: " + s);
 
             if (s == null || s.isEmpty()) {
-                if (parkingInfoModel.getFavorite() == 1) {
-                    parkingInfoModel.setFavorite(0);
+                if (resp_parking_info.getFavorite() == 1) {
+                    resp_parking_info.setFavorite(0);
                     img_favorite.setImageResource(R.mipmap.ic_favorite_gray);
                     img_header_favorite.setImageResource(R.mipmap.ic_favorite_gray);
                     Toast.makeText(context, "Đã xóa bãi đỗ khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
                 } else {
-                    parkingInfoModel.setFavorite(1);
+                    resp_parking_info.setFavorite(1);
                     img_favorite.setImageResource(R.mipmap.ic_favorite_red);
                     img_header_favorite.setImageResource(R.mipmap.ic_favorite_red);
                     Toast.makeText(context, "Đã thêm bãi đỗ vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
@@ -315,13 +315,13 @@ public class BottomSheet {
                     addingToFavorite = false;
                     dialogProgressBar.closeProgressBar();
 
-                    if (parkingInfoModel.getFavorite() == 1) {
-                        parkingInfoModel.setFavorite(0);
+                    if (resp_parking_info.getFavorite() == 1) {
+                        resp_parking_info.setFavorite(0);
                         img_favorite.setImageResource(R.mipmap.ic_favorite_gray);
                         img_header_favorite.setImageResource(R.mipmap.ic_favorite_gray);
                         Toast.makeText(context, "Đã xóa bãi đỗ khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
                     } else {
-                        parkingInfoModel.setFavorite(1);
+                        resp_parking_info.setFavorite(1);
                         img_favorite.setImageResource(R.mipmap.ic_favorite_red);
                         img_header_favorite.setImageResource(R.mipmap.ic_favorite_red);
                         Toast.makeText(context, "Đã thêm bãi đỗ vào danh sách yêu thích", Toast.LENGTH_SHORT).show();

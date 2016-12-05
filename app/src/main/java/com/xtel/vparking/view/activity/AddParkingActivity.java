@@ -1,5 +1,6 @@
 package com.xtel.vparking.view.activity;
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,15 +36,19 @@ import com.xtel.vparking.dialog.DialogNotification;
 import com.xtel.vparking.dialog.DialogProgressBar;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.PlaceModel;
+import com.xtel.vparking.presenter.AddParkingPresenter;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.utils.Task;
+import com.xtel.vparking.view.activity.inf.AddParkingView;
 import com.xtel.vparking.view.adapter.AddParkingAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AddParkingActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddParkingActivity extends BasicActivity implements View.OnClickListener, AddParkingView {
+
+    private AddParkingPresenter presenter;
     //    private ImageView img_picture;
     private TextView txt_image_number, txt_money;
     private EditText edt_parking_name, edt_parking_desc, edt_place_number, edt_address, edt_begin_time, edt_end_time;
@@ -64,26 +69,17 @@ public class AddParkingActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_parking);
 
-        arrayList_file = new ArrayList<>();
-
-        initToolbar();
+        initToolbar(R.id.toolbar_tao_bai_do, true);
         initWidger();
+        initListener();
+
         initViewPager();
         initSelectMoney();
-    }
 
-    @SuppressWarnings("ConstantConditions")
-    private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_tao_bai_do);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        presenter = new AddParkingPresenter(this);
     }
 
     private void initWidger() {
-//        img_picture = (ImageView) findViewById(R.id.img_tao_bai_do_picture);
-
         txt_image_number = (TextView) findViewById(R.id.txt_tao_bai_do_image_number);
         txt_money = (TextView) findViewById(R.id.txt_tao_bai_do_money);
 
@@ -99,15 +95,17 @@ public class AddParkingActivity extends AppCompatActivity implements View.OnClic
         edt_end_time = (EditText) findViewById(R.id.edt_tao_bai_do_end_time);
 
         seek_money = (SeekBar) findViewById(R.id.seek_bar_tao_bai_do_money);
+        viewPager = (ViewPager) findViewById(R.id.viewpager_tao_bai_do);
+    }
 
+    private void initListener() {
         edt_address.setOnClickListener(this);
         edt_begin_time.setOnClickListener(this);
         edt_end_time.setOnClickListener(this);
     }
 
     private void initViewPager() {
-        viewPager = (ViewPager) findViewById(R.id.viewpager_tao_bai_do);
-//        arrayList_fragment = new ArrayList<>();
+        arrayList_file = new ArrayList<>();
         AddParkingAdapter addParkingAdapter = new AddParkingAdapter(getSupportFragmentManager(), arrayList_file);
         viewPager.setAdapter(addParkingAdapter);
 
@@ -180,6 +178,7 @@ public class AddParkingActivity extends AppCompatActivity implements View.OnClic
             startActivityForResult(builder.build(this), PLACE_AUTOCOMPLETE_REQUEST_CODE);
         } catch (GooglePlayServicesRepairableException e) {
             // TODO: Handle the error.
+            e.printStackTrace();
         } catch (GooglePlayServicesNotAvailableException e) {
             // TODO: Handle the error.
             e.printStackTrace();
@@ -304,117 +303,11 @@ public class AddParkingActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void addParkingNow(final View view) {
-        if (dialogProgressBar == null)
-            dialogProgressBar = new DialogProgressBar(AddParkingActivity.this, false, false, null, getString(R.string.adding));
-        else
-            dialogProgressBar.updateProgressBar(null, getString(R.string.adding));
-        if (!dialogProgressBar.isShowing())
-            dialogProgressBar.showProgressBar();
-
-        String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
-
-        JsonObject json = new JsonObject();
-        json.addProperty(Constants.JSON_LAT, placeModel.getLatitude());
-        json.addProperty(Constants.JSON_LNG, placeModel.getLongtitude());
-        json.addProperty(Constants.JSON_TYPE, getParkingType());
-        json.addProperty(Constants.JSON_ADDRESS, edt_address.getText().toString());
-
-        if (!edt_begin_time.getText().toString().isEmpty())
-            json.addProperty(Constants.JSON_BEGIN_TIME, edt_begin_time.getText().toString());
-        if (!edt_end_time.getText().toString().isEmpty())
-            json.addProperty(Constants.JSON_END_TIME, edt_end_time.getText().toString());
-
-        json.addProperty(Constants.JSON_PARKING_NAME, edt_parking_name.getText().toString());
-
-        if (!edt_parking_desc.getText().toString().isEmpty())
-            json.addProperty(Constants.JSON_PARKING_DESC, "null");
-
-        if (!edt_place_number.getText().toString().isEmpty()) {
-            json.addProperty(Constants.JSON_TOTAL_PLACE, Integer.valueOf(edt_place_number.getText().toString()));
-            json.addProperty(Constants.JSON_EMPTY_NUMBER, Integer.valueOf(edt_place_number.getText().toString()));
-        }
-
-
-//        Add Prices
-        JsonArray all_prices = new JsonArray();
-        JsonObject price = new JsonObject();
-        price.addProperty(Constants.JSON_NAME, "");
-        price.addProperty(Constants.JSON_PRICE, (seek_money.getProgress() * 5));
-        price.addProperty(Constants.JSON_PRICE_TYPE, 1);
-        all_prices.add(price);
-        json.add(Constants.JSON_PRICES, all_prices);
-
-        JsonArray all_picture = new JsonArray();
-        for (int i = 0; i < arrayList_file.size(); i++) {
-            JsonObject picture = new JsonObject();
-            picture.addProperty(Constants.JSON_URL, arrayList_file.get(i));
-            all_picture.add(picture);
-        }
-        json.add(Constants.JSON_PICTURES, all_picture);
-
-        Log.e("tb_session", session);
-        Log.e("tb_url", Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING);
-        Log.e("tb_json", json.toString());
-
-        String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
-        Ion.with(AddParkingActivity.this)
-                .load(url)
-                .setHeader(Constants.JSON_SESSION, session)
-                .setJsonObjectBody(json)
-                .asJsonObject()
-                .setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, final JsonObject result) {
-                        if (e != null) {
-                            Snackbar.make(view, getString(R.string.error_server_request), Snackbar.LENGTH_SHORT).show();
-                        } else {
-                            Log.e("tb_result", result.toString());
-                            Error errorModel = JsonParse.checkError(result.toString());
-                            if (errorModel != null) {
-                                if (errorModel.getCode() == 2) {
-                                    getNewSesstionAddParking(view);
-                                } else {
-                                    dialogProgressBar.closeProgressBar();
-                                    JsonParse.getCodeError(AddParkingActivity.this, view, errorModel.getCode(), getString(R.string.loi_addparking));
-                                }
-                            } else {
-                                dialogProgressBar.closeProgressBar();
-                                DialogNotification dialogNotification = new DialogNotification(AddParkingActivity.this);
-                                dialogNotification.showDialog("THÔNG BÁO", "Tin đã được đăng thành công", "OK");
-                                dialogNotification.setOnButtonClicked(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Intent intent = new Intent();
-
-                                        try {
-                                            intent.putExtra(Constants.INTENT_PARKING_ID, result.get(Constants.JSON_ID).getAsString());
-                                        } catch (Exception ex) {
-                                            ex.printStackTrace();
-                                        }
-
-                                        setResult(99, intent);
-                                        finish();
-                                    }
-                                });
-                            }
-                        }
-                    }
-                });
-    }
-
-    private void getNewSesstionAddParking(final View view) {
-        GetNewSession.getNewSession(AddParkingActivity.this, new RequestNoResultListener() {
-            @Override
-            public void onSuccess() {
-                addParkingNow(view);
-            }
-
-            @Override
-            public void onError() {
-                dialogProgressBar.closeProgressBar();
-                Toast.makeText(AddParkingActivity.this, getString(R.string.error_session_invalid), Toast.LENGTH_SHORT).show();
-            }
-        });
+        showProgressBar(false, false, null, getString(R.string.adding));
+        presenter.addParking(placeModel.getLatitude(), placeModel.getLongtitude(), getParkingType(), edt_address.getText().toString(),
+                edt_begin_time.getText().toString(), edt_end_time.getText().toString(), edt_parking_name.getText().toString(),
+                edt_parking_desc.getText().toString(), Integer.parseInt(edt_place_number.getText().toString()),
+                seek_money.getProgress(), arrayList_file);
     }
 
     @Override
@@ -441,13 +334,6 @@ public class AddParkingActivity extends AppCompatActivity implements View.OnClic
                 edt_address.setText(place.getAddress());
             }
         }
-//        else if (requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK) {
-//            List<GalleryMedia> galleryMedias = data.getParcelableArrayListExtra(GalleryActivity.RESULT_GALLERY_MEDIA_LIST);
-//
-//            for (int i = 0; i < galleryMedias.size(); i++) {
-//                Log.e("pk_list", "uri: " + galleryMedias.get(i).mediaUri());
-//            }
-//        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -462,5 +348,41 @@ public class AddParkingActivity extends AppCompatActivity implements View.OnClic
         } else if (id == R.id.edt_tao_bai_do_end_time) {
             getEndTime();
         }
+    }
+
+    @Override
+    public void onTakePictureSucces(String url) {
+
+    }
+
+    @Override
+    public void onAddParkingSuccess(final int id) {
+        closeProgressBar();
+        showDialog("THÔNG BÁO", "Tin đã được đăng thành công", "OK", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+
+                try {
+                    intent.putExtra(Constants.INTENT_PARKING_ID, id);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                setResult(99, intent);
+                finish();
+            }
+        });
+    }
+
+    @Override
+    public void onAddParkingError(Error error) {
+        closeProgressBar();
+        showShortToast(JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_addparking)));
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
     }
 }

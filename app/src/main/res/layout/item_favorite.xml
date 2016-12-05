@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/size_8"
+    android:layout_marginLeft="@dimen/size_8"
+    android:layout_marginRight="@dimen/size_8"
+    android:layout_marginStart="@dimen/size_8"
+    android:layout_marginTop="@dimen/size_8"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    card_view:contentPaddingBottom="@dimen/size_16"
+    card_view:contentPaddingLeft="@dimen/size_16"
+    card_view:contentPaddingRight="@dimen/size_12"
+    card_view:contentPaddingTop="@dimen/size_8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
+
+        <TableLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/size_4"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:stretchColumns="*">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_36">
+
+                <TextView
+                    android:id="@+id/item.txt_favorite_name"
+                    style="@style/Quanly_item_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/size_8"
+                    android:layout_marginRight="@dimen/size_8"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_menu_black_24dp"
+                    android:drawableStart="@drawable/ic_menu_black_24dp" />
+
+                <TextView
+                    android:id="@+id/item.txt_favorite_address"
+                    style="@style/Quanly_item_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/ic_my_address"
+                    android:drawableStart="@mipmap/ic_my_address"
+                    android:paddingLeft="@dimen/size_4"
+                    android:paddingStart="@dimen/size_4" />
+                <!--<TextView-->
+                <!--android:id="@+id/item.txt_favorite_total_play"-->
+                <!--style="@style/Quanly_item_textview"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:drawableLeft="@mipmap/ic_still_empty"-->
+                <!--android:drawableStart="@mipmap/ic_still_empty"-->
+                <!--android:paddingLeft="@dimen/size_4"-->
+                <!--android:paddingStart="@dimen/size_4" />-->
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_36"
+                android:layout_marginTop="@dimen/size_8">
+
+                <TextView
+                    android:id="@+id/item.txt_favorite_time"
+                    style="@style/Quanly_item_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/ic_time"
+                    android:drawableStart="@mipmap/ic_time" />
+
+                <TextView
+                    android:id="@+id/item.txt_favorite_money"
+                    style="@style/Quanly_item_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/ic_note"
+                    android:drawableStart="@mipmap/ic_note"
+                    android:paddingLeft="@dimen/size_8"
+                    android:paddingStart="@dimen/size_8" />
+            </TableRow>
+
+            <!--<TableRow-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/size_36"-->
+            <!--android:layout_marginTop="@dimen/size_8">-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/item.txt_favorite_address"-->
+            <!--style="@style/Quanly_item_textview"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_span="2"-->
+            <!--android:drawableLeft="@mipmap/ic_my_address"-->
+            <!--android:drawableStart="@mipmap/ic_my_address" />-->
+            <!--</TableRow>-->
+        </TableLayout>
+
+        <ImageButton
+            android:id="@+id/item.img_favorite_favorite"
+            android:layout_width="@dimen/size_36"
+            android:layout_height="@dimen/size_36"
+            android:layout_marginLeft="@dimen/size_4"
+            android:layout_marginStart="@dimen/size_4"
+            android:background="@android:color/transparent"
+            android:clickable="true"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/ic_favorite_red" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>
