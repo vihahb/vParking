@@ -32,7 +32,7 @@ public abstract class BasicActivity extends AppCompatActivity {
     public BasicActivity() {
     }
 
-    protected void initToolbar(int id, boolean isShowNavigationIcon) {
+    protected void initToolbar(int id, String title) {
         Toolbar toolbar = (Toolbar) findViewById(id);
         setSupportActionBar(toolbar);
 
@@ -41,6 +41,9 @@ public abstract class BasicActivity extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        if (title != null)
+            actionBar.setTitle(title);
     }
 
     protected void showLongToast(String message) {

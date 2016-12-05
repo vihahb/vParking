@@ -8,6 +8,7 @@ import android.app.Activity;
 
 public interface ScanQrView {
 
+    public void onSetupToolbar(String title);
     public void startScanQrCode();
     public void endScanQrCode(String title, String content);
     public Activity getActivity();

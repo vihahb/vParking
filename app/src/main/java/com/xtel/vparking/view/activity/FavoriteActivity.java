@@ -31,7 +31,7 @@ public class FavoriteActivity extends BasicActivity implements FavoriteView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
 
-        initToolbar(R.id.favorite_toolbar, true);
+        initToolbar(R.id.favorite_toolbar, null);
         initRecyclerview();
         initProgressView();
         presenter = new FavoritePresenter(this);

@@ -8,5 +8,6 @@ import android.app.Activity;
 
 public interface CheckInView {
 
+    public void onScanSuccess(String content);
     public Activity getActivity();
 }

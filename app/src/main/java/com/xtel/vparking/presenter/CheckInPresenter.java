@@ -23,4 +23,11 @@ public class CheckInPresenter {
         view.getActivity().startActivityForResult(intent, requestCode);
 //        startActivityForResultWithInteger(ScanQrActivity.class, , type, REQUEST_CODE);
     }
+
+    public void checkScanResult(Intent data) {
+        String content = data.getStringExtra(Constants.SCAN_RESULT);
+
+        if (content != null)
+            view.onScanSuccess(content);
+    }
 }

@@ -120,6 +120,7 @@ public class Constants {
     public static final int ADD_PARKING_REQUEST = 100, ADD_PARKING_RESULT = 99, FIND_ADVANDCED_RQ = 9, FIND_ADVANDCED_RS = 6;
     public static final String PARKING_MODEL = "parking_model";
     public static final String TYPE_OF_TRANSPORT = "type_of_transport";
+    public static final String SCAN_RESULT = "scan_result";
 
     //    Chi tiết home
     public static final String PK_MODEL = "parking_model";

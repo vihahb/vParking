@@ -25,7 +25,7 @@ public class CheckInActivity extends BasicActivity implements CheckInView {
         setContentView(R.layout.activity_check_in);
 
         presenter = new CheckInPresenter(this);
-        initToolbar(R.id.checkin_toolbar, false);
+        initToolbar(R.id.checkin_toolbar, null);
         initView();
     }
 
@@ -53,6 +53,15 @@ public class CheckInActivity extends BasicActivity implements CheckInView {
     }
 
 
+
+
+
+    @Override
+    public void onScanSuccess(String content) {
+        layout_now.setVisibility(View.VISIBLE);
+        txt_now_address.setText(content);
+    }
+
     @Override
     public Activity getActivity() {
         return this;
@@ -62,7 +71,8 @@ public class CheckInActivity extends BasicActivity implements CheckInView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-
+            if (data != null)
+                presenter.checkScanResult(data);
         }
     }
 

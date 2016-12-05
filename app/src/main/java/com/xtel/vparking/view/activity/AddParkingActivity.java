@@ -69,7 +69,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_parking);
 
-        initToolbar(R.id.toolbar_tao_bai_do, true);
+        initToolbar(R.id.toolbar_tao_bai_do, null);
         initWidger();
         initListener();
 

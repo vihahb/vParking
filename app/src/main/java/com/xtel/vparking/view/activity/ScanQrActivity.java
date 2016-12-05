@@ -2,6 +2,7 @@ package com.xtel.vparking.view.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.google.zxing.Result;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.DialogListener;
+import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.presenter.ScanQrPresenter;
 import com.xtel.vparking.view.activity.inf.ScanQrView;
 import com.xtel.vparking.view.adapter.CustomViewFinderView;
@@ -39,7 +41,7 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
         setContentView(R.layout.activity_scan_qr);
 
         presenter = new ScanQrPresenter(this);
-        initToolbar(R.id.scanqr_toolbar, true);
+        presenter.checkTransportScan();
         initView();
         initScannerView();
     }
@@ -62,6 +64,11 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
     }
 
     @Override
+    public void onSetupToolbar(String title) {
+        initToolbar(R.id.scanqr_toolbar, title);
+    }
+
+    @Override
     public void startScanQrCode() {
         layout_gift_code.setVisibility(View.GONE);
         if (!edt_gift_code.getText().toString().isEmpty()) {
@@ -71,12 +78,16 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
     }
 
     @Override
-    public void endScanQrCode(String title, String content) {
+    public void endScanQrCode(String title, final String content) {
         showDialogNotification(title, content, new DialogListener() {
             @Override
             public void onClicked(Object object) {
-                mScannerView.resumeCameraPreview(ScanQrActivity.this);
-                layout_gift_code.setVisibility(View.VISIBLE);
+//                mScannerView.resumeCameraPreview(ScanQrActivity.this);
+//                layout_gift_code.setVisibility(View.VISIBLE);
+                Intent intent = new Intent();
+                intent.putExtra(Constants.SCAN_RESULT, content);
+                setResult(RESULT_OK, intent);
+                finish();
             }
 
             @Override
