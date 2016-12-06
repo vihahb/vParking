@@ -58,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     ImageView img_avatar, img_change_avatar, img_update_phone;
     DialogProgressBar progressBar;
 
-    int year, month, dayOfMonth;
+    int year_fill, month_fill, dayOfMonthfill;
 
     //Uer Infomation
     String avatar;
@@ -282,20 +282,20 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            year = calendar.get(Calendar.YEAR);
-            month = calendar.get(Calendar.MONTH);
-            dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-            Log.e("Date time:", year + "/" + month + "/" + dayOfMonth);
-            Log.e("Year:", String.valueOf(year));
-            Log.e("month:", String.valueOf(month));
-            Log.e("day:", String.valueOf(dayOfMonth));
+            year_fill = calendar.get(Calendar.YEAR);
+            month_fill = calendar.get(Calendar.MONTH);
+            dayOfMonthfill = calendar.get(Calendar.DAY_OF_MONTH);
+            Log.e("Date time:", year_fill + "/" + month_fill + "/" + dayOfMonthfill);
+            Log.e("Year:", String.valueOf(year_fill));
+            Log.e("month:", String.valueOf(month_fill));
+            Log.e("day:", String.valueOf(dayOfMonthfill));
         } else {
             birthday = "Chưa có ngày sinh";
             edt_ngaysinh.setHint(birthday);
             calendar.getTime();
-            year = calendar.get(Calendar.YEAR);
-            month = calendar.get(Calendar.MONTH);
-            dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+            year_fill = calendar.get(Calendar.YEAR);
+            month_fill = calendar.get(Calendar.MONTH);
+            dayOfMonthfill = calendar.get(Calendar.DAY_OF_MONTH);
         }
 
     }
@@ -311,8 +311,11 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                         String dateSet = year + "/" + (month + 1) + "/" + dayOfMonth;
                         birthday = dateSet;
                         edt_ngaysinh.setText(birthday);
+                        year_fill = year;
+                        month_fill = month;
+                        dayOfMonthfill = dayOfMonth;
                     }
-                }, year, month, dayOfMonth);
+                }, year_fill, month_fill, dayOfMonthfill);
         pickerDialog.show();
     }
 
@@ -395,6 +398,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     }
 
     public void updateUser(String fname, String email, int gender, String birthday, String ava, String number_phone, String session) {
+        String url = Constants.SERVER_PARKING + Constants.UPDATE_USER;
         JsonObject userUpdate = new JsonObject();
         userUpdate.addProperty("fullname", fname);
         userUpdate.addProperty("gender", gender);
@@ -403,8 +407,10 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         userUpdate.addProperty("phone", number_phone);
         userUpdate.addProperty("avatar", ava);
         Log.e("Update object: ", String.valueOf(userUpdate));
+        Log.v("url update:", url);
+        Log.v("Session Profile:", session);
         Ion.with(ProfileActivity.this)
-                .load(Constants.SERVER_PARKING + Constants.UPDATE_USER)
+                .load("POST", url)
                 .setHeader("session", session)
                 .setJsonObjectBody(userUpdate)
                 .asString()

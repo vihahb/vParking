@@ -63,8 +63,7 @@ public class Constants {
     //Server Authen
     public static final String SERVER_AUTHEN = "http://124.158.5.112:9180/nipum/";
     public static final String AUTHEN_FB_LOGIN = "v1.0/m/user/fb/login";
-    public static final String RET_USER = "v1.0/g/user/info/";
-    public static final String UPDATE_USER = "/v1.0/g/user/info/";
+    public static final String UPDATE_USER = "v1.0/user";
     public static final String AUTHEN_AUTHENTICATE = "v1.0/m/user/authenticate";
     public static final String AUTHEN_ACCOUNT_KIT = "v1.0/m/user/accountkit/login";
 
