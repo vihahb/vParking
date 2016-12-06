@@ -22,7 +22,6 @@ import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.accountkit.AccountKitLoginResult;
 import com.facebook.accountkit.ui.AccountKitActivity;
 import com.facebook.accountkit.ui.AccountKitConfiguration;
@@ -58,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
     String session;
 
     //User param
-    String email, name, first_name, last_name, gender, picture, birthday, id;
     String authorization_code;
-    int gender1;
     int parkingFlag;
+
+    boolean check_acc_kit;
 
     String user_token, device_id, device_os_name, device_os_ver, other = "Chưa có", device_vendor;
     //    TelephonyManager telephonyManager;
@@ -501,7 +500,7 @@ public class MainActivity extends AppCompatActivity {
                                          long login_time = result.get("login_time").getAsLong();
                                          long expired_time = result.get("expired_time").getAsLong();
                                          int dev_info_status = result.get("dev_info_status").getAsInt();
-
+                                         check_acc_kit = true;
                                          //Assign variable to AppPreferenc variable
                                          SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_AUTH_ID, authenticationid);
                                          SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_SESSION, session);
@@ -523,45 +522,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getJsonFromAuthen(String session) {
-        String URL_authen = Constants.SERVER_AUTHEN + Constants.RET_USER + session;
+        String URL_authen = Constants.SERVER_PARKING + Constants.GET_USER;
         Log.e("session mobile:", URL_authen);
         Ion.with(MainActivity.this)
                 .load(URL_authen)
+                .setHeader("session", session)
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
-                        if (e != null){
-
+                        if (e != null) {
+                            Log.e("Exception get user:", e.toString());
                         } else {
+                            Log.e("Result user:", result.toString());
                             Error errorModel = JsonParse.checkError(result.toString());
-                            if (errorModel != null){
+                            if (errorModel != null) {
                                 Log.e("loi boc data:", String.valueOf(errorModel.getCode()));
-                            }else {
+                            } else {
                                 Gson gson = new Gson();
                                 UserModel userModel = gson.fromJson(result.toString(), UserModel.class);
-                                if (userModel.getError() != null){
-                                    Log.e("co loi getting data:", userModel.getError());
-                                } else {
-                                    String f_name = userModel.getUserInfo().getFirst_name();
-                                    String l_name = userModel.getUserInfo().getLast_name();
-                                    int gender = userModel.getUserInfo().getGender();
-                                    long birth_day = userModel.getUserInfo().getBirth_day();
-                                    String phone = userModel.getUserInfo().getPhone();
-                                    String address = userModel.getUserInfo().getAddress();
-                                    String avatar = userModel.getUserInfo().getAvatar();
-                                    String email = userModel.getUserInfo().getEmail();
+                                String fullname = userModel.getFullname();
+                                int gender = userModel.getGender();
+                                String birthday = userModel.getBirthday();
+                                String phone = userModel.getPhone();
+                                String address = userModel.getAddress();
+                                String avatar = userModel.getAvatar();
+                                String email = userModel.getEmail();
+                                String qr_code = userModel.getQr_code();
+                                String bar_code = userModel.getBar_code();
 
-                                    SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_FIRST_NAME, f_name);
-                                    SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_LAST_NAME, l_name);
-                                    SharedPreferencesUtils.getInstance().putIntValue(Constants.USER_GENDER, gender);
-                                    SharedPreferencesUtils.getInstance().putLongValue(Constants.USER_BIRTH_DAY, birth_day);
-                                    SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_PHONE, phone);
-                                    SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_ADDRESS, address);
-                                    SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_AVATAR, avatar);
-                                    SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_EMAIL, email);
-                                    Log.e("User gender:", String.valueOf(gender));
-                                }
+                                SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_FULL_NAME, fullname);
+                                SharedPreferencesUtils.getInstance().putIntValue(Constants.USER_GENDER, gender);
+                                SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_BIRTH_DAY, birthday);
+                                SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_PHONE, phone);
+                                SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_ADDRESS, address);
+                                SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_AVATAR, avatar);
+                                SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_EMAIL, email);
+                                SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_QR, qr_code);
+                                SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_BAR, bar_code);
+                                Log.e("User:", result.toString());
                             }
                         }
                     }

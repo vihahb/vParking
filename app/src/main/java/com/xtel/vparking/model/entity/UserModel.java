@@ -8,107 +8,105 @@ import com.google.gson.annotations.SerializedName;
 
 public class UserModel {
 
-    @SerializedName("error")
-    private String error;
-    @SerializedName("userInfo")
-    private UserInfo userInfo;
-
-    public class UserInfo {
-        @SerializedName("first_name")
-        private String first_name;
-        @SerializedName("last_name")
-        private String last_name;
+        @SerializedName("uid")
+        private String uid;
+        @SerializedName("fullname")
+        private String fullname;
         @SerializedName("gender")
         private int gender;
-        @SerializedName("birth_day")
-        private long birth_day;
+        @SerializedName("birthday")
+        private String birthday;
+        @SerializedName("email")
+        private String email;
         @SerializedName("phone")
         private String phone;
         @SerializedName("address")
         private String address;
         @SerializedName("avatar")
         private String avatar;
-        @SerializedName("email")
-        private String email;
+        @SerializedName("qr_code")
+        private String qr_code;
+        @SerializedName("bar_code")
+        private String bar_code;
 
-        public String getFirst_name() {
-            return first_name;
+        public String getUid() {
+            return uid;
         }
 
-        public String getLast_name() {
-            return last_name;
+        public void setUid(String uid) {
+            this.uid = uid;
+        }
+
+        public String getFullname() {
+            return fullname;
+        }
+
+        public void setFullname(String fullname) {
+            this.fullname = fullname;
         }
 
         public int getGender() {
             return gender;
         }
 
-        public long getBirth_day() {
-            return birth_day;
+        public void setGender(int gender) {
+            this.gender = gender;
         }
 
-        public String getPhone() {
-            return phone;
+        public String getBirthday() {
+            return birthday;
         }
 
-        public String getAddress() {
-            return address;
-        }
-
-        public String getAvatar() {
-            return avatar;
+        public void setBirthday(String birthday) {
+            this.birthday = birthday;
         }
 
         public String getEmail() {
             return email;
         }
 
-        public void setFirst_name(String first_name) {
-            this.first_name = first_name;
+        public void setEmail(String email) {
+            this.email = email;
         }
 
-        public void setLast_name(String last_name) {
-            this.last_name = last_name;
-        }
-
-        public void setGender(int gender) {
-            this.gender = gender;
-        }
-
-        public void setBirth_day(long birth_day) {
-            this.birth_day = birth_day;
+        public String getPhone() {
+            return phone;
         }
 
         public void setPhone(String phone) {
             this.phone = phone;
         }
 
+        public String getAddress() {
+            return address;
+        }
+
         public void setAddress(String address) {
             this.address = address;
+        }
+
+        public String getAvatar() {
+            return avatar;
         }
 
         public void setAvatar(String avatar) {
             this.avatar = avatar;
         }
 
-        public void setEmail(String email) {
-            this.email = email;
+        public String getQr_code() {
+            return qr_code;
         }
-    }
 
-    public String getError() {
-        return error;
-    }
+        public void setQr_code(String qr_code) {
+            this.qr_code = qr_code;
+        }
 
-    public UserInfo getUserInfo() {
-        return userInfo;
-    }
+        public String getBar_code() {
+            return bar_code;
+        }
 
-    public void setError(String error) {
-        this.error = error;
-    }
+        public void setBar_code(String bar_code) {
+            this.bar_code = bar_code;
+        }
 
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
 }

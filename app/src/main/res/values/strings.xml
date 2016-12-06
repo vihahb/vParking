@@ -40,6 +40,21 @@
     <string name="parking_get_data" tools:ignore="TypographyEllipsis">Đang tải dữ liệu...</string>
     <string name="loi_coloi">Có lỗi xảy ra</string>
 
+    <!-- Profile -->
+    <string name="email">E-mail</string>
+    <string name="gender">Giới tính</string>
+    <string name="full_name">Họ tên</string>
+    <string name="update_btn">Cập nhật</string>
+    <string name="update_message">Đang cập nhật thông tin...</string>
+    <string name="update_message_picture">Đang cập nhật ảnh đại diện...</string>
+    <string name="update_message_success">Cập nhật thông tin thành công</string>
+    <string name="update_message_failed_gender">Vui lòng chọn giới tính</string>
+    <string name="update_message_failed_name">Vui lòng diền Họ và Tên</string>
+    <string name="update_message_failed_birthday">Vui lòng chọn ngày sinh</string>
+    <string name="update_message_failed_address">Vui lòng diền địa chỉ</string>
+    <string name="update_message_failed_email">Vui lòng diền địa chỉ mail</string>
+    <string name="update_message_failed_phone">Vui lòng xác thực số điện thoại</string>
+
     <!-- Setting -->
     <string name="tatca">Tất cả</string>
     <string name="oto">Ô tô</string>

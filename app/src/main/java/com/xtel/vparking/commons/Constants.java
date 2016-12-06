@@ -20,10 +20,9 @@ public class Constants {
     public static final String USER_GENDER = "user_gender";
     public static final String USER_BIRTH_DAY = "user_bitrh_day";
     public static final String USER_ADDRESS = "user_address";
-    public static final String USER_FIRST_NAME = "user_first";
-    public static final String USER_LAST_NAME = "user_last";
     public static final String USER_EMAIL = "user_email";
 
+    public static final String USER_FULL_NAME = "user_full_name";
     public static final String USER_PHONE = "user_phone";
     public static final String USER_SEX = "user_sex";
     public static final String USER_AUTH_ID = "user_auth_id";
@@ -33,6 +32,9 @@ public class Constants {
     public static final String USER_DEV_INFO_STATUS = "user_dev_info_status";
     public static final String USER_FLAG = "user_flag";
     public static final String USER_SERVICE_CODE = "user_service_code";
+    public static final String USER_ACC_KIT = "user_acc_kit";
+    public static final String USER_QR = "user_qr";
+    public static final String USER_BAR = "user_bar";
 
 //    //Update user
 //    public static final String INFO_F_NAME = "first_name";
@@ -69,7 +71,7 @@ public class Constants {
 
     //Server home
     public static final String GET_FLAG = "v1.0/user/parking/flag";
-
+    public static final String GET_USER = "v1.0/user";
     public static final String SERVER_UPLOAD = "http://124.158.5.112:9180/s/files/upload";
     public static final String SERVER_PARKING = "http://124.158.5.112:9180/p/";
     public static final String PARKING_ACTIVE = "v1.0/user/parking/active";

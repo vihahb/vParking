@@ -43,10 +43,9 @@ public class HomePresenter {
 
     public void updateUserData() {
         String avatar = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_AVATAR);
-        String first_name = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_FIRST_NAME);
-        String last_name = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_LAST_NAME);
+        String full_name = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_FULL_NAME);
 
-        homeView.onUserDataUpdate(avatar, (first_name + " " + last_name));
+        homeView.onUserDataUpdate(avatar, full_name);
     }
 
     public void activeParkingMaster() {

@@ -13,6 +13,8 @@
     <!-- Line Bottom EditText -->
     <color name="colorLine">#FFFFFF</color>
     <color name="gray_btn">#D3D3D3</color>
+    <color name="gray_tv">#9c9a9a</color>
 
     <color name="material_background">#e6e7e8</color>
+    <color name="backgroun_round_red">#ef1976</color>
 </resources>
