@@ -43,6 +43,7 @@ import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.utils.Task;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -67,7 +68,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     int gender;
     int gender_update;
     int respond_type;
-    String format_phone;
     String email;
     String birthday;
     String session_id;
@@ -231,13 +231,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                     .error(R.mipmap.ic_user)
                     .into(img_avatar);
 
-        if (check_acc_kit) {
-            format_phone = "+" + phone;
-            img_update_phone.setVisibility(View.GONE);
-        } else {
-            format_phone = phone;
-        }
-
         //Gender spinner
         if (gender == 1) {
             spinner_gender.setSelection(0);
@@ -265,16 +258,16 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         //phone
         if (phone != null && phone != "") {
-            edt_phone.setText(format_phone);
+            edt_phone.setText(phone);
         } else {
             phone = "Chưa có số điện thoại";
-            edt_phone.setHint(format_phone);
+            edt_phone.setHint(phone);
         }
 
         //birthady
         if (birthday != null && birthday != "") {
             edt_ngaysinh.setText(birthday);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat simpleDateFormat = new java.text.SimpleDateFormat("yyyy/MM/dd");
 
             try {
                 date = simpleDateFormat.parse(birthday);
