@@ -646,6 +646,7 @@ public class HomeFragment extends BasicFragment implements
     @Override
     public void showShortToast(String message) {
         super.showShortToast(message);
+        closeProgressBar();
     }
 
     @Override

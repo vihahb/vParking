@@ -12,9 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestNoResultListener;
@@ -41,7 +45,7 @@ import okhttp3.Response;
  * Created by Lê Công Long Vũ on 12/5/2016.
  */
 
-public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
+public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHolder> {
     private Activity activity;
     private ArrayList<Favotire> arrayList;
 
@@ -64,6 +68,13 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         holder.txt_money.setText((favotire.getPrice() + " K"));
         holder.txt_time.setText(Constants.getTime(favotire.getBegin(), favotire.getEnd()));
 
+        holder.layout_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mItemManger.closeAllItems();
+            }
+        });
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +84,8 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                 activity.finish();
             }
         });
+
+        mItemManger.bindView(holder.itemView, position);
     }
 
     @Override
@@ -80,12 +93,21 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         return arrayList.size();
     }
 
+    @Override
+    public int getSwipeLayoutResourceId(int position) {
+        return R.id.item_swipe_favorite;
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
+        private SwipeLayout swipeLayout;
+        private LinearLayout layout_delete;
         private TextView txt_name, txt_time, txt_address, txt_money;
 
         ViewHolder(View itemView) {
             super(itemView);
 
+            swipeLayout = (SwipeLayout) itemView.findViewById(R.id.item_swipe_favorite);
+            layout_delete = (LinearLayout) itemView.findViewById(R.id.item_layout_favorite_delete);
             txt_name = (TextView) itemView.findViewById(R.id.item_txt_favorite_name);
             txt_time = (TextView) itemView.findViewById(R.id.item_txt_favorite_time);
             txt_address = (TextView) itemView.findViewById(R.id.item_txt_favorite_address);

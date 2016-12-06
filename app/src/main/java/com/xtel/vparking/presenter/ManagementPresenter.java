@@ -85,6 +85,7 @@ public class ManagementPresenter {
                 parkingInfo.setBar_code(obj.getBar_code());
                 parkingInfo.setPrices(obj.getPrices());
                 parkingInfo.setFavorite(obj.getFavorite());
+
                 view.onGetParkingInfoSuccess(parkingInfo);
             }
 

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.daimajia.swipe.util.Attributes;
 import com.xtel.vparking.R;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.Favotire;
@@ -45,7 +46,8 @@ public class FavoriteActivity extends BasicActivity implements FavoriteView {
         recyclerView.setLayoutManager(new LinearLayoutManager(FavoriteActivity.this));
 
         arrayList = new ArrayList<>();
-        FavoriteAdapter adapter = new FavoriteAdapter(FavoriteActivity.this, arrayList);
+        RecyclerView.Adapter adapter = new FavoriteAdapter(FavoriteActivity.this, arrayList);
+        ((FavoriteAdapter) adapter).setMode(Attributes.Mode.Single);
         recyclerView.setAdapter(adapter);
     }
 

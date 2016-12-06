@@ -417,7 +417,7 @@
         android:layout_height="250dp"
         android:layout_marginLeft="@dimen/size_10"
         android:layout_marginRight="@dimen/size_10"
-        tools:context="vn.xtel.quanlybaido.view.activity.ParkingActivity" />
+        tools:context=".view.activity.HomeActivity" />
 
     <Button
         android:id="@+id/btn_dialog_bottom_sheet_chiduong"

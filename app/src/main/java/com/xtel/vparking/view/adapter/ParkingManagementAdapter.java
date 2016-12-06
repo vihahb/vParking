@@ -96,7 +96,8 @@ public class ParkingManagementAdapter extends RecyclerView.Adapter<ParkingManage
     }
 
     public void addNewItem(ParkingInfo parkingInfo) {
-//        arrayList.add(parkingInfo);
-        notifyItemInserted(arrayList.size() - 1);
+        arrayList.add(parkingInfo);
+        notifyItemRangeInserted(arrayList.size() - 1, arrayList.size());
+//        notifyItemInserted(arrayList.size() - 1);
     }
 }

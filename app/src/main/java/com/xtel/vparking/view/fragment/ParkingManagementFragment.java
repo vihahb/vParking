@@ -89,7 +89,6 @@ public class ParkingManagementFragment extends BasicFragment implements Manageme
 
     @Override
     public void onGetParkingInfoSuccess(ParkingInfo parkingInfo) {
-        arrayList.add(parkingInfo);
         parkingManagementAdapter.addNewItem(parkingInfo);
         checkListData();
     }

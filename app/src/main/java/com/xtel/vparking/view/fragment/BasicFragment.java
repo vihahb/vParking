@@ -62,7 +62,7 @@ public abstract class BasicFragment extends Fragment {
     }
 
     protected void closeProgressBar() {
-        if (progressDialog.isShowing())
+        if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
     }
 
