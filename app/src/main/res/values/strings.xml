@@ -120,8 +120,8 @@
     <string name="title_activity_otp_verifycation">OtpVerifycationActivity</string>
     <string name="title_activity_find_parking">Tìm bãi đỗ xe</string>
     <string name="title_activity_chi_tiet">Chi tiết</string>
-    <string name="unlimited">Không giới hạn</string>
-    <string name="limited">Đã hết chỗ</string>
+    <string name="unlimited">Unlimited</string>
+    <string name="limited">Limited</string>
     <string name="controng">Còn trống</string>
     <string name="hetcho">Hết chỗ</string>
 

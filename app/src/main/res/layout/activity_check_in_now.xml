@@ -21,6 +21,9 @@
         style="@style/CheckIn_TextView_Item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_48"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxLines="1"
         android:text="Check in bãi đỗ mới" />
 
     <View

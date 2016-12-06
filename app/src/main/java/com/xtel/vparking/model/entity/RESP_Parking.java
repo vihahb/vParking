@@ -19,4 +19,6 @@ public class RESP_Parking extends RESP_Basic {
     public void setData(ArrayList<Parking> data) {
         this.data = data;
     }
+
+
 }

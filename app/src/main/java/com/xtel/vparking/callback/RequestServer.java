@@ -46,12 +46,12 @@ public class RequestServer {
                 Request.Builder builder = new Request.Builder();
                 builder.url(params[0]);
 
-                if (params[1] != null && !params[1].isEmpty()) {
+                if (params[1] != null) {
                     RequestBody body = RequestBody.create(JSON, params[1]);
                     builder.post(body);
                 }
 
-                if (params[2] != null && !params[2].isEmpty())
+                if (params[2] != null)
                     builder.header(Constants.JSON_SESSION, params[2]);
 
                 Request request = builder.build();
@@ -61,7 +61,7 @@ public class RequestServer {
                 return response.body().string();
             } catch (IOException e) {
                 e.printStackTrace();
-                responseHandle.onError(e);
+//                responseHandle.onError(e);
                 Log.e(this.getClass().getSimpleName(), "Error: " + e.toString());
                 return null;
             }
@@ -90,7 +90,7 @@ public class RequestServer {
                 Request.Builder builder = new Request.Builder();
                 builder.url(params[0]);
 
-                if (params[1] != null && !params[1].isEmpty())
+                if (params[1] != null)
                     builder.header(Constants.JSON_SESSION, params[1]);
 
                 Request request = builder.build();
@@ -99,7 +99,7 @@ public class RequestServer {
                 Response response = client.newCall(request).execute();
                 return response.body().string();
             } catch (IOException e) {
-                responseHandle.onError(e);
+//                responseHandle.onError(e);
                 Log.e(this.getClass().getSimpleName(), "Error: " + e.toString());
                 return null;
             }

@@ -16,11 +16,10 @@ import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.ParkingInfo;
-import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.presenter.ManagementPresenter;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.inf.ManagementView;
-import com.xtel.vparking.view.adapter.QuanLyBaiDoAdapter;
+import com.xtel.vparking.view.adapter.ParkingManagementAdapter;
 import com.xtel.vparking.view.widget.ProgressView;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ import java.util.ArrayList;
 public class ParkingManagementFragment extends BasicFragment implements ManagementView {
     private ArrayList<ParkingInfo> arrayList;
     private RecyclerView recyclerView;
-    private QuanLyBaiDoAdapter quanLyBaiDoAdapter;
+    private ParkingManagementAdapter parkingManagementAdapter;
     private ProgressView progressView;
 
     private ManagementPresenter presenter;
@@ -57,8 +56,8 @@ public class ParkingManagementFragment extends BasicFragment implements Manageme
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         arrayList = new ArrayList<>();
-        quanLyBaiDoAdapter = new QuanLyBaiDoAdapter(getContext(), arrayList);
-        recyclerView.setAdapter(quanLyBaiDoAdapter);
+        parkingManagementAdapter = new ParkingManagementAdapter(getContext(), arrayList);
+        recyclerView.setAdapter(parkingManagementAdapter);
     }
 
     private void initProgressView(View view) {
@@ -91,7 +90,7 @@ public class ParkingManagementFragment extends BasicFragment implements Manageme
     @Override
     public void onGetParkingInfoSuccess(ParkingInfo parkingInfo) {
         arrayList.add(parkingInfo);
-        quanLyBaiDoAdapter.addNewItem(parkingInfo);
+        parkingManagementAdapter.addNewItem(parkingInfo);
         checkListData();
     }
 

@@ -127,6 +127,10 @@ public class Constants {
     public static final String PK_MODEL = "parking_model";
     public static final String PK_IMAGE = "parking_image";
 
+    //    Favorite
+    public static final String ID_PARKING = "id_parking";
+    public static final String LATLNG_PARKING = "id_parking";
+
     public static String getTime(String begin, String end) {
         if (begin == null && end == null)
             return "Cả ngày";
@@ -134,6 +138,8 @@ public class Constants {
             return "Đóng cửa: " + end;
         else if (end == null)
             return "Mở của: " + begin;
+        else if (begin.equals(end))
+            return "Cả ngày";
         return begin + " đến " + end;
     }
 

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/material_background"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/info.viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_200" />
+
+        <TextView
+            android:id="@+id/info.txt_picture_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end"
+            android:layout_margin="@dimen/size_16"
+            android:text="1/5"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/white" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/info.txt_address"
+            style="@style/Chitiet_TextView"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/size_48"
+            android:layout_weight="1"
+            android:drawableLeft="@mipmap/ic_my_address"
+            android:drawablePadding="@dimen/size_16"
+            android:drawableStart="@mipmap/ic_my_address"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/size_16"
+            android:paddingRight="@dimen/size_16"
+            android:text="@string/app_name" />
+
+        <ImageButton
+            android:id="@+id/info.img_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/size_16"
+            android:layout_marginRight="@dimen/size_16"
+            android:background="@android:color/transparent"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_favorite_border_black_24dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_10"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/size_10"
+        android:paddingLeft="@dimen/size_16"
+        android:paddingRight="@dimen/size_16"
+        android:paddingTop="@dimen/size_10">
+
+        <FrameLayout
+            android:layout_width="@dimen/size_60"
+            android:layout_height="@dimen/size_60"
+            android:background="@drawable/round_background_gray"
+            android:padding="@dimen/size_2">
+
+            <com.xtel.vparking.view.widget.RoundImage
+                android:id="@+id/info.img_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/ic_user" />
+        </FrameLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_16"
+            android:layout_marginStart="@dimen/size_16"
+            android:stretchColumns="*">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/info.txt_user_name"
+                    style="@style/Chitiet_TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/size_4"
+                    android:layout_marginRight="@dimen/size_4"
+                    android:text="@string/app_name" />
+
+                <TextView
+                    android:id="@+id/info.txt_time"
+                    style="@style/Chitiet_TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_4"
+                    android:layout_marginStart="@dimen/size_4"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/ic_time"
+                    android:drawableStart="@mipmap/ic_time" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/info.txt_age"
+                    style="@style/Chitiet_TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/size_4"
+                    android:layout_marginRight="@dimen/size_4"
+                    android:text="@string/app_name" />
+
+                <TextView
+                    android:id="@+id/info.txt_parking_name"
+                    style="@style/Chitiet_TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_4"
+                    android:layout_marginStart="@dimen/size_4"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_menu_black_24dp"
+                    android:drawableStart="@drawable/ic_menu_black_24dp" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_marginRight="@dimen/size_10"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_16">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Chitiet_TextView_Center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/size_4"
+                android:layout_marginRight="@dimen/size_4"
+                android:text="@string/vi_tri_trong" />
+
+            <TextView
+                android:id="@+id/info.txt_chotrong"
+                style="@style/Chitiet_TextView_Blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/size_4"
+                android:layout_marginRight="@dimen/size_4" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/size_1"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/size_8"
+            android:layout_marginRight="@dimen/size_8"
+            android:background="@android:color/darker_gray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Chitiet_TextView_Center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/size_4"
+                android:layout_marginRight="@dimen/size_4"
+                android:text="@string/thoi_gian_gio" />
+
+            <TextView
+                android:id="@+id/info.txt_money"
+                style="@style/Chitiet_TextView_Blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/size_4"
+                android:layout_marginRight="@dimen/size_4" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/size_1"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/size_8"
+            android:layout_marginRight="@dimen/size_8"
+            android:background="@android:color/darker_gray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Chitiet_TextView_Center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/size_4"
+                android:layout_marginRight="@dimen/size_4"
+                android:text="@string/so_dat_cho" />
+
+            <TextView
+                android:id="@+id/info.txt_datcho"
+                style="@style/Chitiet_TextView_Blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/size_4"
+                android:layout_marginRight="@dimen/size_4" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_10"
+        android:background="@android:color/white"
+        android:paddingEnd="0dp"
+        android:paddingLeft="@dimen/size_16"
+        android:paddingRight="0dp"
+        android:paddingStart="@dimen/size_16">
+
+        <TextView
+            style="@style/Chitiet_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/ratingbar"
+            android:layout_toStartOf="@+id/ratingbar"
+            android:text="@string/rate" />
+
+        <RatingBar
+            android:id="@+id/ratingbar"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:isIndicator="false"
+            android:max="5"
+            android:rating="3" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/size_8"
+            android:layout_marginEnd="@dimen/size_8"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+    </RelativeLayout>
+
+    <fragment xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/info.map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_marginRight="@dimen/size_10"
+        tools:context=".view.activity.ParkingInfoActivity" />
+
+    <Button
+        android:id="@+id/btn_chiduong"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_36"
+        android:layout_margin="@dimen/size_10"
+        android:background="@color/colorPrimary"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:text="@string/dan_duong"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white" />
+</LinearLayout>

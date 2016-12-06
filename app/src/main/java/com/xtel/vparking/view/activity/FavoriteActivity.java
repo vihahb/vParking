@@ -1,6 +1,7 @@
 package com.xtel.vparking.view.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,7 +24,6 @@ public class FavoriteActivity extends BasicActivity implements FavoriteView {
     private ArrayList<Favotire> arrayList;
     private RecyclerView recyclerView;
     private ProgressView progressView;
-
     private FavoritePresenter presenter;
 
     @Override
@@ -45,7 +45,7 @@ public class FavoriteActivity extends BasicActivity implements FavoriteView {
         recyclerView.setLayoutManager(new LinearLayoutManager(FavoriteActivity.this));
 
         arrayList = new ArrayList<>();
-        FavoriteAdapter adapter = new FavoriteAdapter(FavoriteActivity.this, arrayList, this);
+        FavoriteAdapter adapter = new FavoriteAdapter(FavoriteActivity.this, arrayList);
         recyclerView.setAdapter(adapter);
     }
 

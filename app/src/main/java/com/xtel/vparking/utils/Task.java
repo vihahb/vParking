@@ -55,7 +55,7 @@ public class Task {
                             public void run() {
                                 new ConvertImage(context, isBigImage, requestWithStringListener).execute(bitmap);
                             }
-                        }, 200);
+                        }, 500);
                     }
                 })
                 .setPeekHeight(context.getResources().getDisplayMetrics().heightPixels / 2)
@@ -64,22 +64,20 @@ public class Task {
         bottomSheetDialogFragment.show(fragmentManager);
     }
 
-    private static class ConvertImage extends AsyncTask<Bitmap, Void, File> {
+    public static class ConvertImage extends AsyncTask<Bitmap, Void, File> {
         //        private DialogProgressBar dialogProgressBar;
         private Context context;
         private boolean isBigImage;
         private RequestWithStringListener requestWithStringListener;
 
-        ConvertImage(Context context, boolean isBigImage, RequestWithStringListener requestWithStringListener) {
+        public ConvertImage(Context context, boolean isBigImage, RequestWithStringListener requestWithStringListener) {
             this.context = context;
             this.isBigImage = isBigImage;
             this.requestWithStringListener = requestWithStringListener;
-//            this.dialogProgressBar = new DialogProgressBar(context, false, false, null, "Uploading File...");
-//            dialogProgressBar.showProgressBar();
         }
 
         @Override
-        protected File doInBackground(Bitmap... params) {
+        public File doInBackground(Bitmap... params) {
             try {
                 Log.e("tb_uri", "null k " + params[0].getWidth());
 
@@ -105,7 +103,7 @@ public class Task {
         }
 
         @Override
-        protected void onPostExecute(File file) {
+        public void onPostExecute(File file) {
             super.onPostExecute(file);
 
             if (file != null) {
@@ -118,14 +116,14 @@ public class Task {
 
         private Bitmap getBitmapSmallSize(Bitmap bitmap) {
             try {
-                long width = bitmap.getWidth(), height = bitmap.getHeight();
+                double width = bitmap.getWidth(), height = bitmap.getHeight();
                 Log.e("tb_bitmap_old", width + "        " + height);
 
                 if (width > 300 || height > 300) {
                     int new_width, new_height;
                     while (width > 300 || height > 300) {
-                        width = width / 2;
-                        height = height / 2;
+                        width = width * 0.8;
+                        height = height * 0.8;
                         Log.e("tb_bitmap_run", width + "       " + height);
                     }
                     new_width = (int) width;
@@ -145,14 +143,14 @@ public class Task {
 
         private Bitmap getBitmapBigSize(Bitmap bitmap) {
             try {
-                long width = bitmap.getWidth(), height = bitmap.getHeight();
+                double width = bitmap.getWidth(), height = bitmap.getHeight();
                 Log.e("tb_bitmap_old", width + "        " + height);
 
-                if (width > 1500 || height > 1500) {
+                if (width > 1200 || height > 1200) {
                     int new_width, new_height;
-                    while (width > 1500 || height > 1500) {
-                        width = width / 2;
-                        height = height / 2;
+                    while (width > 1200 || height > 1200) {
+                        width = width * 0.8;
+                        height = height * 0.8;
                         Log.e("tb_bitmap_run", width + "       " + height);
                     }
                     new_width = (int) width;

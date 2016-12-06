@@ -17,8 +17,8 @@ public class HomeModel extends BasicModel {
         return instance;
     }
 
-    public void activeParkingMaster(ResponseHandle responseHandle) throws UnsupportedEncodingException {
+    public void activeParkingMaster(String url, ResponseHandle responseHandle) throws UnsupportedEncodingException {
         String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
-        requestServer.postApi(getParkingApiUrlBase() + Constants.PARKING_ACTIVE, "", session, responseHandle);
+        requestServer.postApi(url, "", session, responseHandle);
     }
 }

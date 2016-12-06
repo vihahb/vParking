@@ -48,6 +48,9 @@ public class RESP_Parking_Info extends RESP_Basic {
     @Expose
     private int favorite;
 
+    public RESP_Parking_Info() {
+    }
+
     public int getId() {
         return id;
     }

@@ -1,7 +1,6 @@
 package com.xtel.vparking.view.fragment;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -43,7 +42,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -59,13 +57,11 @@ import com.xtel.vparking.model.entity.Find;
 import com.xtel.vparking.model.entity.MapModel;
 import com.xtel.vparking.model.entity.MarkerModel;
 import com.xtel.vparking.model.entity.Parking;
-import com.xtel.vparking.model.entity.ParkingInfo;
-import com.xtel.vparking.model.entity.RESP_Parking;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.presenter.HomeFragmentPresenter;
-import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.FindAdvancedActivity;
+import com.xtel.vparking.view.activity.HomeActivity;
 import com.xtel.vparking.view.activity.inf.HomeFragmentView;
 
 import java.io.IOException;
@@ -93,7 +89,6 @@ public class HomeFragment extends BasicFragment implements
     private LocationRequest mLocationRequest;
     private ArrayList<MarkerModel> markerList;
     private FloatingActionButton fab_thongbao, fab_location;
-    private SupportPlaceAutocompleteFragment autocompleteFragment;
 
     public BottomSheetBehavior bottomSheetBehavior;
     private boolean isFindMyLocation, isScrollDown, isCanLoadMap = true;
@@ -152,7 +147,7 @@ public class HomeFragment extends BasicFragment implements
     }
 
     private void initSearchView() {
-        autocompleteFragment = (SupportPlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -160,8 +155,14 @@ public class HomeFragment extends BasicFragment implements
                 if (mMap != null) {
 //                    mMap.clear();
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude), 15));
-                    if (isCanLoadMap)
-                        new GetParkingAround().execute(String.valueOf(place.getLatLng().latitude), String.valueOf(place.getLatLng().longitude), null, null, null, null);
+//                    if (isCanLoadMap) {
+//                        isCanLoadMap = false;
+                    if (!isFindMyLocation)
+                        isFindMyLocation = true;
+
+//                        presenter.getParkingAround(place.getLatLng().latitude, place.getLatLng().longitude, -1, -1, null, null);
+//                        new GetParkingAround().execute(String.valueOf(place.getLatLng().latitude), String.valueOf(place.getLatLng().longitude), null, null, null, null);
+//                    }
                 }
             }
 
@@ -315,8 +316,9 @@ public class HomeFragment extends BasicFragment implements
         dialogBottomSheet.changeCloseToFavorite();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
-        new GetParkingAroundCenter().execute(String.valueOf(mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude),
-                String.valueOf(mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude), null, null, null, null);
+        double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
+        double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
+        presenter.getParkingAround(latitude, longtitude, -1, -1, null, null);
     }
 
     private void showDialogParkingDetail() {
@@ -357,6 +359,7 @@ public class HomeFragment extends BasicFragment implements
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMapClickListener(this);
+        mMap.setOnCameraIdleListener(this);
 
         if (checkPermission()) {
             mMap.getUiSettings().setMapToolbarEnabled(false);
@@ -370,7 +373,6 @@ public class HomeFragment extends BasicFragment implements
     public void onMapLongClick(LatLng latLng) {
         BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.mipmap.ic_marker_my_location);
         Bitmap small_bitmap = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), 40, 40, true);
-
         if (pickMarker != null)
             pickMarker.remove();
 
@@ -379,12 +381,18 @@ public class HomeFragment extends BasicFragment implements
                 .icon(BitmapDescriptorFactory.fromBitmap(small_bitmap)));
 
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        if (isCanLoadMap)
-            new GetParkingAround().execute(String.valueOf(latLng.latitude), String.valueOf(latLng.longitude), null, null, null, null);
+//        if (isCanLoadMap) {
+//            isCanLoadMap = false;
+        if (!isFindMyLocation)
+            isFindMyLocation = true;
+
+//            presenter.getParkingAround(latLng.latitude, latLng.longitude, -1, -1, null, null);
+//        }
     }
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
+        if (isCanLoadMap) {
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 mMap_bottom.clear();
@@ -406,6 +414,7 @@ public class HomeFragment extends BasicFragment implements
                     break;
                 }
             }
+        }
         return false;
     }
 
@@ -419,13 +428,19 @@ public class HomeFragment extends BasicFragment implements
     @Override
     public void onCameraIdle() {
         if (isCanLoadMap) {
+            isCanLoadMap = false;
+
             if (isLoadNewParking == 0) {
                 isLoadNewParking++;
             } else if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN)
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
-            new GetParkingAroundCenter().execute(String.valueOf(mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude),
-                    String.valueOf(mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude), null, null, null, null);
+            double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
+            double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
+            presenter.getParkingAround(latitude, longtitude, -1, -1, null, null);
+
+//            new GetParkingAroundCenter().execute(String.valueOf(mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude),
+//                    String.valueOf(mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude), null, null, null, null);
         }
     }
 
@@ -436,36 +451,43 @@ public class HomeFragment extends BasicFragment implements
         if (id == R.id.layout_parking_timkiem) {
             startActivityForResult(new Intent(getContext(), FindAdvancedActivity.class), Constants.FIND_ADVANDCED_RQ);
         } else if (id == R.id.fab_parking_location) {
-            if (pickMarker != null)
-                pickMarker.remove();
+            if (isCanLoadMap) {
+                if (pickMarker != null)
+                    pickMarker.remove();
 
-            if (mGoogleApiClient.isConnected()) {
-                if (checkPermission()) {
-                    Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                    if (mLastLocation != null && mMap != null) {
-//                        mMap.clear();
-                        mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
-                        if (isCanLoadMap)
-                            new GetParkingAround().execute(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()), null, null, null, null);
+                if (mGoogleApiClient.isConnected()) {
+                    if (checkPermission()) {
+                        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                        if (mLastLocation != null && mMap != null) {
+                            mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
+
+//                            isCanLoadMap = false;
+                            if (!isFindMyLocation)
+                                isFindMyLocation = true;
+
+//                            presenter.getParkingAround(mLastLocation.getLatitude(), mLastLocation.getLongitude(), -1, -1, null, null);
+                        }
                     }
-                }
-            } else
-                mGoogleApiClient.connect();
+                } else
+                    mGoogleApiClient.connect();
+            }
         }
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        if (location != null) {
-            if (!isFindMyLocation) {
-                autocompleteFragment.setBoundsBias(new LatLngBounds(
-                        new LatLng(-33.880490, 151.184363),
-                        new LatLng(-33.858754, 151.229596)));
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
-                if (isCanLoadMap)
-                    new GetParkingAround().execute(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), null, null, null, null);
+        if (!isFindMyLocation)
+            if (location != null) {
+
+                if (isCanLoadMap) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+//                    isCanLoadMap = false;
+                    isFindMyLocation = true;
+
+//                    presenter.getParkingAround(location.getLatitude(), location.getLongitude(), -1, -1, null, null);
+                }
+//                    new GetParkingAround().execute(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), null, null, null, null);
             }
-        }
     }
 
     @Override
@@ -475,9 +497,15 @@ public class HomeFragment extends BasicFragment implements
                 Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                 if (mLastLocation != null && mMap != null) {
 //                    mMap.clear();
-                    mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
-                    if (isCanLoadMap)
-                        new GetParkingAround().execute(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()), null, null, null, null);
+
+                    if (isCanLoadMap) {
+                        mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
+//                        isCanLoadMap = false;
+                        isFindMyLocation = true;
+
+//                        presenter.getParkingAround(mLastLocation.getLatitude(), mLastLocation.getLongitude(), -1, -1, null, null);
+                    }
+//                        new GetParkingAround().execute(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()), null, null, null, null);
                 }
             }
         startLocationUpdates();
@@ -516,6 +544,8 @@ public class HomeFragment extends BasicFragment implements
     @Override
     public void onResume() {
         super.onResume();
+        presenter.checkResultSearch();
+
         if (mGoogleApiClient.isConnected())
             try {
                 startLocationUpdates();
@@ -560,14 +590,14 @@ public class HomeFragment extends BasicFragment implements
                     if (mLastLocation != null && mMap != null) {
                         Find findModel = (Find) data.getExtras().getSerializable(Constants.FIND_MODEL);
 
-                        if (findModel != null) {
-                            Toast.makeText(getContext(), "find", Toast.LENGTH_SHORT).show();
-//                            mMap.clear();
+                        if (findModel != null && isCanLoadMap) {
+
                             mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
-                            if (isCanLoadMap)
-                                new GetParkingAround().execute(
-                                        String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()),
-                                        String.valueOf(findModel.getMoney()), String.valueOf(findModel.getType()), null, null);
+//                            isCanLoadMap = false;
+                            if (!isFindMyLocation)
+                                isFindMyLocation = true;
+
+//                            presenter.getParkingAround(mLastLocation.getLatitude(), mLastLocation.getLongitude(), findModel.getMoney(), findModel.getType(), null, null);
                         } else {
                             Toast.makeText(getContext(), getString(R.string.error_find_advanced), Toast.LENGTH_SHORT).show();
                         }
@@ -575,15 +605,17 @@ public class HomeFragment extends BasicFragment implements
                 }
             } else
                 mGoogleApiClient.connect();
+        } else if (requestCode == HomeActivity.REQUEST_CODE && resultCode == HomeActivity.RESULT_GUID) {
+            if (data != null) {
+                int id = data.getIntExtra(Constants.ID_PARKING, -1);
+                if (id != -1)
+                    presenter.getParkingInfo(id);
+
+                Log.e(this.getClass().getSimpleName(), "parking id: " + id);
+            }
         }
     }
 
-    private void setOnCameraChangeListener() {
-        if (mMap != null)
-            mMap.setOnCameraIdleListener(this);
-    }
-
-    @SuppressWarnings("SuspiciousMethodCalls")
     private void clearMarker(final int possition) {
         try {
             new Handler().postDelayed(new Runnable() {
@@ -592,26 +624,79 @@ public class HomeFragment extends BasicFragment implements
                     if (possition == -1)
                         return;
 
-                    for (int i = possition; i > 0; i--) {
-                        markerList.get(i).getMarker().remove();
-                        markerList.remove(i);
+                    Log.e("hf_position", "total: " + markerList.size());
+
+                    for (int i = possition; i >= 0; i--) {
+                        Log.e("hf_position", "po: " + i);
+                        if (markerList.get(i) != null) {
+                            markerList.get(i).getMarker().remove();
+                            markerList.remove(i);
+                        }
                     }
-//        }
                     Log.e("pk_clear_marker", "done: " + markerList.size());
                 }
             }, 100);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        isCanLoadMap = true;
+    }
+
+    @Override
+    public void showShortToast(String message) {
+        super.showShortToast(message);
+    }
+
+    @Override
+    public void showLongToast(String message) {
+        super.showLongToast(message);
+    }
+
+    @Override
+    public void showProgressBar(boolean isTouchOutside, boolean isCancel, String title, String message) {
+        super.showProgressBar(isTouchOutside, isCancel, title, message);
+    }
+
+    @Override
+    public void closeProgressBar() {
+        super.closeProgressBar();
+    }
+
+    @Override
+    public void onSearchParking(int id) {
+        if (mMap != null)
+            mMap.clear();
+        if (markerList != null)
+            clearMarker(markerList.size() - 1);
+        if (!isFindMyLocation)
+            isFindMyLocation = true;
+        isCanLoadMap = false;
+        showProgressBar(false, false, null, getString(R.string.parking_get_data));
     }
 
     @Override
     public void onGetParkingInfoSuccuss(RESP_Parking_Info resp_parking_info) {
         closeProgressBar();
-        isLoadNewParking = 0;
 
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng())));
+
+        if (resp_parking_info.getStatus() == 0) {
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
+
+            markerList.add(new MarkerModel(marker, resp_parking_info.getId(), resp_parking_info.getLat(), resp_parking_info.getLng()));
+        } else {
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
+
+            markerList.add(new MarkerModel(marker, resp_parking_info.getId(), resp_parking_info.getLat(), resp_parking_info.getLng()));
+        }
+
+        isLoadNewParking = 0;
         this.resp_parking_info = resp_parking_info;
-        Log.e("pk_parking_id", "null k:" + this.resp_parking_info.getId());
         showDialogParkingDetail();
     }
 
@@ -622,211 +707,44 @@ public class HomeFragment extends BasicFragment implements
     }
 
     @Override
-    public void onGetParkingAroundSuccess(ArrayList<RESP_Parking> arrayList) {
+    public void onGetParkingAroundSuccess(ArrayList<Parking> arrayList) {
+        if (arrayList != null) {
+            if (arrayList.size() != 0) {
+                int possition = markerList.size() - 1;
 
+                for (int i = 0; i < arrayList.size(); i++) {
+
+                    if (arrayList.get(i).getStatus() == 0) {
+                        Marker marker = mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
+                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
+
+                        markerList.add(new MarkerModel(marker, arrayList.get(i).getId(), arrayList.get(i).getLat(), arrayList.get(i).getLng()));
+                    } else {
+                        Marker marker = mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
+                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
+
+                        markerList.add(new MarkerModel(marker, arrayList.get(i).getId(), arrayList.get(i).getLat(), arrayList.get(i).getLng()));
+                    }
+                }
+
+                clearMarker(possition);
+                arrayList.clear();
+            } else {
+//                Toast.makeText(getContext(), "Không tìm thấy bãi đỗ nào", Toast.LENGTH_SHORT).show();
+                clearMarker(markerList.size() - 1);
+            }
+        } else {
+//            Toast.makeText(getContext(), "Không tìm thấy bãi đỗ nào", Toast.LENGTH_SHORT).show();
+            clearMarker(markerList.size() - 1);
+        }
     }
 
     @Override
     public void onGetParkingAroundError(Error error) {
-
-    }
-
-    @Override
-    public Activity getFragmentActivity() {
-        return null;
-    }
-
-    private class GetParkingAround extends AsyncTask<String, Void, String> {
-//        private LatLng latLng;
-
-        @Override
-        protected void onPreExecute() {
-            isCanLoadMap = false;
-            if (!isFindMyLocation)
-                isFindMyLocation = true;
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            OkHttpClient client = new OkHttpClient();
-
-            try {
-                String url = Constants.SERVER_PARKING + Constants.PARKING_FIND +
-                        Constants.PARKING_LAT + params[0] +
-                        Constants.PARKING_LNG + params[1];
-                if (params[2] != null)
-                    url += Constants.PARKING_PRICE + params[2];
-                if (params[3] != null)
-                    url += Constants.PARKING_TYPE + params[3];
-                if (params[4] != null)
-                    url += Constants.PARKING_BEGIN_TIME + params[4];
-                if (params[5] != null)
-                    url += Constants.PARKING_END_TIME + params[5];
-
-                Log.e("pk_url", url);
-
-                Request request = new Request.Builder()
-                        .url(url)
-                        .build();
-
-//                latLng = new LatLng(Double.parseDouble(params[0]), Double.parseDouble(params[1]));
-
-                Response response = client.newCall(request).execute();
-                return response.body().string();
-            } catch (Exception e) {
-                Log.e("pk_loi", e.toString());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-//            if (latLng != null)
-            if (s != null) {
-                Error error = JsonParse.checkError(s);
-                if (error != null) {
-                    JsonParse.getCodeError(getActivity(), null, error.getCode(), "Không thể tìm bãi đỗ");
-                } else {
-                    RESP_Parking resp_parking = JsonHelper.getObjectNoException(s, RESP_Parking.class);
-
-                    ArrayList<Parking> arrayList;
-                    if (resp_parking.getError() == null) {
-                        arrayList = resp_parking.getData();
-                    } else
-                        arrayList = new ArrayList<>();
-//                        markerList.clear();
-
-                    if (arrayList != null) {
-                        if (arrayList.size() != 0) {
-                            int possition = markerList.size() - 1;
-
-                            for (int i = 0; i < arrayList.size(); i++) {
-
-                                if (arrayList.get(i).getStatus() == 0) {
-                                    Marker marker = mMap.addMarker(new MarkerOptions()
-                                            .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
-                                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
-
-                                    markerList.add(new MarkerModel(marker, arrayList.get(i).getId(), arrayList.get(i).getLat(), arrayList.get(i).getLng()));
-                                } else {
-                                    Marker marker = mMap.addMarker(new MarkerOptions()
-                                            .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
-                                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
-
-                                    markerList.add(new MarkerModel(marker, arrayList.get(i).getId(), arrayList.get(i).getLat(), arrayList.get(i).getLng()));
-                                }
-                            }
-
-                            clearMarker(possition);
-                            arrayList.clear();
-                        } else {
-                            Toast.makeText(getContext(), "Không tìm thấy bãi đỗ nào", Toast.LENGTH_SHORT).show();
-                            clearMarker(-2);
-                        }
-                    } else {
-                        Toast.makeText(getContext(), "Không tìm thấy bãi đỗ nào", Toast.LENGTH_SHORT).show();
-                        clearMarker(-2);
-                    }
-                }
-            }
-
-            setOnCameraChangeListener();
-            isCanLoadMap = true;
-        }
-    }
-
-    private class GetParkingAroundCenter extends AsyncTask<String, Void, String> {
-        private LatLng latLng;
-
-        @Override
-        protected void onPreExecute() {
-            if (!isFindMyLocation)
-                isFindMyLocation = true;
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            OkHttpClient client = new OkHttpClient();
-
-            try {
-                String url = Constants.SERVER_PARKING + Constants.PARKING_FIND +
-                        Constants.PARKING_LAT + params[0] +
-                        Constants.PARKING_LNG + params[1];
-                if (params[2] != null)
-                    url += Constants.PARKING_PRICE + params[2];
-                if (params[3] != null)
-                    url += Constants.PARKING_TYPE + params[3];
-                if (params[4] != null)
-                    url += Constants.PARKING_BEGIN_TIME + params[4];
-                if (params[5] != null)
-                    url += Constants.PARKING_END_TIME + params[5];
-
-                Log.e("pk_url", url);
-
-                Request request = new Request.Builder()
-                        .url(url)
-                        .build();
-
-                latLng = new LatLng(Double.parseDouble(params[0]), Double.parseDouble(params[1]));
-
-                Response response = client.newCall(request).execute();
-                return response.body().string();
-            } catch (Exception e) {
-                Log.e("pk_loi", e.toString());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-//            setOnCameraChangeListener();
-
-            if (latLng != null)
-                if (s != null) {
-                    Error error = JsonParse.checkError(s);
-                    if (error == null) {
-                        RESP_Parking resp_parking = JsonHelper.getObjectNoException(s, RESP_Parking.class);
-
-                        ArrayList<Parking> arrayList;
-                        if (resp_parking.getError() == null) {
-                            arrayList = resp_parking.getData();
-                        } else
-                            arrayList = new ArrayList<>();
-
-                        if (arrayList != null) {
-                            if (arrayList.size() != 0) {
-                                int possition = markerList.size() - 1;
-
-                                for (int i = 0; i < arrayList.size(); i++) {
-
-                                    if (arrayList.get(i).getStatus() == 0) {
-                                        Marker marker = mMap.addMarker(new MarkerOptions()
-                                                .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
-                                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
-
-                                        markerList.add(new MarkerModel(marker, arrayList.get(i).getId(), arrayList.get(i).getLat(), arrayList.get(i).getLng()));
-                                    } else {
-                                        Marker marker = mMap.addMarker(new MarkerOptions()
-                                                .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
-                                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
-
-                                        markerList.add(new MarkerModel(marker, arrayList.get(i).getId(), arrayList.get(i).getLat(), arrayList.get(i).getLng()));
-                                    }
-                                }
-
-                                clearMarker(possition);
-                                arrayList.clear();
-                            }
-                        }
-                    }
-                }
-        }
+        isCanLoadMap = true;
+        showShortToast(JsonParse.getCodeMessage(error.getCode(), "Không thể tìm bãi đỗ"));
     }
 
     public class GetPolyline extends AsyncTask<Double, Void, Void> {

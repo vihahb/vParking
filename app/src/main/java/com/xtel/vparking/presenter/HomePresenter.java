@@ -1,7 +1,6 @@
 package com.xtel.vparking.presenter;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestNoResultListener;
@@ -11,7 +10,7 @@ import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.HomeModel;
 import com.xtel.vparking.model.entity.Error;
-import com.xtel.vparking.model.entity.RESP_Parking;
+import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.MyApplication;
@@ -49,10 +48,13 @@ public class HomePresenter {
     }
 
     public void activeParkingMaster() {
+        homeView.showShortToast("get parking");
+
         try {
-            HomeModel.getInstance().activeParkingMaster(new ResponseHandle<RESP_Parking>(RESP_Parking.class) {
+            String url = Constants.SERVER_PARKING + Constants.PARKING_ACTIVE;
+            HomeModel.getInstance().activeParkingMaster(url, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
                 @Override
-                public void onSuccess(RESP_Parking obj) {
+                public void onSuccess(RESP_Parking_Info obj) {
                     Log.e(homeView.getActivity().getClass().getSimpleName(), "null k: " + obj.toString());
                     SharedPreferencesUtils.getInstance().putIntValue(Constants.USER_FLAG, 1);
                     homeView.onActiveMasterSuccess();
@@ -80,7 +82,8 @@ public class HomePresenter {
 
             @Override
             public void onError() {
-                Toast.makeText(homeView.getActivity(), homeView.getActivity().getString(R.string.error_session_invalid), Toast.LENGTH_SHORT).show();
+                homeView.showShortToast(homeView.getActivity().getString(R.string.error_session_invalid));
+//                Toast.makeText(homeView.getActivity(), homeView.getActivity().getString(R.string.error_session_invalid), Toast.LENGTH_SHORT).show();
             }
         });
     }

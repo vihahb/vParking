@@ -17,10 +17,6 @@ import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Find;
 
-/**
- * Created by  on 11/7/2016.
- */
-
 public class FindAdvancedActivity extends AppCompatActivity {
     private EditText edt_place_number;
     private RadioButton chk_tatca, chk_oto, chk_xemay;

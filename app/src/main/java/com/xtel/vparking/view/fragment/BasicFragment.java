@@ -25,11 +25,11 @@ public abstract class BasicFragment extends Fragment {
     }
 
     protected void showLongToast(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
     protected void showShortToast(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     protected void debug(String debuh) {
@@ -49,7 +49,7 @@ public abstract class BasicFragment extends Fragment {
     }
 
     protected void showProgressBar(boolean isTouchOutside, boolean isCancel, String title, String message) {
-        progressDialog = new ProgressDialog(getActivity(), R.style.AppCompatAlertDialogStyle);
+        progressDialog = new ProgressDialog(getContext(), R.style.AppCompatAlertDialogStyle);
         progressDialog.setCanceledOnTouchOutside(isTouchOutside);
         progressDialog.setCancelable(isCancel);
 

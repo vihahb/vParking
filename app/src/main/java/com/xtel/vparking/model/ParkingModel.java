@@ -26,19 +26,7 @@ public class ParkingModel extends BasicModel {
         requestServer.getApi(url, session, responseHandle);
     }
 
-    public void getParkingAround(double lat, double lng, int prices, int type, String begin_time, String end_time, ResponseHandle responseHandle) {
-        String url = Constants.SERVER_PARKING + Constants.PARKING_FIND +
-                Constants.PARKING_LAT + lat +
-                Constants.PARKING_LNG + lng;
-        if (prices != -1)
-            url += Constants.PARKING_PRICE + prices;
-        if (type != -1)
-            url += Constants.PARKING_TYPE + type;
-        if (begin_time != null)
-            url += Constants.PARKING_BEGIN_TIME + begin_time;
-        if (end_time != null)
-            url += Constants.PARKING_END_TIME + end_time;
-
+    public void getParkingAround(String url, ResponseHandle responseHandle) {
         requestServer.getApi(url, null, responseHandle);
     }
 

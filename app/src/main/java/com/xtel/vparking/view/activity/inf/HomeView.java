@@ -6,11 +6,11 @@ import android.app.Activity;
  * Created by Mr. M.2 on 12/2/2016.
  */
 
-public interface HomeView {
+public interface HomeView extends IView {
 
-    public void isParkingMaster();
-    public void onActiveMasterSuccess();
-    public void onActiveMasterFailed(String error);
-    public void onUserDataUpdate(String avatar, String name);
-    public Activity getActivity();
+    void isParkingMaster();
+    void onActiveMasterSuccess();
+    void onActiveMasterFailed(String error);
+    void onUserDataUpdate(String avatar, String name);
+    Activity getActivity();
 }

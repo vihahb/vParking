@@ -13,6 +13,7 @@ import java.util.List;
 public interface AddParkingView {
 
     public void onTakePictureSucces(String url);
+    public void onTakePictureError();
     public void onAddParkingSuccess(int id);
     public void onAddParkingError(Error error);
     public Activity getActivity();

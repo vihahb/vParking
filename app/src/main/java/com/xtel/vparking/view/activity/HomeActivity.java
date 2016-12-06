@@ -40,10 +40,12 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     private TextView txt_name;
     private Button btn_active_master;
     private Menu menu;
-
     private HomePresenter homePresenter;
 
     private final String HOME_FRAGMENT = "home_fragment", MANAGER_FRAGMENT = "manager_fragment";
+    public static final int REQUEST_CODE = 99;
+    public static final int RESULT_GUID = 88;
+    public static int PARKING_ID = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,26 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         navigationView.getMenu().findItem(R.id.nav_parking_quanlytaikhoan).setVisible(true);
         btn_active_master.setEnabled(false);
         btn_active_master.setAlpha(0.6f);
+    }
+
+    @Override
+    public void showLongToast(String message) {
+        super.showLongToast(message);
+    }
+
+    @Override
+    public void showShortToast(String message) {
+        super.showShortToast(message);
+    }
+
+    @Override
+    public void showProgressBar(boolean isTouchOutside, boolean isCancel, String title, String message) {
+        super.showProgressBar(isTouchOutside, isCancel, title, message);
+    }
+
+    @Override
+    public void closeProgressBar() {
+        super.closeProgressBar();
     }
 
     @Override
@@ -141,7 +163,11 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
                 menu.findItem(R.id.nav_parking_checkin).setVisible(false);
             }
         } else if (id == R.id.nav_parking_favorite) {
-            startActivity(FavoriteActivity.class);
+            HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HOME_FRAGMENT);
+            if (fragment != null && fragment.bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
+                fragment.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+            startActivityForResult(FavoriteActivity.class, REQUEST_CODE);
         } else if (id == R.id.nav_parking_dangxuat) {
             LoginManager.getInstance().logOut();
             SharedPreferencesUtils.getInstance().clearData();
@@ -212,9 +238,14 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(MANAGER_FRAGMENT);
-        if (fragment != null) {
-            fragment.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_GUID) {
+            replaceFragment(R.id.home_layout_content, new HomeFragment(), HOME_FRAGMENT);
+            PARKING_ID = data.getIntExtra(Constants.ID_PARKING, -1);
+        } else {
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(MANAGER_FRAGMENT);
+            if (fragment != null) {
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
         }
     }
 }

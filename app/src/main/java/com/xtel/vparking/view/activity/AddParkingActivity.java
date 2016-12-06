@@ -3,48 +3,44 @@ package com.xtel.vparking.view.activity;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
-import com.xtel.vparking.callback.RequestNoResultListener;
-import com.xtel.vparking.callback.RequestWithStringListener;
 import com.xtel.vparking.commons.Constants;
-import com.xtel.vparking.commons.GetNewSession;
-import com.xtel.vparking.dialog.DialogNotification;
 import com.xtel.vparking.dialog.DialogProgressBar;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.PlaceModel;
 import com.xtel.vparking.presenter.AddParkingPresenter;
 import com.xtel.vparking.utils.JsonParse;
-import com.xtel.vparking.utils.SharedPreferencesUtils;
-import com.xtel.vparking.utils.Task;
 import com.xtel.vparking.view.activity.inf.AddParkingView;
 import com.xtel.vparking.view.adapter.AddParkingAdapter;
+import com.xtel.vparking.view.widget.BitmapTransform;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import gun0912.tedbottompicker.TedBottomPicker;
 
 public class AddParkingActivity extends BasicActivity implements View.OnClickListener, AddParkingView {
 
@@ -56,7 +52,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     private SeekBar seek_money;
 
     private ViewPager viewPager;
-//    private ArrayList<Fragment> arrayList_fragment;
+    private ImageView img_load;
 
     private PlaceModel placeModel;
     private ArrayList<String> arrayList_file;
@@ -81,6 +77,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     private void initWidger() {
         txt_image_number = (TextView) findViewById(R.id.txt_tao_bai_do_image_number);
+        img_load = (ImageView) findViewById(R.id.img_tao_bai_do_picture);
         txt_money = (TextView) findViewById(R.id.txt_tao_bai_do_money);
 
         chk_tatca = (RadioButton) findViewById(R.id.chk_tao_bai_do_tatca);
@@ -150,26 +147,62 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         });
     }
 
-    public void TakePicture(View view) {
-        Task.TakeBigPicture(AddParkingActivity.this, getSupportFragmentManager(), true, new RequestWithStringListener() {
-            @Override
-            public void onSuccess(String url) {
-                arrayList_file.add(url);
-                viewPager.getAdapter().notifyDataSetChanged();
+    public void TakePicture(final View view) {
+        TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(AddParkingActivity.this)
+                .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+                    @Override
+                    public void onImageSelected(final Uri uri) {
+                        Log.e("tb_uri", "uri: " + uri);
+                        Log.e("tb_path", "uri.geta: " + uri.getPath());
 
-                if (arrayList_file.size() == 1)
-                    txt_image_number.setText("1/1");
-                else {
-                    String text = (viewPager.getCurrentItem() + 1) + "/" + arrayList_file.size();
-                    txt_image_number.setText(text);
-                }
-            }
+                        showProgressBar(false, false, null, "Upda file...");
 
-            @Override
-            public void onError() {
+                        Picasso.with(AddParkingActivity.this)
+                                .load(uri)
+                                .transform(new BitmapTransform(1200, 1200))
+                                .fit()
+                                .centerCrop()
+                                .into(img_load, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Bitmap bitmap = ((BitmapDrawable) img_load.getDrawable()).getBitmap();
+                                        Log.e("tb_img_width", "how: " + bitmap.getWidth());
+                                        presenter.postImage(bitmap);
+                                    }
 
-            }
-        });
+                                    @Override
+                                    public void onError() {
+
+                                    }
+                                });
+                    }
+                })
+                .setPeekHeight(getResources().getDisplayMetrics().heightPixels / 2)
+                .create();
+        bottomSheetDialogFragment.show(getSupportFragmentManager());
+
+//        Task.TakeBigPicture(AddParkingActivity.this, getSupportFragmentManager(), true, new RequestWithStringListener() {
+//            @Override
+//            public void onSuccess(String url) {
+//                arrayList_file.add(url);
+//                viewPager.getAdapter().notifyDataSetChanged();
+//
+//                if (arrayList_file.size() == 1)
+//                    txt_image_number.setText("1/1");
+//                else {
+//                    String text = (viewPager.getCurrentItem() + 1) + "/" + arrayList_file.size();
+//                    txt_image_number.setText(text);
+//                }
+//
+////                closeProgressBar();
+//            }
+//
+//            @Override
+//            public void onError() {
+////                closeProgressBar();
+//                showShortToast("Không thể chọn ảnh");
+//            }
+//        });
     }
 
     private void getAddress() {
@@ -352,7 +385,30 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     @Override
     public void onTakePictureSucces(String url) {
+        arrayList_file.add(url);
+        viewPager.getAdapter().notifyDataSetChanged();
 
+        if (arrayList_file.size() == 1)
+            txt_image_number.setText("1/1");
+        else {
+            String text = (viewPager.getCurrentItem() + 1) + "/" + arrayList_file.size();
+            txt_image_number.setText(text);
+        }
+
+//        if (arrayList_file.size() > 0) {
+//            img_load.setVisibility(View.GONE);
+//            img_load.setImageResource(R.mipmap.ic_parking_background);
+//        } else {
+//            img_load.setImageResource(View.VISIBLE);
+            img_load.setImageResource(R.mipmap.ic_parking_background);
+//        }
+
+        closeProgressBar();
+    }
+
+    @Override
+    public void onTakePictureError() {
+        closeProgressBar();
     }
 
     @Override

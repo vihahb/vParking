@@ -1,11 +1,14 @@
 package com.xtel.vparking.presenter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestNoResultListener;
+import com.xtel.vparking.callback.RequestWithStringListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
@@ -14,6 +17,7 @@ import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.model.entity.RESP_Parking_Info_List;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
+import com.xtel.vparking.utils.Task;
 import com.xtel.vparking.view.activity.inf.AddParkingView;
 
 import java.util.ArrayList;
@@ -27,6 +31,20 @@ public class AddParkingPresenter {
 
     public AddParkingPresenter(AddParkingView view) {
         this.view = view;
+    }
+
+    public void postImage(Bitmap bitmap) {
+        new Task.ConvertImage(view.getActivity(), true, new RequestWithStringListener() {
+            @Override
+            public void onSuccess(String url) {
+                view.onTakePictureSucces(url);
+            }
+
+            @Override
+            public void onError() {
+                view.onTakePictureError();
+            }
+        }).execute(bitmap);
     }
 
     public void postImage() {
