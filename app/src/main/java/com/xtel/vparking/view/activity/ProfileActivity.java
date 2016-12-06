@@ -154,12 +154,10 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus){
-                    Toast.makeText(ProfileActivity.this, "Focused name", Toast.LENGTH_SHORT).show();
                     respond_type = 1;
                     btn_clear.setVisibility(View.VISIBLE);
                     cleanEditText(respond_type);
                 } else {
-                    Toast.makeText(ProfileActivity.this, "Focus andother name", Toast.LENGTH_SHORT).show();
                     btn_clear.setVisibility(View.GONE);
                 }
 
@@ -170,12 +168,10 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus){
-                    Toast.makeText(ProfileActivity.this, "Focused name", Toast.LENGTH_SHORT).show();
                     respond_type = 2;
                     btn_clear_email.setVisibility(View.VISIBLE);
                     cleanEditText(respond_type);
                 } else {
-                    Toast.makeText(ProfileActivity.this, "Focus andother name", Toast.LENGTH_SHORT).show();
                     btn_clear_email.setVisibility(View.GONE);
                 }
             }
