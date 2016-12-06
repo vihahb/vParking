@@ -52,6 +52,7 @@
     </LinearLayout>
 
     <Button
+        android:elevation="0dp"
         android:id="@+id/btn_fb_signin"
         android:layout_marginLeft="@dimen/margin_fb"
         android:layout_marginRight="@dimen/margin_fb"

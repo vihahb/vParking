@@ -54,7 +54,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
     public static String[] gender_spinner = {"Nam", "Nữ", "Khác"};
 
-    private Button btnUpdate, btn_clear;
+    private Button btnUpdate, btn_clear, btn_clear_email;
     ImageView img_avatar, img_change_avatar, img_update_phone;
     DialogProgressBar progressBar;
 
@@ -66,6 +66,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     String phone;
     int gender;
     int gender_update;
+    int respond_type;
     String format_phone;
     String email;
     String birthday;
@@ -75,6 +76,12 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     public static int ACC_REQUEST_CODE = 100;
     Calendar calendar;
     Date date;
+
+    //update info
+    String full_name_update;
+    String email_update;
+    String birthday_update;
+    String phone_update;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +113,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         btnUpdate = (Button) findViewById(R.id.btn_profile_update);
         btn_clear = (Button) findViewById(R.id.btn_clear);
+        btn_clear_email = (Button) findViewById(R.id.btn_clear_email);
         spinner_gender = (Spinner) findViewById(R.id.spinner_gender);
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item, gender_spinner);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -138,28 +146,60 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                 onUpdatePhone(v);
             }
         });
-        onTouchEditText();
+        onFocusChangeEditText();
     }
 
-    private void onTouchEditText(){
-        edt_fname.setOnTouchListener(new View.OnTouchListener() {
+    private void onFocusChangeEditText() {
+        edt_fname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                btn_clear.setVisibility(View.VISIBLE);
-                cleanEditText();
-                return false;
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    Toast.makeText(ProfileActivity.this, "Focused name", Toast.LENGTH_SHORT).show();
+                    respond_type = 1;
+                    btn_clear.setVisibility(View.VISIBLE);
+                    cleanEditText(respond_type);
+                } else {
+                    Toast.makeText(ProfileActivity.this, "Focus andother name", Toast.LENGTH_SHORT).show();
+                    btn_clear.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+        edt_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    Toast.makeText(ProfileActivity.this, "Focused name", Toast.LENGTH_SHORT).show();
+                    respond_type = 2;
+                    btn_clear_email.setVisibility(View.VISIBLE);
+                    cleanEditText(respond_type);
+                } else {
+                    Toast.makeText(ProfileActivity.this, "Focus andother name", Toast.LENGTH_SHORT).show();
+                    btn_clear_email.setVisibility(View.GONE);
+                }
             }
         });
     }
 
-    private void cleanEditText(){
-        btn_clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edt_fname.setText("");
-            }
-        });
+    private void cleanEditText(int type) {
+        if (type == 1) {
+            btn_clear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    edt_fname.setText("");
+                }
+            });
+        }
+        if (type == 2) {
+            btn_clear_email.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    edt_email.setText("");
+                }
+            });
+        }
+
     }
 
     private View.OnClickListener onClickListener() {
@@ -171,7 +211,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             }
         };
     }
-
 
 
     private void initData() {
@@ -187,10 +226,10 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         calendar = Calendar.getInstance();
         if (avatar != null)
             Picasso.with(ProfileActivity.this)
-            .load(avatar)
-            .placeholder(R.mipmap.ic_user)
-            .error(R.mipmap.ic_user)
-            .into(img_avatar);
+                    .load(avatar)
+                    .placeholder(R.mipmap.ic_user)
+                    .error(R.mipmap.ic_user)
+                    .into(img_avatar);
 
         if (check_acc_kit) {
             format_phone = "+" + phone;
@@ -262,7 +301,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     }
 
 
-
     private void updateBirthday() {
         Toast.makeText(this, "Click ngay sinh", Toast.LENGTH_SHORT).show();
         //Get curent Time
@@ -307,50 +345,46 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_PHONE, phone_p);
     }
 
-    private void onClickButton() {
-        progressBar = new DialogProgressBar(ProfileActivity.this, false, false, null, getString(R.string.update_message));
-        progressBar.showProgressBar();
-
-        if (valid()) {
-            String full_name_update = edt_fname.getText().toString();
-            String email_update = edt_email.getText().toString();
-            String birthday_update = edt_ngaysinh.getText().toString();
-            String phone_update = edt_phone.getText().toString();
-            String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
-            Log.e("Email field:", String.valueOf(email_update));
-            updateUser(edt_fname.getText().toString(),
-                    edt_email.getText().toString(),
-                    gender_update,
-                    edt_ngaysinh.getText().toString(),
-                    avatar,
-                    edt_phone.getText().toString(),
-                    session);
-            delayHandle(1000);
-            pushingData(avatar, full_name_update, gender_update, email_update, birthday_update, phone_update);
-        } else {
-            Log.e("Error: ", "Co loi valid");
-        }
-    }
-
     private boolean valid() {
         if (TextUtils.isEmpty(edt_fname.getText().toString())) {
             Toast.makeText(this, getString(R.string.update_message_failed_name), Toast.LENGTH_SHORT).show();
             progressBar.closeProgressBar();
             return false;
+        } else {
+            full_name_update = edt_fname.getText().toString();
         }
-
         if (TextUtils.isEmpty(edt_email.getText().toString())) {
-            Toast.makeText(this, getString(R.string.update_message_failed_email), Toast.LENGTH_SHORT).show();
-            progressBar.closeProgressBar();
-            return false;
+            email_update = email;
+        } else {
+            email_update = edt_email.getText().toString();
         }
 
         if (TextUtils.isEmpty(edt_ngaysinh.getText().toString())) {
-            Toast.makeText(this, getString(R.string.update_message_failed_birthday), Toast.LENGTH_SHORT).show();
-            progressBar.closeProgressBar();
-            return false;
+            birthday_update = birthday;
+        } else {
+            birthday_update = edt_ngaysinh.getText().toString();
+        }
+        if (TextUtils.isEmpty(edt_phone.getText().toString())) {
+            phone_update = phone;
+        } else {
+            phone_update = edt_phone.getText().toString();
         }
         return true;
+    }
+
+    private void onClickButton() {
+        progressBar = new DialogProgressBar(ProfileActivity.this, false, false, null, getString(R.string.update_message));
+        progressBar.showProgressBar();
+
+        if (valid()) {
+            String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
+            Log.e("Email field:", String.valueOf(email_update));
+            updateUser(full_name_update, email_update, gender_update, birthday_update, avatar, phone_update, session);
+            delayHandle(1000);
+            pushingData(avatar, full_name_update, gender_update, email_update, birthday_update, phone_update);
+        } else {
+            Log.e("Error: ", "Co loi valid");
+        }
     }
 
     @Override
