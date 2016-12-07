@@ -618,8 +618,10 @@ public class HomeFragment extends BasicFragment implements
     }
 
     private void clearMarker(final int possition) {
-        if (possition == -1)
+        if (possition == -1) {
+            isCanLoadMap = true;
             return;
+        }
 
         try {
             new Handler().postDelayed(new Runnable() {
