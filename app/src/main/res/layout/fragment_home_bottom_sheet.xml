@@ -410,14 +410,24 @@
             android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
     </RelativeLayout>
 
-    <fragment xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map_dialog_bottom_sheet"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginLeft="@dimen/size_10"
-        android:layout_marginRight="@dimen/size_10"
-        tools:context=".view.activity.HomeActivity" />
+        android:layout_height="@dimen/size_250">
+
+        <fragment xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map_dialog_bottom_sheet"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/size_10"
+            android:layout_marginRight="@dimen/size_10"
+            tools:context=".view.activity.HomeActivity" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true" />
+    </FrameLayout>
 
     <Button
         android:id="@+id/btn_dialog_bottom_sheet_chiduong"
