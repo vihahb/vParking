@@ -1,22 +1,19 @@
 package com.xtel.vparking.presenter;
 
-import android.widget.Toast;
-
-import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
+import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.ParkingInfo;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.model.entity.RESP_Parking_Info_List;
-import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.inf.ManagementView;
 
 /**
- * Created by Mr. M.2 on 12/5/2016.
+ * Created by Lê Công Long Vũ on 12/5/2016.
  */
 
 public class ManagementPresenter {
@@ -27,7 +24,7 @@ public class ManagementPresenter {
     }
 
     public void getParkingByUser() {
-        String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
+        String session = LoginModel.getInstance().getSession();
         String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
         ParkingModel.getInstanse().getParkingByUser(url, session, new ResponseHandle<RESP_Parking_Info_List>(RESP_Parking_Info_List.class) {
             @Override
@@ -61,7 +58,7 @@ public class ManagementPresenter {
 
     public void getParkingInfo(final int id) {
         String url = Constants.SERVER_PARKING + Constants.PARKING_INFO + id;
-        String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
+        String session = LoginModel.getInstance().getSession();
 
         ParkingModel.getInstanse().getParkingInfo(url, session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override

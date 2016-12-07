@@ -4,6 +4,7 @@ import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
+import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Favorite;
@@ -23,7 +24,7 @@ public class FavoritePresenter {
     }
 
     public void getParkingFavorite() {
-        String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
+        String session = LoginModel.getInstance().getSession();
         String url = Constants.SERVER_PARKING + Constants.PARKING_GET_FAVORITE;
         ParkingModel.getInstanse().getParkingByUser(url, session, new ResponseHandle<RESP_Favorite>(RESP_Favorite.class) {
             @Override

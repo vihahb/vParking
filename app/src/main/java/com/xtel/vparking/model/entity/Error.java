@@ -3,7 +3,7 @@ package com.xtel.vparking.model.entity;
 import com.google.gson.annotations.Expose;
 
 /**
- * Created by Computer on 11/9/2016.
+ * Created by Lê Công Long Vũ on 11/9/2016.
  */
 
 public class Error {

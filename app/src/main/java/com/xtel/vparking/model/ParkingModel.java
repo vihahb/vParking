@@ -33,4 +33,8 @@ public class ParkingModel extends BasicModel {
     public void addParking(String url, String json, String session, ResponseHandle responseHandle) {
         requestServer.postApi(url, json, session, responseHandle);
     }
+
+    public void getPolyLine(String url, ResponseHandle responseHandle) {
+        requestServer.getApi(url, null, responseHandle);
+    }
 }

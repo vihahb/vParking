@@ -1,20 +1,36 @@
 package com.xtel.vparking.presenter;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.support.v4.app.ActivityCompat;
+
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
+import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.RESP_Basic;
 import com.xtel.vparking.model.entity.RESP_Parking;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
+import com.xtel.vparking.model.entity.RESP_Router;
+import com.xtel.vparking.model.entity.Steps;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.HomeActivity;
 import com.xtel.vparking.view.activity.inf.HomeFragmentView;
+import com.xtel.vparking.view.fragment.HomeFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by Mr. M.2 on 12/4/2016.
+ * Created by Lê Công Long Vũ on 12/4/2016.
  */
 
 public class HomeFragmentPresenter {
@@ -33,14 +49,27 @@ public class HomeFragmentPresenter {
         HomeActivity.PARKING_ID = -1;
     }
 
+    public LatLng getMyLocation() {
+        if (HomeFragment.mGoogleApiClient.isConnected()) {
+            if (checkPermission()) {
+                Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(HomeFragment.mGoogleApiClient);
+                if (mLastLocation != null) {
+                    view.onGetMyLocationSuccess(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+                }
+            }
+        } else
+            HomeFragment.mGoogleApiClient.connect();
+        return null;
+    }
+
     public void getParkingInfo(final int id) {
         String url = Constants.SERVER_PARKING + Constants.PARKING_INFO + id;
-        String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
+        String session = LoginModel.getInstance().getSession();
 
         ParkingModel.getInstanse().getParkingInfo(url, session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
             public void onSuccess(RESP_Parking_Info obj) {
-                view.onGetParkingInfoSuccuss(obj);
+                view.onGetParkingInfoSuccess(obj);
             }
 
             @Override
@@ -89,5 +118,57 @@ public class HomeFragmentPresenter {
                 view.onGetParkingAroundError(error);
             }
         });
+    }
+
+    private boolean checkPermission() {
+        try {
+            return !(ActivityCompat.checkSelfPermission(view.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(view.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void getPolyLine(final double from_lat, final double from_lng, double to_lat, double to_lng) {
+        String url = Constants.POLY_HTTP + from_lat + "," + from_lng + Constants.POLY_DESTINATION + to_lat + "," + to_lng;
+        ParkingModel.getInstanse().getPolyLine(url, new ResponseHandle<RESP_Router>(RESP_Router.class) {
+            @Override
+            public void onSuccess(RESP_Router obj) {
+                if (obj != null) {
+                    LatLng latLng = new LatLng(from_lat, from_lng);
+                    PolylineOptions polylineOptions = getPolylineOption(obj.getRoutes().get(0).getLegs().get(0).getSteps());
+
+                    if (polylineOptions != null)
+                        view.onGetPolylineSuccess(latLng, polylineOptions);
+                    else
+                        view.onGetPolylineError("Không thể đẫn đường");
+                }
+            }
+
+            @Override
+            public void onError(Error error) {
+                view.onGetPolylineError("Không thể đẫn đường");
+            }
+        });
+    }
+
+    private PolylineOptions getPolylineOption(ArrayList<Steps> steps) {
+        try {
+            PolylineOptions polylineOptions = new PolylineOptions();
+
+            for (int i = 0; i < steps.size(); i++) {
+                List<LatLng> poly = Constants.decodePoly(steps.get(i).getPolyline().getPoints());
+
+                for (int j = 0; j < poly.size(); j++) {
+                    polylineOptions.add(poly.get(j));
+                }
+            }
+
+            return polylineOptions;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

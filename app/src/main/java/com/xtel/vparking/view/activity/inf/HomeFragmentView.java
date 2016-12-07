@@ -2,6 +2,8 @@ package com.xtel.vparking.view.activity.inf;
 
 import android.app.Activity;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.Parking;
 import com.xtel.vparking.model.entity.ParkingInfo;
@@ -16,10 +18,13 @@ import java.util.ArrayList;
 
 public interface HomeFragmentView extends IView {
 
-    void onGetParkingInfoSuccuss(RESP_Parking_Info resp_parking_info);
+    void onGetMyLocationSuccess(LatLng latLng);
+    void onGetParkingInfoSuccess(RESP_Parking_Info resp_parking_info);
     void onGetParkingInfoError(Error error);
     void onSearchParking(int id);
     void onGetParkingAroundSuccess(ArrayList<Parking> arrayList);
     void onGetParkingAroundError(Error error);
+    void onGetPolylineSuccess(LatLng latLng, PolylineOptions polylineOptions);
+    void onGetPolylineError(String error);
     Activity getActivity();
 }

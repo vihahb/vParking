@@ -2,6 +2,7 @@ package com.xtel.vparking.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -25,6 +26,7 @@ import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.presenter.HomePresenter;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.inf.HomeView;
+import com.xtel.vparking.view.activity.inf.ScanQrView;
 import com.xtel.vparking.view.fragment.HomeFragment;
 import com.xtel.vparking.view.fragment.ParkingManagementFragment;
 
@@ -76,6 +78,10 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            navigationView.setVerticalFadingEdgeEnabled(false);
+//        }
     }
 
     private void initListener() {
@@ -207,7 +213,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.nav_parking_checkin) {
-            startActivity(CheckInActivity.class);
+            startActivity(ScanQrActivity.class);
         } else if (id == R.id.nav_parking_add) {
             startActivityForResult(AddParkingActivity.class, Constants.ADD_PARKING_REQUEST);
         }

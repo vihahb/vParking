@@ -1,7 +1,6 @@
 package com.xtel.vparking.presenter;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.google.gson.JsonArray;
@@ -12,11 +11,10 @@ import com.xtel.vparking.callback.RequestWithStringListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
+import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
-import com.xtel.vparking.model.entity.RESP_Parking_Info_List;
-import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.utils.Task;
 import com.xtel.vparking.view.activity.inf.AddParkingView;
 
@@ -53,7 +51,7 @@ public class AddParkingPresenter {
 
     public void addParking(final double lat, final double lng, final int type, final String address, final String begin_time, final String end_time,
                            final String parking_name, final String desc, final int total_place, final int prices, final ArrayList<String> arrayList_file) {
-        String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
+        String session = LoginModel.getInstance().getSession();
         JsonObject json = new JsonObject();
         json.addProperty(Constants.JSON_LAT, lat);
         json.addProperty(Constants.JSON_LNG, lng);

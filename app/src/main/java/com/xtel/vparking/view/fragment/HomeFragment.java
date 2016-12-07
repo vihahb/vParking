@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -42,19 +41,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.gson.Gson;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.DialogListener;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.dialog.BottomSheet;
-import com.xtel.vparking.dialog.DialogProgressBar;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.Find;
-import com.xtel.vparking.model.entity.MapModel;
 import com.xtel.vparking.model.entity.MarkerModel;
 import com.xtel.vparking.model.entity.Parking;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
@@ -64,13 +61,7 @@ import com.xtel.vparking.view.activity.FindAdvancedActivity;
 import com.xtel.vparking.view.activity.HomeActivity;
 import com.xtel.vparking.view.activity.inf.HomeFragmentView;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by Lê Công Long Vũ on 11/15/2013.
@@ -85,7 +76,7 @@ public class HomeFragment extends BasicFragment implements
 
     private final String TAG = "HomeFragment";
     private GoogleMap mMap, mMap_bottom;
-    private GoogleApiClient mGoogleApiClient;
+    public static GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private ArrayList<MarkerModel> markerList;
     private FloatingActionButton fab_thongbao, fab_location;
@@ -97,10 +88,10 @@ public class HomeFragment extends BasicFragment implements
     private Marker pickMarker;
     private Polyline polyline;
 
-    private NestedScrollView nestedScrollView;
     private BottomSheet dialogBottomSheet;
-    //    private DialogParkingDetail dialogParkingDetail;
     private RESP_Parking_Info resp_parking_info;
+
+    private int actionType = -1;
 
     @Nullable
     @Override
@@ -148,28 +139,21 @@ public class HomeFragment extends BasicFragment implements
 
     private void initSearchView() {
         SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        autocompleteFragment.setBoundsBias(new LatLngBounds(new LatLng(20.725517, 104.634451), new LatLng(21.937487, 106.759183)));
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 if (mMap != null) {
-//                    mMap.clear();
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude), 15));
-//                    if (isCanLoadMap) {
-//                        isCanLoadMap = false;
                     if (!isFindMyLocation)
                         isFindMyLocation = true;
-
-//                        presenter.getParkingAround(place.getLatLng().latitude, place.getLatLng().longitude, -1, -1, null, null);
-//                        new GetParkingAround().execute(String.valueOf(place.getLatLng().latitude), String.valueOf(place.getLatLng().longitude), null, null, null, null);
-//                    }
                 }
             }
 
             @Override
             public void onError(Status status) {
                 // TODO: Handle the error.
-//                Log.e("ParkingStatus", "An error occurred: " + status);
             }
         });
     }
@@ -182,7 +166,7 @@ public class HomeFragment extends BasicFragment implements
     }
 
     private void initBottomSheet(View view) {
-        nestedScrollView = (NestedScrollView) view.findViewById(R.id.bottom_sheet_home);
+        final NestedScrollView nestedScrollView = (NestedScrollView) view.findViewById(R.id.bottom_sheet_home);
 
         bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottom_sheet_home));
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -200,10 +184,11 @@ public class HomeFragment extends BasicFragment implements
                     showFloatingActionButton(fab_location);
                     showFloatingActionButton(fab_thongbao);
 
-                    nestedScrollView.scrollTo(0, 0);
-                    mMap_bottom.clear();
+                    dialogBottomSheet.changeCloseToFavorite();
                     dialogBottomSheet.clearData();
                     dialogBottomSheet.showHeader();
+                    nestedScrollView.scrollTo(0, 0);
+                    mMap_bottom.clear();
                     resp_parking_info = null;
                     isLoadNewParking = 0;
 
@@ -282,18 +267,8 @@ public class HomeFragment extends BasicFragment implements
         dialogBottomSheet.onGuidClicked(new DialogListener() {
             @Override
             public void onClicked(Object object) {
-                if (resp_parking_info != null) {
-                    if (mGoogleApiClient.isConnected()) {
-                        if (checkPermission()) {
-                            Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                            if (mLastLocation != null && mMap != null) {
-                                new GetPolyline().execute(mLastLocation.getLatitude(), mLastLocation.getLongitude(),
-                                        resp_parking_info.getLat(), resp_parking_info.getLng());
-                            }
-                        }
-                    } else
-                        mGoogleApiClient.connect();
-                }
+                actionType = 2;
+                presenter.getMyLocation();
             }
 
             @Override
@@ -313,7 +288,6 @@ public class HomeFragment extends BasicFragment implements
     private void closeGuid() {
         isCanLoadMap = true;
         mMap.clear();
-        dialogBottomSheet.changeCloseToFavorite();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
@@ -327,6 +301,9 @@ public class HomeFragment extends BasicFragment implements
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         dialogBottomSheet.initData(resp_parking_info);
+
+        if (actionType == 3)
+            dialogBottomSheet.changeFavoriteToClose();
 
         if (resp_parking_info.getStatus() == 0) {
             mMap_bottom.addMarker(new MarkerOptions()
@@ -379,15 +356,10 @@ public class HomeFragment extends BasicFragment implements
         pickMarker = mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .icon(BitmapDescriptorFactory.fromBitmap(small_bitmap)));
-
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-//        if (isCanLoadMap) {
-//            isCanLoadMap = false;
+
         if (!isFindMyLocation)
             isFindMyLocation = true;
-
-//            presenter.getParkingAround(latLng.latitude, latLng.longitude, -1, -1, null, null);
-//        }
     }
 
     @Override
@@ -438,9 +410,6 @@ public class HomeFragment extends BasicFragment implements
             double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
             double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
             presenter.getParkingAround(latitude, longtitude, -1, -1, null, null);
-
-//            new GetParkingAroundCenter().execute(String.valueOf(mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude),
-//                    String.valueOf(mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude), null, null, null, null);
         }
     }
 
@@ -455,21 +424,8 @@ public class HomeFragment extends BasicFragment implements
                 if (pickMarker != null)
                     pickMarker.remove();
 
-                if (mGoogleApiClient.isConnected()) {
-                    if (checkPermission()) {
-                        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                        if (mLastLocation != null && mMap != null) {
-                            mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
-
-//                            isCanLoadMap = false;
-                            if (!isFindMyLocation)
-                                isFindMyLocation = true;
-
-//                            presenter.getParkingAround(mLastLocation.getLatitude(), mLastLocation.getLongitude(), -1, -1, null, null);
-                        }
-                    }
-                } else
-                    mGoogleApiClient.connect();
+                actionType = 1;
+                presenter.getMyLocation();
             }
         }
     }
@@ -481,30 +437,16 @@ public class HomeFragment extends BasicFragment implements
 
                 isFindMyLocation = true;
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
-//                    isCanLoadMap = false;
-
-
-//                    presenter.getParkingAround(location.getLatitude(), location.getLongitude(), -1, -1, null, null);
-//                    new GetParkingAround().execute(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), null, null, null, null);
             }
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if (!isFindMyLocation)
-            if (checkPermission()) {
-                Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                if (mLastLocation != null && mMap != null) {
-//                    mMap.clear();
+        if (!isFindMyLocation) {
+            actionType = 0;
+            presenter.getMyLocation();
+        }
 
-                    mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
-//                        isCanLoadMap = false;
-                    isFindMyLocation = true;
-
-//                        presenter.getParkingAround(mLastLocation.getLatitude(), mLastLocation.getLongitude(), -1, -1, null, null);
-//                        new GetParkingAround().execute(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()), null, null, null, null);
-                }
-            }
         startLocationUpdates();
     }
 
@@ -666,18 +608,40 @@ public class HomeFragment extends BasicFragment implements
 
     @Override
     public void onSearchParking(int id) {
-        if (mMap != null)
-            mMap.clear();
         if (markerList != null)
             clearMarker(markerList.size() - 1);
         if (!isFindMyLocation)
             isFindMyLocation = true;
+
+        actionType = 3;
         isCanLoadMap = false;
         showProgressBar(false, false, null, getString(R.string.parking_get_data));
     }
 
     @Override
-    public void onGetParkingInfoSuccuss(RESP_Parking_Info resp_parking_info) {
+    public void onGetMyLocationSuccess(LatLng latLng) {
+        switch (actionType) {
+            case 0:
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                break;
+            case 1:
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                break;
+            case 2:
+                if (resp_parking_info != null) {
+                    showProgressBar(false, false, null, getString(R.string.parking_get_data));
+                    presenter.getPolyLine(latLng.latitude, latLng.longitude, resp_parking_info.getLat(), resp_parking_info.getLng());
+                }
+                break;
+            default:
+                break;
+        }
+        if (!isFindMyLocation)
+            isFindMyLocation = true;
+    }
+
+    @Override
+    public void onGetParkingInfoSuccess(RESP_Parking_Info resp_parking_info) {
         closeProgressBar();
 
         mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng())));
@@ -733,11 +697,9 @@ public class HomeFragment extends BasicFragment implements
                 clearMarker(possition);
                 arrayList.clear();
             } else {
-//                Toast.makeText(getContext(), "Không tìm thấy bãi đỗ nào", Toast.LENGTH_SHORT).show();
                 clearMarker(markerList.size() - 1);
             }
         } else {
-//            Toast.makeText(getContext(), "Không tìm thấy bãi đỗ nào", Toast.LENGTH_SHORT).show();
             clearMarker(markerList.size() - 1);
         }
     }
@@ -748,87 +710,37 @@ public class HomeFragment extends BasicFragment implements
         showShortToast(JsonParse.getCodeMessage(error.getCode(), "Không thể tìm bãi đỗ"));
     }
 
-    public class GetPolyline extends AsyncTask<Double, Void, Void> {
-        private PolylineOptions polylineOptions;
-        private DialogProgressBar dialogProgressBar_2;
-        private LatLng latLng;
+    @Override
+    public void onGetPolylineSuccess(LatLng latLng, PolylineOptions polylineOptions) {
+        closeProgressBar();
+        isCanLoadMap = false;
 
-        @Override
-        protected void onPreExecute() {
-            dialogProgressBar_2 = new DialogProgressBar(getContext(), false, false, null, getString(R.string.parking_get_data));
-            dialogProgressBar_2.showProgressBar();
-            super.onPreExecute();
+        mMap.clear();
+        dialogBottomSheet.changeFavoriteToClose();
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        if (resp_parking_info.getStatus() == 0) {
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
+        } else {
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
         }
 
-        @Override
-        protected Void doInBackground(Double... params) {
-            try {
-                latLng = new LatLng(params[0], params[1]);
-                String url = Constants.POLY_HTTP + params[0] + "," + params[1] +
-                        Constants.POLY_DESTINATION + params[2] + "," + params[3];
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
-                Log.e("ct_url", url);
-                OkHttpClient client = new OkHttpClient();
-                Request request = new Request.Builder().url(url).build();
-                Response response = client.newCall(request).execute();
+        if (polyline != null)
+            polyline.remove();
 
-                Gson gson = new Gson();
-                String content = response.body().string();
+        polyline = mMap.addPolyline(polylineOptions);
+        polyline.setWidth(10);
+        polyline.setColor(Color.BLUE);
+    }
 
-                polylineOptions = new PolylineOptions();
-
-                if (!content.isEmpty()) {
-                    MapModel parseMap = gson.fromJson(content, MapModel.class);
-
-                    ArrayList<MapModel.Routers.Legs.Steps> steps = parseMap.getRouters().get(0).getLegses().get(0).getStepses();
-
-                    for (int i = 0; i < steps.size(); i++) {
-                        List<LatLng> poly = Constants.decodePoly(steps.get(i).getPolyline().getPoints());
-
-                        for (int j = 0; j < poly.size(); j++) {
-                            polylineOptions.add(poly.get(j));
-                        }
-                    }
-                }
-            } catch (IOException e) {
-                Log.e("ct_loi_poly", e.toString());
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @SuppressWarnings("deprecation")
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            if (polylineOptions != null) {
-                isCanLoadMap = false;
-
-                mMap.clear();
-                dialogBottomSheet.changeFavoriteToClose();
-                dialogProgressBar_2.closeProgressBar();
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-                if (resp_parking_info.getStatus() == 0) {
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
-                } else {
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
-                }
-
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-
-                if (polyline != null)
-                    polyline.remove();
-
-                polyline = mMap.addPolyline(polylineOptions);
-                polyline.setWidth(8);
-                polyline.setColor(Color.BLUE);
-            }
-        }
+    @Override
+    public void onGetPolylineError(String error) {
+        showShortToast(error);
     }
 }

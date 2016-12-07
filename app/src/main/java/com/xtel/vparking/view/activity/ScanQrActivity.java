@@ -72,7 +72,7 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
     public void startScanQrCode() {
         layout_gift_code.setVisibility(View.GONE);
         if (!edt_gift_code.getText().toString().isEmpty()) {
-            txt_gift_code.setText((getString(R.string.gift_code) + edt_gift_code.getText()));
+            txt_gift_code.setText((getString(R.string.gift_code) + ": " + edt_gift_code.getText()));
             edt_gift_code.setText(null);
         }
     }
@@ -82,12 +82,12 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
         showDialogNotification(title, content, new DialogListener() {
             @Override
             public void onClicked(Object object) {
-//                mScannerView.resumeCameraPreview(ScanQrActivity.this);
-//                layout_gift_code.setVisibility(View.VISIBLE);
-                Intent intent = new Intent();
-                intent.putExtra(Constants.SCAN_RESULT, content);
-                setResult(RESULT_OK, intent);
-                finish();
+                mScannerView.resumeCameraPreview(ScanQrActivity.this);
+                layout_gift_code.setVisibility(View.VISIBLE);
+//                Intent intent = new Intent();
+//                intent.putExtra(Constants.SCAN_RESULT, content);
+//                setResult(RESULT_OK, intent);
+//                finish();
             }
 
             @Override

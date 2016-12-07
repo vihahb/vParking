@@ -135,7 +135,7 @@
     <string name="error_find_advanced">Không thể tìm bãi đỗ</string>
 
     <!-- Check in -->
-    <string name="gift_code">Gift Code </string>
+    <string name="gift_code">Gift Code</string>
     <string name="check_in">CHECK IN</string>
     <string name="input_gift_code">Nhập Gift Code</string>
     <string name="checking" tools:ignore="TypographyEllipsis">Đang check...</string>
