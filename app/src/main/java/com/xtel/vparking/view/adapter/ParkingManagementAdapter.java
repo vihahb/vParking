@@ -77,12 +77,12 @@ public class ParkingManagementAdapter extends RecyclerView.Adapter<ParkingManage
         return arrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView img_avatar;
         private ImageButton img_minus, img_plus;
         private TextView txt_name, txt_address, txt_empty, txt_number;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             img_avatar = (ImageView) itemView.findViewById(R.id.img_item_quan_ly_bai_do_avatar);

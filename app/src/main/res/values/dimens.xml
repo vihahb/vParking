@@ -41,6 +41,7 @@
     <dimen name="size_134">134dp</dimen>
     <dimen name="size_150">150dp</dimen>
     <dimen name="size_200">200dp</dimen>
+    <dimen name="size_250">250dp</dimen>
 
     <!-- Margin left / right button fb -->
     <dimen name="margin_fb">10dp</dimen>

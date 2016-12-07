@@ -479,13 +479,12 @@ public class HomeFragment extends BasicFragment implements
         if (!isFindMyLocation)
             if (location != null) {
 
-                if (isCanLoadMap) {
-                    mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+                isFindMyLocation = true;
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
 //                    isCanLoadMap = false;
-                    isFindMyLocation = true;
+
 
 //                    presenter.getParkingAround(location.getLatitude(), location.getLongitude(), -1, -1, null, null);
-                }
 //                    new GetParkingAround().execute(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()), null, null, null, null);
             }
     }
@@ -498,13 +497,11 @@ public class HomeFragment extends BasicFragment implements
                 if (mLastLocation != null && mMap != null) {
 //                    mMap.clear();
 
-                    if (isCanLoadMap) {
-                        mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
 //                        isCanLoadMap = false;
-                        isFindMyLocation = true;
+                    isFindMyLocation = true;
 
 //                        presenter.getParkingAround(mLastLocation.getLatitude(), mLastLocation.getLongitude(), -1, -1, null, null);
-                    }
 //                        new GetParkingAround().execute(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()), null, null, null, null);
                 }
             }

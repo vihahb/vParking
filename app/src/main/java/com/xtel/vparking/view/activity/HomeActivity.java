@@ -144,30 +144,42 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         return this;
     }
 
+    private void replaceHomeFragment() {
+        replaceFragment(R.id.home_layout_content, new HomeFragment(), HOME_FRAGMENT);
+
+        if (menu != null) {
+            menu.findItem(R.id.nav_parking_add).setVisible(false);
+            menu.findItem(R.id.nav_parking_checkin).setVisible(true);
+        }
+    }
+
+    private void replaceManagementFragment() {
+        replaceFragment(R.id.home_layout_content, new ParkingManagementFragment(), MANAGER_FRAGMENT);
+
+        if (menu != null) {
+            menu.findItem(R.id.nav_parking_add).setVisible(true);
+            menu.findItem(R.id.nav_parking_checkin).setVisible(false);
+        }
+    }
+
+    private void goToFavoriteActivity() {
+        HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HOME_FRAGMENT);
+        if (fragment != null && fragment.bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
+            fragment.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        }
+        startActivityForResult(FavoriteActivity.class, REQUEST_CODE);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.nav_parking_home) {
-            replaceFragment(R.id.home_layout_content, new HomeFragment(), HOME_FRAGMENT);
-
-            if (menu != null) {
-                menu.findItem(R.id.nav_parking_add).setVisible(false);
-                menu.findItem(R.id.nav_parking_checkin).setVisible(true);
-            }
+            replaceHomeFragment();
         } else if (id == R.id.nav_parking_quanlytaikhoan) {
-            replaceFragment(R.id.home_layout_content, new ParkingManagementFragment(), MANAGER_FRAGMENT);
-
-            if (menu != null) {
-                menu.findItem(R.id.nav_parking_add).setVisible(true);
-                menu.findItem(R.id.nav_parking_checkin).setVisible(false);
-            }
+            replaceManagementFragment();
         } else if (id == R.id.nav_parking_favorite) {
-            HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HOME_FRAGMENT);
-            if (fragment != null && fragment.bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
-                fragment.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
-            startActivityForResult(FavoriteActivity.class, REQUEST_CODE);
+            goToFavoriteActivity();
         } else if (id == R.id.nav_parking_dangxuat) {
             LoginManager.getInstance().logOut();
             SharedPreferencesUtils.getInstance().clearData();
@@ -239,7 +251,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_GUID) {
-            replaceFragment(R.id.home_layout_content, new HomeFragment(), HOME_FRAGMENT);
+            replaceHomeFragment();
             PARKING_ID = data.getIntExtra(Constants.ID_PARKING, -1);
         } else {
             Fragment fragment = getSupportFragmentManager().findFragmentByTag(MANAGER_FRAGMENT);
