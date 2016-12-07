@@ -13,7 +13,9 @@ import java.util.ArrayList;
 
 public interface FavoriteView {
 
-    public void onGetParkingFavoriteSuccess(ArrayList<Favotire> arrayList);
-    public void onGetParkingFavoriteError(Error error);
-    public Activity getActivity();
+    void showShortToast(String message);
+    void showLongToast(String message);
+    void onGetParkingFavoriteSuccess(ArrayList<Favotire> arrayList);
+    void onGetParkingFavoriteError(Error error);
+    Activity getActivity();
 }

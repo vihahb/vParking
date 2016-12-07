@@ -593,11 +593,12 @@ public class HomeFragment extends BasicFragment implements
                         if (findModel != null && isCanLoadMap) {
 
                             mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
-//                            isCanLoadMap = false;
+
                             if (!isFindMyLocation)
                                 isFindMyLocation = true;
+                            isCanLoadMap = false;
 
-//                            presenter.getParkingAround(mLastLocation.getLatitude(), mLastLocation.getLongitude(), findModel.getMoney(), findModel.getType(), null, null);
+                            presenter.getParkingAround(mLastLocation.getLatitude(), mLastLocation.getLongitude(), findModel.getMoney(), findModel.getType(), null, null);
                         } else {
                             Toast.makeText(getContext(), getString(R.string.error_find_advanced), Toast.LENGTH_SHORT).show();
                         }
@@ -617,23 +618,23 @@ public class HomeFragment extends BasicFragment implements
     }
 
     private void clearMarker(final int possition) {
+        if (possition == -1)
+            return;
+
         try {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (possition == -1)
-                        return;
-
-                    Log.e("hf_position", "total: " + markerList.size());
-
-                    for (int i = possition; i >= 0; i--) {
-                        Log.e("hf_position", "po: " + i);
-                        if (markerList.get(i) != null) {
-                            markerList.get(i).getMarker().remove();
-                            markerList.remove(i);
+                    if (possition < markerList.size()) {
+                        Log.e("hf_position", "total: " + markerList.size());
+                        for (int i = possition; i >= 0; i--) {
+                            if (markerList.get(i) != null) {
+                                markerList.get(i).getMarker().remove();
+                                markerList.remove(i);
+                            }
                         }
+                        Log.e("pk_clear_marker", "done: " + markerList.size());
                     }
-                    Log.e("pk_clear_marker", "done: " + markerList.size());
                 }
             }, 100);
         } catch (Exception e) {

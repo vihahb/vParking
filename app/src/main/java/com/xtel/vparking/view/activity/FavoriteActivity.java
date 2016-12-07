@@ -46,7 +46,7 @@ public class FavoriteActivity extends BasicActivity implements FavoriteView {
         recyclerView.setLayoutManager(new LinearLayoutManager(FavoriteActivity.this));
 
         arrayList = new ArrayList<>();
-        RecyclerView.Adapter adapter = new FavoriteAdapter(FavoriteActivity.this, arrayList);
+        RecyclerView.Adapter adapter = new FavoriteAdapter(FavoriteActivity.this, arrayList, this);
         ((FavoriteAdapter) adapter).setMode(Attributes.Mode.Single);
         recyclerView.setAdapter(adapter);
     }
@@ -74,6 +74,16 @@ public class FavoriteActivity extends BasicActivity implements FavoriteView {
             recyclerView.getAdapter().notifyDataSetChanged();
             progressView.hide();
         }
+    }
+
+    @Override
+    public void showShortToast(String message) {
+        super.showShortToast(message);
+    }
+
+    @Override
+    public void showLongToast(String message) {
+        super.showLongToast(message);
     }
 
     @Override
