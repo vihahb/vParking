@@ -9,7 +9,10 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.xtel.vparking.callback.RequestNoResultListener;
+import com.xtel.vparking.callback.ResponseHandle;
+import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.RESP_Login;
 import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 
@@ -62,49 +65,34 @@ public class GetNewSession {
         deviceObject.addProperty(Constants.DEVICE_TYPE, device_type);
         deviceObject.addProperty(Constants.DEVICE_VENDOR, device_vendor);
 
-        Log.d("Authen Object: ", authentication_id);
-        Log.d("Code Object: ", service_code);
-        Log.d("Device Object: ", deviceObject.toString());
-
         userAuthentJson.addProperty("authenticationid", authentication_id);
         userAuthentJson.addProperty("service_code", service_code);
         userAuthentJson.add("devInfo", deviceObject);
 
+        Log.d("Authen Object: ", authentication_id);
+        Log.d("Code Object: ", service_code);
+        Log.d("Device Object: ", deviceObject.toString());
         Log.d("User object: ", String.valueOf(userAuthentJson));
 
+        String url_authen = Constants.SERVER_AUTHEN + Constants.AUTHEN_AUTHENTICATE;
 
-        Ion.with(context)
-                .load(Constants.SERVER_AUTHEN + Constants.AUTHEN_AUTHENTICATE)
-                .setJsonObjectBody(userAuthentJson)
-                .asJsonObject()
-                .setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject result) {
-                        if (e != null) {
-                            Log.e("Co loi: roi", e.toString());
-                            Toast.makeText(context, "Co loi xay ra", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.e("OK: ", result.toString());
-                            Error error = JsonHelper.getObjectNoException(result.toString(), Error.class);
-                            if (error != null) {
-                                Log.e("Ma loi: ", String.valueOf(error.getCode()));
-                                requestNoResultListener.onError();
-                            } else {
-                                Log.e("result: ", result.toString());
-                                String session = result.get("session").getAsString();
-                                long login_time = result.get("login_time").getAsLong();
-                                long expired_time = result.get("expired_time").getAsLong();
-                                SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_SESSION, session);
-                                requestNoResultListener.onSuccess();
-                                String LoginTime = convertLong2Time(login_time);
-                                String ExpiredTime = convertLong2Time(expired_time);
-                                String TimeSession = "Login Time: " + LoginTime + ", Expired Time: " + ExpiredTime;
-                                Log.e("Time for session:", TimeSession);
-                            }
-                        }
+        LoginModel.getInstance().getNewSession(url_authen, userAuthentJson.toString(), new ResponseHandle<RESP_Login>(RESP_Login.class) {
+            @Override
+            public void onSuccess(RESP_Login obj) {
+                Log.v("New session: ", obj.getSession());
+                String newSession = obj.getSession();
+                LoginModel.getInstance().postingNewSession(newSession);
+                requestNoResultListener.onSuccess();
+                checkTime(obj.getLogin_time(), obj.getExpired_time());
+            }
 
-                    }
-                });
+            @Override
+            public void onError(Error error) {
+                Log.e("Ma loi get session: ", String.valueOf(error.getCode()));
+                Log.e("Message get session: ", error.getMessage());
+                requestNoResultListener.onError();
+            }
+        });
     }
 
     public static String convertLong2Time(long time) {
@@ -113,5 +101,10 @@ public class GetNewSession {
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC+7"));
         String formatTime = dateFormat.format(date);
         return formatTime;
+    }
+
+    private static void checkTime(long login_time, long expired_time){
+        String time = "login: " + convertLong2Time(login_time) + ", Expired: " + convertLong2Time(expired_time);
+        Log.v("Time new session: ", time);
     }
 }

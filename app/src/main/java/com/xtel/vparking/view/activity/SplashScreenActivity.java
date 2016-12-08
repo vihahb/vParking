@@ -27,7 +27,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                     Log.e("auth_session", SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION));
                     startActivity(new Intent(SplashScreenActivity.this, HomeActivity.class));
                 } else {
-                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                    startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+                    finish();
                 }
             }
         }, 1000);
