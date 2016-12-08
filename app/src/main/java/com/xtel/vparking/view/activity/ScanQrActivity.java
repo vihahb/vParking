@@ -54,7 +54,7 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
     }
 
     private void initScannerView() {
-        mScannerView = new ZXingScannerView(this) {
+        mScannerView = new ZXingScannerView(getApplicationContext()) {
             @Override
             protected IViewFinder createViewFinderView(Context context) {
                 return new CustomViewFinderView(context);

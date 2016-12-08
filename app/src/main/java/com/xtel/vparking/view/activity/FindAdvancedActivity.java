@@ -110,7 +110,7 @@ public class FindAdvancedActivity extends AppCompatActivity {
             find.setType(getParkingType());
             find.setPlace_empty(Integer.parseInt(edt_place_number.getText().toString()));
 
-            int money = (seekBar_money.getProgress() * 5) * 1000;
+            int money = (seekBar_money.getProgress() * 5);
             find.setMoney(money);
 
             Intent intent = new Intent();

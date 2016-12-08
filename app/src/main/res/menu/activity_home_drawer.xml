@@ -6,17 +6,25 @@
             android:icon="@drawable/ic_home_white_48dp"
             android:title="@string/parking_home" />
         <item
-            android:id="@+id/nav_parking_quanlytaikhoan"
+            android:id="@+id/nav_parking_management"
             android:icon="@mipmap/ic_calendar"
-            android:title="@string/parking_quanlybaido"
+            android:title="@string/parking_management"
             android:visible="false" />
         <item
             android:id="@+id/nav_parking_favorite"
-            android:icon="@drawable/ic_favorite_border_black_36dp"
+            android:icon="@drawable/ic_favorite_border_white_48dp"
             android:title="@string/parking_favorite" />
         <item
-            android:id="@+id/nav_parking_dangxuat"
+            android:id="@+id/nav_parking_transport"
+            android:icon="@drawable/ic_directions_transit_white_48dp"
+            android:title="@string/parking_transport" />
+        <item
+            android:id="@+id/nav_parking_checkin"
+            android:icon="@mipmap/ic_check_in"
+            android:title="@string/parking_checkin" />
+        <item
+            android:id="@+id/nav_parking_logout"
             android:icon="@mipmap/ic_logout"
-            android:title="@string/parking_dangxuat" />
+            android:title="@string/parking_logout" />
     </group>
 </menu>

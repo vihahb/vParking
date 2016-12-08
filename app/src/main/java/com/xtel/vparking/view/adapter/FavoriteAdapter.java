@@ -196,7 +196,7 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
                         getNewSessionAddToFavorite(id);
                     else {
                         progressDialog.dismiss();
-                        JsonParse.getCodeError(view.getActivity(), null, error.getCode(), "Không thể thêm vào danh sách yêu thích");
+                        JsonParse.getCodeError(view.getActivity(), null, error.getCode(), "Không thể xóa khỏi danh sách yêu thích");
                     }
                 else {
                     progressDialog.dismiss();

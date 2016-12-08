@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    tools:context=".view.activity.AddParkingActivity"
+    tools:ignore="MissingPrefix">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp">
+
+        <ImageView
+            android:id="@+id/img_add_parking_picture"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_parking_background" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager_add_parking"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/txt_add_parking_image_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end|right"
+            android:layout_marginEnd="@dimen/size_16"
+            android:layout_marginRight="@dimen/size_16"
+            android:layout_marginTop="@dimen/size_8"
+            android:text="0/0"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/white" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end|right"
+            android:background="@android:color/transparent"
+            android:contentDescription="@null"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="TakePicture"
+            android:paddingBottom="@dimen/size_4"
+            android:paddingEnd="@dimen/size_12"
+            android:paddingLeft="0dp"
+            android:paddingRight="@dimen/size_12"
+            android:paddingStart="0dp"
+            android:src="@mipmap/ic_picture" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/size_16"
+        android:paddingLeft="@dimen/size_16"
+        android:paddingRight="@dimen/size_16">
+
+        <!--<TextView-->
+        <!--style="@style/AddParking_Textview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/add_vitri"-->
+        <!--android:textColor="@android:color/white" />-->
+
+        <EditText
+            android:id="@+id/edt_add_parking_name"
+            style="@style/AddParking_Editext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_parking_name"
+            app:theme="@style/AddParking_Editext.ButtumLine" />
+
+        <EditText
+            android:id="@+id/edt_add_parking_diacho"
+            style="@style/AddParking_Editext_No_Focus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_keyboard_arrow_right_white_24dp"
+            android:drawablePadding="@dimen/size_16"
+            android:drawableRight="@drawable/ic_keyboard_arrow_right_white_24dp"
+            android:hint="@string/add_address"
+            app:theme="@style/AddParking_Editext.ButtumLine" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/AddParking_Textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_transport"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    style="@style/AddParking_Textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_8"
+                    android:layout_marginStart="@dimen/size_8"
+                    android:text="@string/add_empty"
+                    android:textColor="@android:color/white" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_8">
+
+                <Spinner
+                    android:id="@+id/sp_add_parking_type"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_36"
+                    android:layout_marginEnd="@dimen/size_6"
+                    android:layout_marginRight="@dimen/size_6"
+                    android:background="@drawable/custom_radio_group"
+                    android:entries="@array/add_spinner" />
+
+                <EditText
+                    android:id="@+id/edt_add_parking_empty"
+                    style="@style/AddParking_Editext_Border"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/size_6"
+                    android:layout_marginStart="@dimen/size_6"
+                    android:background="@drawable/custom_radio_group"
+                    android:hint="0"
+                    android:inputType="number"
+                    android:maxLength="7" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/AddParking_Textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_time_open"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    style="@style/AddParking_Textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_8"
+                    android:layout_marginStart="@dimen/size_8"
+                    android:text="@string/add_time_close"
+                    android:textColor="@android:color/white" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_8">
+
+                <EditText
+                    android:id="@+id/edt_add_parking_begin_time"
+                    style="@style/AddParking_Editext_Border_No_Focus"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_36"
+                    android:layout_marginEnd="@dimen/size_6"
+                    android:layout_marginRight="@dimen/size_6"
+                    android:hint="@string/add_time_zero"
+                    app:theme="@style/AddParking_Editext.ButtumLine" />
+
+                <EditText
+                    android:id="@+id/edt_add_parking_end_time"
+                    style="@style/AddParking_Editext_Border_No_Focus"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_36"
+                    android:layout_marginLeft="@dimen/size_6"
+                    android:layout_marginStart="@dimen/size_6"
+                    android:hint="@string/add_time_zero" />
+            </TableRow>
+        </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    style="@style/AddParking_Textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/size_8"
+                    android:layout_marginRight="@dimen/size_8"
+                    android:text="@string/add_price"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    style="@style/AddParking_Textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/size_4"
+                    android:layout_marginLeft="@dimen/size_4"
+                    android:layout_marginRight="@dimen/size_4"
+                    android:layout_marginStart="@dimen/size_4"
+                    android:text="@string/add_follow_name"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    style="@style/AddParking_Textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_8"
+                    android:layout_marginStart="@dimen/size_8"
+                    android:text="@string/add_follow_price"
+                    android:textColor="@android:color/white" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_8">
+
+                <EditText
+                    android:id="@+id/edt_add_parking_price"
+                    style="@style/AddParking_Editext_Border"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_36"
+                    android:layout_marginEnd="@dimen/size_8"
+                    android:layout_marginRight="@dimen/size_8"
+                    android:layout_weight="1"
+                    app:theme="@style/AddParking_Editext.ButtumLine" />
+
+                <EditText
+                    android:id="@+id/edt_add_parking_follow_name"
+                    style="@style/AddParking_Editext_Border"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_36"
+                    android:layout_marginEnd="@dimen/size_4"
+                    android:layout_marginLeft="@dimen/size_4"
+                    android:layout_marginRight="@dimen/size_4"
+                    android:layout_marginStart="@dimen/size_4"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:id="@+id/edt_add_parking_follow_price"
+                    style="@style/AddParking_Editext_Border"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_36"
+                    android:layout_marginLeft="@dimen/size_8"
+                    android:layout_marginStart="@dimen/size_8"
+                    android:layout_weight="1" />
+            </TableRow>
+        </TableLayout>
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/size_36"-->
+        <!--android:layout_marginTop="@dimen/size_16"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<ImageButton-->
+        <!--android:id="@+id/imageButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginEnd="-2dp"-->
+        <!--android:layout_marginRight="-2dp"-->
+        <!--android:background="@drawable/custom_imagebutton_left"-->
+        <!--android:contentDescription="@null"-->
+        <!--android:onClick="addPlace"-->
+        <!--android:paddingLeft="@dimen/size_2"-->
+        <!--android:paddingRight="@dimen/size_2"-->
+        <!--android:scaleType="fitCenter"-->
+        <!--android:src="@drawable/ic_add_white_48dp" />-->
+
+        <!--<ImageButton-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@drawable/custom_imagebutton_right"-->
+        <!--android:contentDescription="@null"-->
+        <!--android:onClick="removePlace"-->
+        <!--android:paddingLeft="@dimen/size_2"-->
+        <!--android:paddingRight="@dimen/size_2"-->
+        <!--android:scaleType="fitCenter"-->
+        <!--android:src="@drawable/ic_remove_white_48dp"-->
+        <!--android:id="@+id/imageButton2" />-->
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<TextView-->
+        <!--style="@style/AddParking_Textview"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:paddingEnd="@dimen/size_16"-->
+        <!--android:paddingLeft="0dp"-->
+        <!--android:paddingRight="@dimen/size_16"-->
+        <!--android:paddingStart="0dp"-->
+        <!--android:text="@string/add_mucgia"-->
+        <!--android:textColor="@android:color/white" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/txt_add_parking_money"-->
+        <!--style="@style/AddParking_Textview"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="0k"-->
+        <!--android:textColor="@android:color/white" />-->
+        <!--</LinearLayout>-->
+
+        <!--<SeekBar-->
+        <!--android:id="@+id/seek_bar_add_parking_money"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/size_16"-->
+        <!--android:max="30"-->
+        <!--android:progressDrawable="@drawable/custom_seekbar"-->
+        <!--android:thumb="@drawable/seekbar_thunb" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/edt_add_parking_begin_time"-->
+        <!--style="@style/AddParking_Editext_No_Focus"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="@string/add_thoigianmo"-->
+        <!--app:theme="@style/AddParking_Editext.ButtumLine" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/edt_add_parking_end_time"-->
+        <!--style="@style/AddParking_Editext_No_Focus"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="@string/add_thoigiandong"-->
+        <!--app:theme="@style/AddParking_Editext.ButtumLine" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/edt_add_parking_desc"-->
+        <!--style="@style/AddParking_Editext"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/size_16"-->
+        <!--android:hint="@string/add_parking_des"-->
+        <!--android:inputType="text"-->
+        <!--android:maxLines="2"-->
+        <!--android:paddingBottom="@dimen/size_16"-->
+        <!--android:paddingEnd="0dp"-->
+        <!--android:paddingLeft="0dp"-->
+        <!--android:paddingRight="0dp"-->
+        <!--android:paddingStart="0dp"-->
+        <!--android:paddingTop="@dimen/size_8"-->
+        <!--android:textAppearance="?android:attr/textAppearance"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--android:textColorHint="@android:color/white"-->
+        <!--app:theme="@style/AddParking_Editext.ButtumLine" />-->
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_60"
+        android:background="@color/btn_fb_plus"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="addParking"
+        android:text="@string/add_dangtin"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white" />
+</LinearLayout>
