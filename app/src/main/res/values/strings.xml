@@ -41,11 +41,14 @@
     <string name="hoantat">Hoàn tất</string>
     <string name="parking_get_data" tools:ignore="TypographyEllipsis">Đang tải dữ liệu...</string>
     <string name="loi_coloi">Có lỗi xảy ra</string>
+    <string name="get_session_success">Lấy phiên mới thành công</string>
 
     <!-- Profile -->
     <string name="email">E-mail</string>
     <string name="gender">Giới tính</string>
     <string name="full_name">Họ tên</string>
+    <string name="clear_name">Họ tên has cleaned</string>
+    <string name="clear_email">E-mail has cleaned</string>
     <string name="update_btn">Cập nhật</string>
     <string name="update_message">Đang cập nhật thông tin...</string>
     <string name="update_message_picture">Đang cập nhật ảnh đại diện...</string>
@@ -56,6 +59,7 @@
     <string name="update_message_failed_address">Vui lòng diền địa chỉ</string>
     <string name="update_message_failed_email">Vui lòng diền địa chỉ mail</string>
     <string name="update_message_failed_phone">Vui lòng xác thực số điện thoại</string>
+    <string name="update_message_failed">Lỗi update: </string>
 
     <!-- Setting -->
     <string name="tatca">Tất cả</string>

@@ -189,7 +189,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         } else if (id == R.id.nav_parking_dangxuat) {
             LoginManager.getInstance().logOut();
             SharedPreferencesUtils.getInstance().clearData();
-            startActivityAndFinish(MainActivity.class);
+            startActivityAndFinish(LoginActivity.class);
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -226,7 +226,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         int id = v.getId();
 
         if (id == R.id.header_img_avatar) {
-            startActivity(ProfileActivity.class);
+            startActivity(ProfileActivitys.class);
             drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.home_btn_active) {
             homePresenter.activeParkingMaster();

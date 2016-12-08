@@ -27,7 +27,6 @@ import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
-import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_FLAG;

@@ -90,10 +90,6 @@
                 <data android:scheme="@string/ak_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <!--<activity-->
-            <!--android:name=".view.activity.MainActivity"-->
-            <!--android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"-->
-            <!--android:label="@string/title_activity_maps" />-->
         <activity
             android:name=".view.activity.MapsActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
@@ -106,22 +102,10 @@
             android:name=".view.activity.AddParkingActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
             android:label="@string/title_activity_tao_bai_do" />
-        <!-- <activity -->
-        <!-- android:name=".view.activity.UserSignUpActivity" -->
-        <!-- android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize" -->
-        <!-- android:theme="@style/AppTheme" /> -->
-        <!-- <activity -->
-        <!-- android:name=".view.activity.OtpVeryficationActivity" -->
-        <!-- android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize" -->
-        <!-- android:theme="@style/AppTheme" /> -->
         <activity
-            android:name=".view.activity.ProfileActivity"
+            android:name=".view.activity.ProfileActivitys"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
             android:label="@string/user_info" />
-        <!-- <activity -->
-        <!-- android:name=".view.activity.SettingActivity" -->
-        <!-- android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize" -->
-        <!-- android:theme="@style/AppTheme" /> -->
         <activity
             android:name=".view.activity.FindAdvancedActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
@@ -147,7 +131,7 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
-            />
+            android:label="@string/title_activity_maps"/>
     </application>
 
 </manifest>

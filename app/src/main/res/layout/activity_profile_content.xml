@@ -7,7 +7,7 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    tool:context="com.xtel.vparking.view.activity.ProfileActivity">
+    tool:context="com.xtel.vparking.view.activity.ProfileActivitys">
 
         <LinearLayout
             android:layout_width="match_parent"
