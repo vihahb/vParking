@@ -26,9 +26,20 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <include
-            layout="@layout/activity_add_parking_content"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/activity_add_parking_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--<include-->
+                <!--layout="@layout/demo_layout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>

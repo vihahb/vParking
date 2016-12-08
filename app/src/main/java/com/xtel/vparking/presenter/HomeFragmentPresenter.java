@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
@@ -83,15 +84,17 @@ public class HomeFragmentPresenter {
     }
 
     private void getNewSessionParkingInfo(final int id) {
+        Log.e("home", "old: " +LoginModel.getInstance().getSession());
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
                 getParkingInfo(id);
+                Log.e("home", "new: " +LoginModel.getInstance().getSession());
             }
 
             @Override
             public void onError() {
-                view.showShortToast(view.getActivity().getString(R.string.error_session_invalid));
+                view.onGetParkingInfoError(new Error(2, "ERROR", view.getActivity().getString(R.string.error_session_invalid)));
             }
         });
     }

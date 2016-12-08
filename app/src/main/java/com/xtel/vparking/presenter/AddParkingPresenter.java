@@ -1,6 +1,8 @@
 package com.xtel.vparking.presenter;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.google.gson.JsonArray;
@@ -20,6 +22,8 @@ import com.xtel.vparking.view.activity.inf.AddParkingView;
 
 import java.util.ArrayList;
 
+import gun0912.tedbottompicker.TedBottomPicker;
+
 /**
  * Created by Lê Công Long Vũ on 12/2/2016.
  */
@@ -31,22 +35,34 @@ public class AddParkingPresenter {
         this.view = view;
     }
 
+    public void takePicture(FragmentManager fragmentManager) {
+        TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(view.getActivity())
+                .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+                    @Override
+                    public void onImageSelected(final Uri uri) {
+                        Log.e("tb_uri", "uri: " + uri);
+                        Log.e("tb_path", "uri.geta: " + uri.getPath());
+
+                        view.onTakePictureSuccess(uri);
+                    }
+                })
+                .setPeekHeight(view.getActivity().getResources().getDisplayMetrics().heightPixels / 2)
+                .create();
+        bottomSheetDialogFragment.show(fragmentManager);
+    }
+
     public void postImage(Bitmap bitmap) {
         new Task.ConvertImage(view.getActivity(), true, new RequestWithStringListener() {
             @Override
             public void onSuccess(String url) {
-                view.onTakePictureSucces(url);
+                view.onPostPictureSuccess(url);
             }
 
             @Override
             public void onError() {
-                view.onTakePictureError();
+                view.onPostPictureError("Xảy ra lỗi. Vui lòng thử lại");
             }
         }).execute(bitmap);
-    }
-
-    public void postImage() {
-
     }
 
     public void addParking(final double lat, final double lng, final int type, final String address, final String begin_time, final String end_time,

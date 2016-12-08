@@ -7,9 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -39,8 +39,6 @@ import com.xtel.vparking.view.widget.BitmapTransform;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import gun0912.tedbottompicker.TedBottomPicker;
 
 public class AddParkingActivity extends BasicActivity implements View.OnClickListener, AddParkingView {
 
@@ -148,61 +146,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     }
 
     public void TakePicture(final View view) {
-        TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(AddParkingActivity.this)
-                .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
-                    @Override
-                    public void onImageSelected(final Uri uri) {
-                        Log.e("tb_uri", "uri: " + uri);
-                        Log.e("tb_path", "uri.geta: " + uri.getPath());
-
-                        showProgressBar(false, false, null, "Upda file...");
-
-                        Picasso.with(AddParkingActivity.this)
-                                .load(uri)
-                                .transform(new BitmapTransform(1200, 1200))
-                                .fit()
-                                .centerCrop()
-                                .into(img_load, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                        Bitmap bitmap = ((BitmapDrawable) img_load.getDrawable()).getBitmap();
-                                        Log.e("tb_img_width", "how: " + bitmap.getWidth());
-                                        presenter.postImage(bitmap);
-                                    }
-
-                                    @Override
-                                    public void onError() {
-
-                                    }
-                                });
-                    }
-                })
-                .setPeekHeight(getResources().getDisplayMetrics().heightPixels / 2)
-                .create();
-        bottomSheetDialogFragment.show(getSupportFragmentManager());
-
-//        Task.TakeBigPicture(AddParkingActivity.this, getSupportFragmentManager(), true, new RequestWithStringListener() {
-//            @Override
-//            public void onSuccess(String url) {
-//                arrayList_file.add(url);
-//                viewPager.getAdapter().notifyDataSetChanged();
-//
-//                if (arrayList_file.size() == 1)
-//                    txt_image_number.setText("1/1");
-//                else {
-//                    String text = (viewPager.getCurrentItem() + 1) + "/" + arrayList_file.size();
-//                    txt_image_number.setText(text);
-//                }
-//
-////                closeProgressBar();
-//            }
-//
-//            @Override
-//            public void onError() {
-////                closeProgressBar();
-//                showShortToast("Không thể chọn ảnh");
-//            }
-//        });
+        presenter.takePicture(getSupportFragmentManager());
     }
 
     private void getAddress() {
@@ -384,7 +328,32 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     }
 
     @Override
-    public void onTakePictureSucces(String url) {
+    public void onTakePictureSuccess(Uri uri) {
+        showProgressBar(false, false, null, "Upda file...");
+
+        Picasso.with(AddParkingActivity.this)
+                .load(uri)
+                .placeholder(R.mipmap.ic_parking_background)
+                .error(R.mipmap.ic_parking_background)
+                .transform(new BitmapTransform(1200, 1200))
+                .fit()
+                .centerCrop()
+                .into(img_load, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Bitmap bitmap = ((BitmapDrawable) img_load.getDrawable()).getBitmap();
+                        presenter.postImage(bitmap);
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void onPostPictureSuccess(String url) {
         arrayList_file.add(url);
         viewPager.getAdapter().notifyDataSetChanged();
 
@@ -395,20 +364,20 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
             txt_image_number.setText(text);
         }
 
-//        if (arrayList_file.size() > 0) {
-//            img_load.setVisibility(View.GONE);
-//            img_load.setImageResource(R.mipmap.ic_parking_background);
-//        } else {
-//            img_load.setImageResource(View.VISIBLE);
-            img_load.setImageResource(R.mipmap.ic_parking_background);
-//        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                img_load.setImageResource(R.mipmap.ic_parking_background);
+            }
+        }, 1000);
 
         closeProgressBar();
     }
 
     @Override
-    public void onTakePictureError() {
+    public void onPostPictureError(String error) {
         closeProgressBar();
+        showShortToast(error);
     }
 
     @Override

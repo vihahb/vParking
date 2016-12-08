@@ -25,9 +25,10 @@
     <!-- Parking -->
     <string name="parking_checkin">Check in</string>
     <string name="parking_home">Trang chủ</string>
-    <string name="parking_quanlybaido">Quản lý bãi đỗ</string>
-    <string name="parking_favorite">Bãi đỗ yêu thích</string>
-    <string name="parking_dangxuat">Đăng xuất</string>
+    <string name="parking_management">Bãi đỗ</string>
+    <string name="parking_favorite">Yêu thích</string>
+    <string name="parking_transport">Phương tiện</string>
+    <string name="parking_logout">Đăng xuất</string>
     <string name="parking_timkiemnangcao">Tìm kiếm nâng cao</string>
     <string name="isMaster">Kích hoạt chủ bãi đỗ</string>
     <string name="isUser">Tôi là người gửi xe</string>
@@ -66,13 +67,18 @@
     <string name="add_vitri">Vị trí</string>
     <string name="add_parking_name">Tên bãi đỗ</string>
     <string name="add_parking_des">Giới thiệu bãi đỗ</string>
-    <string name="add_diachi">Địa chỉ</string>
-    <string name="add_chotrong">Chỗ trống tối đa</string>
+    <string name="add_address">Địa chỉ</string>
+    <string name="add_transport">Phương tiện</string>
+    <string name="add_empty">Chỗ trống</string>
     <string name="add_mucgia">Mức giá theo giờ</string>
-    <string name="add_thoigianmo">Thời gian mở cửa</string>
-    <string name="add_thoigiandong">Thời gian đóng cửa</string>
+    <string name="add_time_open">Thời gian mở cửa</string>
+    <string name="add_time_close">Thời gian đóng cửa</string>
+    <string name="add_time_zero">00:00</string>
     <string name="add_dangtin">Đăng tin</string>
     <string name="add_them">Thêm bãi đỗ</string>
+    <string name="add_price">Giá</string>
+    <string name="add_follow_name">Theo tên</string>
+    <string name="add_follow_price">Theo giá</string>
     <string name="all_vehicle">Số xe muốn gửi</string>
     <string name="price">Mức giá</string>
     <string name="subcribe_noti">Nhận thông báo</string>

@@ -1,6 +1,7 @@
 package com.xtel.vparking.view.activity.inf;
 
 import android.app.Activity;
+import android.net.Uri;
 
 import com.xtel.vparking.model.entity.Error;
 
@@ -12,9 +13,10 @@ import java.util.List;
 
 public interface AddParkingView {
 
-    public void onTakePictureSucces(String url);
-    public void onTakePictureError();
-    public void onAddParkingSuccess(int id);
-    public void onAddParkingError(Error error);
-    public Activity getActivity();
+    void onTakePictureSuccess(Uri uri);
+    void onPostPictureSuccess(String url);
+    void onPostPictureError(String error);
+    void onAddParkingSuccess(int id);
+    void onAddParkingError(Error error);
+    Activity getActivity();
 }
