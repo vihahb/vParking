@@ -16,13 +16,17 @@ public class Find implements Serializable {
     @Expose
     private int price_type;
     @Expose
-    private String lat;
-    @Expose
-    private String lng;
-    @Expose
     private String begin_time;
     @Expose
     private String end_time;
+
+    public Find(int type, int price, int price_type, String begin_time, String end_time) {
+        this.type = type;
+        this.price = price;
+        this.price_type = price_type;
+        this.begin_time = begin_time;
+        this.end_time = end_time;
+    }
 
     public int getType() {
         return type;
@@ -46,22 +50,6 @@ public class Find implements Serializable {
 
     public void setPrice_type(int price_type) {
         this.price_type = price_type;
-    }
-
-    public String getLat() {
-        return lat;
-    }
-
-    public void setLat(String lat) {
-        this.lat = lat;
-    }
-
-    public String getLng() {
-        return lng;
-    }
-
-    public void setLng(String lng) {
-        this.lng = lng;
     }
 
     public String getBegin_time() {

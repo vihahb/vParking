@@ -82,6 +82,7 @@ public class Constants {
     public static final String PARKING_LAT = "?lat=";
     public static final String PARKING_LNG = "&lng=";
     public static final String PARKING_PRICE = "&price=";
+    public static final String PARKING_PRICE_TYPE = "&price_type=";
     public static final String PARKING_TYPE = "&type=";
     public static final String PARKING_BEGIN_TIME = "&begin_time=";
     public static final String PARKING_END_TIME = "&end_time=";
