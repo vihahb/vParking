@@ -13,6 +13,8 @@ import com.xtel.vparking.callback.DialogListener;
 import com.xtel.vparking.dialog.DialogNotification;
 import com.xtel.vparking.dialog.DialogProgressBar;
 
+import java.io.Serializable;
+
 /**
  * Created by Lê Công Long Vũ on 12/4/2016.
  */
@@ -82,6 +84,12 @@ public abstract class BasicFragment extends Fragment {
 
     protected void startActivityForResult(Class clazz, int requestCode) {
         startActivityForResult(new Intent(getActivity(), clazz), requestCode);
+    }
+
+    protected void startActivityForResult(Class clazz, String key, Object object, int requestCode) {
+        Intent intent = new Intent(getActivity(), clazz);
+        intent.putExtra(key, (Serializable) object);
+        startActivityForResult(intent, requestCode);
     }
 
     protected void startActivityForResultWithInteger(Class clazz, String key, int data, int requestCode) {

@@ -111,6 +111,8 @@ public class HomeFragmentPresenter {
         if (find.getEnd_time() != null)
             url += Constants.PARKING_END_TIME + find.getEnd_time();
 
+        Log.e("home", "url search " + url);
+
         ParkingModel.getInstanse().getParkingAround(url, new ResponseHandle<RESP_Parking>(RESP_Parking.class) {
             @Override
             public void onSuccess(RESP_Parking obj) {

@@ -36,7 +36,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".view.activity.SplashScreenActivity"
+        <activity
+            android:name=".view.activity.SplashScreenActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -127,11 +128,15 @@
             android:name=".view.activity.FavoriteActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
             android:label="@string/title_activity_favorite" />
-        <activity android:name=".view.activity.ParkingInfoActivity"></activity>
+        <activity android:name=".view.activity.ParkingInfoActivity" />
         <activity
             android:name=".view.activity.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
-            android:label="@string/title_activity_maps"/>
+            android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".view.activity.VerhicleActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:label="@string/title_activity_verhicle" />
     </application>
 
 </manifest>

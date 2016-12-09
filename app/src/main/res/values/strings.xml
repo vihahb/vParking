@@ -6,6 +6,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Maps</string>
+    <string name="title_activity_verhicle">Phương tiện</string>
     <string name="title_activity_home">Tìm bãi đỗ xe</string>
     <string name="title_activity_tao_bai_do">Tạo bãi đỗ</string>
     <string name="title_activity_check_in">Check in QR</string>
@@ -102,6 +103,7 @@
     <string name="loi_chongio_dongcua">Vui lòng chọn thời gian đóng của</string>
     <string name="loi_loaibaido">Vui lòng chọn loại bãi đỗ</string>
     <string name="loi_addparking">Đăng tin thất bại</string>
+    <string name="loi_chontien">Số tiền không hợp lệ</string>
     <string name="success_addparking">Đăng tin thành công</string>
     <string name="text_back_press_to_exit">Nhấn Back 2 lần để thoát</string>
     <string name="user_info">Thông tin chi tiết</string>
@@ -185,4 +187,6 @@
     <string name="facebook_app_id">1623661414599437</string>
     <string name="ak_login_protocol_scheme">ak1623661414599437</string>
     <string name="account_kit_client_token">48e3188e71531cff2966c8fdf0f5ed91</string>
+
+    <string name="add_verhicle">Thêm Phương tiên</string>
 </resources>
