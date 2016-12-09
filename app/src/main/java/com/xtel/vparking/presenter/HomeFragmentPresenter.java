@@ -49,6 +49,14 @@ public class HomeFragmentPresenter {
         HomeActivity.PARKING_ID = -1;
     }
 
+    public void checkFindOption(Find find_option) {
+        if (find_option.getType() == -1 && find_option.getPrice_type() == -1 && find_option.getPrice() == -1 &&
+                find_option.getBegin_time() == null && find_option.getEnd_time() == null)
+            view.onCheckFindOptionSuccess(R.mipmap.ic_filter);
+        else
+            view.onCheckFindOptionSuccess(R.mipmap.ic_edit_filter);
+    }
+
     public LatLng getMyLocation() {
         if (HomeFragment.mGoogleApiClient.isConnected()) {
             if (checkPermission()) {
@@ -83,12 +91,12 @@ public class HomeFragmentPresenter {
     }
 
     private void getNewSessionParkingInfo(final int id) {
-        Log.e("home", "old: " +LoginModel.getInstance().getSession());
+        Log.e("home", "old: " + LoginModel.getInstance().getSession());
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
                 getParkingInfo(id);
-                Log.e("home", "new: " +LoginModel.getInstance().getSession());
+                Log.e("home", "new: " + LoginModel.getInstance().getSession());
             }
 
             @Override

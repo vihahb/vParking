@@ -132,12 +132,10 @@ public class HomeFragment extends BasicFragment implements
     }
 
     private void initWidget(View view) {
-//        LinearLayout layout_timkiem = (LinearLayout) view.findViewById(R.id.layout_parking_timkiem);
         fab_filter = (FloatingActionButton) view.findViewById(R.id.fab_parking_fillter);
         fab_thongbao = (FloatingActionButton) view.findViewById(R.id.fab_parking_thongbao);
         fab_location = (FloatingActionButton) view.findViewById(R.id.fab_parking_location);
 
-//        layout_timkiem.setOnClickListener(this);
         fab_filter.setOnClickListener(this);
         fab_location.setOnClickListener(this);
     }
@@ -188,6 +186,7 @@ public class HomeFragment extends BasicFragment implements
                 } else if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     showFloatingActionButton(fab_location);
                     showFloatingActionButton(fab_thongbao);
+                    showFloatingActionButton(fab_filter);
 
                     dialogBottomSheet.changeCloseToFavorite();
                     dialogBottomSheet.clearData();
@@ -303,6 +302,7 @@ public class HomeFragment extends BasicFragment implements
     private void showDialogParkingDetail() {
         hideFloatingActionButton(fab_location);
         hideFloatingActionButton(fab_thongbao);
+        hideFloatingActionButton(fab_filter);
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         dialogBottomSheet.initData(resp_parking_info);
@@ -489,6 +489,7 @@ public class HomeFragment extends BasicFragment implements
     public void onResume() {
         super.onResume();
         presenter.checkResultSearch();
+        presenter.checkFindOption(find_option);
 
         if (mGoogleApiClient.isConnected())
             try {
@@ -551,34 +552,6 @@ public class HomeFragment extends BasicFragment implements
         }
     }
 
-//    private void clearMarker(final int possition) {
-//        if (possition == -1) {
-//            isCanLoadMap = true;
-//            return;
-//        }
-//
-//        try {
-//            if (possition < markerList.size()) {
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        for (int i = possition; i >= 0; i--) {
-//                            if (markerList.get(i) != null) {
-//                                markerList.get(i).getMarker().remove();
-//                                markerList.remove(i);
-//                            }
-//                        }
-//
-//                    }
-//                }, 100);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        isCanLoadMap = true;
-//    }
-
     private void clearMarker() {
         if (markerList.size() > 0)
             for (int i = (markerList.size() - 1); i >= 0; i--) {
@@ -586,19 +559,6 @@ public class HomeFragment extends BasicFragment implements
                 markerList.remove(i);
             }
     }
-
-//    private void changeMarkerPosition(ArrayList<Parking> arrayList) {
-//        if (arrayList.size() < markerList.size()) {
-//            for (int i = (markerList.size() - 1); i >= 0; i--) {
-//                markerList.get(i).getMarker().setPosition(arrayList.get(i).);
-//            }
-//        } else if (arrayList.size() == markerList.size()) {
-//
-//        } else if (arrayList.size() > markerList.size()) {
-//
-//        }
-//        isCanLoadMap = true;
-//    }
 
     @Override
     public void showShortToast(String message) {
@@ -835,5 +795,10 @@ public class HomeFragment extends BasicFragment implements
     @Override
     public void onGetPolylineError(String error) {
         showShortToast(error);
+    }
+
+    @Override
+    public void onCheckFindOptionSuccess(int image) {
+        fab_filter.setImageResource(image);
     }
 }

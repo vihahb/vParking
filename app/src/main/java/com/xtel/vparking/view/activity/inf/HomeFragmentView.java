@@ -26,5 +26,6 @@ public interface HomeFragmentView extends IView {
     void onGetParkingAroundError(Error error);
     void onGetPolylineSuccess(LatLng latLng, PolylineOptions polylineOptions);
     void onGetPolylineError(String error);
+    void onCheckFindOptionSuccess(int image);
     Activity getActivity();
 }
