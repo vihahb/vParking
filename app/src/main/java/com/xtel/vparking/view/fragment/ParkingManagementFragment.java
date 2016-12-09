@@ -100,7 +100,7 @@ public class ParkingManagementFragment extends BasicFragment implements Manageme
 
     private void checkListData() {
         if (arrayList.size() == 0) {
-            progressView.updateData(R.mipmap.icon_parking, "Bạn chưa có bãi đỗ nào", "Tải lại");
+            progressView.updateData(R.mipmap.icon_parking, "Bạn chưa có bãi đỗ nào", "Kiểm tra lại");
             progressView.showData();
         } else {
             recyclerView.getAdapter().notifyDataSetChanged();

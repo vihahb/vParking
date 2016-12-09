@@ -128,7 +128,7 @@
                     android:layout_marginEnd="@dimen/size_6"
                     android:layout_marginRight="@dimen/size_6"
                     android:background="@drawable/custom_radio_group"
-                    android:entries="@array/add_spinner" />
+                    android:entries="@array/add_transport" />
 
                 <EditText
                     android:id="@+id/edt_add_parking_empty"
@@ -243,133 +243,29 @@
                     android:layout_marginEnd="@dimen/size_8"
                     android:layout_marginRight="@dimen/size_8"
                     android:layout_weight="1"
+                    android:inputType="number"
+                    android:maxLength="9"
                     app:theme="@style/AddParking_Editext.ButtumLine" />
 
-                <EditText
-                    android:id="@+id/edt_add_parking_follow_name"
-                    style="@style/AddParking_Editext_Border"
+                <Spinner
+                    android:id="@+id/sp_add_parking_transport"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/size_36"
-                    android:layout_marginEnd="@dimen/size_4"
-                    android:layout_marginLeft="@dimen/size_4"
-                    android:layout_marginRight="@dimen/size_4"
-                    android:layout_marginStart="@dimen/size_4"
-                    android:layout_weight="1" />
+                    android:layout_marginEnd="@dimen/size_6"
+                    android:layout_marginRight="@dimen/size_6"
+                    android:background="@drawable/custom_radio_group"
+                    android:entries="@array/add_transport" />
 
-                <EditText
-                    android:id="@+id/edt_add_parking_follow_price"
-                    style="@style/AddParking_Editext_Border"
+                <Spinner
+                    android:id="@+id/sp_add_parking_price_type"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/size_36"
-                    android:layout_marginLeft="@dimen/size_8"
-                    android:layout_marginStart="@dimen/size_8"
-                    android:layout_weight="1" />
+                    android:layout_marginEnd="@dimen/size_6"
+                    android:layout_marginRight="@dimen/size_6"
+                    android:background="@drawable/custom_radio_group"
+                    android:entries="@array/add_price_type" />
             </TableRow>
         </TableLayout>
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/size_36"-->
-        <!--android:layout_marginTop="@dimen/size_16"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<ImageButton-->
-        <!--android:id="@+id/imageButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_marginEnd="-2dp"-->
-        <!--android:layout_marginRight="-2dp"-->
-        <!--android:background="@drawable/custom_imagebutton_left"-->
-        <!--android:contentDescription="@null"-->
-        <!--android:onClick="addPlace"-->
-        <!--android:paddingLeft="@dimen/size_2"-->
-        <!--android:paddingRight="@dimen/size_2"-->
-        <!--android:scaleType="fitCenter"-->
-        <!--android:src="@drawable/ic_add_white_48dp" />-->
-
-        <!--<ImageButton-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="@drawable/custom_imagebutton_right"-->
-        <!--android:contentDescription="@null"-->
-        <!--android:onClick="removePlace"-->
-        <!--android:paddingLeft="@dimen/size_2"-->
-        <!--android:paddingRight="@dimen/size_2"-->
-        <!--android:scaleType="fitCenter"-->
-        <!--android:src="@drawable/ic_remove_white_48dp"-->
-        <!--android:id="@+id/imageButton2" />-->
-        <!--</LinearLayout>-->
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<TextView-->
-        <!--style="@style/AddParking_Textview"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:paddingEnd="@dimen/size_16"-->
-        <!--android:paddingLeft="0dp"-->
-        <!--android:paddingRight="@dimen/size_16"-->
-        <!--android:paddingStart="0dp"-->
-        <!--android:text="@string/add_mucgia"-->
-        <!--android:textColor="@android:color/white" />-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/txt_add_parking_money"-->
-        <!--style="@style/AddParking_Textview"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="0k"-->
-        <!--android:textColor="@android:color/white" />-->
-        <!--</LinearLayout>-->
-
-        <!--<SeekBar-->
-        <!--android:id="@+id/seek_bar_add_parking_money"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/size_16"-->
-        <!--android:max="30"-->
-        <!--android:progressDrawable="@drawable/custom_seekbar"-->
-        <!--android:thumb="@drawable/seekbar_thunb" />-->
-
-        <!--<EditText-->
-        <!--android:id="@+id/edt_add_parking_begin_time"-->
-        <!--style="@style/AddParking_Editext_No_Focus"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="@string/add_thoigianmo"-->
-        <!--app:theme="@style/AddParking_Editext.ButtumLine" />-->
-
-        <!--<EditText-->
-        <!--android:id="@+id/edt_add_parking_end_time"-->
-        <!--style="@style/AddParking_Editext_No_Focus"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="@string/add_thoigiandong"-->
-        <!--app:theme="@style/AddParking_Editext.ButtumLine" />-->
-
-        <!--<EditText-->
-        <!--android:id="@+id/edt_add_parking_desc"-->
-        <!--style="@style/AddParking_Editext"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/size_16"-->
-        <!--android:hint="@string/add_parking_des"-->
-        <!--android:inputType="text"-->
-        <!--android:maxLines="2"-->
-        <!--android:paddingBottom="@dimen/size_16"-->
-        <!--android:paddingEnd="0dp"-->
-        <!--android:paddingLeft="0dp"-->
-        <!--android:paddingRight="0dp"-->
-        <!--android:paddingStart="0dp"-->
-        <!--android:paddingTop="@dimen/size_8"-->
-        <!--android:textAppearance="?android:attr/textAppearance"-->
-        <!--android:textColor="@android:color/white"-->
-        <!--android:textColorHint="@android:color/white"-->
-        <!--app:theme="@style/AddParking_Editext.ButtumLine" />-->
     </LinearLayout>
 
     <Button

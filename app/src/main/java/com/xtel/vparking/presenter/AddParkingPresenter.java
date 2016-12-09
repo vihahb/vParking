@@ -4,9 +4,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.View;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.RequestWithStringListener;
@@ -16,7 +15,11 @@ import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.Pictures;
+import com.xtel.vparking.model.entity.PlaceModel;
+import com.xtel.vparking.model.entity.Prices;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
+import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.Task;
 import com.xtel.vparking.view.activity.inf.AddParkingView;
 
@@ -65,54 +68,72 @@ public class AddParkingPresenter {
         }).execute(bitmap);
     }
 
-    public void addParking(final double lat, final double lng, final int type, final String address, final String begin_time, final String end_time,
-                           final String parking_name, final String desc, final int total_place, final int prices, final ArrayList<String> arrayList_file) {
+    public void validateData(View _view, ArrayList<Pictures> arrayList_picture, String parking_name, PlaceModel placeModel,
+                             int transport_type, String total_place, String begin_time, String end_time,
+                             ArrayList<Prices> arrayList_price) {
+
+        if (arrayList_picture.size() == 0) {
+            view.onValidateError(_view, view.getActivity().getString(R.string.loi_chonanh));
+        } else if (parking_name.isEmpty()) {
+            view.onValidateError(_view, view.getActivity().getString(R.string.loi_nhapten));
+        } else if (placeModel == null) {
+            view.onValidateError(_view, view.getActivity().getString(R.string.loi_vitri));
+        } else if (transport_type == 0) {
+            view.onValidateError(_view, view.getActivity().getString(R.string.error_choose_transport));
+        } else if (checkNumberInput(total_place) <= 0) {
+            view.onValidateError(_view, view.getActivity().getString(R.string.loi_chotrong));
+        } else if (!checkListPrice(arrayList_price)) {
+            view.onValidateError(_view, view.getActivity().getString(R.string.error_choose_money_price));
+        } else {
+            RESP_Parking_Info object = new RESP_Parking_Info();
+            object.setLat(placeModel.getLatitude());
+            object.setLng(placeModel.getLongtitude());
+            object.setType(transport_type);
+            object.setAddress(placeModel.getAddress());
+
+            if (!begin_time.isEmpty())
+                object.setBegin_time(begin_time);
+            if (!end_time.isEmpty())
+                object.setBegin_time(end_time);
+
+            object.setTotal_place(total_place);
+            object.setEmpty_number(total_place);
+            object.setPrices(arrayList_price);
+            object.setPictures(arrayList_picture);
+
+            addParking(object);
+        }
+    }
+
+    private boolean checkListPrice(ArrayList<Prices> arrayList_price) {
+        for (int i = (arrayList_price.size() - 1); i >= 0; i--) {
+            Log.e("tb_list", "item " + i + ":  " + arrayList_price.get(i).getPrice());
+            if (arrayList_price.get(i).getPrice() == 0)
+                return false;
+        }
+        return true;
+    }
+
+    private int checkNumberInput(String number) {
+        try {
+            return Integer.parseInt(number);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    private void addParking(final RESP_Parking_Info resp_parking_info) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
+        String jsonObject = JsonHelper.toJson(resp_parking_info);
         String session = LoginModel.getInstance().getSession();
-        JsonObject json = new JsonObject();
-        json.addProperty(Constants.JSON_LAT, lat);
-        json.addProperty(Constants.JSON_LNG, lng);
-        json.addProperty(Constants.JSON_TYPE, type);
-        json.addProperty(Constants.JSON_ADDRESS, address);
-
-        if (!begin_time.isEmpty())
-            json.addProperty(Constants.JSON_BEGIN_TIME, begin_time);
-        if (!end_time.isEmpty())
-            json.addProperty(Constants.JSON_END_TIME, end_time);
-
-        json.addProperty(Constants.JSON_PARKING_NAME, parking_name);
-
-        if (!desc.isEmpty())
-            json.addProperty(Constants.JSON_PARKING_DESC, "null");
-
-        if (total_place != -1) {
-            json.addProperty(Constants.JSON_TOTAL_PLACE, total_place);
-            json.addProperty(Constants.JSON_EMPTY_NUMBER, total_place);
-        }
-
-//        Add Prices
-        JsonArray all_prices = new JsonArray();
-        JsonObject price = new JsonObject();
-        price.addProperty(Constants.JSON_NAME, "");
-        price.addProperty(Constants.JSON_PRICE, (prices * 5));
-        price.addProperty(Constants.JSON_PRICE_TYPE, 1);
-        all_prices.add(price);
-        json.add(Constants.JSON_PRICES, all_prices);
-
-        JsonArray all_picture = new JsonArray();
-        for (int i = 0; i < arrayList_file.size(); i++) {
-            JsonObject picture = new JsonObject();
-            picture.addProperty(Constants.JSON_URL, arrayList_file.get(i));
-            all_picture.add(picture);
-        }
-        json.add(Constants.JSON_PICTURES, all_picture);
 
         Log.e("tb_session", session);
-        Log.e("tb_url", Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING);
-        Log.e("tb_json", json.toString());
+        Log.e("tb_url", url);
+        Log.e("tb_json", jsonObject);
 
-        String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
-
-        ParkingModel.getInstanse().addParking(url, json.toString(), session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+        ParkingModel.getInstanse().addParking(url, jsonObject, session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
             public void onSuccess(RESP_Parking_Info obj) {
                 view.onAddParkingSuccess(obj.getId());
@@ -121,19 +142,18 @@ public class AddParkingPresenter {
             @Override
             public void onError(Error error) {
                 if (error.getCode() == 2)
-                    getNewSesstionAddParking(lat, lng, type, address, begin_time, end_time, parking_name, desc, total_place, prices, arrayList_file);
+                    getNewSesstionAddParking(resp_parking_info);
                 else
                     view.onAddParkingError(error);
             }
         });
     }
 
-    private void getNewSesstionAddParking(final double lat, final double lng, final int type, final String address, final String begin_time, final String end_time,
-                                          final String parking_name, final String desc, final int total_place, final int prices, final ArrayList<String> arrayList_file) {
+    private void getNewSesstionAddParking(final RESP_Parking_Info resp_parking_info) {
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
-                addParking(lat, lng, type, address, begin_time, end_time, parking_name, desc, total_place, prices, arrayList_file);
+                addParking(resp_parking_info);
             }
 
             @Override

@@ -14,7 +14,7 @@
         app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_tao_bai_do"
+            android:id="@+id/toolbar_add_parking"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -35,11 +35,6 @@
                 layout="@layout/activity_add_parking_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
-            <!--<include-->
-                <!--layout="@layout/demo_layout"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content" />-->
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

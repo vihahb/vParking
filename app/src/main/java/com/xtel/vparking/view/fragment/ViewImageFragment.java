@@ -16,14 +16,14 @@ import com.xtel.vparking.commons.Constants;
  * Created by Lê Công Long Vũ on 11/10/2016.
  */
 
-public class ImageItemFragment extends Fragment {
+public class ViewImageFragment extends Fragment {
     private ImageView imageView;
     private String url;
 
-    public static ImageItemFragment newInstance(String url) {
+    public static ViewImageFragment newInstance(String url) {
         Bundle args = new Bundle();
         args.putString(Constants.PK_IMAGE, url);
-        ImageItemFragment fragment = new ImageItemFragment();
+        ViewImageFragment fragment = new ViewImageFragment();
         fragment.setArguments(args);
         return fragment;
     }

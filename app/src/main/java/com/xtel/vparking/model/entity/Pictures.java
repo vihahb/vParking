@@ -14,6 +14,10 @@ public class Pictures {
     @Expose
     private String url;
 
+    public Pictures(String url) {
+        this.url = url;
+    }
+
     public double getId() {
         return id;
     }

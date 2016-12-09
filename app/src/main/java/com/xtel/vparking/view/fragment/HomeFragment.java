@@ -92,7 +92,7 @@ public class HomeFragment extends BasicFragment implements
     private RESP_Parking_Info resp_parking_info;
 
     private int actionType = -1;
-    private int parkingType = -1, parkingMoney = -1;
+    private Find find_option;
 
     @Nullable
     @Override
@@ -103,6 +103,8 @@ public class HomeFragment extends BasicFragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        find_option = new Find(-1, -1, -1, null, null);
 
         createLocationRequest();
         initGoogleMap();
@@ -293,7 +295,7 @@ public class HomeFragment extends BasicFragment implements
 
         double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
         double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
-        presenter.getParkingAround(latitude, longtitude, parkingMoney, parkingType, null, null);
+        presenter.getParkingAround(latitude, longtitude, find_option);
     }
 
     private void showDialogParkingDetail() {
@@ -408,7 +410,7 @@ public class HomeFragment extends BasicFragment implements
 
             double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
             double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
-            presenter.getParkingAround(latitude, longtitude, parkingMoney, parkingType, null, null);
+            presenter.getParkingAround(latitude, longtitude, find_option);
         }
     }
 
@@ -442,7 +444,7 @@ public class HomeFragment extends BasicFragment implements
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (!isFindMyLocation) {
-            actionType = 0;
+            actionType = 1;
             presenter.getMyLocation();
         }
 
@@ -522,29 +524,17 @@ public class HomeFragment extends BasicFragment implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.FIND_ADVANDCED_RQ && resultCode == Constants.FIND_ADVANDCED_RS) {
-            if (mGoogleApiClient.isConnected()) {
-                if (checkPermission()) {
-                    Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                    if (mLastLocation != null && mMap != null) {
-                        Find findModel = (Find) data.getExtras().getSerializable(Constants.FIND_MODEL);
 
-                        if (findModel != null && isCanLoadMap) {
-                            parkingType = findModel.getType();
-                            parkingMoney = findModel.getPrice();
-                            mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
+            Find findModel = (Find) data.getExtras().getSerializable(Constants.FIND_MODEL);
+            if (findModel != null && isCanLoadMap) {
+                if (!isFindMyLocation)
+                    isFindMyLocation = true;
+                isCanLoadMap = false;
 
-                            if (!isFindMyLocation)
-                                isFindMyLocation = true;
-                            isCanLoadMap = false;
-
-                            presenter.getParkingAround(mLastLocation.getLatitude(), mLastLocation.getLongitude(), findModel.getPrice(), findModel.getType(), null, null);
-                        } else {
-                            Toast.makeText(getContext(), getString(R.string.error_find_advanced), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-            } else
-                mGoogleApiClient.connect();
+                actionType = 1;
+                find_option = findModel;
+                presenter.getMyLocation();
+            }
         } else if (requestCode == HomeActivity.REQUEST_CODE && resultCode == HomeActivity.RESULT_GUID) {
             if (data != null) {
                 int id = data.getIntExtra(Constants.ID_PARKING, -1);
@@ -640,9 +630,6 @@ public class HomeFragment extends BasicFragment implements
     @Override
     public void onGetMyLocationSuccess(LatLng latLng) {
         switch (actionType) {
-            case 0:
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                break;
             case 1:
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 break;

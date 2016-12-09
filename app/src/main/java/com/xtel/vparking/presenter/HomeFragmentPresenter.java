@@ -17,12 +17,11 @@ import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.Error;
-import com.xtel.vparking.model.entity.RESP_Basic;
+import com.xtel.vparking.model.entity.Find;
 import com.xtel.vparking.model.entity.RESP_Parking;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.model.entity.RESP_Router;
 import com.xtel.vparking.model.entity.Steps;
-import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.HomeActivity;
 import com.xtel.vparking.view.activity.inf.HomeFragmentView;
 import com.xtel.vparking.view.fragment.HomeFragment;
@@ -99,16 +98,18 @@ public class HomeFragmentPresenter {
         });
     }
 
-    public void getParkingAround(double lat, double lng, int prices, int type, String begin_time, String end_time) {
+    public void getParkingAround(double lat, double lng, Find find) {
         String url = Constants.SERVER_PARKING + Constants.PARKING_FIND + Constants.PARKING_LAT + lat + Constants.PARKING_LNG + lng;
-        if (prices != -1)
-            url += Constants.PARKING_PRICE + prices;
-        if (type != -1)
-            url += Constants.PARKING_TYPE + type;
-        if (begin_time != null)
-            url += Constants.PARKING_BEGIN_TIME + begin_time;
-        if (end_time != null)
-            url += Constants.PARKING_END_TIME + end_time;
+        if (find.getPrice() != -1)
+            url += Constants.PARKING_PRICE + find.getPrice();
+        if (find.getPrice_type() != -1)
+            url += Constants.PARKING_PRICE_TYPE + find.getPrice_type();
+        if (find.getType() != -1)
+            url += Constants.PARKING_TYPE + find.getType();
+        if (find.getBegin_time() != null)
+            url += Constants.PARKING_BEGIN_TIME + find.getBegin_time();
+        if (find.getEnd_time() != null)
+            url += Constants.PARKING_END_TIME + find.getEnd_time();
 
         ParkingModel.getInstanse().getParkingAround(url, new ResponseHandle<RESP_Parking>(RESP_Parking.class) {
             @Override
