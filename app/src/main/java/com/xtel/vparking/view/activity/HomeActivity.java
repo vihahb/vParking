@@ -179,7 +179,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         } else if (id == R.id.nav_parking_favorite) {
             startActivityForResult(FavoriteActivity.class, REQUEST_CODE);
         } else if (id == R.id.nav_parking_transport) {
-
+            startActivity(AddVerhicleActivity.class);
         } else if (id == R.id.nav_parking_checkin) {
             startActivity(ScanQrActivity.class);
         } else if (id == R.id.nav_parking_logout) {

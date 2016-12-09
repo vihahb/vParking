@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@android:color/white"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/AppbarAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_add_verhicle"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_below="@+id/AppbarAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/size_16"
+                    android:text="@string/verhicle_name"
+                    android:layout_marginBottom="@dimen/size_6"
+                    android:textColor="@color/gray_tv"
+                    android:textSize="15sp" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent">
+
+                    <EditText
+                        android:id="@+id/edt_verhicle_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/custom_edittext_profile"
+                        android:hint="@string/verhicle_name"
+                        android:paddingBottom="@dimen/size_8"
+                        android:paddingEnd="0dp"
+                        android:paddingLeft="@dimen/size_16"
+                        android:paddingRight="0dp"
+                        android:paddingStart="@dimen/size_16"
+                        android:paddingTop="@dimen/size_8"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/btn_clear_email"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginRight="@dimen/size_12"
+                        android:background="@mipmap/ic_close_black_24dp"
+                        android:visibility="gone" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/size_20"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/size_16"
+                        android:text="@string/verhicle_brandname"
+                        android:textColor="@color/gray_tv"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="@dimen/size_6"
+                        android:id="@+id/textView3" />
+
+                    <Spinner
+                        android:id="@+id/spinner_brandname"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/custom_edittext_profile"
+                        android:paddingLeft="@dimen/size_12"
+                        android:paddingRight="@dimen/size_10" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.3"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/size_12"
+                        android:text="@string/verhicle_platenumber"
+                        android:textColor="@color/gray_tv"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="@dimen/size_6"
+                        android:id="@+id/textView" />
+
+                    <EditText
+                        android:id="@+id/edt_birth_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/custom_edittext_profile"
+                        android:focusable="false"
+                        android:hint="@string/verhicle_platenumber"
+                        android:inputType="textEmailAddress"
+                        android:paddingBottom="@dimen/size_8"
+                        android:paddingLeft="@dimen/size_16"
+                        android:paddingStart="@dimen/size_16"
+                        android:paddingRight="@dimen/size_10"
+                        android:paddingTop="@dimen/size_8"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/size_16"
+                    android:text="@string/verhicle_description"
+                    android:layout_marginBottom="@dimen/size_6"
+                    android:textColor="@color/gray_tv"
+                    android:textSize="15sp" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent">
+
+                    <EditText
+                        android:id="@+id/edt_verhicle_des"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/custom_edittext_profile"
+                        android:hint="@string/verhicle_description"
+                        android:paddingBottom="@dimen/size_8"
+                        android:paddingEnd="0dp"
+                        android:lines="3"
+                        android:gravity="top"
+                        android:paddingLeft="@dimen/size_16"
+                        android:paddingRight="0dp"
+                        android:paddingStart="@dimen/size_16"
+                        android:paddingTop="@dimen/size_8"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/btn_clear_des"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginRight="@dimen/size_12"
+                        android:background="@mipmap/ic_close_black_24dp"
+                        android:visibility="gone" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/chk_find_advanced_oto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:button="@drawable/custom_checkbox_done"
+                    android:gravity="left|center"
+                    android:textSize="18sp"
+                    android:text="@string/verhicle_default"
+                    android:textColor="@drawable/custom_checkbox_add_text" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_verhicle_add"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_48"
+        android:background="@color/btn_fb_plus"
+        android:text="@string/verhicle_add"
+        android:textAllCaps="false"
+        android:layout_alignParentBottom="true"
+        android:textColor="@android:color/white" />
+</RelativeLayout>

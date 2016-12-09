@@ -132,6 +132,10 @@
             android:name=".view.activity.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
             android:label="@string/title_activity_maps"/>
+        <activity
+            android:name=".view.activity.AddVerhicleActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:label="@string/verhicle_add" />
     </application>
 
 </manifest>

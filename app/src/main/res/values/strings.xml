@@ -47,6 +47,13 @@
     <string name="loi_coloi">Có lỗi xảy ra</string>
     <string name="get_session_success">Lấy phiên mới thành công</string>
 
+    <!-- Verhicle -->
+    <string name="verhicle_name">Tên phương tiện</string>
+    <string name="verhicle_brandname">Tên hãng</string>
+    <string name="verhicle_platenumber">Biển số</string>
+    <string name="verhicle_description">Mô tả</string>
+    <string name="verhicle_default">Phương tiện mặc định</string>
+    <string name="verhicle_add">Thêm phương tiện</string>
     <!-- Profile -->
     <string name="email">E-mail</string>
     <string name="gender">Giới tính</string>
