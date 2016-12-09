@@ -24,9 +24,11 @@
     </android.support.design.widget.AppBarLayout>
 
     <ScrollView
-        android:layout_below="@+id/AppbarAdd"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/AppbarAdd"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -57,7 +59,7 @@
                     android:background="@android:color/transparent">
 
                     <EditText
-                        android:id="@+id/edt_verhicle_add"
+                        android:id="@+id/edt_verhicle_name"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/custom_edittext_profile"
@@ -112,7 +114,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/custom_edittext_profile"
-                        android:paddingLeft="@dimen/size_12"
+                        android:paddingLeft="@dimen/size_16"
                         android:paddingRight="@dimen/size_10" />
 
                 </LinearLayout>
@@ -134,11 +136,10 @@
                         android:id="@+id/textView" />
 
                     <EditText
-                        android:id="@+id/edt_birth_date"
+                        android:id="@+id/edt_verhicle_plate"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/custom_edittext_profile"
-                        android:focusable="false"
                         android:hint="@string/verhicle_platenumber"
                         android:inputType="textEmailAddress"
                         android:paddingBottom="@dimen/size_8"
@@ -212,18 +213,16 @@
                 android:orientation="horizontal">
 
                 <CheckBox
-                    android:id="@+id/chk_find_advanced_oto"
+                    android:id="@+id/chk_verhicle_default"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:button="@drawable/custom_checkbox_done"
-                    android:gravity="left|center"
                     android:textSize="18sp"
                     android:text="@string/verhicle_default"
                     android:textColor="@drawable/custom_checkbox_add_text" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
     <Button
         android:id="@+id/btn_verhicle_add"
         android:layout_width="match_parent"

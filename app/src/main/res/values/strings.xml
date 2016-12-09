@@ -149,6 +149,7 @@
 
     <!-- Find Advanced -->
     <string name="find_price">Mức giá</string>
+    <string name="button_clear_filter">Clear</string>
 
     <!-- Chi tiết -->
     <string name="rate">Rate</string>

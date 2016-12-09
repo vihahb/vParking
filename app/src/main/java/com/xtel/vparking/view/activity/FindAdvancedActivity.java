@@ -3,6 +3,7 @@ package com.xtel.vparking.view.activity;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -29,24 +30,27 @@ import com.xtel.vparking.presenter.FindAdvancedPresenter;
 import com.xtel.vparking.view.activity.inf.FindAdvancedView;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class FindAdvancedActivity extends BasicActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, FindAdvancedView {
     private EditText edt_price, edt_begin_time, edt_end_time;
     private CheckBox chk_oto, chk_xemay, chk_xedap;
-    private Button btn_find;
+    private Button btn_find, btn_clear;
     private Spinner sp_price_type;
     //Spinner Data
     private ArrayAdapter<String> arrayAdapter;
     private String[] price_type = {"Tất cả", "Giờ", "Lượt", "Qua đêm"};
-    int value_price_type;
     //Date Time Picker
     int hour, minutes;
     String value_time;
-
+    Find findModel;
     int price_type_integer;
     FindAdvancedPresenter presenter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +84,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         chk_xedap = (CheckBox) findViewById(R.id.chk_find_advanced_xedap);
 
         btn_find = (Button) findViewById(R.id.btn_find);
+        btn_clear = (Button) findViewById(R.id.btn_clear_filter);
         initOnClick();
         initSpinner();
         initTime();
@@ -89,6 +94,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         btn_find.setOnClickListener(this);
         edt_begin_time.setOnClickListener(this);
         edt_end_time.setOnClickListener(this);
+        btn_clear.setOnClickListener(this);
     }
 
     private void initTime(){
@@ -187,6 +193,12 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         presenter.getParkingRequest(type, price, price_type, begin_time, end_time);
     }
 
+    private void onResetParkingResult() {
+        presenter.getParkingRequest(-1, -1, -1, null, null);
+        String messages = "Huỷ bỏ lọc bãi đỗ";
+        showShortToast(messages);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home)
@@ -203,6 +215,8 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
             PickTimeDialogBegin();
         } else if (id == R.id.edt_expired_time){
             PickTimeDialogExpired();
+        } else if (id == R.id.btn_clear_filter) {
+            onResetParkingResult();
         }
     }
 
@@ -299,5 +313,103 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         }
 
         return -1;
+    }
+
+    private void setCheckBox(int type) {
+        if (type == 1) {
+            chk_xedap.setChecked(true);
+        } else if (type == 2) {
+            chk_oto.setChecked(true);
+        } else if (type == 3) {
+            chk_xemay.setChecked(true);
+        } else if (type == 4) {
+            chk_xemay.setChecked(true);
+            chk_xedap.setChecked(true);
+        } else if (type == 5) {
+            chk_xemay.setChecked(true);
+            chk_oto.setChecked(true);
+        } else if (type == 6) {
+            chk_xemay.setChecked(true);
+            chk_oto.setChecked(true);
+            chk_xedap.setChecked(true);
+        }
+    }
+
+    private void setBegin(String begin_time) {
+        String begintime = parseHour(begin_time) + ":" + parseMinutes(begin_time);
+        edt_begin_time.setText(begintime);
+        hour = parseHour(begin_time);
+        minutes = parseMinutes(begin_time);
+    }
+
+    private void setEnd(String end_time) {
+        String endtime = parseHour(end_time) + ":" + parseMinutes(end_time);
+        edt_end_time.setText(endtime);
+        hour = parseHour(end_time);
+        minutes = parseMinutes(end_time);
+    }
+
+    private void setPrice(int price) {
+        edt_price.setText(String.valueOf(price));
+    }
+
+    private void setPriceType(int price_types) {
+        if (price_types == 1) {
+            sp_price_type.setSelection(1);
+        } else if (price_types == 2) {
+            sp_price_type.setSelection(2);
+        } else if (price_types == 3) {
+            sp_price_type.setSelection(3);
+        } else {
+            sp_price_type.setSelection(0);
+        }
+    }
+
+    private int parseHour(String time) {
+        int hout_parse = 0;
+        Calendar calendar = Calendar.getInstance();
+        DateFormat timeFormat = new java.text.SimpleDateFormat("HH:mm");
+        try {
+            Date date = timeFormat.parse(time);
+            calendar.setTime(date);
+            hout_parse = calendar.get(Calendar.HOUR_OF_DAY);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return hout_parse;
+    }
+
+    private int parseMinutes(String time) {
+        int minutes_parse = 0;
+        Calendar calendar = Calendar.getInstance();
+        DateFormat timeFormat = new java.text.SimpleDateFormat("HH:mm");
+        try {
+            Date date = timeFormat.parse(time);
+            calendar.setTime(date);
+            minutes_parse = calendar.get(Calendar.MINUTE);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return minutes_parse;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.FIND_ADVANDCED_RQ && resultCode == Constants.FIND_ADVANDCED_RS) {
+            findModel = (Find) data.getExtras().getSerializable(Constants.FIND_MODEL);
+            if (findModel.getBegin_time() != null && findModel.getEnd_time() != null && findModel.getPrice() != -1
+                    && findModel.getPrice_type() != -1 && findModel.getType() != -1) {
+                String begin_time = findModel.getBegin_time();
+                String end_time = findModel.getEnd_time();
+                int type = findModel.getType();
+                int price = findModel.getPrice();
+                int price_type = findModel.getPrice_type();
+                setCheckBox(type);
+                setBegin(begin_time);
+                setEnd(end_time);
+                setPrice(price);
+                setPriceType(price_type);
+            }
+        }
     }
 }

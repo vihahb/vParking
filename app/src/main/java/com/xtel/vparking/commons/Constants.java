@@ -69,6 +69,7 @@ public class Constants {
 
 
     //Server home
+    public static final String GET_BRANDNAME = "v1.0/verhicle/";
     public static final String GET_FLAG = "v1.0/user/parking/flag";
     public static final String GET_USER = "v1.0/user";
     public static final String SERVER_UPLOAD = "http://124.158.5.112:9180/s/files/upload";
@@ -87,6 +88,8 @@ public class Constants {
     public static final String PARKING_BEGIN_TIME = "&begin_time=";
     public static final String PARKING_END_TIME = "&end_time=";
     public static final String PARKING_FLAG = "parking_flag";
+    public static final String BRAND_NAME = "brandname";
+    public static final String BRANDNAME_VERSION = "?version=";
 
 
     public static final String JSON_ERROR = "error";
