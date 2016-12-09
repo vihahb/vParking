@@ -79,7 +79,7 @@ public class HomeFragment extends BasicFragment implements
     public static GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private ArrayList<MarkerModel> markerList;
-    private FloatingActionButton fab_thongbao, fab_location;
+    private FloatingActionButton fab_filter, fab_thongbao, fab_location;
 
     public static BottomSheetBehavior bottomSheetBehavior;
     private boolean isFindMyLocation, isScrollDown, isCanLoadMap = true;
@@ -132,11 +132,13 @@ public class HomeFragment extends BasicFragment implements
     }
 
     private void initWidget(View view) {
-        LinearLayout layout_timkiem = (LinearLayout) view.findViewById(R.id.layout_parking_timkiem);
+//        LinearLayout layout_timkiem = (LinearLayout) view.findViewById(R.id.layout_parking_timkiem);
+        fab_filter = (FloatingActionButton) view.findViewById(R.id.fab_parking_fillter);
         fab_thongbao = (FloatingActionButton) view.findViewById(R.id.fab_parking_thongbao);
         fab_location = (FloatingActionButton) view.findViewById(R.id.fab_parking_location);
 
-        layout_timkiem.setOnClickListener(this);
+//        layout_timkiem.setOnClickListener(this);
+        fab_filter.setOnClickListener(this);
         fab_location.setOnClickListener(this);
     }
 
@@ -418,8 +420,10 @@ public class HomeFragment extends BasicFragment implements
     public void onClick(View v) {
         int id = v.getId();
 
-        if (id == R.id.layout_parking_timkiem) {
-            startActivityForResult(new Intent(getContext(), FindAdvancedActivity.class), Constants.FIND_ADVANDCED_RQ);
+        if (id == R.id.fab_parking_fillter) {
+//            startActivityForResultWithInteger();
+            startActivityForResult(FindAdvancedActivity.class, Constants.FIND_MODEL, find_option, Constants.FIND_ADVANDCED_RQ);
+//            startActivityForResult(new Intent(getContext(), FindAdvancedActivity.class), Constants.FIND_ADVANDCED_RQ);
         } else if (id == R.id.fab_parking_location) {
             if (isCanLoadMap) {
                 if (pickMarker != null)
@@ -527,9 +531,10 @@ public class HomeFragment extends BasicFragment implements
 
             Find findModel = (Find) data.getExtras().getSerializable(Constants.FIND_MODEL);
             if (findModel != null && isCanLoadMap) {
+                Log.e("home", findModel.getPrice() + "   " + findModel.getPrice_type() + "   " + findModel.getType());
+
                 if (!isFindMyLocation)
                     isFindMyLocation = true;
-                isCanLoadMap = false;
 
                 actionType = 1;
                 find_option = findModel;

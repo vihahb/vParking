@@ -2,7 +2,6 @@ package com.xtel.vparking.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -26,7 +25,6 @@ import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.presenter.HomePresenter;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.inf.HomeView;
-import com.xtel.vparking.view.activity.inf.ScanQrView;
 import com.xtel.vparking.view.fragment.HomeFragment;
 import com.xtel.vparking.view.fragment.ParkingManagementFragment;
 
@@ -178,8 +176,8 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
             replaceManagementFragment();
         } else if (id == R.id.nav_parking_favorite) {
             startActivityForResult(FavoriteActivity.class, REQUEST_CODE);
-        } else if (id == R.id.nav_parking_transport) {
-            startActivity(AddVerhicleActivity.class);
+        } else if (id == R.id.nav_parking_verhicle) {
+            startActivity(VerhicleActivity.class);
         } else if (id == R.id.nav_parking_checkin) {
             startActivity(ScanQrActivity.class);
         } else if (id == R.id.nav_parking_logout) {
