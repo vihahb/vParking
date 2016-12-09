@@ -24,6 +24,16 @@ public class Prices {
     @Expose
     private String end_time;
 
+    public Prices() {
+    }
+
+    public Prices(int price, int price_type, int price_for) {
+        this.id = id;
+        this.price = price;
+        this.price_type = price_type;
+        this.price_for = price_for;
+    }
+
     public int getId() {
         return id;
     }

@@ -23,7 +23,6 @@ import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.model.entity.Error;
-import com.xtel.vparking.model.entity.ParkingInfo;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.JsonParse;
@@ -37,7 +36,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import com.xtel.vparking.view.adapter.AddParkingAdapter;
+import com.xtel.vparking.view.adapter.ViewImageAdapter;
 
 /**
  * Created by Lê Công Long Vũ on 11/24/2016.
@@ -114,7 +113,7 @@ public class BottomSheet {
     private void initViewPager(View view) {
         arrayList_bottom_sheet = new ArrayList<>();
         viewPager = (ViewPager) view.findViewById(R.id.viewpager_dialog_bottom_sheet);
-        AddParkingAdapter parkingDetailAdapter = new AddParkingAdapter(fragmentManager, arrayList_bottom_sheet);
+        ViewImageAdapter parkingDetailAdapter = new ViewImageAdapter(fragmentManager, arrayList_bottom_sheet);
         viewPager.setAdapter(parkingDetailAdapter);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

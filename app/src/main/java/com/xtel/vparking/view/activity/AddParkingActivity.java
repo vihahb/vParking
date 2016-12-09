@@ -10,12 +10,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -28,33 +31,37 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
-import com.xtel.vparking.dialog.DialogProgressBar;
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.Pictures;
 import com.xtel.vparking.model.entity.PlaceModel;
+import com.xtel.vparking.model.entity.Prices;
 import com.xtel.vparking.presenter.AddParkingPresenter;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.inf.AddParkingView;
-import com.xtel.vparking.view.adapter.AddParkingAdapter;
+import com.xtel.vparking.view.adapter.ViewImageAdapter;
+import com.xtel.vparking.view.adapter.PriceAdapter;
+import com.xtel.vparking.view.fragment.AddParkingAdapter;
 import com.xtel.vparking.view.widget.BitmapTransform;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AddParkingActivity extends BasicActivity implements View.OnClickListener, AddParkingView {
+public class AddParkingActivity extends BasicActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, AddParkingView {
 
     private AddParkingPresenter presenter;
     //    private ImageView img_picture;
-    private TextView txt_image_number, txt_money;
-    private EditText edt_parking_name, edt_parking_desc, edt_place_number, edt_address, edt_begin_time, edt_end_time;
-    private RadioButton chk_tatca, chk_oto, chk_xemay;
-    private SeekBar seek_money;
+    private TextView txt_image_number;
+    private EditText edt_parking_name, edt_place_number, edt_address, edt_begin_time, edt_end_time;
+    private Spinner sp_transport_type;
+
+    PriceAdapter adapter;
+    private ArrayList<Prices> arrayList_price;
 
     private ViewPager viewPager;
     private ImageView img_load;
 
     private PlaceModel placeModel;
-    private ArrayList<String> arrayList_file;
-    private DialogProgressBar dialogProgressBar;
+    private ArrayList<Pictures> arrayList_picture;
 
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
@@ -63,34 +70,46 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_parking);
 
-        initToolbar(R.id.toolbar_tao_bai_do, null);
+        initToolbar(R.id.toolbar_add_parking, null);
         initWidger();
+        initSpinner();
+        initRecyclerview();
         initListener();
-
         initViewPager();
-        initSelectMoney();
 
         presenter = new AddParkingPresenter(this);
     }
 
     private void initWidger() {
-        txt_image_number = (TextView) findViewById(R.id.txt_tao_bai_do_image_number);
-        img_load = (ImageView) findViewById(R.id.img_tao_bai_do_picture);
-        txt_money = (TextView) findViewById(R.id.txt_tao_bai_do_money);
+        txt_image_number = (TextView) findViewById(R.id.txt_add_parking_image_number);
+        img_load = (ImageView) findViewById(R.id.img_add_parking_picture);
 
-        chk_tatca = (RadioButton) findViewById(R.id.chk_tao_bai_do_tatca);
-        chk_oto = (RadioButton) findViewById(R.id.chk_tao_bai_do_oto);
-        chk_xemay = (RadioButton) findViewById(R.id.chk_tao_bai_do_xemay);
+        edt_parking_name = (EditText) findViewById(R.id.edt_add_parking_name);
+        edt_place_number = (EditText) findViewById(R.id.edt_add_parking_empty);
+        edt_address = (EditText) findViewById(R.id.edt_add_parking_diacho);
+        edt_begin_time = (EditText) findViewById(R.id.edt_add_parking_begin_time);
+        edt_end_time = (EditText) findViewById(R.id.edt_add_parking_end_time);
 
-        edt_parking_name = (EditText) findViewById(R.id.edt_tao_bai_do_name);
-        edt_parking_desc = (EditText) findViewById(R.id.edt_tao_bai_do_desc);
-        edt_place_number = (EditText) findViewById(R.id.edt_tao_bai_do_empty);
-        edt_address = (EditText) findViewById(R.id.edt_tao_bai_do_diacho);
-        edt_begin_time = (EditText) findViewById(R.id.edt_tao_bai_do_begin_time);
-        edt_end_time = (EditText) findViewById(R.id.edt_tao_bai_do_end_time);
+        viewPager = (ViewPager) findViewById(R.id.viewpager_add_parking);
+    }
 
-        seek_money = (SeekBar) findViewById(R.id.seek_bar_tao_bai_do_money);
-        viewPager = (ViewPager) findViewById(R.id.viewpager_tao_bai_do);
+    private void initSpinner() {
+        sp_transport_type = (Spinner) findViewById(R.id.sp_add_parking_type);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.item_spinner_narmal,
+                getResources().getStringArray(R.array.add_transport));
+        arrayAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_item);
+        sp_transport_type.setAdapter(arrayAdapter);
+    }
+
+    private void initRecyclerview() {
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview_add_parking);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        arrayList_price = new ArrayList<>();
+        arrayList_price.add(new Prices(0, 1, 3));
+        adapter = new PriceAdapter(getApplicationContext(), arrayList_price);
+        recyclerView.setAdapter(adapter);
     }
 
     private void initListener() {
@@ -100,49 +119,10 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     }
 
     private void initViewPager() {
-        arrayList_file = new ArrayList<>();
-        AddParkingAdapter addParkingAdapter = new AddParkingAdapter(getSupportFragmentManager(), arrayList_file);
-        viewPager.setAdapter(addParkingAdapter);
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (arrayList_file.size() > 0) {
-                    String text = (position + 1) + "/" + arrayList_file.size();
-                    txt_image_number.setText(text);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-    }
-
-    private void initSelectMoney() {
-        seek_money.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String money = (progress * 5) + "K";
-                txt_money.setText(money);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+        arrayList_picture = new ArrayList<>();
+        AddParkingAdapter viewImageAdapter = new AddParkingAdapter(getSupportFragmentManager(), arrayList_picture);
+        viewPager.setAdapter(viewImageAdapter);
+        viewPager.addOnPageChangeListener(this);
     }
 
     public void TakePicture(final View view) {
@@ -153,11 +133,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         try {
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
             startActivityForResult(builder.build(this), PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch (GooglePlayServicesRepairableException e) {
-            // TODO: Handle the error.
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
         }
     }
@@ -204,88 +180,70 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
             return String.valueOf(minute);
     }
 
-    public void addPlace(View view) {
-        int place = getPlaceNumber();
-
-        if (place > -1) {
-            place = place + 1;
-            edt_place_number.setText(String.valueOf(place));
-        }
-    }
-
-    public void removePlace(View view) {
-        int place = getPlaceNumber();
-
-        if (place > 0) {
-            place = place - 1;
-            edt_place_number.setText(String.valueOf(place));
-        }
-    }
-
-    private int getPlaceNumber() {
-        try {
-            if (edt_place_number.getText().toString().isEmpty())
-                return 0;
-            return Integer.valueOf(edt_place_number.getText().toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
     public void addParking(View view) {
-        if (checkInputData(view)) {
-            addParkingNow(view);
-        }
-    }
-
-    private boolean checkInputData(View view) {
-        if (arrayList_file.size() == 0) {
-            Snackbar.make(view, getString(R.string.loi_chonanh), Snackbar.LENGTH_SHORT).show();
-            return false;
-        } else if (placeModel == null) {
-            Snackbar.make(view, getString(R.string.loi_vitri), Snackbar.LENGTH_SHORT).show();
-            return false;
-        } else if (edt_parking_name.getText().toString().isEmpty()) {
-            Snackbar.make(view, getString(R.string.loi_nhapten), Snackbar.LENGTH_SHORT).show();
-            return false;
-        } else if (checkNumberInput(edt_place_number.getText().toString()) <= 0) {
-            Snackbar.make(view, getString(R.string.loi_chotrong), Snackbar.LENGTH_SHORT).show();
-            return false;
-        } else if (seek_money.getProgress() == 0) {
-            Snackbar.make(view, getString(R.string.loi_chontien), Snackbar.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
-
-    private int checkNumberInput(String number) {
-        try {
-            return Integer.parseInt(number);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return -1;
-    }
-
-    private int getParkingType() {
-        if (chk_tatca.isChecked())
-            return 6;
-        if (chk_oto.isChecked())
-            return 2;
-        if (chk_xemay.isChecked())
-            return 3;
-        return 6;
-    }
-
-    private void addParkingNow(final View view) {
         showProgressBar(false, false, null, getString(R.string.adding));
-        presenter.addParking(placeModel.getLatitude(), placeModel.getLongtitude(), getParkingType(), edt_address.getText().toString(),
-                edt_begin_time.getText().toString(), edt_end_time.getText().toString(), edt_parking_name.getText().toString(),
-                edt_parking_desc.getText().toString(), Integer.parseInt(edt_place_number.getText().toString()),
-                seek_money.getProgress(), arrayList_file);
+        presenter.validateData(view, arrayList_picture, edt_parking_name.getText().toString(), placeModel,
+                sp_transport_type.getSelectedItemPosition(), edt_place_number.getText().toString(),
+                edt_begin_time.getText().toString(), edt_end_time.getText().toString(), arrayList_price);
     }
+
+//    private boolean checkInputData(View view) {
+//        if (arrayList_picture.size() == 0) {
+//            Snackbar.make(view, getString(R.string.loi_chonanh), Snackbar.LENGTH_SHORT).show();
+//            return false;
+//        } else if (edt_parking_name.getText().toString().isEmpty()) {
+//            Snackbar.make(view, getString(R.string.loi_nhapten), Snackbar.LENGTH_SHORT).show();
+//            return false;
+//        } else if (placeModel == null) {
+//            Snackbar.make(view, getString(R.string.loi_vitri), Snackbar.LENGTH_SHORT).show();
+//            return false;
+//        } else if (sp_transport_type.getSelectedItemPosition() == 0) {
+//            Snackbar.make(view, getString(R.string.error_choose_transport), Snackbar.LENGTH_SHORT).show();
+//            return false;
+//        } else if (checkNumberInput(edt_place_number.getText().toString()) <= 0) {
+//            Snackbar.make(view, getString(R.string.loi_chotrong), Snackbar.LENGTH_SHORT).show();
+//            return false;
+//        }
+//
+//        int error = checkListPrice();
+//        if (error == -1) {
+//            Snackbar.make(view, getString(R.string.error_choose_money_price), Snackbar.LENGTH_SHORT).show();
+//            return false;
+//        } else if (error == -2) {
+//            Snackbar.make(view, getString(R.string.error_choose_transport_price), Snackbar.LENGTH_SHORT).show();
+//            return false;
+//        }
+//
+//        return true;
+//    }
+
+//    private int checkListPrice() {
+//        for (int i = arrayList_price.size(); i >= 0; i--) {
+//            if (arrayList_price.get(i).getMoney() == 0)
+//                return -1;
+//            else if (arrayList_price.get(i).getTransport_type() == 0)
+//                return -2;
+//        }
+//        return 0;
+//    }
+
+//    private int checkNumberInput(String number) {
+//        try {
+//            return Integer.parseInt(number);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return -1;
+//    }
+
+//    private void addParkingNow() {
+//        showProgressBar(false, false, null, getString(R.string.adding));
+//        presenter.addParking(placeModel.getLatitude(), placeModel.getLongtitude(), sp_transport_type.getSelectedItemPosition(), edt_address.getText().toString(),
+//                edt_begin_time.getText().toString(), edt_end_time.getText().toString(), edt_parking_name.getText().toString(),
+//                edt_parking_desc.getText().toString(), Integer.parseInt(edt_place_number.getText().toString()),
+//                seek_money.getProgress(), arrayList_picture);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -318,11 +276,11 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     public void onClick(View v) {
         int id = v.getId();
 
-        if (id == R.id.edt_tao_bai_do_diacho) {
+        if (id == R.id.edt_add_parking_diacho) {
             getAddress();
-        } else if (id == R.id.edt_tao_bai_do_begin_time) {
+        } else if (id == R.id.edt_add_parking_begin_time) {
             getBeginTime();
-        } else if (id == R.id.edt_tao_bai_do_end_time) {
+        } else if (id == R.id.edt_add_parking_end_time) {
             getEndTime();
         }
     }
@@ -354,13 +312,13 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     @Override
     public void onPostPictureSuccess(String url) {
-        arrayList_file.add(url);
+        arrayList_picture.add(new Pictures(url));
         viewPager.getAdapter().notifyDataSetChanged();
 
-        if (arrayList_file.size() == 1)
+        if (arrayList_picture.size() == 1)
             txt_image_number.setText("1/1");
         else {
-            String text = (viewPager.getCurrentItem() + 1) + "/" + arrayList_file.size();
+            String text = (viewPager.getCurrentItem() + 1) + "/" + arrayList_picture.size();
             txt_image_number.setText(text);
         }
 
@@ -383,7 +341,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     @Override
     public void onAddParkingSuccess(final int id) {
         closeProgressBar();
-        showDialog("THÔNG BÁO", "Tin đã được đăng thành công", "OK", new View.OnClickListener() {
+        showDialog("THÔNG BÁO", "Tin dã được dang thành công", "OK", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -407,7 +365,31 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     }
 
     @Override
+    public void onValidateError(View view, String error) {
+        closeProgressBar();
+        Snackbar.make(view, error, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
     public Activity getActivity() {
         return this;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        if (arrayList_picture.size() > 0) {
+            String text = (position + 1) + "/" + arrayList_picture.size();
+            txt_image_number.setText(text);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

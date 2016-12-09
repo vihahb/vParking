@@ -125,7 +125,7 @@ public class FindAdvancedActivity extends AppCompatActivity {
             Snackbar.make(view, getString(R.string.loi_chotrong), Snackbar.LENGTH_SHORT).show();
             return false;
         } else if (seekBar_money.getProgress() < 0) {
-            Snackbar.make(view, getString(R.string.loi_chontien), Snackbar.LENGTH_SHORT).show();
+//            Snackbar.make(view, getString(R.string.loi_chontien), Snackbar.LENGTH_SHORT).show();
             return false;
         }
         return true;
