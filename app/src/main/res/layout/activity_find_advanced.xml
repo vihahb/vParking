@@ -19,107 +19,133 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:orientation="vertical"
         android:padding="@dimen/size_24">
 
-        <RadioGroup
+        <LinearLayout
+            android:layout_marginLeft="@dimen/size_6"
+            android:layout_marginRight="@dimen/size_6"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_38"
-            android:background="@drawable/custom_radio_group"
-            android:orientation="horizontal"
-            android:padding="@dimen/size_2">
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/chk_find_advanced_tatca"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/custom_radio_button_left"
-                android:button="@android:color/transparent"
-                android:checked="true"
-                android:gravity="center"
-                android:text="@string/tatca"
-                android:textColor="@drawable/custom_radio_button_text" />
-
-            <RadioButton
+            <CheckBox
                 android:id="@+id/chk_find_advanced_oto"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/custom_radio_button"
-                android:button="@android:color/transparent"
-                android:gravity="center"
+                android:buttonTint="@android:color/white"
+                android:gravity="left|center"
                 android:text="@string/oto"
-                android:textColor="@drawable/custom_radio_button_text" />
+                android:textColor="@drawable/custom_checkbox_text"
+                android:theme="@style/MyCheckBox" />
 
-            <RadioButton
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.1" />
+
+            <CheckBox
                 android:id="@+id/chk_find_advanced_xemay"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/custom_radio_button_right"
-                android:button="@android:color/transparent"
-                android:gravity="center"
+                android:buttonTint="@android:color/white"
+                android:gravity="left|center"
                 android:text="@string/xemay"
-                android:textColor="@drawable/custom_radio_button_text" />
-        </RadioGroup>
+                android:textColor="@drawable/custom_checkbox_text"
+                android:theme="@style/MyCheckBox" />
 
-        <TextView
-            android:id="@+id/tv_vehicle"
-            style="@style/AddParking_Textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/all_vehicle" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.1" />
+
+            <CheckBox
+                android:id="@+id/chk_find_advanced_xedap"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:buttonTint="@android:color/white"
+                android:gravity="left|center"
+                android:text="@string/xedap"
+                android:textColor="@drawable/custom_checkbox_text"
+                android:theme="@style/MyCheckBox" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_38"
-            android:layout_marginTop="@dimen/size_16"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_price"
+                style="@style/AddParking_Textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textSize="15sp"
+                android:paddingLeft="@dimen/size_12"
+                android:text="@string/price" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.1" />
+
+            <TextView
+                android:id="@+id/tv_price_type"
+                style="@style/AddParking_Textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:textSize="15sp"
+                android:paddingLeft="@dimen/size_12"
+                android:text="@string/price_type" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_36"
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/edt_find_advanced_empty"
+                android:id="@+id/edt_price"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/size_16"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:background="@drawable/custom_textview_add_parking"
                 android:gravity="center_vertical"
                 android:hint="0"
                 android:inputType="number"
+                android:paddingLeft="@dimen/size_12"
                 android:maxLength="7"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="-2dp"
-                android:layout_marginRight="-2dp"
-                android:background="@drawable/custom_imagebutton_left"
-                android:contentDescription="@null"
-                android:onClick="addPlaceSearch"
-                android:paddingLeft="@dimen/size_2"
-                android:paddingRight="@dimen/size_2"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_add_white_48dp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.1" />
 
-            <ImageButton
-                android:layout_width="wrap_content"
+            <Spinner
+                android:id="@+id/spinner_price_type"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/custom_imagebutton_right"
-                android:contentDescription="@null"
-                android:onClick="removePlaceSearch"
-                android:paddingLeft="@dimen/size_2"
-                android:paddingRight="@dimen/size_2"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_remove_white_48dp" />
+                android:layout_weight="1.5"
+                android:background="@drawable/custom_textview_add_parking"
+                android:paddingLeft="@dimen/size_12"
+                android:paddingRight="@dimen/size_10" />
         </LinearLayout>
 
         <LinearLayout
@@ -128,50 +154,76 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tv_begin_time"
                 style="@style/AddParking_Textview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingRight="@dimen/size_16"
-                android:text="@string/find_price"
-                android:textColor="@android:color/white"
-                android:id="@+id/textView" />
+                android:textSize="15sp"
+                android:paddingLeft="@dimen/size_12"
+                android:text="@string/find_begin_time" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.1" />
 
             <TextView
-                android:id="@+id/txt_find_advanced_money"
+                android:id="@+id/tv_expired_time"
                 style="@style/AddParking_Textview"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="0k"
-                android:textColor="@android:color/white" />
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:paddingLeft="@dimen/size_12"
+                android:text="@string/find_end_time" />
         </LinearLayout>
 
-        <!--<SeekBar-->
-        <!--android:id="@+id/seek_bar_tao_bai_do_money"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/size_16"-->
-        <!--android:backgroundTint="@android:color/white"-->
-        <!--android:max="1000" />-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_36"
+            android:orientation="horizontal">
 
-        <SeekBar
-            android:id="@+id/seek_bar_find_advanced_money"
+            <EditText
+                android:id="@+id/edt_begin_time"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/custom_textview_add_parking"
+                android:drawableRight="@mipmap/ic_av_timer_black_24dp"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:hint="@string/find_begin_time"
+                android:paddingLeft="@dimen/size_12"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.1" />
+
+            <EditText
+                android:id="@+id/edt_expired_time"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/custom_textview_add_parking"
+                android:drawableRight="@mipmap/ic_av_timer_black_24dp"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:hint="@string/find_end_time"
+                android:paddingLeft="@dimen/size_12"
+                android:paddingRight="@dimen/size_10"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_16"
-            android:max="30"
-            android:progress="0"
-            android:progressDrawable="@drawable/custom_seekbar"
-            android:thumb="@drawable/seekbar_thunb" />
+            android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/chek"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_16"
-            android:buttonTint="@android:color/white"
-            android:text="@string/subcribe_noti"
-            android:textColor="@android:color/white" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <Button

@@ -1,15 +1,28 @@
 package com.xtel.vparking.model.entity;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 
 /**
- * Created by Lê Công Long Vũ on 11/12/2016.
+ * Created by vivhp on 12/9/2016.
  */
 
 public class Find implements Serializable {
+    @Expose
     private int type;
-    private int place_empty;
-    private int money;
+    @Expose
+    private int price;
+    @Expose
+    private int price_type;
+    @Expose
+    private String lat;
+    @Expose
+    private String lng;
+    @Expose
+    private String begin_time;
+    @Expose
+    private String end_time;
 
     public int getType() {
         return type;
@@ -19,19 +32,51 @@ public class Find implements Serializable {
         this.type = type;
     }
 
-    public int getPlace_empty() {
-        return place_empty;
+    public int getPrice() {
+        return price;
     }
 
-    public void setPlace_empty(int place_empty) {
-        this.place_empty = place_empty;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
-    public int getMoney() {
-        return money;
+    public int getPrice_type() {
+        return price_type;
     }
 
-    public void setMoney(int money) {
-        this.money = money;
+    public void setPrice_type(int price_type) {
+        this.price_type = price_type;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
+    public String getBegin_time() {
+        return begin_time;
+    }
+
+    public void setBegin_time(String begin_time) {
+        this.begin_time = begin_time;
+    }
+
+    public String getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(String end_time) {
+        this.end_time = end_time;
     }
 }

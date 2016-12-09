@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#5c5ca7</color>
     <color name="colorAccent">#FFFFFF</color>
     <color name="btn_fb_plus">#b385bf</color>
+    <color name="btn_facebook">#3B5998</color>
     <color name="btn_fb_plus_clicked">#C6A4CF</color>
     <color name="btn_fb_plus_blur">#DFCCE4</color>
 

@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@mipmap/ic_bgr"
-    tools:context=".view.activity.MainActivity">
+    tools:context=".view.activity.LoginActivity">
 
 
     <ImageView
@@ -35,38 +35,61 @@
 
     <LinearLayout
         android:id="@+id/ln_layout_btn"
-        android:layout_above="@+id/btn_fb_signin"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/size_10"
         android:layout_height="wrap_content">
         <Button
             android:layout_weight="1"
             android:id="@+id/btn_Signin"
-            android:padding="@dimen/activity_horizontal_margin"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_48"
             android:text="@string/signin_mobile"
-            android:layout_margin="10dp"
             android:textColor="@android:color/white"
+            android:maxLines="2"
             android:background="@drawable/btn_login"/>
+
+        <LinearLayout
+            android:id="@+id/ln_line_or"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:background="#ffffff" />
+            <TextView
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:id="@+id/tv_or"
+                android:layout_margin="@dimen/size_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/or_text"/>
+            <TextView
+                android:layout_gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:background="#ffffff" />
+        </LinearLayout>
+
+        <Button
+            android:elevation="0dp"
+            android:id="@+id/btn_fb_signin"
+            android:paddingRight="40dp"
+            android:drawableLeft="@mipmap/ic_fb_singin"
+            android:text="@string/singin_facebook"
+            android:textColor="@android:color/white"
+            android:background="@drawable/facebook_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_48" />
     </LinearLayout>
-
-    <Button
-        android:elevation="0dp"
-        android:id="@+id/btn_fb_signin"
-        android:layout_marginLeft="@dimen/margin_fb"
-        android:layout_marginRight="@dimen/margin_fb"
-        android:paddingRight="20dp"
-        android:layout_marginBottom="40dp"
-        android:gravity="center"
-        android:drawableLeft="@mipmap/ic_fb_singin"
-        android:text="@string/singin_facebook"
-        android:textColor="@android:color/white"
-        android:background="@drawable/btn_fb_plus"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_48"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
 
 </RelativeLayout>

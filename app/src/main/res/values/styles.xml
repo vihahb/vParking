@@ -214,4 +214,9 @@
         <item name="android:paddingRight">@dimen/size_16</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
+
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlActivated">@color/btn_fb_plus</item>
+    </style>
 </resources>
