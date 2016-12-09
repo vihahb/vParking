@@ -23,15 +23,19 @@ import com.facebook.accountkit.ui.LoginType;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.LoginModel;
+import com.xtel.vparking.model.entity.AuthenNipModel;
+import com.xtel.vparking.model.entity.DeviceObject;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_FLAG;
 import com.xtel.vparking.model.entity.RESP_Login;
 import com.xtel.vparking.model.entity.RESP_User;
+import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.view.activity.HomeActivity;
 import com.xtel.vparking.view.activity.inf.LoginView;
 
@@ -224,31 +228,18 @@ public class LoginPresenter {
 
     public void initAccountFacebook(Context Activity){
         view.showProgressBar(false, false, null, view.getActivity().getString(R.string.parking_get_data));
-        getDeviceData(Activity);
+        DeviceObject device = getDeviceData(Activity);
         String url = Constants.SERVER_AUTHEN + Constants.AUTHEN_FB_LOGIN;
 
-        if (device_id != null && device_os_name != null
-                && device_os_ver != null && other != null
-                && device_type != 0 && device_vendor != null){
-            String service_code = "PRK";
+        if (validDevice()) {
+            AuthenNipModel nipModel = new AuthenNipModel();
+            nipModel.setAccess_token_key(user_token);
+            nipModel.getService_code();
+            nipModel.setDevInfo(device);
 
-            JsonObject userJson = new JsonObject();
-            JsonObject deviceObject = new JsonObject();
-            deviceObject.addProperty(Constants.DEVICE_ID, device_id);
-            deviceObject.addProperty(Constants.DEVICE_OS_NAME, device_os_name);
-            deviceObject.addProperty(Constants.DEVICE_OS_VER, device_os_ver);
-            deviceObject.addProperty(Constants.DEVICE_OTHER, other);
-            deviceObject.addProperty(Constants.DEVICE_TYPE, device_type);
-            deviceObject.addProperty(Constants.DEVICE_VENDOR, device_vendor);
-
-            userJson.addProperty("access_token_key", user_token);
-            userJson.addProperty("service_code", service_code);
-            userJson.add("devInfo", deviceObject);
-
-            Log.e("Test Json Object: ", user_token);
-            Log.e("Test Json Object: ", service_code);
-            Log.e("Test device Object: ", String.valueOf(deviceObject));
-            LoginModel.getInstance().postFbData2Server(url, userJson.toString(), new ResponseHandle<RESP_Login>(RESP_Login.class) {
+            Log.v("Nip Model:", JsonHelper.toJson(nipModel));
+            Log.e("Test device Object: ", JsonHelper.toJson(device));
+            LoginModel.getInstance().postFbData2Server(url, JsonHelper.toJson(nipModel), new ResponseHandle<RESP_Login>(RESP_Login.class) {
                 @Override
                 public void onSuccess(RESP_Login obj) {
                     String auth_id = obj.getAuthenticationid();
@@ -268,36 +259,25 @@ public class LoginPresenter {
                     Log.e("Message: ", error.getMessage());
                 }
             });
+        } else {
+            Log.e("Loi Get Device", "");
         }
     }
 
     public void initAccountKit(Context context){
         view.showProgressBar(false, false, null, view.getActivity().getString(R.string.parking_get_data));
-        getDeviceData(context);
+        DeviceObject device = getDeviceData(context);
         String url = Constants.SERVER_AUTHEN + Constants.AUTHEN_ACCOUNT_KIT;
 
-        if (device_id != null && device_os_name != null
-                && device_os_ver != null && other != null
-                && device_type != 0 && device_vendor != null) {
+        if (validDevice()) {
+            AuthenNipModel nipModel = new AuthenNipModel();
+            nipModel.setAuthorization_code(authorization_code);
+            nipModel.getService_code();
+            nipModel.setDevInfo(device);
 
-            String service_code = "PRK";
-            JsonObject accKitUserJson = new JsonObject();
-            JsonObject accKitDeviceJson = new JsonObject();
-            accKitDeviceJson.addProperty(Constants.DEVICE_ID, device_id);
-            accKitDeviceJson.addProperty(Constants.DEVICE_OS_NAME, device_os_name);
-            accKitDeviceJson.addProperty(Constants.DEVICE_OS_VER, device_os_ver);
-            accKitDeviceJson.addProperty(Constants.DEVICE_OTHER, other);
-            accKitDeviceJson.addProperty(Constants.DEVICE_TYPE, device_type);
-            accKitDeviceJson.addProperty(Constants.DEVICE_VENDOR, device_vendor);
+            Log.e("Nip Model:", JsonHelper.toJson(nipModel));
 
-            accKitUserJson.addProperty("authorization_code", authorization_code);
-            accKitUserJson.addProperty("service_code", service_code);
-            accKitUserJson.add("devInfo", accKitDeviceJson);
-            Log.e("authorization:", authorization_code);
-            Log.e("service code:", service_code);
-            Log.e("device info:", accKitDeviceJson.toString());
-
-            LoginModel.getInstance().postAccountKitData2Server(url, accKitUserJson.toString(), new ResponseHandle<RESP_Login>(RESP_Login.class) {
+            LoginModel.getInstance().postAccountKitData2Server(url, JsonHelper.toJson(nipModel), new ResponseHandle<RESP_Login>(RESP_Login.class) {
                 @Override
                 public void onSuccess(RESP_Login obj) {
                     String auth_id = obj.getAuthenticationid();
@@ -317,20 +297,36 @@ public class LoginPresenter {
                 }
             });
 
+        } else {
+            Log.e("Loi Get Device", "");
         }
     }
 
-    public void getDeviceData(Context context){
+    public DeviceObject getDeviceData(Context context) {
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(TELEPHONY_SERVICE);
-
-        //Getting device ID
-        //get Inf
+        //Getting device info
         device_id = telephonyManager.getDeviceId();
         device_os_name = android.os.Build.VERSION.CODENAME;
         device_os_ver = android.os.Build.VERSION.RELEASE;
         device_type = 1;
         device_vendor = android.os.Build.MANUFACTURER;
         Log.e("Device info: ", "Name: " + device_vendor + ", Android name: " + device_os_name + ", version: " + device_os_ver + ", id: " + device_id);
+        DeviceObject deviceObject = new DeviceObject();
+        deviceObject.setDeviceid(device_id);
+        deviceObject.setOs_name(device_os_name);
+        deviceObject.setOs_version(device_os_ver);
+        deviceObject.setType(device_type);
+        deviceObject.setVendor(device_vendor);
+        return deviceObject;
+    }
+
+    private boolean validDevice() {
+        if (device_id != null && device_os_name != null
+                && device_os_ver != null && other != null
+                && device_type != 0 && device_vendor != null) {
+            return true;
+        }
+        return false;
     }
 
     public void gettingFlagData(final String sesion){
