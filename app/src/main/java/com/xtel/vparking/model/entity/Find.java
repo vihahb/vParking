@@ -20,6 +20,9 @@ public class Find implements Serializable {
     @Expose
     private String end_time;
 
+    public Find() {
+    }
+
     public Find(int type, int price, int price_type, String begin_time, String end_time) {
         this.type = type;
         this.price = price;
