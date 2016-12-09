@@ -184,6 +184,7 @@ public class HomeFragment extends BasicFragment implements
                 } else if (newState == BottomSheetBehavior.STATE_DRAGGING) {
                     Log.e(TAG, "STATE_DRAGGING");
                 } else if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    showFloatingActionButton(fab_filter);
                     showFloatingActionButton(fab_location);
                     showFloatingActionButton(fab_thongbao);
                     showFloatingActionButton(fab_filter);
@@ -300,6 +301,7 @@ public class HomeFragment extends BasicFragment implements
     }
 
     private void showDialogParkingDetail() {
+        hideFloatingActionButton(fab_filter);
         hideFloatingActionButton(fab_location);
         hideFloatingActionButton(fab_thongbao);
         hideFloatingActionButton(fab_filter);
