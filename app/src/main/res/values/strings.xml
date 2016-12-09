@@ -12,6 +12,7 @@
     <string name="title_activity_favorite">Bãi đỗ yêu thích</string>
 
     <string name="spalsh_text">Tìm bãi đỗ xe gần bạn nhất</string>
+    <string name="or_text">OR</string>
     <string name="signin_mobile">ĐĂNG NHẬP BẰNG SỐ ĐIỆN THOẠI</string>
     <string name="signup">ĐĂNG KÝ</string>
     <string name="singin_facebook">ĐĂNG NHẬP BẰNG FACEBOOK</string>
@@ -30,6 +31,8 @@
     <string name="parking_transport">Phương tiện</string>
     <string name="parking_logout">Đăng xuất</string>
     <string name="parking_timkiemnangcao">Tìm kiếm nâng cao</string>
+    <string name="find_begin_time">Giờ mở cửa</string>
+    <string name="find_end_time">Giờ đóng cửa</string>
     <string name="isMaster">Kích hoạt chủ bãi đỗ</string>
     <string name="isUser">Tôi là người gửi xe</string>
     <string name="find_parking_user">Tìm chỗ để xe</string>
@@ -66,6 +69,7 @@
     <string name="tatca">Tất cả</string>
     <string name="oto">Ô tô</string>
     <string name="xemay">Xe máy</string>
+    <string name="xedap">Xe đạp</string>
 
     <!-- Add Parking -->
     <string name="add_vitri">Vị trí</string>
@@ -87,6 +91,7 @@
     <string name="add_follow_price">Loại</string>
     <string name="all_vehicle">Số xe muốn gửi</string>
     <string name="price">Mức giá</string>
+    <string name="price_type">Kiểu giá</string>
     <string name="subcribe_noti">Nhận thông báo</string>
     <string name="find">Tìm kiếm</string>
     <string name="loi_chonanh">Vui lòng chọn ảnh đại diện</string>
@@ -103,6 +108,13 @@
     <string name="error_choose_transport">Vui lòng chọn phương tiện</string>
     <string name="error_choose_transport_price">Vui lòng chọn phương tiện</string>
     <string name="error_choose_money_price">Vui lòng chọn giá</string>
+
+    <string name="parking_xedap">Loại bãi đỗ: Xe đạp</string>
+    <string name="parking_xemay">Loại bãi đỗ: Xe máy</string>
+    <string name="parking_xeoto">Loại bãi đỗ: Xe ô tô</string>
+    <string name="parking_xemay_xedap">Loại bãi đỗ: Xe máy - Xe đạp</string>
+    <string name="parking_xeoto_xemay">Loại bãi đỗ: Xe máy - Xe ô tô</string>
+    <string name="parking_all">Loại bãi đỗ: Tất cả</string>
 
     <string-array name="add_transport">
         <item>Loại bãi đỗ</item>

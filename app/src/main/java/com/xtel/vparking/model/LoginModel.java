@@ -1,6 +1,5 @@
 package com.xtel.vparking.model;
 
-import com.google.gson.JsonObject;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.RESP_FLAG;

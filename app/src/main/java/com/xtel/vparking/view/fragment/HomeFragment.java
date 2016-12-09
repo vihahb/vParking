@@ -530,14 +530,14 @@ public class HomeFragment extends BasicFragment implements
 
                         if (findModel != null && isCanLoadMap) {
                             parkingType = findModel.getType();
-                            parkingMoney = findModel.getMoney();
+                            parkingMoney = findModel.getPrice();
                             mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude())));
 
                             if (!isFindMyLocation)
                                 isFindMyLocation = true;
                             isCanLoadMap = false;
 
-                            presenter.getParkingAround(mLastLocation.getLatitude(), mLastLocation.getLongitude(), findModel.getMoney(), findModel.getType(), null, null);
+                            presenter.getParkingAround(mLastLocation.getLatitude(), mLastLocation.getLongitude(), findModel.getPrice(), findModel.getType(), null, null);
                         } else {
                             Toast.makeText(getContext(), getString(R.string.error_find_advanced), Toast.LENGTH_SHORT).show();
                         }
