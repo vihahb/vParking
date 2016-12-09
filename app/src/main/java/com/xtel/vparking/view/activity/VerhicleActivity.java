@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import com.xtel.vparking.R;
 
 public class VerhicleActivity extends BasicActivity {
+    public static final int RESULT_ADD_VERHICLE = 66, REQUEST_ADD_VERHICLE = 99;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class VerhicleActivity extends BasicActivity {
         int id = item.getItemId();
 
         if (id == R.id.nav_add_verhicle) {
-
+            startActivityForResult(AddVerhicleActivity.class, REQUEST_ADD_VERHICLE);
         } else if (id == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
