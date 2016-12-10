@@ -83,7 +83,7 @@ public class ParkingManagementFragment extends BasicFragment implements Manageme
 
     @Override
     public void onGetParkingByUserError(Error error) {
-        progressView.updateData(R.mipmap.icon_parking, JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_coloi)), "Thử lại");
+        progressView.updateData(R.mipmap.icon_parking, JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_coloi)), "Kiểm tra lại");
         progressView.showData();
     }
 

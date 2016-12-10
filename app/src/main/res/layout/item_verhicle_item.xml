@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/size_8"
+    android:paddingEnd="@dimen/size_16"
+    android:paddingLeft="@dimen/size_16"
+    android:paddingRight="@dimen/size_16"
+    android:paddingStart="@dimen/size_16"
+    android:paddingTop="@dimen/size_8">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/ic_dot_gray"
+        android:drawableStart="@mipmap/ic_dot_gray" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_16"
+        android:layout_marginStart="@dimen/size_16"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item.txt_verhicle_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ô tô của mình" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_4"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/item.txt_verhicle_made_by"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Honda" />
+
+            <TextView
+                android:id="@+id/item.txt_verhicle_car_number_plate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_8"
+                android:layout_marginStart="@dimen/size_8"
+                android:layout_weight="1"
+                android:gravity="end|right"
+                android:text="3025-3260" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/item.txt_verhicle_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_16"
+        android:layout_marginStart="@dimen/size_16"
+        android:drawableEnd="@mipmap/ic_done_gray"
+        android:drawableRight="@mipmap/ic_done_gray"
+        android:visibility="gone" />
+</LinearLayout>

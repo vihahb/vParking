@@ -187,7 +187,6 @@ public class HomeFragment extends BasicFragment implements
                     showFloatingActionButton(fab_filter);
                     showFloatingActionButton(fab_location);
                     showFloatingActionButton(fab_thongbao);
-                    showFloatingActionButton(fab_filter);
 
                     dialogBottomSheet.changeCloseToFavorite();
                     dialogBottomSheet.clearData();
@@ -304,7 +303,6 @@ public class HomeFragment extends BasicFragment implements
         hideFloatingActionButton(fab_filter);
         hideFloatingActionButton(fab_location);
         hideFloatingActionButton(fab_thongbao);
-        hideFloatingActionButton(fab_filter);
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         dialogBottomSheet.initData(resp_parking_info);

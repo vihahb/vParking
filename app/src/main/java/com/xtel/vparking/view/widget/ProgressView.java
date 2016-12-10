@@ -115,8 +115,7 @@ public class ProgressView {
             view.setVisibility(View.VISIBLE);
     }
 
-    public void setProgressViewClick(View.OnClickListener onClickListener) {
-//        this.listener = listener;
+    public void setButtonwClicked(View.OnClickListener onClickListener) {
         button.setOnClickListener(onClickListener);
     }
 }
