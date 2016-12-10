@@ -97,4 +97,16 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             txt_default = (TextView) itemView.findViewById(R.id.item_txt_verhicle_default);
         }
     }
+
+    public void insertNewItem(Verhicle verhicle) {
+        for (int i = (arrayList.size() - 1); i > 0; i--) {
+            if (arrayList.get(i).getType() == verhicle.getType()) {
+                int position = i + 1;
+                arrayList.add(position, verhicle);
+                notifyItemInserted(position);
+                notifyItemChanged(position, getItemCount());
+                break;
+            }
+        }
+    }
 }

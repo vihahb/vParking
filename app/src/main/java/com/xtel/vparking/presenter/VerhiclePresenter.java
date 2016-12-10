@@ -1,7 +1,6 @@
 package com.xtel.vparking.presenter;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
@@ -14,7 +13,6 @@ import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Verhicle;
 import com.xtel.vparking.model.entity.RESP_Verhicle_List;
 import com.xtel.vparking.model.entity.Verhicle;
-import com.xtel.vparking.view.MyApplication;
 import com.xtel.vparking.view.activity.inf.VerhicleView;
 
 import java.util.ArrayList;
@@ -34,16 +32,24 @@ public class VerhiclePresenter {
 
     private ArrayList<Verhicle> demoData() {
         ArrayList<Verhicle> arrayList = new ArrayList<>();
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 50; i++) {
             Verhicle verhicle;
             Brandname brandname = new Brandname("code", "name", "made by");
 
             if (i % 2 == 0 || i % 3 == 0) {
-                verhicle = new Verhicle(i, "29A-666666", 2, "Xe máy " + i, "abc", 1, brandname);
-            } else
-                verhicle = new Verhicle(i, "29-S666666", 1, "Xe Ô tô " + i, "abc", 0, brandname);
+                if (i % 2 == 0)
+                    verhicle = new Verhicle(i, "29A-666666", 2, "Xe máy " + i, "abc", 1, brandname);
+                else
+                    verhicle = new Verhicle(i, "29A-666666", 2, "Xe máy " + i, "abc", 1, brandname);
+            } else {
+                if (i % 2 == 0)
+                    verhicle = new Verhicle(i, "29A-666666", 2, "Xe máy " + i, "abc", 1, brandname);
+                else
+                    verhicle = new Verhicle(i, "29A-666666", 2, "Xe máy " + i, "abc", 1, brandname);
+            }
 
             arrayList.add(verhicle);
+            Log.e("verhicle", "add " + i);
         }
         return arrayList;
     }

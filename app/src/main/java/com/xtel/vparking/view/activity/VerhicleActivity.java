@@ -33,6 +33,7 @@ public class VerhicleActivity extends BasicActivity implements VerhicleView {
 
     private RecyclerView recyclerView;
     private ArrayList<Verhicle> arrayList;
+    private VerhicleAdapter adapter;
     private ProgressView progressView;
 
     @Override
@@ -55,7 +56,7 @@ public class VerhicleActivity extends BasicActivity implements VerhicleView {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         arrayList = new ArrayList<>();
-        VerhicleAdapter adapter = new VerhicleAdapter(getApplicationContext(), arrayList);
+        adapter = new VerhicleAdapter(getApplicationContext(), arrayList);
         recyclerView.setAdapter(adapter);
     }
 
@@ -115,7 +116,7 @@ public class VerhicleActivity extends BasicActivity implements VerhicleView {
 
     @Override
     public void onGetVerhicleByIdSuccess(Verhicle verhicle) {
-
+        adapter.insertNewItem(verhicle);
     }
 
     @Override
