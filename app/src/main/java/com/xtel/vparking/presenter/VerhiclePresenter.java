@@ -38,10 +38,10 @@ public class VerhiclePresenter {
             Verhicle verhicle;
             Brandname brandname = new Brandname("code", "name", "made by");
 
-            if (i % 2 == 0) {
-                verhicle = new Verhicle(i, i+i+i+i+"-"+i+i+i+i, 2, "Xe máy " + i, "abc", 1, brandname);
+            if (i % 2 == 0 || i % 3 == 0) {
+                verhicle = new Verhicle(i, "29A-666666", 2, "Xe máy " + i, "abc", 1, brandname);
             } else
-                verhicle = new Verhicle(i, i+i+i+i+"-"+i+i+i+i, 1, "Xe Ô tô " + i, "abc", 0, brandname);
+                verhicle = new Verhicle(i, "29-S666666", 1, "Xe Ô tô " + i, "abc", 0, brandname);
 
             arrayList.add(verhicle);
         }
