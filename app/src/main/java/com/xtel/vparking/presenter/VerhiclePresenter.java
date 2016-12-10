@@ -36,16 +36,16 @@ public class VerhiclePresenter {
             Verhicle verhicle;
             Brandname brandname = new Brandname("code", "name", "made by");
 
-            if (i % 2 == 0 || i % 3 == 0) {
-                if (i % 2 == 0)
+            if (i % 2 == 0) {
+                if (i % 3 == 0)
                     verhicle = new Verhicle(i, "29A-666666", 2, "Xe máy " + i, "abc", 1, brandname);
                 else
-                    verhicle = new Verhicle(i, "29A-666666", 2, "Xe máy " + i, "abc", 1, brandname);
+                    verhicle = new Verhicle(i, "29A-666666", 2, "Xe máy " + i, "abc", 0, brandname);
             } else {
-                if (i % 2 == 0)
-                    verhicle = new Verhicle(i, "29A-666666", 2, "Xe máy " + i, "abc", 1, brandname);
+                if (i % 3 == 0)
+                    verhicle = new Verhicle(i, "29-S666666", 1, "Xe Ô tô " + i, "abc", 1, brandname);
                 else
-                    verhicle = new Verhicle(i, "29A-666666", 2, "Xe máy " + i, "abc", 1, brandname);
+                    verhicle = new Verhicle(i, "29-S666666", 1, "Xe Ô tô " + i, "abc", 0, brandname);
             }
 
             arrayList.add(verhicle);
@@ -128,6 +128,9 @@ public class VerhiclePresenter {
     }
 
     public void getVerhicleById(final int id) {
+        Brandname brandname = new Brandname("code", "name", "made by");
+        Verhicle verhicle = new Verhicle(1, "29A-666666", 1, "Xe máy new", "abc", 1, brandname);
+        view.onGetVerhicleByIdSuccess(verhicle);
         if (id == -1)
             return;
 
