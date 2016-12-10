@@ -57,7 +57,7 @@ public class FavoriteActivity extends BasicActivity implements FavoriteView {
         progressView.setUpWithView(recyclerView);
         progressView.showProgressbar();
 
-        progressView.setProgressViewClick(new View.OnClickListener() {
+        progressView.setButtonwClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressView.showProgressbar();
@@ -94,7 +94,7 @@ public class FavoriteActivity extends BasicActivity implements FavoriteView {
 
     @Override
     public void onGetParkingFavoriteError(Error error) {
-        progressView.updateData(R.mipmap.icon_parking, JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_coloi)), "Thử lại");
+        progressView.updateData(R.mipmap.icon_parking, JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_coloi)), "Kiểm tra lại");
         progressView.showData();
     }
 

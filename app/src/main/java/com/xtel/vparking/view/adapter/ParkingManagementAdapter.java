@@ -64,10 +64,10 @@ public class ParkingManagementAdapter extends RecyclerView.Adapter<ParkingManage
     private void setStatus(TextView textView, double status) {
         if (status == 0) {
             textView.setText(context.getString(R.string.controng));
-            textView.setCompoundDrawablesWithIntrinsicBounds(context.getResources().getDrawable(R.mipmap.ic_still_empty), null, null, null);
+            textView.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_still_empty, 0, 0, 0);
         } else {
             textView.setText(context.getString(R.string.hetcho));
-            textView.setCompoundDrawablesWithIntrinsicBounds(context.getResources().getDrawable(R.mipmap.ic_still_empty), null, null, null);
+            textView.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_still_empty, 0, 0, 0);
         }
     }
 

@@ -66,7 +66,7 @@ public class ParkingManagementFragment extends BasicFragment implements Manageme
         progressView.setUpWithView(recyclerView);
         progressView.showProgressbar();
 
-        progressView.setProgressViewClick(new View.OnClickListener() {
+        progressView.setButtonwClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressView.showProgressbar();

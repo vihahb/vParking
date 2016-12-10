@@ -7,7 +7,6 @@ import com.google.gson.annotations.Expose;
  */
 
 public class Verhicle {
-
     @Expose
     private int id;
     @Expose
@@ -22,6 +21,19 @@ public class Verhicle {
     private int flag_default;
     @Expose
     private Brandname brandname;
+
+    public Verhicle() {
+    }
+
+    public Verhicle(int id, String plate_number, int type, String name, String desc, int flag_default, Brandname brandname) {
+        this.id = id;
+        this.plate_number = plate_number;
+        this.type = type;
+        this.name = name;
+        this.desc = desc;
+        this.flag_default = flag_default;
+        this.brandname = brandname;
+    }
 
     public int getId() {
         return id;

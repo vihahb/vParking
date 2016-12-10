@@ -90,6 +90,7 @@ public class AddParkingPresenter {
             object.setLng(placeModel.getLongtitude());
             object.setType(transport_type);
             object.setAddress(placeModel.getAddress());
+            object.setParking_name(parking_name);
 
             if (!begin_time.isEmpty())
                 object.setBegin_time(begin_time);

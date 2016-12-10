@@ -1,5 +1,6 @@
 package com.xtel.vparking.view.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +17,12 @@ import java.util.ArrayList;
  */
 
 public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private Context context;
     private ArrayList<Verhicle> arrayList;
-    private final int view_title = 1, view_item = 0;
+    private final int view_title = 1, view_item = 0, type_car = 1111, type_bike = 2222;
 
-    public VerhicleAdapter(ArrayList<Verhicle> arrayList) {
+    public VerhicleAdapter(Context context, ArrayList<Verhicle> arrayList) {
+        this.context = context;
         this.arrayList = arrayList;
     }
 
@@ -37,6 +40,13 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         if (holder instanceof ViewTitle) {
             ViewTitle view = (ViewTitle) holder;
+
+            if (verhicle.getType() == type_car)
+                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_car_black_24dp, 0, 0, 0);
+            else if (verhicle.getType() == type_bike)
+                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_bike_black_24dp, 0, 0, 0);
+
+            view.txt_title.setText(verhicle.getName());
         } else {
             ViewItem view = (ViewItem) holder;
 
@@ -47,24 +57,31 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (verhicle.getFlag_default() == 1)
                 view.txt_default.setVisibility(View.VISIBLE);
             else
-                view.txt_default.setVisibility(View.GONE);
+                view.txt_default.setVisibility(View.INVISIBLE);
         }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return arrayList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return view_item;
+        if (arrayList.get(position).getType() > 100)
+            return view_title;
+        else
+            return view_item;
     }
 
     private class ViewTitle extends RecyclerView.ViewHolder {
+        private TextView txt_icon, txt_title;
 
         private ViewTitle(View itemView) {
             super(itemView);
+
+            txt_icon = (TextView) itemView.findViewById(R.id.item_txt_verhicle_icon);
+            txt_title = (TextView) itemView.findViewById(R.id.item_txt_verhicle_title);
         }
     }
 

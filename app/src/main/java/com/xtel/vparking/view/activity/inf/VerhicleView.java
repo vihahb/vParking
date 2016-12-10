@@ -3,7 +3,9 @@ package com.xtel.vparking.view.activity.inf;
 import android.app.Activity;
 
 import com.xtel.vparking.model.entity.Error;
-import com.xtel.vparking.model.entity.RESP_Verhicle;
+import com.xtel.vparking.model.entity.Verhicle;
+
+import java.util.ArrayList;
 
 /**
  * Created by Lê Công Long Vũ on 12/10/2016.
@@ -11,7 +13,8 @@ import com.xtel.vparking.model.entity.RESP_Verhicle;
 
 public interface VerhicleView {
 
-    void onGetVerhicleSuccess(RESP_Verhicle obj);
+    void onGetVerhicleSuccess(ArrayList<Verhicle> arrayList);
     void onGetVerhicleError(Error error);
+    void onGetVerhicleByIdSuccess(Verhicle verhicle);
     Activity getActivity();
 }

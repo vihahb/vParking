@@ -15,6 +15,15 @@ public class Brandname {
     @Expose
     private String madeby;
 
+    public Brandname() {
+    }
+
+    public Brandname(String code, String name, String madeby) {
+        this.code = code;
+        this.name = name;
+        this.madeby = madeby;
+    }
+
     public String getCode() {
         return code;
     }

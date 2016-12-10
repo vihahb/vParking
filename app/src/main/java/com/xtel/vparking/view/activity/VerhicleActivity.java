@@ -1,17 +1,19 @@
 package com.xtel.vparking.view.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.xtel.vparking.R;
+import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Error;
-import com.xtel.vparking.model.entity.RESP_Verhicle;
 import com.xtel.vparking.model.entity.Verhicle;
 import com.xtel.vparking.presenter.VerhiclePresenter;
 import com.xtel.vparking.utils.JsonParse;
@@ -20,6 +22,10 @@ import com.xtel.vparking.view.adapter.VerhicleAdapter;
 import com.xtel.vparking.view.widget.ProgressView;
 
 import java.util.ArrayList;
+
+/**
+ * Created by Lê Công Long Vũ on 12/9/2016.
+ */
 
 public class VerhicleActivity extends BasicActivity implements VerhicleView {
     public static final int RESULT_ADD_VERHICLE = 66, REQUEST_ADD_VERHICLE = 99;
@@ -49,13 +55,13 @@ public class VerhicleActivity extends BasicActivity implements VerhicleView {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         arrayList = new ArrayList<>();
-        VerhicleAdapter adapter = new VerhicleAdapter(arrayList);
+        VerhicleAdapter adapter = new VerhicleAdapter(getApplicationContext(), arrayList);
         recyclerView.setAdapter(adapter);
     }
 
     private void initProgressView() {
         progressView = new ProgressView(this, null);
-        progressView.initData(R.mipmap.icon_parking, "Bạn chưa có bãi đỗ nào nào", "Kiểm tra lại", "Đang tải dữ liệu", Color.parseColor("#5c5ca7"));
+        progressView.initData(R.mipmap.icon_parking, "Không có phương tiện nào", "Kiểm tra lại", "Đang tải dữ liệu", Color.parseColor("#5c5ca7"));
         progressView.setUpWithView(recyclerView);
         progressView.showProgressbar();
 
@@ -96,8 +102,8 @@ public class VerhicleActivity extends BasicActivity implements VerhicleView {
     }
 
     @Override
-    public void onGetVerhicleSuccess(RESP_Verhicle obj) {
-        arrayList.addAll(obj.getData());
+    public void onGetVerhicleSuccess(ArrayList<Verhicle> arrayList) {
+        this.arrayList.addAll(arrayList);
         checkListData();
     }
 
@@ -108,7 +114,24 @@ public class VerhicleActivity extends BasicActivity implements VerhicleView {
     }
 
     @Override
+    public void onGetVerhicleByIdSuccess(Verhicle verhicle) {
+
+    }
+
+    @Override
     public Activity getActivity() {
-        return null;
+        return this;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_ADD_VERHICLE && resultCode == RESULT_ADD_VERHICLE) {
+            if (data != null) {
+                int id = data.getIntExtra(Constants.VERHICLE_ID, -1);
+                presenter.getVerhicleById(id);
+                Log.e(this.getClass().getSimpleName(), "result id: " + id);
+            } else
+                Log.e(this.getClass().getSimpleName(), "result data null");
+        }
     }
 }
