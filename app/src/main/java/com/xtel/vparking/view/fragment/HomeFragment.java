@@ -104,7 +104,7 @@ public class HomeFragment extends BasicFragment implements
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        find_option = new Find(-1, -1, -1, null, null);
+        find_option = new Find(-1, -1, -1, "", "");
 
         createLocationRequest();
         initGoogleMap();

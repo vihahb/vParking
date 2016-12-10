@@ -114,9 +114,9 @@ public class HomeFragmentPresenter {
             url += Constants.PARKING_PRICE_TYPE + find.getPrice_type();
         if (find.getType() != -1)
             url += Constants.PARKING_TYPE + find.getType();
-        if (find.getBegin_time() != null)
+        if (!find.getBegin_time().isEmpty())
             url += Constants.PARKING_BEGIN_TIME + find.getBegin_time();
-        if (find.getEnd_time() != null)
+        if (!find.getEnd_time().isEmpty())
             url += Constants.PARKING_END_TIME + find.getEnd_time();
 
         Log.e("home", "url search " + url);
