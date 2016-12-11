@@ -7,7 +7,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,11 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.model.entity.Prices;
-import com.xtel.vparking.view.MyApplication;
 
 import java.util.ArrayList;
 
@@ -54,8 +51,7 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
         holder.sp_type.setAdapter(adapter_price);
 
         holder.sp_type.setSelection((prices.getPrice_type() - 1));
-        int pos_transport = prices.getPrice_for();
-        switch (pos_transport) {
+        switch (prices.getPrice_for()) {
             case 1:
                 holder.sp_for.setSelection(2);
                 break;
@@ -69,39 +65,47 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
                 break;
         }
 
+        if (prices.getPrice() > 0)
+            holder.edt_price.setText(String.valueOf(prices.getPrice()));
+        else
+            holder.edt_price.setText("");
+
         if (position == (arrayList.size() - 1))
             holder.img_add.setImageResource(R.drawable.ic_add_box_white_36dp);
         else
             holder.img_add.setImageResource(R.mipmap.ic_close_box);
 
-//        if (prices.getPrice() > 0)
-//            holder.edt_price.setText(String.valueOf(arrayList.get(position).getPrice()));
+//        final TextWatcher textWatcher = new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (holder.edt_price.isFocused()) {
+//                    Log.e("price", "add text " + position);
+////                    Log.e("price", "add text to " + position + "    " + arrayList.size());
+////
+////                    int money;
+////                    if (s != null && !s.toString().isEmpty())
+////                        money = Integer.parseInt(s.toString());
+////                    else
+////                        money = 0;
+////
+////                    arrayList.get(position).setPrice(money);
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {}
+//        };
 
-        holder.edt_price.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        try {
+            holder.edt_price.removeTextChangedListener(holder.textWatcher);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                try {
-                    if (holder.edt_price.isFocusable()) {
-                        if (position <= arrayList.size())
-                            Log.e("price", "add text to " + position + "    " + arrayList.size());
-                        int money;
-                        if (s != null && !s.toString().isEmpty())
-                            money = Integer.parseInt(s.toString());
-                        else
-                            money = 0;
-                        arrayList.get(position).setPrice(money);
-                    }
-                } catch (Exception e) {
-                    Log.e("price", "text error " + e.toString());
-                }
-            }
-        });
+        holder.edt_price.addTextChangedListener(holder.textWatcher);
 
         holder.sp_for.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -160,6 +164,7 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
         private Spinner sp_type, sp_for;
         private EditText edt_price;
         private ImageView img_add;
+        private TextWatcher textWatcher;
 
         ViewHolder(final View itemView) {
             super(itemView);
@@ -167,6 +172,29 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
             sp_type = (Spinner) itemView.findViewById(R.id.item_sp_add_parking_time_type);
             sp_for = (Spinner) itemView.findViewById(R.id.item_sp_add_parking_transport_type);
             img_add = (ImageView) itemView.findViewById(R.id.item_img_add_parking_add);
+
+            textWatcher = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (edt_price.isFocused()) {
+                        Log.e("price", "add text " + getAdapterPosition());
+
+                        int money;
+                        if (s != null && !s.toString().isEmpty())
+                            money = Integer.parseInt(s.toString());
+                        else
+                            money = 0;
+
+                        arrayList.get(getAdapterPosition()).setPrice(money);
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            };
         }
     }
 

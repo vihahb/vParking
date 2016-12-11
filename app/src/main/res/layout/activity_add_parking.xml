@@ -34,7 +34,18 @@
             <include
                 layout="@layout/activity_add_parking_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_60"
+                android:background="@color/btn_fb_plus"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:onClick="addParking"
+                android:text="@string/add_dangtin"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
