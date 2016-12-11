@@ -266,14 +266,4 @@
             </TableRow>
         </TableLayout>
     </LinearLayout>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_60"
-        android:background="@color/btn_fb_plus"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:onClick="addParking"
-        android:text="@string/add_dangtin"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white" />
 </LinearLayout>

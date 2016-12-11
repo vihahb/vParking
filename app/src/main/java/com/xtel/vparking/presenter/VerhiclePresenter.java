@@ -128,9 +128,6 @@ public class VerhiclePresenter {
     }
 
     public void getVerhicleById(final int id) {
-        Brandname brandname = new Brandname("code", "name", "made by");
-        Verhicle verhicle = new Verhicle(1, "29A-666666", 1, "Xe máy new", "abc", 1, brandname);
-        view.onGetVerhicleByIdSuccess(verhicle);
         if (id == -1)
             return;
 
