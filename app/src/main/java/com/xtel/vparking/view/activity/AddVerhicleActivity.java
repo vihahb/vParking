@@ -176,24 +176,25 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
             Brandname brandname = new Brandname();
             String v_name, v_plate, v_des;
             int v_type, v_flag;
-
             v_name = edt_verhicle_name.getText().toString();
             v_plate = edt_verhicle_plate.getText().toString();
             v_des = edt_verhicle_descriptions.getText().toString();
             v_type = getVerhicleType();
             v_flag = getFlagDefault();
-
             verhiclePresenter.addVerhicle(v_name, v_plate, v_des, v_type, v_flag, brand_code);
-
-            showShortToast("Done");
         } else
             showShortToast(mess);
 
     }
 
     @Override
+    public void finishActivity() {
+        super.finishActivity();
+    }
+
+    @Override
     public Activity getActivity() {
-        return null;
+        return this;
     }
 
     @Override

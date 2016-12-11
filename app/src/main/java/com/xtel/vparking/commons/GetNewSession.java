@@ -11,6 +11,7 @@ import com.koushikdutta.ion.Ion;
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.model.LoginModel;
+import com.xtel.vparking.model.entity.DeviceObject;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Login;
 import com.xtel.vparking.utils.JsonHelper;

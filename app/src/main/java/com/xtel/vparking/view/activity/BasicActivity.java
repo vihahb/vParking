@@ -143,6 +143,10 @@ public abstract class BasicActivity extends AppCompatActivity {
         finish();
     }
 
+    protected void finishActivity() {
+        finish();
+    }
+
     protected void showConfirmExitApp() {
         if (isWaitingForExit) {
             System.exit(0);

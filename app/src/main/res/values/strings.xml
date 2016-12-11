@@ -55,6 +55,7 @@
     <string name="verhicle_description">Mô tả</string>
     <string name="verhicle_default">Phương tiện mặc định</string>
     <string name="verhicle_add">Thêm phương tiện</string>
+    <string name="verhicle_add_success">Thêm phương tiện thành công</string>
     <!-- Profile -->
     <string name="email">E-mail</string>
     <string name="gender">Giới tính</string>

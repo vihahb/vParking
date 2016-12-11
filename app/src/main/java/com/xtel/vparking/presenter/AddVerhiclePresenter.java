@@ -1,5 +1,6 @@
 package com.xtel.vparking.presenter;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.xtel.vparking.R;
@@ -70,6 +71,8 @@ public class AddVerhiclePresenter {
             @Override
             public void onSuccess(RESP_Verhicle obj) {
                 Log.v("Verhicle ", "i1 " + obj.toString());
+                view.finishActivity();
+                view.showShortToast(view.getActivity().getString(R.string.verhicle_add_success));
             }
 
             @Override
@@ -78,9 +81,8 @@ public class AddVerhiclePresenter {
                     getNewSessionAddVerhicle(name, plate, des, type, flag, brand_code);
                 } else
                     view.showShortToast(error.getMessage());
-
                 Log.e("Err add v", String.valueOf(error.getCode()));
-                Log.e("Err add v type", error.getType());
+                Log.e("Err add v type", error.getMessage());
             }
         });
     }
@@ -90,7 +92,6 @@ public class AddVerhiclePresenter {
             @Override
             public void onSuccess() {
                 addVerhicle(name, plate, des, type, flag, brand_code);
-                view.showShortToast(view.getActivity().getString(R.string.get_session_success));
             }
 
             @Override

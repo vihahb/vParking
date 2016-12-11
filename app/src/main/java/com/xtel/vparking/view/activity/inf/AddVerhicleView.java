@@ -17,6 +17,8 @@ public interface AddVerhicleView extends IView {
 
     void onAddVerhicleError();
 
+    void finishActivity();
+
     @Override
     void showShortToast(String message);
 

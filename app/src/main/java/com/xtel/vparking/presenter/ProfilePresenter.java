@@ -132,7 +132,7 @@ public class ProfilePresenter {
     }
 
     public void getNewSessionUser(final String name, final String email, final String birthday, final int gender, final String phone) {
-        GetNewSession.getNewSession(view.getActivity().getApplicationContext(), new RequestNoResultListener() {
+        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
                 view.showShortToast(view.getActivity().getString(R.string.get_session_success));
