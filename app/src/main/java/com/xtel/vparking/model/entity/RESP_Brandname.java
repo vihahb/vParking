@@ -10,15 +10,15 @@ import java.util.ArrayList;
 
 public class RESP_Brandname extends RESP_Basic {
     @Expose
-    private ArrayList<VerhicleBrandName> data;
+    private ArrayList<Brandname> data;
     @Expose
     private int version;
 
-    public ArrayList<VerhicleBrandName> getData() {
+    public ArrayList<Brandname> getData() {
         return data;
     }
 
-    public void setData(ArrayList<VerhicleBrandName> data) {
+    public void setData(ArrayList<Brandname> data) {
         this.data = data;
     }
 

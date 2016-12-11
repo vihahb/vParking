@@ -47,9 +47,9 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     //Date Time Picker
     int hour, minutes;
     String value_time;
-    Find findModel;
     int price_type_integer;
     FindAdvancedPresenter presenter;
+    Find findModel;
 
 
     @Override
@@ -85,6 +85,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
 
         btn_find = (Button) findViewById(R.id.btn_find);
         btn_clear = (Button) findViewById(R.id.btn_clear_filter);
+//        getData();
         initOnClick();
         initSpinner();
         initTime();
@@ -393,23 +394,31 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         return minutes_parse;
     }
 
+//    private void getData(){
+//        Intent intent = new Intent();
+//        try {
+//            findModel = (Find) intent.getSerializableExtra(Constants.FIND_MODEL);
+//        } catch (Exception e){
+//            e.printStackTrace();
+//        }
+//
+//        if (findModel.getBegin_time() != "" && findModel.getEnd_time() != "" && findModel.getPrice() != -1
+//                && findModel.getPrice_type() != -1 && findModel.getType() != -1) {
+//            String begin_time = findModel.getBegin_time();
+//            String end_time = findModel.getEnd_time();
+//            int type = findModel.getType();
+//            int price = findModel.getPrice();
+//            int price_type = findModel.getPrice_type();
+//            setCheckBox(type);
+//            setBegin(begin_time);
+//            setEnd(end_time);
+//            setPrice(price);
+//            setPriceType(price_type);
+//        }
+//    }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.FIND_ADVANDCED_RQ && resultCode == Constants.FIND_ADVANDCED_RS) {
-            findModel = (Find) data.getExtras().getSerializable(Constants.FIND_MODEL);
-            if (findModel.getBegin_time() != null && findModel.getEnd_time() != null && findModel.getPrice() != -1
-                    && findModel.getPrice_type() != -1 && findModel.getType() != -1) {
-                String begin_time = findModel.getBegin_time();
-                String end_time = findModel.getEnd_time();
-                int type = findModel.getType();
-                int price = findModel.getPrice();
-                int price_type = findModel.getPrice_type();
-                setCheckBox(type);
-                setBegin(begin_time);
-                setEnd(end_time);
-                setPrice(price);
-                setPriceType(price_type);
-            }
-        }
+    protected void onResume() {
+        super.onResume();
     }
 }

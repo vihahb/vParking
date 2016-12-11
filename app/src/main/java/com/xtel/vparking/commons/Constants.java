@@ -92,6 +92,7 @@ public class Constants {
     public static final String PARKING_FLAG = "parking_flag";
     public static final String BRAND_NAME = "brandname";
     public static final String BRANDNAME_VERSION = "?version=";
+    public static final String ADD_VERHICLE = "v1.0/user/verhicle";
 
 
     public static final String JSON_ERROR = "error";

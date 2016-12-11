@@ -2,6 +2,7 @@ package com.xtel.vparking.view.activity.inf;
 
 import android.app.Activity;
 
+import com.xtel.vparking.model.entity.Brandname;
 import com.xtel.vparking.model.entity.VerhicleBrandName;
 
 import java.util.ArrayList;
@@ -16,7 +17,10 @@ public interface AddVerhicleView extends IView {
 
     void onAddVerhicleError();
 
-    void onGetBrandnameData(ArrayList<VerhicleBrandName> brandNames);
+    @Override
+    void showShortToast(String message);
+
+    void onGetBrandnameData(ArrayList<Brandname> brandNames);
 
     Activity getActivity();
 

@@ -9,41 +9,44 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.xtel.vparking.R;
-import com.xtel.vparking.model.entity.VerhicleBrandName;
+import com.xtel.vparking.model.entity.Brandname;
 import com.xtel.vparking.presenter.AddVerhiclePresenter;
 import com.xtel.vparking.view.activity.inf.AddVerhicleView;
+import com.xtel.vparking.view.adapter.CustomAddVerhicleAdapterSpinner;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by vivhp on 12/9/2016.
  */
 
-public class AddVerhicleActivity extends BasicActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, AddVerhicleView {
+public class AddVerhicleActivity extends BasicActivity implements AdapterView.OnItemSelectedListener, AddVerhicleView {
 
     private EditText edt_verhicle_name, edt_verhicle_plate, edt_verhicle_descriptions;
     private Spinner sp_verhicle_brandname;
     private CheckBox chk_verhicle_default;
     private Button btn_verhicle_add;
+    private RadioGroup radioGroup;
     AddVerhiclePresenter verhiclePresenter;
+    String mess;
+    String brand_code;
 
-    private ArrayList<String> brandNames_arr;
-    private ArrayAdapter<String> adapter_spinner_brand;
+    private ArrayList<Brandname> brandNames_arr;
+    private CustomAddVerhicleAdapterSpinner adapter_spinner_brand;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_verhicle_activity);
+        setContentView(R.layout.activity_add_verhicle);
         verhiclePresenter = new AddVerhiclePresenter(this);
-        verhiclePresenter.getVerhicleBrandname();
         initToolbar();
         initView();
     }
@@ -63,32 +66,34 @@ public class AddVerhicleActivity extends BasicActivity implements View.OnClickLi
         sp_verhicle_brandname = (Spinner) findViewById(R.id.spinner_brandname);
         chk_verhicle_default = (CheckBox) findViewById(R.id.chk_verhicle_default);
         btn_verhicle_add = (Button) findViewById(R.id.btn_verhicle_add);
-        brandNames_arr = new ArrayList<>();
+        radioGroup = (RadioGroup) findViewById(R.id.rdo_group);
+        brandNames_arr = new ArrayList<Brandname>();
         verhiclePresenter.getVerhicleBrandname();
+        OnClickButton();
     }
 
-    private void initSpinnerBrandname(Context context) {
-        adapter_spinner_brand = new ArrayAdapter<>(context, R.layout.simple_spinner_item, brandNames_arr);
-        adapter_spinner_brand.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+    private void initSpinnerBrandname() {
+        adapter_spinner_brand = new CustomAddVerhicleAdapterSpinner(this, R.layout.custom_spinner_addverhicle, brandNames_arr);
+        adapter_spinner_brand.setDropDownViewResource(R.layout.custom_spinner_addverhicle);
         sp_verhicle_brandname.setAdapter(adapter_spinner_brand);
         sp_verhicle_brandname.setOnItemSelectedListener(this);
     }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.btn_verhicle_add) {
-
-        }
+    private void OnClickButton() {
+        btn_verhicle_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addVerhicle();
+            }
+        });
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         int id_spinner = parent.getId();
-        String brand_name;
         if (id_spinner == R.id.spinner_brandname) {
-            brand_name = adapter_spinner_brand.getItem(position).toString();
-            showShortToast(brand_name);
+            brand_code = adapter_spinner_brand.getItem(position).getCode().toString();
+            showShortToast(brand_code);
         }
     }
 
@@ -108,25 +113,82 @@ public class AddVerhicleActivity extends BasicActivity implements View.OnClickLi
     }
 
     @Override
-    public void onGetBrandnameData(ArrayList<VerhicleBrandName> brandNames) {
-        brandNames_arr = getNameFromBrand(brandNames);
-        Log.v("brand 1", brandNames_arr.get(0).toString());
-        initSpinnerBrandname(this);
+    public void onGetBrandnameData(ArrayList<Brandname> brandNames) {
+        brandNames_arr = getBrandNames_arr(brandNames);
+        initSpinnerBrandname();
     }
 
-    private ArrayList<String> getNameFromBrand(ArrayList<VerhicleBrandName> brandNames) {
-        ArrayList<String> name_brand = new ArrayList<>();
-        if (brandNames != null) {
-            int total = brandNames.size();
-            if (total > 0) {
-                Log.v("Total brand", "" + total);
-                for (int i = 0; i < brandNames.size(); i++) {
-                    name_brand.add(i, brandNames.get(i).getName().toString());
-                    Log.v("arr name" + i, name_brand.toString());
-                }
+    private ArrayList<Brandname> getBrandNames_arr(ArrayList<Brandname> arrayList) {
+        ArrayList<Brandname> brandnames = new ArrayList<Brandname>();
+        if (arrayList != null) {
+            int total = arrayList.size();
+            Log.v("Total brand name: ", String.valueOf(total));
+            for (int i = 0; i < total; i++) {
+                brandnames.add(i, arrayList.get(i));
+                Log.v("Info brand name", brandnames.get(i).toString());
             }
         }
-        return name_brand;
+
+        return brandnames;
+    }
+
+    private boolean valid() {
+
+        if (edt_verhicle_name.getText().toString().isEmpty() || edt_verhicle_name.getText().toString() == "") {
+            mess = this.getString(R.string.check_verhicle_name);
+            return false;
+        } else if (edt_verhicle_plate.getText().toString().isEmpty() || edt_verhicle_plate.getText().toString() == "") {
+            mess = this.getString(R.string.check_verhicle_plate);
+            return false;
+        } else if (edt_verhicle_descriptions.getText().toString().isEmpty() || edt_verhicle_descriptions.getText().toString() == "") {
+            mess = this.getString(R.string.check_verhicle_des);
+            return false;
+        }
+        return true;
+    }
+
+    private int getVerhicleType() {
+        int type = 0;
+        int id = radioGroup.getCheckedRadioButtonId();
+        if (id != -1) {
+            if (id == R.id.rdo_oto) {
+                type = 1;
+            } else if (id == R.id.rdo_xemay) {
+                type = 2;
+            }
+        } else
+            type = 1;
+        return type;
+    }
+
+    private int getFlagDefault() {
+        int flag = 0;
+        if (chk_verhicle_default.isChecked()) {
+            flag = 1;
+        } else
+            flag = 0;
+
+        return flag;
+    }
+
+    private void addVerhicle() {
+        if (valid()) {
+            Brandname brandname = new Brandname();
+            String v_name, v_plate, v_des;
+            int v_type, v_flag;
+
+            v_name = edt_verhicle_name.getText().toString();
+            v_plate = edt_verhicle_plate.getText().toString();
+            v_des = edt_verhicle_descriptions.getText().toString();
+            v_type = getVerhicleType();
+            v_flag = getFlagDefault();
+
+            verhiclePresenter.addVerhicle(v_name, v_plate, v_des, v_type, v_flag, brand_code);
+
+            showShortToast("Done");
+        } else
+            showShortToast(mess);
+
     }
 
     @Override

@@ -2,11 +2,19 @@ package com.xtel.vparking.presenter;
 
 import android.util.Log;
 
+import com.xtel.vparking.R;
+import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.commons.GetNewSession;
+import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.VerhicleModel;
+import com.xtel.vparking.model.entity.Brandname;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Brandname;
+import com.xtel.vparking.model.entity.RESP_Verhicle;
+import com.xtel.vparking.model.entity.Verhicle;
+import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.view.activity.inf.AddVerhicleView;
 
 import java.util.ArrayList;
@@ -44,5 +52,57 @@ public class AddVerhiclePresenter {
             }
         });
 
+    }
+
+    public void addVerhicle(final String name, final String plate, final String des, final int type, final int flag, final String brand_code) {
+
+        String url = Constants.SERVER_PARKING + Constants.ADD_VERHICLE;
+        String session = LoginModel.getInstance().getSession();
+        RESP_Verhicle resp_verhicle = new RESP_Verhicle();
+        resp_verhicle.setName(name);
+        resp_verhicle.setPlate_number(plate);
+        resp_verhicle.setDesc(des);
+        resp_verhicle.setType(type);
+        resp_verhicle.setFlag_default(flag);
+        resp_verhicle.setBrandname(setCode(brand_code));
+
+        VerhicleModel.getInstance().addVerhicle2Nip(url, JsonHelper.toJson(resp_verhicle), session, new ResponseHandle<RESP_Verhicle>(RESP_Verhicle.class) {
+            @Override
+            public void onSuccess(RESP_Verhicle obj) {
+                Log.v("Verhicle ", "i1 " + obj.toString());
+            }
+
+            @Override
+            public void onError(Error error) {
+                if (error.getCode() == 2) {
+                    getNewSessionAddVerhicle(name, plate, des, type, flag, brand_code);
+                } else
+                    view.showShortToast(error.getMessage());
+
+                Log.e("Err add v", String.valueOf(error.getCode()));
+                Log.e("Err add v type", error.getType());
+            }
+        });
+    }
+
+    private void getNewSessionAddVerhicle(final String name, final String plate, final String des, final int type, final int flag, final String brand_code) {
+        GetNewSession.getNewSession(view.getActivity().getApplicationContext(), new RequestNoResultListener() {
+            @Override
+            public void onSuccess() {
+                addVerhicle(name, plate, des, type, flag, brand_code);
+                view.showShortToast(view.getActivity().getString(R.string.get_session_success));
+            }
+
+            @Override
+            public void onError() {
+                view.showShortToast(view.getActivity().getString(R.string.error_session_invalid));
+            }
+        });
+    }
+
+    public Brandname setCode(String code) {
+        Brandname brandname = new Brandname();
+        brandname.setCode(code);
+        return brandname;
     }
 }

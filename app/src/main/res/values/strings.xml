@@ -197,4 +197,7 @@
     <string name="account_kit_client_token">48e3188e71531cff2966c8fdf0f5ed91</string>
 
     <string name="add_verhicle">Thêm Phương tiên</string>
+    <string name="check_verhicle_name">Vui lòng nhập tên phương tiện</string>
+    <string name="check_verhicle_plate">Vui lòng nhập biển số phương tiện</string>
+    <string name="check_verhicle_des">Vui lòng nhập mô tả</string>
 </resources>
