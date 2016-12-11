@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -59,6 +60,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         presenter = new FindAdvancedPresenter(this);
         initToolbar();
         initWidget();
+        getData();
 //        initSelectMoney();
     }
 
@@ -108,7 +110,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     }
 
     private void initSpinner(){
-        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.simple_spinner_item, price_type);
+        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_spinner_item_find, price_type);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         sp_price_type.setAdapter(arrayAdapter);
         sp_price_type.setOnItemSelectedListener(this);
@@ -157,7 +159,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         TimePickerDialog pickerDialog = new TimePickerDialog(FindAdvancedActivity.this, R.style.TimePicker, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                value_time = getHour(hourOfDay) + " : " + getMinute(minute);
+                value_time = getHour(hourOfDay) + ":" + getMinute(minute);
                 edt_begin_time.setText(value_time);
             }
         },hour, minutes, true);
@@ -168,7 +170,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         TimePickerDialog pickerDialog = new TimePickerDialog(FindAdvancedActivity.this, R.style.TimePicker, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                value_time = getHour(hourOfDay) + " : " + getMinute(minute);
+                value_time = getHour(hourOfDay) + ":" + getMinute(minute);
                 edt_end_time.setText(value_time);
             }
         },hour, minutes, true);
@@ -195,7 +197,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     }
 
     private void onResetParkingResult() {
-        presenter.getParkingRequest(-1, -1, -1, null, null);
+        presenter.getParkingRequest(-1, -1, -1, "", "");
         String messages = "Huỷ bỏ lọc bãi đỗ";
         showShortToast(messages);
     }
@@ -394,28 +396,46 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         return minutes_parse;
     }
 
-//    private void getData(){
-//        Intent intent = new Intent();
-//        try {
-//            findModel = (Find) intent.getSerializableExtra(Constants.FIND_MODEL);
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
-//
-//        if (findModel.getBegin_time() != "" && findModel.getEnd_time() != "" && findModel.getPrice() != -1
-//                && findModel.getPrice_type() != -1 && findModel.getType() != -1) {
-//            String begin_time = findModel.getBegin_time();
-//            String end_time = findModel.getEnd_time();
-//            int type = findModel.getType();
-//            int price = findModel.getPrice();
-//            int price_type = findModel.getPrice_type();
-//            setCheckBox(type);
-//            setBegin(begin_time);
-//            setEnd(end_time);
-//            setPrice(price);
-//            setPriceType(price_type);
-//        }
-//    }
+    private void getData() {
+        if (validModel()) {
+            String begin_time = findModel.getBegin_time();
+            String end_time = findModel.getEnd_time();
+            int type = findModel.getType();
+            int price = findModel.getPrice();
+            int price_type = findModel.getPrice_type();
+            setCheckBox(type);
+            setBegin(begin_time);
+            setEnd(end_time);
+            setPrice(price);
+            setPriceType(price_type);
+        } else {
+            initSpinner();
+            initTime();
+        }
+    }
+
+    private boolean validModel() {
+        try {
+            findModel = new Find();
+            findModel = (Find) getIntent().getSerializableExtra(Constants.FIND_MODEL);
+            Log.v("Begin time", findModel.getBegin_time());
+        } catch (Exception e) {
+            Log.e("Loi get find", e.getMessage());
+        }
+
+        if (findModel.getBegin_time().isEmpty()) {
+            return false;
+        } else if (findModel.getEnd_time().isEmpty()) {
+            return false;
+        } else if (findModel.getPrice() == -1) {
+            return false;
+        } else if (findModel.getPrice_type() == -1) {
+            return false;
+        } else if (findModel.getType() == -1) {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     protected void onResume() {

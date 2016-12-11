@@ -99,7 +99,7 @@
     <string name="add_follow_name">Phương tiện</string>
     <string name="add_follow_price">Loại</string>
     <string name="all_vehicle">Số xe muốn gửi</string>
-    <string name="price">Mức giá</string>
+    <string name="price">Mức giá (K)</string>
     <string name="price_type">Kiểu giá</string>
     <string name="subcribe_noti">Nhận thông báo</string>
     <string name="find">Tìm kiếm</string>

@@ -51,9 +51,9 @@ public class HomeFragmentPresenter {
 
     public void checkFindOption(Find find_option) {
         if (find_option.getType() == -1 && find_option.getPrice_type() == -1 && find_option.getPrice() == -1 &&
-                find_option.getBegin_time() == null && find_option.getEnd_time() == null)
+                find_option.getBegin_time() == "" && find_option.getEnd_time() == "") {
             view.onCheckFindOptionSuccess(R.mipmap.ic_filter);
-        else
+        } else
             view.onCheckFindOptionSuccess(R.mipmap.ic_edit_filter);
     }
 

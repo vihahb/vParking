@@ -96,6 +96,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/size_4"
             android:orientation="horizontal">
 
             <TextView
@@ -103,7 +104,7 @@
                 style="@style/AddParking_Textview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:textSize="15sp"
                 android:paddingLeft="@dimen/size_12"
                 android:text="@string/price" />
@@ -118,7 +119,7 @@
                 style="@style/AddParking_Textview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.5"
+                android:layout_weight="1"
                 android:textSize="15sp"
                 android:paddingLeft="@dimen/size_12"
                 android:text="@string/price_type" />
@@ -133,13 +134,15 @@
                 android:id="@+id/edt_price"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:background="@drawable/custom_textview_add_parking"
+                android:layout_weight="1"
+                android:background="@drawable/custom_edittext_findadvance"
                 android:gravity="center_vertical"
                 android:hint="0"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white"
                 android:inputType="number"
                 android:paddingLeft="@dimen/size_12"
-                android:maxLength="7"
+                android:maxLength="2"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <LinearLayout
@@ -151,8 +154,8 @@
                 android:id="@+id/spinner_price_type"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.5"
-                android:background="@drawable/custom_textview_add_parking"
+                android:layout_weight="1"
+                android:background="@drawable/custom_edittext_findadvance"
                 android:paddingLeft="@dimen/size_12"
                 android:paddingRight="@dimen/size_10" />
         </LinearLayout>
@@ -161,6 +164,7 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/size_4"
             android:orientation="horizontal">
 
             <TextView
@@ -199,12 +203,15 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/custom_textview_add_parking"
-                android:drawableRight="@mipmap/ic_av_timer_black_24dp"
+                android:background="@drawable/custom_edittext_findadvance"
+                android:drawableRight="@mipmap/ic_timer_white_24dp"
                 android:focusable="false"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white"
                 android:gravity="center_vertical"
                 android:hint="@string/find_begin_time"
                 android:paddingLeft="@dimen/size_12"
+                android:paddingRight="@dimen/size_10"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <LinearLayout
@@ -217,9 +224,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/custom_textview_add_parking"
-                android:drawableRight="@mipmap/ic_av_timer_black_24dp"
+                android:background="@drawable/custom_edittext_findadvance"
+                android:drawableRight="@mipmap/ic_timer_off_white_24dp"
                 android:focusable="false"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white"
                 android:gravity="center_vertical"
                 android:hint="@string/find_end_time"
                 android:paddingLeft="@dimen/size_12"
