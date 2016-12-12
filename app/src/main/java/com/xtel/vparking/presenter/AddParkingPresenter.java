@@ -1,10 +1,13 @@
 package com.xtel.vparking.presenter;
 
+import android.app.TimePickerDialog;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.TimePicker;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestNoResultListener;
@@ -21,9 +24,11 @@ import com.xtel.vparking.model.entity.Prices;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.Task;
+import com.xtel.vparking.view.activity.AddParkingActivity;
 import com.xtel.vparking.view.activity.inf.AddParkingView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import gun0912.tedbottompicker.TedBottomPicker;
 
@@ -162,5 +167,35 @@ public class AddParkingPresenter {
                 view.onAddParkingError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
             }
         });
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public void getTime(final boolean isBegin) {
+        Calendar mcurrentTime = Calendar.getInstance();
+        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mcurrentTime.get(Calendar.MINUTE);
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(view.getActivity(), R.style.TimePicker, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                view.onGetTimeSuccess(isBegin, getHour(selectedHour), getMinute(selectedMinute));
+            }
+        }, hour, minute, true);//Yes 24 hour time.
+        mTimePicker.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        mTimePicker.show();
+    }
+
+    private String getHour(int hour) {
+        if (hour < 10)
+            return "0" + hour;
+        else
+            return String.valueOf(hour);
+    }
+
+    private String getMinute(int minute) {
+        if (minute < 10)
+            return "0" + minute;
+        else
+            return String.valueOf(minute);
     }
 }

@@ -17,6 +17,7 @@ public interface AddParkingView {
     void onTakePictureSuccess(Uri uri);
     void onPostPictureSuccess(String url);
     void onPostPictureError(String error);
+    void onGetTimeSuccess(boolean isBegin, String hour, String minute);
     void onAddParkingSuccess(int id);
     void onAddParkingError(Error error);
     void onValidateError(View view, String error);

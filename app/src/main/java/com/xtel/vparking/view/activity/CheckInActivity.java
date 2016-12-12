@@ -2,64 +2,109 @@ package com.xtel.vparking.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.xtel.vparking.R;
+import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.Verhicle;
 import com.xtel.vparking.presenter.CheckInPresenter;
+import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.inf.CheckInView;
+import com.xtel.vparking.view.adapter.CheckInAdapter;
+import com.xtel.vparking.view.widget.ProgressView;
+
+import java.util.ArrayList;
 
 public class CheckInActivity extends BasicActivity implements CheckInView {
+    public static final int RESULT_CHECK_IN = 66, REQUEST_CHECK_IN = 99;
     private CheckInPresenter presenter;
 
-    private View layout_now, layout_new;
-    private TextView txt_now_address, txt_new_title;
-
-    private final int REQUEST_CODE = 99;
+    private RecyclerView recyclerView;
+    private ArrayList<Verhicle> arrayList;
+    private CheckInAdapter adapter;
+    private ProgressView progressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_in);
 
-        presenter = new CheckInPresenter(this);
         initToolbar(R.id.checkin_toolbar, null);
-        initView();
+        initRecyclerview();
+        initProgressView();
+
+        presenter = new CheckInPresenter(this);
+        presenter.getAllVerhicle();
     }
 
-    private void initView() {
-        layout_now = (View) findViewById(R.id.checkin_layout_now);
-        layout_new = (View) findViewById(R.id.checkin_layout_new);
-        txt_now_address = (TextView) findViewById(R.id.checkin_now_address);
-        txt_new_title = (TextView) findViewById(R.id.checkin_new_title);
+    private void initRecyclerview() {
+        recyclerView = (RecyclerView) findViewById(R.id.checkin_recyclerview);
+        recyclerView.setHasFixedSize(true);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        arrayList = new ArrayList<>();
+        adapter = new CheckInAdapter(this, arrayList, this);
+        recyclerView.setAdapter(adapter);
     }
 
-    public void bikeClicked(View view) {
-        presenter.startScanQrCode(3, REQUEST_CODE);
+    private void initProgressView() {
+        progressView = new ProgressView(this, null);
+        progressView.initData(R.mipmap.icon_parking, "Không có phương tiện nào", "Kiểm tra lại", "Đang tải dữ liệu", Color.parseColor("#5c5ca7"));
+        progressView.setUpWithView(recyclerView);
+        progressView.showProgressbar();
+
+        progressView.setButtonwClicked(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressView.showProgressbar();
+                presenter.getAllVerhicle();
+            }
+        });
     }
 
-    public void carClicked(View view) {
-        presenter.startScanQrCode(2, REQUEST_CODE);
+    private void checkListData() {
+        if (arrayList.size() == 0) {
+            progressView.updateData(R.mipmap.icon_parking, "Không có phương tiện nào", "Kiểm tra lại");
+            progressView.showData();
+        } else {
+            recyclerView.getAdapter().notifyDataSetChanged();
+            progressView.hide();
+        }
     }
-
-    public void truckClicked(View view) {
-        presenter.startScanQrCode(4, REQUEST_CODE);
-    }
-
-    public void busClicked(View view) {
-        presenter.startScanQrCode(5, REQUEST_CODE);
-    }
-
-
-
-
 
     @Override
-    public void onScanSuccess(String content) {
-        layout_now.setVisibility(View.VISIBLE);
-        txt_now_address.setText(content);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onGetVerhicleSuccess(ArrayList<Verhicle> arrayList) {
+        this.arrayList.addAll(arrayList);
+        checkListData();
+    }
+
+    @Override
+    public void onGetVerhicleError(Error error) {
+        progressView.updateData(R.mipmap.icon_parking, JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_coloi)), "Kiểm tra lại");
+        progressView.showData();
+    }
+
+    @Override
+    public void onItemClicked(Verhicle verhicle) {
+
     }
 
     @Override
@@ -69,17 +114,12 @@ public class CheckInActivity extends BasicActivity implements CheckInView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            if (data != null)
-                presenter.checkScanResult(data);
+        if (requestCode == REQUEST_CHECK_IN && resultCode == RESULT_CHECK_IN) {
+            if (data != null) {
+                int id = data.getIntExtra(Constants.VERHICLE_ID, -1);
+                Log.e(this.getClass().getSimpleName(), "result id: " + id);
+            } else
+                Log.e(this.getClass().getSimpleName(), "result data null");
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
     }
 }

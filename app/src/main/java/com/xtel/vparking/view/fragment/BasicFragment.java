@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.DialogListener;
 import com.xtel.vparking.dialog.DialogNotification;
-import com.xtel.vparking.dialog.DialogProgressBar;
 
 import java.io.Serializable;
 
@@ -20,7 +19,6 @@ import java.io.Serializable;
  */
 
 public abstract class BasicFragment extends Fragment {
-
     private ProgressDialog progressDialog;
 
     public BasicFragment() {

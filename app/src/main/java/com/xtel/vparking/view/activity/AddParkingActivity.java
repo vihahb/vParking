@@ -1,11 +1,9 @@
 package com.xtel.vparking.view.activity;
 
 import android.app.Activity;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,7 +11,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -21,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -39,13 +35,15 @@ import com.xtel.vparking.model.entity.Prices;
 import com.xtel.vparking.presenter.AddParkingPresenter;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.inf.AddParkingView;
-import com.xtel.vparking.view.adapter.ViewImageAdapter;
 import com.xtel.vparking.view.adapter.PriceAdapter;
 import com.xtel.vparking.view.fragment.AddParkingAdapter;
 import com.xtel.vparking.view.widget.BitmapTransform;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+
+/**
+ * Created by Lê Công Long Vũ on 11/28/2016.
+ */
 
 public class AddParkingActivity extends BasicActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, AddParkingView {
 
@@ -139,52 +137,6 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
-    private void getBeginTime() {
-        Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(AddParkingActivity.this, R.style.TimePicker, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                edt_begin_time.setText(getHour(selectedHour) + ":" + getMinute(selectedMinute));
-            }
-        }, hour, minute, true);//Yes 24 hour time.
-        mTimePicker.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        mTimePicker.show();
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    private void getEndTime() {
-        Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(AddParkingActivity.this, R.style.TimePicker, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                edt_end_time.setText(getHour(selectedHour) + ":" + getMinute(selectedMinute));
-            }
-        }, hour, minute, true);//Yes 24 hour time.
-        mTimePicker.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        mTimePicker.show();
-    }
-
-    private String getHour(int hour) {
-        if (hour < 10)
-            return "0" + hour;
-        else
-            return String.valueOf(hour);
-    }
-
-    private String getMinute(int minute) {
-        if (minute < 10)
-            return "0" + minute;
-        else
-            return String.valueOf(minute);
-    }
-
     public void addParking(View view) {
         showProgressBar(false, false, null, getString(R.string.adding));
         presenter.validateData(view, arrayList_picture, edt_parking_name.getText().toString(), placeModel,
@@ -226,9 +178,9 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         if (id == R.id.edt_add_parking_diacho) {
             getAddress();
         } else if (id == R.id.edt_add_parking_begin_time) {
-            getBeginTime();
+            presenter.getTime(true);
         } else if (id == R.id.edt_add_parking_end_time) {
-            getEndTime();
+            presenter.getTime(false);
         }
     }
 
@@ -283,6 +235,14 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     public void onPostPictureError(String error) {
         closeProgressBar();
         showShortToast(error);
+    }
+
+    @Override
+    public void onGetTimeSuccess(boolean isBegin, String hour, String minute) {
+        if (isBegin)
+            edt_begin_time.setText(hour + ":" + minute);
+        else
+            edt_end_time.setText(hour + ":" + minute);
     }
 
     @Override

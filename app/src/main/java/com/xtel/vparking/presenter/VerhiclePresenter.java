@@ -1,5 +1,6 @@
 package com.xtel.vparking.presenter;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.xtel.vparking.callback.RequestNoResultListener;
@@ -8,7 +9,6 @@ import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.VerhicleModel;
-import com.xtel.vparking.model.entity.Brandname;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Verhicle;
 import com.xtel.vparking.model.entity.RESP_Verhicle_List;
@@ -31,30 +31,6 @@ public class VerhiclePresenter {
         this.view = view;
     }
 
-    private ArrayList<Verhicle> demoData() {
-        ArrayList<Verhicle> arrayList = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            Verhicle verhicle;
-            Brandname brandname = new Brandname("code", "name", "made by");
-
-            if (i % 2 == 0) {
-                if (i % 3 == 0)
-                    verhicle = new Verhicle(i, "29A-666666", 2, "Xe máy " + i, "abc", 1, brandname);
-                else
-                    verhicle = new Verhicle(i, "29A-666666", 2, "Xe máy " + i, "abc", 0, brandname);
-            } else {
-                if (i % 3 == 0)
-                    verhicle = new Verhicle(i, "29-S666666", 1, "Xe Ô tô " + i, "abc", 1, brandname);
-                else
-                    verhicle = new Verhicle(i, "29-S666666", 1, "Xe Ô tô " + i, "abc", 0, brandname);
-            }
-
-            arrayList.add(verhicle);
-            Log.e("verhicle", "add " + i);
-        }
-        return arrayList;
-    }
-
     public void getAllVerhicle() {
         String url = Constants.SERVER_PARKING + Constants.PARKING_VERHICLE;
         String session = LoginModel.getInstance().getSession();
@@ -62,7 +38,6 @@ public class VerhiclePresenter {
             @Override
             public void onSuccess(RESP_Verhicle_List obj) {
                 sortVerhicle(obj.getData());
-//                sortVerhicle(demoData());
             }
 
             @Override
@@ -92,41 +67,52 @@ public class VerhiclePresenter {
         });
     }
 
-    private void sortVerhicle(ArrayList<Verhicle> arrayList) {
-        Collections.sort(arrayList, new Comparator<Verhicle>() {
+    private void sortVerhicle(final ArrayList<Verhicle> arrayList) {
+        new AsyncTask<Void, Void, Void>() {
             @Override
-            public int compare(Verhicle lhs, Verhicle rhs) {
-                try {
-                    return String.valueOf(lhs.getType()).compareTo(String.valueOf(rhs.getType()));
-                } catch (Exception e) {
-                    throw new IllegalArgumentException(e);
-                }
-            }
-        });
-
-        if (arrayList.size() > 0) {
-            if (arrayList.get(0).getType() == 1) {
-                arrayList.add(0, new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
-            } else {
-                arrayList.add(0, new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
-            }
-
-            for (int i = (arrayList.size() - 1); i > 0; i--) {
-                if (arrayList.get((i - 1)).getType() < 10)
-                    if (arrayList.get(i).getType() != arrayList.get((i - 1)).getType()) {
-                        if (arrayList.get(0).getType() == 1) {
-                            arrayList.add(i, new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
-                        } else {
-                            arrayList.add(i, new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
+            protected Void doInBackground(Void... params) {
+                Collections.sort(arrayList, new Comparator<Verhicle>() {
+                    @Override
+                    public int compare(Verhicle lhs, Verhicle rhs) {
+                        try {
+                            return String.valueOf(lhs.getType()).compareTo(String.valueOf(rhs.getType()));
+                        } catch (Exception e) {
+                            throw new IllegalArgumentException(e);
                         }
-                        break;
                     }
+                });
+
+                if (arrayList.size() > 0) {
+                    if (arrayList.get(0).getType() == 1) {
+                        arrayList.add(0, new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
+                    } else {
+                        arrayList.add(0, new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
+                    }
+
+                    for (int i = (arrayList.size() - 1); i > 0; i--) {
+                        if (arrayList.get((i - 1)).getType() < 10)
+                            if (arrayList.get(i).getType() != arrayList.get((i - 1)).getType()) {
+                                if (arrayList.get(0).getType() == 1) {
+                                    arrayList.add(i, new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
+                                } else {
+                                    arrayList.add(i, new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
+                                }
+                                break;
+                            }
+                    }
+                }
+                return null;
             }
-        }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+                view.onGetVerhicleSuccess(arrayList);
+            }
+        }.execute();
 
         Log.e("verhicle", "total array " + arrayList.size());
-
-        view.onGetVerhicleSuccess(arrayList);
     }
 
     public void getVerhicleById(final int id) {

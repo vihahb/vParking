@@ -133,7 +133,7 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/size_40"
                 android:layout_marginTop="@dimen/size_8"
                 android:layout_weight="3">
 

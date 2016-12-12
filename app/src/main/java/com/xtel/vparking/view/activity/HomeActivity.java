@@ -11,6 +11,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,10 @@ import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.inf.HomeView;
 import com.xtel.vparking.view.fragment.HomeFragment;
 import com.xtel.vparking.view.fragment.ParkingManagementFragment;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Lê Công Long Vũ on 12/2/2016.
@@ -57,7 +62,31 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         initNavigation();
         initListener();
         homePresenter = new HomePresenter(this);
+
+//        test();
     }
+
+//    private void test() {
+//        ArrayList<Integer> myList = new ArrayList<>();
+//        myList.add(5);
+//        myList.add(1);
+//        myList.add(3);
+//        myList.add(2);
+//        myList.add(9);
+//        myList.add(15);
+//
+//        Collections.sort(myList);
+//
+//        for (int i = (myList.size() - 1); i >= 0; i--) {
+//            Log.e("sort", "item " + myList.get(i));
+//        }
+//
+//        Collections.reverse(myList);
+//
+//        for (int i = (myList.size() - 1); i >= 0; i--) {
+//            Log.e("sort", "item " + myList.get(i));
+//        }
+//    }
 
     private void initView() {
         drawer = (DrawerLayout) findViewById(R.id.home_drawer);
@@ -179,7 +208,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         } else if (id == R.id.nav_parking_verhicle) {
             startActivity(VerhicleActivity.class);
         } else if (id == R.id.nav_parking_checkin) {
-            startActivity(ScanQrActivity.class);
+            startActivity(CheckInActivity.class);
         } else if (id == R.id.nav_parking_logout) {
             LoginManager.getInstance().logOut();
             SharedPreferencesUtils.getInstance().clearData();

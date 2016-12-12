@@ -1,6 +1,7 @@
 package com.xtel.vparking.view.activity;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
@@ -18,7 +19,6 @@ import android.widget.Toast;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.DialogListener;
 import com.xtel.vparking.dialog.DialogNotification;
-import com.xtel.vparking.dialog.DialogProgressBar;
 
 import java.io.Serializable;
 
@@ -27,7 +27,7 @@ import java.io.Serializable;
  */
 
 public abstract class BasicActivity extends AppCompatActivity {
-    private DialogProgressBar dialogProgressBar;
+    private ProgressDialog progressDialog;
     private Dialog dialog;
     boolean isWaitingForExit = false;
 
@@ -73,13 +73,21 @@ public abstract class BasicActivity extends AppCompatActivity {
     }
 
     protected void showProgressBar(boolean isTouchOutside, boolean isCancel, String title, String message) {
-        dialogProgressBar = new DialogProgressBar(BasicActivity.this, isTouchOutside, isCancel, title, message);
-        dialogProgressBar.showProgressBar();
+        progressDialog = new ProgressDialog(BasicActivity.this);
+        progressDialog.setCanceledOnTouchOutside(isTouchOutside);
+        progressDialog.setCancelable(isCancel);
+
+        if (title != null)
+            progressDialog.setTitle(title);
+        if (message != null)
+            progressDialog.setMessage(message);
+
+        progressDialog.show();
     }
 
     protected void closeProgressBar() {
-        if (dialogProgressBar.isShowing())
-            dialogProgressBar.closeProgressBar();
+        if (progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 
     protected void showDialog(String title, String content, String button, View.OnClickListener onClickListener) {
