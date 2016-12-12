@@ -10,7 +10,7 @@
         android:id="@+id/item_edt_add_parking_money"
         style="@style/AddParking_Editext_Border"
         android:layout_width="0dp"
-        android:layout_height="@dimen/size_36"
+        android:layout_height="@dimen/size_40"
         android:layout_marginEnd="@dimen/size_8"
         android:layout_marginRight="@dimen/size_8"
         android:layout_weight="1"
@@ -21,7 +21,7 @@
     <Spinner
         android:id="@+id/item_sp_add_parking_transport_type"
         android:layout_width="0dp"
-        android:layout_height="@dimen/size_36"
+        android:layout_height="@dimen/size_40"
         android:layout_marginEnd="@dimen/size_8"
         android:layout_marginRight="@dimen/size_8"
         android:layout_weight="1"
@@ -30,7 +30,7 @@
     <Spinner
         android:id="@+id/item_sp_add_parking_time_type"
         android:layout_width="0dp"
-        android:layout_height="@dimen/size_36"
+        android:layout_height="@dimen/size_40"
         android:layout_marginEnd="@dimen/size_8"
         android:layout_marginRight="@dimen/size_8"
         android:layout_weight="1"
