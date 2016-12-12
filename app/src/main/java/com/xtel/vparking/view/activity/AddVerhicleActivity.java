@@ -1,7 +1,6 @@
 package com.xtel.vparking.view.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +19,8 @@ import android.widget.Spinner;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Brandname;
+import com.xtel.vparking.model.entity.RESP_Verhicle;
+import com.xtel.vparking.model.entity.Verhicle;
 import com.xtel.vparking.presenter.AddVerhiclePresenter;
 import com.xtel.vparking.view.activity.inf.AddVerhicleView;
 import com.xtel.vparking.view.adapter.CustomAddVerhicleAdapterSpinner;
@@ -35,11 +36,14 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
     private EditText edt_verhicle_name, edt_verhicle_plate, edt_verhicle_descriptions;
     private Spinner sp_verhicle_brandname;
     private CheckBox chk_verhicle_default;
-    private Button btn_verhicle_add;
+    private Button btn_verhicle_add, btn_verhicle_update;
     private RadioGroup radioGroup;
+    private RadioButton rdo_oto, rdo_xemay;
     AddVerhiclePresenter verhiclePresenter;
     String mess;
+    int getId;
     String brand_code;
+    Verhicle verhicle;
 
     private ArrayList<Brandname> brandNames_arr;
     private CustomAddVerhicleAdapterSpinner adapter_spinner_brand;
@@ -68,9 +72,13 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
         sp_verhicle_brandname = (Spinner) findViewById(R.id.spinner_brandname);
         chk_verhicle_default = (CheckBox) findViewById(R.id.chk_verhicle_default);
         btn_verhicle_add = (Button) findViewById(R.id.btn_verhicle_add);
+        btn_verhicle_update = (Button) findViewById(R.id.btn_update_verhicle);
         radioGroup = (RadioGroup) findViewById(R.id.rdo_group);
+        rdo_oto = (RadioButton) findViewById(R.id.rdo_oto);
+        rdo_xemay = (RadioButton) findViewById(R.id.rdo_xemay);
         brandNames_arr = new ArrayList<Brandname>();
         verhiclePresenter.getVerhicleBrandname();
+        getDataFromManager();
         OnClickButton();
     }
 
@@ -79,15 +87,36 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
         adapter_spinner_brand.setDropDownViewResource(R.layout.custom_spinner_addverhicle);
         sp_verhicle_brandname.setAdapter(adapter_spinner_brand);
         sp_verhicle_brandname.setOnItemSelectedListener(this);
+
+        String brand_code = verhicle.getBrandname().getCode();
+        for (int i = 0; i < brandNames_arr.size(); i++) {
+            if (brand_code.equals(brandNames_arr.get(i).getCode())) {
+                sp_verhicle_brandname.setSelection(i);
+                Log.v("Spinner item pós", String.valueOf(i));
+            }
+        }
     }
 
     private void OnClickButton() {
+        if (verhicle != null) {
+            btn_verhicle_add.setVisibility(View.GONE);
+        } else
+            btn_verhicle_update.setVisibility(View.GONE);
+
         btn_verhicle_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addVerhicle();
             }
         });
+
+        btn_verhicle_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateVerhicle();
+            }
+        });
+
     }
 
     @Override
@@ -189,6 +218,64 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
 
     }
 
+    private void getDataFromManager() {
+        if (validVerhicleModel()) {
+            final int id = verhicle.getId();
+            final String name = verhicle.getName();
+            final String plate_num = verhicle.getPlate_number();
+            final String descriptions = verhicle.getDesc();
+            final int type = verhicle.getType();
+            final int flag_default = verhicle.getFlag_default();
+            final String code = verhicle.getBrandname().getCode();
+            fill_DataUpdate(id, name, descriptions, plate_num, type, flag_default, code);
+        }
+    }
+
+    private void fill_DataUpdate(int id, String name, String desc, String plate_number, int type, int flag_default, String code) {
+
+        btn_verhicle_add.setText(this.getString(R.string.update_btn));
+        edt_verhicle_name.setText(name);
+        edt_verhicle_descriptions.setText(desc);
+        edt_verhicle_plate.setText(plate_number);
+        getId = id;
+        if (type == 1) {
+            rdo_oto.setChecked(true);
+        } else
+            rdo_xemay.setChecked(true);
+
+        if (flag_default == 1) {
+            chk_verhicle_default.setChecked(true);
+        }
+    }
+
+    private void updateVerhicle() {
+        String update_name = edt_verhicle_name.getText().toString();
+        String update_desc = edt_verhicle_descriptions.getText().toString();
+        String update_plate = edt_verhicle_plate.getText().toString();
+        int update_type = getVerhicleType();
+        int update_flag = getFlagDefault();
+        String update_code = brand_code;
+        putData2Server(getId, update_name, update_desc, update_plate, update_type, update_flag, update_code);
+    }
+
+    private void putData2Server(int id, String name, String desc, String plate_number, int type, int flag_default, String code) {
+        verhiclePresenter.updateVerhicle(id, name, desc, plate_number, type, flag_default, code);
+    }
+
+    private boolean validVerhicleModel() {
+        try {
+            verhicle = (Verhicle) getIntent().getSerializableExtra(Constants.VERHICLE_MODEL);
+            Log.v("verhicle id", String.valueOf(verhicle.getId()));
+        } catch (Exception e) {
+            Log.e("Loi get Verhicle", e.getMessage());
+        }
+
+        if (verhicle != null) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void finishActivity() {
         super.finishActivity();
@@ -201,6 +288,7 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
         setResult(VerhicleActivity.RESULT_ADD_VERHICLE, intent);
         finish();
     }
+
 
     @Override
     public Activity getActivity() {

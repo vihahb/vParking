@@ -214,4 +214,8 @@
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
 
+    <style name="WhiteCheck" parent="Theme.AppCompat">
+        <item name="colorAccent">#fff</item>
+    </style>
+
 </resources>

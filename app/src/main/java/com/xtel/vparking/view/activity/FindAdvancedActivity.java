@@ -111,7 +111,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
 
     private void initSpinner(){
         arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_spinner_item_find, price_type);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_find_ad);
         sp_price_type.setAdapter(arrayAdapter);
         sp_price_type.setOnItemSelectedListener(this);
     }

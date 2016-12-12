@@ -30,6 +30,10 @@ public class RequestServer {
         new GetToServer(responseHandle).execute(url, session);
     }
 
+    public void putApi(String url, String jsonObject, String session, ResponseHandle responseHandle) {
+        new PutToServer(responseHandle).execute(url, jsonObject, session);
+    }
+
     private class PostToServer extends AsyncTask<String, Integer, String> {
         private final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         private ResponseHandle responseHandle;

@@ -31,4 +31,8 @@ public class VerhicleModel extends BasicModel {
         requestServer.postApi(url, object, session, responseHandle);
     }
 
+    public void putVerhicle2Server(String url, String object, String session, ResponseHandle<RESP_Verhicle> responseHandle) {
+        requestServer.putApi(url, object, session, responseHandle);
+    }
+
 }
