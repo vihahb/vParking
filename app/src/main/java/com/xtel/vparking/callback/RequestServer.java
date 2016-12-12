@@ -112,4 +112,48 @@ public class RequestServer {
             responseHandle.onSuccess(s);
         }
     }
+
+    private class PutToServer extends AsyncTask<String, Integer, String> {
+        private final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        private ResponseHandle responseHandle;
+
+        PutToServer(ResponseHandle responseHandle) {
+            this.responseHandle = responseHandle;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                OkHttpClient client = new OkHttpClient();
+
+                Request.Builder builder = new Request.Builder();
+                builder.url(params[0]);
+
+                if (params[1] != null) {
+                    RequestBody body = RequestBody.create(JSON, params[1]);
+                    builder.put(body);
+                }
+
+                if (params[2] != null)
+                    builder.header(Constants.JSON_SESSION, params[2]);
+
+                Request request = builder.build();
+                Log.e(this.getClass().getSimpleName(), "Request: " + request.toString());
+
+                Response response = client.newCall(request).execute();
+                return response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getSimpleName(), "Error: " + e.toString());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.e(this.getClass().getSimpleName(), "Success: " + s);
+            responseHandle.onSuccess(s);
+        }
+    }
 }

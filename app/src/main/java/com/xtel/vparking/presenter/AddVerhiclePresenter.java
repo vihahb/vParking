@@ -80,7 +80,7 @@ public class AddVerhiclePresenter {
                 if (error.getCode() == 2) {
                     getNewSessionAddVerhicle(name, plate, des, type, flag, brand_code);
                 } else
-                    view.showShortToast(error.getMessage());
+//                    view.showShortToast(error.getMessage());
                 Log.e("Err add v", String.valueOf(error.getCode()));
                 Log.e("Err add v type", error.getMessage());
             }
