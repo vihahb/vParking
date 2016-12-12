@@ -1,8 +1,6 @@
 package com.xtel.vparking.view.adapter;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xtel.vparking.R;
-import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Verhicle;
-import com.xtel.vparking.view.activity.AddVerhicleActivity;
-import com.xtel.vparking.view.activity.VerhicleActivity;
 
 import java.util.ArrayList;
 
@@ -56,7 +51,7 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ViewItem view = (ViewItem) holder;
 
             view.txt_name.setText(verhicle.getName());
-            view.txt_made_by.setText(verhicle.getBrandname().getMadeby());
+            view.txt_made_by.setText(verhicle.getBrandname().getName());
             view.txt_plate_number.setText(verhicle.getPlate_number());
 
             if (verhicle.getFlag_default() == 1)
@@ -67,9 +62,9 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             view.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(activity, AddVerhicleActivity.class);
-                    intent.putExtra(Constants.VERHICLE_MODEL, verhicle);
-                    activity.startActivityForResult(intent, VerhicleActivity.REQUEST_UPDATE_VERHICLE);
+//                    Intent intent = new Intent(activity, AddVerhicleActivity.class);
+//                    intent.putExtra(Constants.VERHICLE_MODEL, verhicle);
+//                    activity.startActivityForResult(intent, VerhicleActivity.REQUEST_UPDATE_VERHICLE);
                 }
             });
         }
@@ -119,7 +114,25 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 arrayList.add(position, verhicle);
                 notifyItemInserted(position);
                 notifyItemChanged(position, getItemCount());
-                break;
+                return;
+            }
+        }
+
+        if (arrayList.size() == 0) {
+            if (verhicle.getType() == 1) {
+                arrayList.add(0, new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
+                arrayList.add(1, verhicle);
+            } else {
+                arrayList.add(0, new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
+                arrayList.add(1, verhicle);
+            }
+        } else {
+            if (verhicle.getType() == 1) {
+                arrayList.add(new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
+                arrayList.add(verhicle);
+            } else {
+                arrayList.add(new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
+                arrayList.add(verhicle);
             }
         }
     }
