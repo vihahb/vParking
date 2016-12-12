@@ -296,6 +296,8 @@ public class HomeFragment extends BasicFragment implements
 
         double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
         double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
+
+        actionType = 2;
         presenter.getParkingAround(latitude, longtitude, find_option);
     }
 

@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -138,6 +139,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void getBeginTime() {
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
@@ -149,9 +151,11 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
                 edt_begin_time.setText(getHour(selectedHour) + ":" + getMinute(selectedMinute));
             }
         }, hour, minute, true);//Yes 24 hour time.
+        mTimePicker.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mTimePicker.show();
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void getEndTime() {
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
@@ -163,6 +167,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
                 edt_end_time.setText(getHour(selectedHour) + ":" + getMinute(selectedMinute));
             }
         }, hour, minute, true);//Yes 24 hour time.
+        mTimePicker.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mTimePicker.show();
     }
 

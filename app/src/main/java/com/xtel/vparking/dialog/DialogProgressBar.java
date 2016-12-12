@@ -2,6 +2,7 @@ package com.xtel.vparking.dialog;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 
 import com.xtel.vparking.R;
 
@@ -12,9 +13,11 @@ import com.xtel.vparking.R;
 public class DialogProgressBar {
     private ProgressDialog progressDialog;
 
+    @SuppressWarnings("ConstantConditions")
     public DialogProgressBar(Context context, boolean isTouchOutside, boolean isCancel, String title, String message) {
         progressDialog = new ProgressDialog(context, R.style.AppCompatAlertDialogStyle);
         progressDialog.setCanceledOnTouchOutside(isTouchOutside);
+        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         progressDialog.setCancelable(isCancel);
 
         if (title != null)

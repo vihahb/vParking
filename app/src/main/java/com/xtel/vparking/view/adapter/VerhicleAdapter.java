@@ -1,6 +1,7 @@
 package com.xtel.vparking.view.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xtel.vparking.R;
+import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Verhicle;
+import com.xtel.vparking.view.activity.AddVerhicleActivity;
+import com.xtel.vparking.view.activity.VerhicleActivity;
+import com.xtel.vparking.view.activity.inf.VerhicleView;
 
 import java.util.ArrayList;
 
@@ -19,11 +24,13 @@ import java.util.ArrayList;
 public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Activity activity;
     private ArrayList<Verhicle> arrayList;
+    private VerhicleView verhicleView;
     private final int view_title = 1, view_item = 0, type_car = 1111, type_bike = 2222;
 
-    public VerhicleAdapter(Activity activity, ArrayList<Verhicle> arrayList) {
+    public VerhicleAdapter(Activity activity, ArrayList<Verhicle> arrayList, VerhicleView verhicleView) {
         this.activity = activity;
         this.arrayList = arrayList;
+        this.verhicleView = verhicleView;
     }
 
     @Override
@@ -62,9 +69,7 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             view.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Intent intent = new Intent(activity, AddVerhicleActivity.class);
-//                    intent.putExtra(Constants.VERHICLE_MODEL, verhicle);
-//                    activity.startActivityForResult(intent, VerhicleActivity.REQUEST_UPDATE_VERHICLE);
+                    verhicleView.onItemClicked(verhicle);
                 }
             });
         }

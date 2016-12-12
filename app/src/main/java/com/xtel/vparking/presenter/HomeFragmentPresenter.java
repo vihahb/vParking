@@ -22,6 +22,7 @@ import com.xtel.vparking.model.entity.RESP_Parking;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.model.entity.RESP_Router;
 import com.xtel.vparking.model.entity.Steps;
+import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.view.activity.HomeActivity;
 import com.xtel.vparking.view.activity.inf.HomeFragmentView;
 import com.xtel.vparking.view.fragment.HomeFragment;
@@ -77,6 +78,7 @@ public class HomeFragmentPresenter {
         ParkingModel.getInstanse().getParkingInfo(url, session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
             public void onSuccess(RESP_Parking_Info obj) {
+                Log.e(this.getClass().getSimpleName(), "parking info " + JsonHelper.toJson(obj));
                 view.onGetParkingInfoSuccess(obj);
             }
 
