@@ -2,6 +2,7 @@ package com.xtel.vparking.view.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.xtel.vparking.R;
+import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Brandname;
 import com.xtel.vparking.presenter.AddVerhiclePresenter;
 import com.xtel.vparking.view.activity.inf.AddVerhicleView;
@@ -190,6 +192,14 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
     @Override
     public void finishActivity() {
         super.finishActivity();
+    }
+
+    @Override
+    public void putExtra(String key, int id) {
+        Intent intent = new Intent();
+        intent.putExtra(key, id);
+        setResult(VerhicleActivity.RESULT_ADD_VERHICLE, intent);
+        finish();
     }
 
     @Override
