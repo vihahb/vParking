@@ -78,7 +78,7 @@ public class VerhicleActivity extends BasicActivity implements VerhicleView {
 
     private void checkListData() {
         if (arrayList.size() == 0) {
-            progressView.updateData(R.mipmap.icon_parking, "Bạn chưa có bãi đỗ nào", "Kiểm tra lại");
+            progressView.updateData(R.mipmap.icon_parking, "Không có phương tiện nào", "Kiểm tra lại");
             progressView.showData();
         } else {
             recyclerView.getAdapter().notifyDataSetChanged();
@@ -118,6 +118,7 @@ public class VerhicleActivity extends BasicActivity implements VerhicleView {
     @Override
     public void onGetVerhicleByIdSuccess(Verhicle verhicle) {
         adapter.insertNewItem(verhicle);
+        checkListData();
     }
 
     @Override

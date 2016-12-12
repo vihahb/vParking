@@ -13,6 +13,7 @@ import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Verhicle;
 import com.xtel.vparking.model.entity.RESP_Verhicle_List;
 import com.xtel.vparking.model.entity.Verhicle;
+import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.view.activity.inf.VerhicleView;
 
 import java.util.ArrayList;
@@ -111,14 +112,15 @@ public class VerhiclePresenter {
             }
 
             for (int i = (arrayList.size() - 1); i > 0; i--) {
-                if (arrayList.get(i).getType() != arrayList.get((i - 1)).getType()) {
-                    if (arrayList.get(0).getType() == 1) {
-                        arrayList.add(i, new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
-                    } else {
-                        arrayList.add(i, new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
+                if (arrayList.get((i - 1)).getType() < 10)
+                    if (arrayList.get(i).getType() != arrayList.get((i - 1)).getType()) {
+                        if (arrayList.get(0).getType() == 1) {
+                            arrayList.add(i, new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
+                        } else {
+                            arrayList.add(i, new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
+                        }
+                        break;
                     }
-                    break;
-                }
             }
         }
 
@@ -137,6 +139,8 @@ public class VerhiclePresenter {
         VerhicleModel.getInstance().getVerhicleById(url, session, new ResponseHandle<RESP_Verhicle>(RESP_Verhicle.class) {
             @Override
             public void onSuccess(RESP_Verhicle obj) {
+                Log.e("verhicle", "object success " + JsonHelper.toJson(obj));
+
                 Verhicle verhicle = new Verhicle();
                 verhicle.setId(obj.getId());
                 verhicle.setPlate_number(obj.getPlate_number());
@@ -145,6 +149,7 @@ public class VerhiclePresenter {
                 verhicle.setDesc(obj.getDesc());
                 verhicle.setFlag_default(obj.getFlag_default());
                 verhicle.setBrandname(obj.getBrandname());
+
                 view.onGetVerhicleByIdSuccess(verhicle);
             }
 
@@ -157,15 +162,17 @@ public class VerhiclePresenter {
     }
 
     private void getNewSessionVerhicleById(final int id) {
+        Log.e("verhicle", "get new session " + id);
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
                 getVerhicleById(id);
+                Log.e("verhicle", "get new session success " + id);
             }
 
             @Override
             public void onError() {
-
+                Log.e("verhicle", "get new session error " + id);
             }
         });
     }
