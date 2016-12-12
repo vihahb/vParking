@@ -120,7 +120,7 @@
                         <EditText
                             android:id="@+id/edt_email"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="@dimen/size_48"
                             android:background="@drawable/custom_edittext_profile"
                             android:hint="@string/email"
                             android:paddingBottom="@dimen/size_8"
@@ -174,7 +174,7 @@
                         <EditText
                             android:id="@+id/edt_birth_date"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="@dimen/size_48"
                             android:background="@drawable/custom_edittext_profile"
                             android:drawableRight="@mipmap/ic_keyboard_arrow_down_black_24dp"
                             android:focusable="false"
@@ -208,7 +208,7 @@
                         <Spinner
                             android:id="@+id/spinner_gender"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="@dimen/size_48"
                             android:background="@drawable/custom_edittext_profile"
                             android:paddingLeft="@dimen/size_12"
                             android:paddingRight="@dimen/size_10"/>
@@ -246,7 +246,7 @@
                         <EditText
                             android:id="@+id/edt_phone"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="@dimen/size_48"
                             android:layout_weight="1"
                             android:background="@drawable/edt_phone"
                             android:focusable="false"

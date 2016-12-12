@@ -70,8 +70,8 @@ public class AddVerhiclePresenter {
         VerhicleModel.getInstance().addVerhicle2Nip(url, JsonHelper.toJson(resp_verhicle), session, new ResponseHandle<RESP_Verhicle>(RESP_Verhicle.class) {
             @Override
             public void onSuccess(RESP_Verhicle obj) {
-                Log.v("Verhicle ", "i1 " + obj.toString());
-                view.finishActivity();
+                Log.v("Verhicle ", "i1 " + obj.getId());
+                putId(obj.getId());
                 view.showShortToast(view.getActivity().getString(R.string.verhicle_add_success));
             }
 
@@ -105,5 +105,9 @@ public class AddVerhiclePresenter {
         Brandname brandname = new Brandname();
         brandname.setCode(code);
         return brandname;
+    }
+
+    private void putId(int id) {
+        view.putExtra(Constants.VERHICLE_ID, id);
     }
 }
