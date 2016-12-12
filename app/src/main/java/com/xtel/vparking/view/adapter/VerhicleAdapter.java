@@ -51,7 +51,7 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ViewItem view = (ViewItem) holder;
 
             view.txt_name.setText(verhicle.getName());
-            view.txt_made_by.setText(verhicle.getBrandname().getMadeby());
+            view.txt_made_by.setText(verhicle.getBrandname().getName());
             view.txt_plate_number.setText(verhicle.getPlate_number());
 
             if (verhicle.getFlag_default() == 1)
