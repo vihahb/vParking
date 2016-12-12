@@ -25,8 +25,7 @@
         android:layout_marginEnd="@dimen/size_8"
         android:layout_marginRight="@dimen/size_8"
         android:layout_weight="1"
-        android:background="@drawable/custom_radio_group"
-        android:entries="@array/add_transport_type" />
+        android:background="@drawable/edittext_add_parking" />
 
     <Spinner
         android:id="@+id/item_sp_add_parking_time_type"
@@ -35,8 +34,7 @@
         android:layout_marginEnd="@dimen/size_8"
         android:layout_marginRight="@dimen/size_8"
         android:layout_weight="1"
-        android:background="@drawable/custom_radio_group"
-        android:entries="@array/add_price_type" />
+        android:background="@drawable/edittext_add_parking" />
 
     <ImageButton
         android:id="@+id/item_img_add_parking_add"

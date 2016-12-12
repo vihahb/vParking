@@ -60,8 +60,8 @@ public class VerhiclePresenter {
         VerhicleModel.getInstance().getAllVerhicle(url, session, new ResponseHandle<RESP_Verhicle_List>(RESP_Verhicle_List.class) {
             @Override
             public void onSuccess(RESP_Verhicle_List obj) {
-//                sortVerhicle(obj.getData());
-                sortVerhicle(demoData());
+                sortVerhicle(obj.getData());
+//                sortVerhicle(demoData());
             }
 
             @Override

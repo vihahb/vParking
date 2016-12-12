@@ -1,6 +1,8 @@
 package com.xtel.vparking.view.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xtel.vparking.R;
+import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Verhicle;
+import com.xtel.vparking.view.activity.AddVerhicleActivity;
+import com.xtel.vparking.view.activity.VerhicleActivity;
 
 import java.util.ArrayList;
 
@@ -17,12 +22,12 @@ import java.util.ArrayList;
  */
 
 public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private Context context;
+    private Activity activity;
     private ArrayList<Verhicle> arrayList;
     private final int view_title = 1, view_item = 0, type_car = 1111, type_bike = 2222;
 
-    public VerhicleAdapter(Context context, ArrayList<Verhicle> arrayList) {
-        this.context = context;
+    public VerhicleAdapter(Activity activity, ArrayList<Verhicle> arrayList) {
+        this.activity = activity;
         this.arrayList = arrayList;
     }
 
@@ -36,7 +41,7 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Verhicle verhicle = arrayList.get(position);
+        final Verhicle verhicle = arrayList.get(position);
 
         if (holder instanceof ViewTitle) {
             ViewTitle view = (ViewTitle) holder;
@@ -58,6 +63,15 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 view.txt_default.setVisibility(View.VISIBLE);
             else
                 view.txt_default.setVisibility(View.INVISIBLE);
+
+            view.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(activity, AddVerhicleActivity.class);
+                    intent.putExtra(Constants.VERHICLE_MODEL, verhicle);
+                    activity.startActivityForResult(intent, VerhicleActivity.REQUEST_UPDATE_VERHICLE);
+                }
+            });
         }
     }
 

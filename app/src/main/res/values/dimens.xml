@@ -15,6 +15,7 @@
     <dimen name="size_8">8dp</dimen>
     <dimen name="size_10">10dp</dimen>
     <dimen name="size_12">12dp</dimen>
+    <dimen name="size_13">13dp</dimen>
     <dimen name="size_14">14dp</dimen>
     <dimen name="size_16">16dp</dimen>
     <dimen name="size_18">18dp</dimen>
@@ -26,6 +27,7 @@
     <dimen name="size_32">32dp</dimen>
     <dimen name="size_36">36dp</dimen>
     <dimen name="size_38">38dp</dimen>
+    <dimen name="size_40">40dp</dimen>
     <dimen name="size_44">44dp</dimen>
     <dimen name="size_48">48dp</dimen>
     <dimen name="size_50">50dp</dimen>
@@ -43,6 +45,8 @@
     <dimen name="size_150">150dp</dimen>
     <dimen name="size_200">200dp</dimen>
     <dimen name="size_250">250dp</dimen>
+
+    <dimen name="font_13">13sp</dimen>
 
     <!-- Margin left / right button fb -->
     <dimen name="margin_fb">10dp</dimen>

@@ -10,5 +10,5 @@
     android:paddingLeft="@dimen/size_8"
     android:paddingRight="@dimen/size_8"
     android:paddingStart="@dimen/size_8"
-    android:textAppearance="?android:attr/textAppearance"
-    android:textColor="@color/colorPrimary" />
+    android:textColor="@color/colorPrimary"
+    android:textSize="@dimen/font_13" />

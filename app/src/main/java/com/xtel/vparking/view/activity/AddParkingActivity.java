@@ -187,64 +187,6 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
                 edt_begin_time.getText().toString(), edt_end_time.getText().toString(), arrayList_price);
     }
 
-//    private boolean checkInputData(View view) {
-//        if (arrayList_picture.size() == 0) {
-//            Snackbar.make(view, getString(R.string.loi_chonanh), Snackbar.LENGTH_SHORT).show();
-//            return false;
-//        } else if (edt_parking_name.getText().toString().isEmpty()) {
-//            Snackbar.make(view, getString(R.string.loi_nhapten), Snackbar.LENGTH_SHORT).show();
-//            return false;
-//        } else if (placeModel == null) {
-//            Snackbar.make(view, getString(R.string.loi_vitri), Snackbar.LENGTH_SHORT).show();
-//            return false;
-//        } else if (sp_transport_type.getSelectedItemPosition() == 0) {
-//            Snackbar.make(view, getString(R.string.error_choose_transport), Snackbar.LENGTH_SHORT).show();
-//            return false;
-//        } else if (checkNumberInput(edt_place_number.getText().toString()) <= 0) {
-//            Snackbar.make(view, getString(R.string.loi_chotrong), Snackbar.LENGTH_SHORT).show();
-//            return false;
-//        }
-//
-//        int error = checkListPrice();
-//        if (error == -1) {
-//            Snackbar.make(view, getString(R.string.error_choose_money_price), Snackbar.LENGTH_SHORT).show();
-//            return false;
-//        } else if (error == -2) {
-//            Snackbar.make(view, getString(R.string.error_choose_transport_price), Snackbar.LENGTH_SHORT).show();
-//            return false;
-//        }
-//
-//        return true;
-//    }
-
-//    private int checkListPrice() {
-//        for (int i = arrayList_price.size(); i >= 0; i--) {
-//            if (arrayList_price.get(i).getMoney() == 0)
-//                return -1;
-//            else if (arrayList_price.get(i).getTransport_type() == 0)
-//                return -2;
-//        }
-//        return 0;
-//    }
-
-//    private int checkNumberInput(String number) {
-//        try {
-//            return Integer.parseInt(number);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return -1;
-//    }
-
-//    private void addParkingNow() {
-//        showProgressBar(false, false, null, getString(R.string.adding));
-//        presenter.addParking(placeModel.getLatitude(), placeModel.getLongtitude(), sp_transport_type.getSelectedItemPosition(), edt_address.getText().toString(),
-//                edt_begin_time.getText().toString(), edt_end_time.getText().toString(), edt_parking_name.getText().toString(),
-//                edt_parking_desc.getText().toString(), Integer.parseInt(edt_place_number.getText().toString()),
-//                seek_money.getProgress(), arrayList_picture);
-//    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -341,7 +283,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     @Override
     public void onAddParkingSuccess(final int id) {
         closeProgressBar();
-        showDialog("THÔNG BÁO", "Tin dã được dang thành công", "OK", new View.OnClickListener() {
+        showDialog("THÔNG BÁO", "Tin đã được đăng thành công", "OK", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();

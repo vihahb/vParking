@@ -140,6 +140,7 @@ public class Constants {
 
 //    Verhicle
     public static final String VERHICLE_ID = "verhicle_id";
+    public static final String VERHICLE_MODEL = "verhicle_model";
 
     public static String getTime(String begin, String end) {
         if (begin == null && end == null)

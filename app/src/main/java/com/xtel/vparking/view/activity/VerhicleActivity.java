@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 public class VerhicleActivity extends BasicActivity implements VerhicleView {
     public static final int RESULT_ADD_VERHICLE = 66, REQUEST_ADD_VERHICLE = 99;
+    public static final int RESULT_UPDATE_VERHICLE = 22, REQUEST_UPDATE_VERHICLE = 33;
     private VerhiclePresenter presenter;
 
     private RecyclerView recyclerView;
@@ -56,7 +57,7 @@ public class VerhicleActivity extends BasicActivity implements VerhicleView {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         arrayList = new ArrayList<>();
-        adapter = new VerhicleAdapter(getApplicationContext(), arrayList);
+        adapter = new VerhicleAdapter(this, arrayList);
         recyclerView.setAdapter(adapter);
     }
 

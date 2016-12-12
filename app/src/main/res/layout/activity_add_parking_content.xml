@@ -76,7 +76,7 @@
             android:id="@+id/edt_add_parking_name"
             style="@style/AddParking_Editext_Border"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_36"
+            android:layout_height="@dimen/size_40"
             android:layout_marginTop="@dimen/size_8"
             android:hint="@string/input_parking_name" />
 
@@ -92,7 +92,7 @@
             android:id="@+id/edt_add_parking_diacho"
             style="@style/AddParking_Editext_Border_No_Focus"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_36"
+            android:layout_height="@dimen/size_40"
             android:layout_marginTop="@dimen/size_8"
             android:drawableEnd="@drawable/ic_keyboard_arrow_right_white_24dp"
             android:drawablePadding="@dimen/size_16"
@@ -139,22 +139,20 @@
                 <Spinner
                     android:id="@+id/sp_add_parking_type"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/size_36"
+                    android:layout_height="@dimen/size_40"
                     android:layout_marginEnd="@dimen/size_6"
                     android:layout_marginRight="@dimen/size_6"
                     android:layout_weight="2"
-                    android:background="@drawable/custom_radio_group"
-                    android:entries="@array/add_transport" />
+                    android:background="@drawable/edittext_add_parking" />
 
                 <EditText
                     android:id="@+id/edt_add_parking_empty"
                     style="@style/AddParking_Editext_Border"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="@dimen/size_40"
                     android:layout_marginLeft="@dimen/size_6"
                     android:layout_marginStart="@dimen/size_6"
                     android:layout_weight="1"
-                    android:background="@drawable/custom_radio_group"
                     android:hint="0"
                     android:inputType="number"
                     android:maxLength="7" />
@@ -191,7 +189,7 @@
                     android:id="@+id/edt_add_parking_begin_time"
                     style="@style/AddParking_Editext_Border_No_Focus"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/size_36"
+                    android:layout_height="@dimen/size_40"
                     android:layout_marginEnd="@dimen/size_6"
                     android:layout_marginRight="@dimen/size_6"
                     android:drawableEnd="@drawable/ic_access_time_white_24dp"
@@ -203,7 +201,7 @@
                     android:id="@+id/edt_add_parking_end_time"
                     style="@style/AddParking_Editext_Border_No_Focus"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/size_36"
+                    android:layout_height="@dimen/size_40"
                     android:layout_marginLeft="@dimen/size_6"
                     android:layout_marginStart="@dimen/size_6"
                     android:drawableEnd="@drawable/ic_access_time_white_24dp"
