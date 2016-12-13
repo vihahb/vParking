@@ -75,6 +75,7 @@
                     android:hint="@string/verhicle_name"
                     android:paddingBottom="@dimen/size_8"
                     android:paddingEnd="0dp"
+                    android:theme="@style/EditTextTheme"
                     android:paddingLeft="@dimen/size_16"
                     android:paddingRight="0dp"
                     android:paddingStart="@dimen/size_16"
@@ -154,6 +155,7 @@
                     android:paddingRight="@dimen/size_10"
                     android:paddingStart="@dimen/size_16"
                     android:paddingTop="@dimen/size_8"
+                    android:theme="@style/EditTextTheme"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="18sp" />
 
@@ -190,6 +192,7 @@
                     android:background="@drawable/custom_edittext_profile"
                     android:gravity="top"
                     android:hint="@string/verhicle_description"
+                    android:theme="@style/EditTextTheme"
                     android:lines="3"
                     android:paddingBottom="@dimen/size_8"
                     android:paddingEnd="0dp"

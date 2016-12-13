@@ -267,7 +267,7 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
             verhicle = (Verhicle) getIntent().getSerializableExtra(Constants.VERHICLE_MODEL);
             Log.v("verhicle id", String.valueOf(verhicle.getId()));
         } catch (Exception e) {
-            Log.e("Loi get Verhicle", e.getMessage());
+//            Log.e("Loi get Verhicle", e.getMessage());
         }
 
         if (verhicle != null) {

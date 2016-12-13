@@ -364,7 +364,7 @@ public class LoginPresenter {
                 String bar_code = obj.getBar_code();
                 Log.v("Object user: ", obj.toString());
                 LoginModel.getInstance().postingUser2Shared(fullname, gender, birthday, email, phone, avatar, qr_code, bar_code);
-                view.startActivity(HomeActivity.class);
+                view.startActivityAndFinish(HomeActivity.class);
                 view.closeProgressBar();
             }
 
