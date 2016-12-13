@@ -13,6 +13,7 @@ import com.xtel.vparking.model.VerhicleModel;
 import com.xtel.vparking.model.entity.Brandname;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Brandname;
+import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.model.entity.RESP_Verhicle;
 import com.xtel.vparking.model.entity.Verhicle;
 import com.xtel.vparking.utils.JsonHelper;
@@ -100,13 +101,13 @@ public class AddVerhiclePresenter {
         resp_verhicle.setType(type);
         resp_verhicle.setFlag_default(flag);
         resp_verhicle.setBrandname(setCode(brand_code));
+        final int id_put = resp_verhicle.getId();
 
 
-        VerhicleModel.getInstance().putVerhicle2Server(url, JsonHelper.toJson(resp_verhicle), session, new ResponseHandle<RESP_Verhicle>(RESP_Verhicle.class) {
+        VerhicleModel.getInstance().putVerhicle2Server(url, JsonHelper.toJson(resp_verhicle), session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
-            public void onSuccess(RESP_Verhicle obj) {
-                Log.v("Verhicle ", "i1 " + obj.getId());
-                putId(obj.getId());
+            public void onSuccess(RESP_Parking_Info obj) {
+                putId(id_put);
                 view.showShortToast(view.getActivity().getString(R.string.update_message_success));
             }
 
@@ -116,8 +117,8 @@ public class AddVerhiclePresenter {
                     getNewSessionUpdateVerhicle(id, name, plate, des, type, flag, brand_code);
                 } else
                     view.showShortToast(error.getMessage());
-                Log.e("Err add v", String.valueOf(error.getCode()));
-                Log.e("Err add v type", error.getMessage());
+                Log.e("Err add v2", String.valueOf(error.getCode()));
+                Log.e("Err add v2 type", error.getMessage());
             }
         });
     }

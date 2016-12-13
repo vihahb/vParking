@@ -245,6 +245,7 @@
         android:background="@drawable/btn_purple_no_radius"
         android:foreground="?android:attr/selectableItemBackground"
         android:onClick="TimKiem"
+        android:visibility="gone"
         android:padding="@dimen/size_10"
         android:text="@string/find"
         android:textColor="@android:color/white" />
