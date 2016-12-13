@@ -4,62 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
+    android:background="@android:color/transparent"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     tools:context=".view.activity.AddParkingActivity"
     tools:ignore="MissingPrefix">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="220dp">
-
-        <ImageView
-            android:id="@+id/img_add_parking_picture"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/ic_parking_background" />
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager_add_parking"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TextView
-            android:id="@+id/txt_add_parking_image_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end|right"
-            android:layout_marginEnd="@dimen/size_16"
-            android:layout_marginRight="@dimen/size_16"
-            android:layout_marginTop="@dimen/size_8"
-            android:text="0/0"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/white" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end|right"
-            android:background="@android:color/transparent"
-            android:contentDescription="@null"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:onClick="TakePicture"
-            android:paddingBottom="@dimen/size_4"
-            android:paddingEnd="@dimen/size_12"
-            android:paddingLeft="0dp"
-            android:paddingRight="@dimen/size_12"
-            android:paddingStart="0dp"
-            android:src="@mipmap/ic_picture" />
-    </FrameLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="@dimen/size_16"
         android:paddingLeft="@dimen/size_16"
@@ -133,7 +87,7 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size_40"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_8"
                 android:layout_weight="3">
 
@@ -150,7 +104,7 @@
                     android:id="@+id/edt_add_parking_empty"
                     style="@style/AddParking_Editext_Border"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/size_40"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/size_6"
                     android:layout_marginStart="@dimen/size_6"
                     android:layout_weight="1"

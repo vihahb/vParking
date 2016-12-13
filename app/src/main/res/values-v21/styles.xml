@@ -28,4 +28,15 @@
         <item name="android:paddingEnd">@dimen/size_16</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
+
+    <style name="Spinner_Item">
+        <item name="android:paddingStart">@dimen/size_8</item>
+        <item name="android:paddingEnd">@dimen/size_8</item>
+        <item name="android:textSize">@dimen/font_13</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
 </resources>

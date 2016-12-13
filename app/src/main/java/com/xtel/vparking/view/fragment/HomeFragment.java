@@ -23,8 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -79,7 +77,7 @@ public class HomeFragment extends BasicFragment implements
     public static GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private ArrayList<MarkerModel> markerList;
-    private FloatingActionButton fab_filter, fab_thongbao, fab_location;
+    private FloatingActionButton fab_filter, fab_location;
 
     public static BottomSheetBehavior bottomSheetBehavior;
     private boolean isFindMyLocation, isScrollDown, isCanLoadMap = true;
@@ -133,7 +131,7 @@ public class HomeFragment extends BasicFragment implements
 
     private void initWidget(View view) {
         fab_filter = (FloatingActionButton) view.findViewById(R.id.fab_parking_fillter);
-        fab_thongbao = (FloatingActionButton) view.findViewById(R.id.fab_parking_thongbao);
+//        fab_thongbao = (FloatingActionButton) view.findViewById(R.id.fab_parking_thongbao);
         fab_location = (FloatingActionButton) view.findViewById(R.id.fab_parking_location);
 
         fab_filter.setOnClickListener(this);
@@ -186,7 +184,7 @@ public class HomeFragment extends BasicFragment implements
                 } else if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     showFloatingActionButton(fab_filter);
                     showFloatingActionButton(fab_location);
-                    showFloatingActionButton(fab_thongbao);
+//                    showFloatingActionButton(fab_thongbao);
 
                     dialogBottomSheet.changeCloseToFavorite();
                     dialogBottomSheet.clearData();
@@ -303,7 +301,7 @@ public class HomeFragment extends BasicFragment implements
     private void showDialogParkingDetail() {
         hideFloatingActionButton(fab_filter);
         hideFloatingActionButton(fab_location);
-        hideFloatingActionButton(fab_thongbao);
+//        hideFloatingActionButton(fab_thongbao);
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         dialogBottomSheet.initData(resp_parking_info);
@@ -540,7 +538,12 @@ public class HomeFragment extends BasicFragment implements
 
                 actionType = 1;
                 find_option = findModel;
-                presenter.getMyLocation();
+
+                double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
+                double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
+
+                presenter.getParkingAround(latitude, longtitude, find_option);
+//                presenter.getMyLocation();
             }
         } else if (requestCode == HomeActivity.REQUEST_CODE && resultCode == HomeActivity.RESULT_GUID) {
             if (data != null) {
@@ -643,72 +646,6 @@ public class HomeFragment extends BasicFragment implements
         showShortToast(JsonParse.getCodeMessage(error.getCode(), getString(R.string.error_get_parking)));
     }
 
-    private void updateMarkerSmaller(ArrayList<Parking> arrayList) {
-        int totalNewMarker = arrayList.size() - 1;
-
-        for (int i = (markerList.size() - 1); i >= 0; i--) {
-            if (i <= totalNewMarker) {
-                markerList.get(i).setId(arrayList.get(i).getId());
-                markerList.get(i).getMarker().setPosition(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()));
-
-                if (arrayList.get(i).getStatus() == 0) {
-                    markerList.get(i).getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue));
-                } else {
-                    markerList.get(i).getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red));
-                }
-            } else {
-                markerList.get(i).getMarker().remove();
-                markerList.remove(i);
-            }
-        }
-    }
-
-    private void updateMarkerSame(ArrayList<Parking> arrayList) {
-        for (int i = (arrayList.size() - 1); i >= 0; i--) {
-            markerList.get(i).setId(arrayList.get(i).getId());
-            markerList.get(i).getMarker().setPosition(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()));
-
-            Log.e(this.getClass().getSimpleName(), "change ok " + i);
-
-//            if (arrayList.get(i).getStatus() == 0) {
-//                markerList.get(i).getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue));
-//            } else {
-//                markerList.get(i).getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red));
-//            }
-        }
-    }
-
-    private void updateMarkerBigger(ArrayList<Parking> arrayList) {
-        int totalOldMarker = markerList.size() - 1;
-
-        for (int i = (arrayList.size() - 1); i >= 0; i--) {
-            if (i <= totalOldMarker) {
-                markerList.get(i).setId(arrayList.get(i).getId());
-                markerList.get(i).getMarker().setPosition(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()));
-
-                if (arrayList.get(i).getStatus() == 0) {
-                    markerList.get(i).getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue));
-                } else {
-                    markerList.get(i).getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red));
-                }
-            } else {
-                if (arrayList.get(i).getStatus() == 0) {
-                    Marker marker = mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
-
-                    markerList.add(new MarkerModel(marker, arrayList.get(i).getId()));
-                } else {
-                    Marker marker = mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
-
-                    markerList.add(new MarkerModel(marker, arrayList.get(i).getId()));
-                }
-            }
-        }
-    }
-
     @Override
     public void onGetParkingAroundSuccess(ArrayList<Parking> arrayList) {
         if (arrayList != null) {
@@ -739,14 +676,6 @@ public class HomeFragment extends BasicFragment implements
                     markerList.remove(i);
                 }
 
-
-//                if (arrayList.size() < markerList.size()) {
-//                    updateMarkerSmaller(arrayList);
-//                } else if (arrayList.size() == markerList.size()) {
-//                    updateMarkerSame(arrayList);
-//                } else if (arrayList.size() > markerList.size()) {
-//                    updateMarkerBigger(arrayList);
-//                }
                 arrayList.clear();
             } else {
                 clearMarker();

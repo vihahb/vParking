@@ -28,6 +28,7 @@
     <dimen name="size_36">36dp</dimen>
     <dimen name="size_38">38dp</dimen>
     <dimen name="size_40">40dp</dimen>
+    <dimen name="size_42">42dp</dimen>
     <dimen name="size_44">44dp</dimen>
     <dimen name="size_48">48dp</dimen>
     <dimen name="size_50">50dp</dimen>
@@ -44,6 +45,7 @@
     <dimen name="size_134">134dp</dimen>
     <dimen name="size_150">150dp</dimen>
     <dimen name="size_200">200dp</dimen>
+    <dimen name="size_220">220dp</dimen>
     <dimen name="size_250">250dp</dimen>
 
     <dimen name="font_13">13sp</dimen>

@@ -29,17 +29,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
             android:orientation="vertical">
+
+            <include
+                layout="@layout/activity_add_parking_header"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_220"
+                android:background="@android:color/transparent" />
 
             <include
                 layout="@layout/activity_add_parking_content"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent" />
 
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size_60"
+                android:layout_height="@dimen/size_48"
                 android:background="@color/btn_fb_plus"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:onClick="addParking"
