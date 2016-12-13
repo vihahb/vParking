@@ -195,7 +195,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
 
         actionBar.setTitle(getString(R.string.title_activity_favorite));
         if (menu != null) {
-            menu.findItem(R.id.nav_parking_add).setVisible(true);
+            menu.findItem(R.id.nav_parking_add).setVisible(false);
             menu.findItem(R.id.nav_parking_checkin).setVisible(false);
         }
     }
