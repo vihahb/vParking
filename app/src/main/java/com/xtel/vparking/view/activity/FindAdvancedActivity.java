@@ -178,18 +178,26 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     }
 
     private void getDataActivity() {
+        int price;
+        int type_parking;
+        int type_price;
+        String begin_time;
+        String end_time;
         if (edt_price.getText().toString().isEmpty() || checkNumberInput(edt_price.getText().toString()) <= 0){
-            String mes = getActivity().getString(R.string.loi_chontien);
-            showShortToast(mes);
+            price = -1;
+            type_parking = initCheckBox();
+            type_price = price_type_integer;
+            begin_time = edt_begin_time.getText().toString();
+            end_time = edt_end_time.getText().toString();
         } else {
-            int type_parking = initCheckBox();
-            int type_price = price_type_integer;
-            int price = Integer.parseInt(edt_price.getText().toString());
-            String begin_time = edt_begin_time.getText().toString();
-            String end_time = edt_end_time.getText().toString();
-
-            onParkingResult(type_parking, price, type_price, begin_time, end_time);
+            type_parking = initCheckBox();
+            type_price = price_type_integer;
+            price = Integer.parseInt(edt_price.getText().toString());
+            begin_time = edt_begin_time.getText().toString();
+            end_time = edt_end_time.getText().toString();
         }
+
+        onParkingResult(type_parking, price, type_price, begin_time, end_time);
     }
 
     private void onParkingResult(int type, int price, int price_type, String begin_time, String end_time){

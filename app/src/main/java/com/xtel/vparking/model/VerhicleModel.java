@@ -27,11 +27,11 @@ public class VerhicleModel extends BasicModel {
         requestServer.getApi(url, null, responseHandle);
     }
 
-    public void addVerhicle2Nip(String url, String object, String session, ResponseHandle<RESP_Verhicle> responseHandle) {
+    public void addVerhicle2Nip(String url, String object, String session, ResponseHandle responseHandle) {
         requestServer.postApi(url, object, session, responseHandle);
     }
 
-    public void putVerhicle2Server(String url, String object, String session, ResponseHandle<RESP_Verhicle> responseHandle) {
+    public void putVerhicle2Server(String url, String object, String session, ResponseHandle responseHandle) {
         requestServer.putApi(url, object, session, responseHandle);
     }
 
