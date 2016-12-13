@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -310,6 +311,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
+        Log.e(this.getClass().getSimpleName(), "request " + requestCode + " result " + resultCode);
         switch (CURRENT_FRAGMENT) {
             case VERHICLE_FRAGMENT:
                 Fragment fragment1 = getSupportFragmentManager().findFragmentByTag(VERHICLE_FRAGMENT);

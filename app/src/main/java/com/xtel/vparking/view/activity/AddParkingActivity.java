@@ -36,7 +36,7 @@ import com.xtel.vparking.presenter.AddParkingPresenter;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.inf.AddParkingView;
 import com.xtel.vparking.view.adapter.PriceAdapter;
-import com.xtel.vparking.view.fragment.AddParkingAdapter;
+import com.xtel.vparking.view.adapter.AddParkingAdapter;
 import com.xtel.vparking.view.widget.BitmapTransform;
 
 import java.util.ArrayList;

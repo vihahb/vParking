@@ -1,17 +1,22 @@
 package com.xtel.vparking.view.adapter;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.model.entity.Verhicle;
 import com.xtel.vparking.view.activity.inf.VerhicleView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by Lê Công Long Vũ on 12/10/2016.
@@ -27,6 +32,7 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.activity = activity;
         this.arrayList = arrayList;
         this.verhicleView = verhicleView;
+        Toast.makeText(activity, "change", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -108,38 +114,138 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public void insertNewItem(int position, Verhicle verhicle) {
-        if (position == -1) {
-            for (int i = (arrayList.size() - 1); i > 0; i--) {
+    private void insertItem(Verhicle verhicle) {
+        for (int i = (arrayList.size() - 1); i > 0; i--) {
+            if (arrayList.get(i).getType() == verhicle.getType()) {
+                int pos = i + 1;
+                arrayList.add(pos, verhicle);
+                notifyItemInserted(pos);
+                notifyItemChanged(pos, getItemCount());
+                return;
+            }
+        }
+
+        if (arrayList.size() == 0) {
+            if (verhicle.getType() == 1) {
+                arrayList.add(0, new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
+                arrayList.add(1, verhicle);
+            } else {
+                arrayList.add(0, new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
+                arrayList.add(1, verhicle);
+            }
+
+            notifyItemChanged(0, getItemCount());
+        } else {
+            if (verhicle.getType() == 1) {
+                arrayList.add(new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
+                arrayList.add(verhicle);
+            } else {
+                arrayList.add(new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
+                arrayList.add(verhicle);
+            }
+
+            notifyItemChanged((arrayList.size() - 2), getItemCount());
+        }
+    }
+
+    private void updateItem(int position, Verhicle verhicle) {
+        if (verhicle.getType() == arrayList.get(position).getType()) {
+            Log.e(this.getClass().getSimpleName(), "the same");
+            arrayList.set(position, verhicle);
+            notifyItemChanged(position, getItemCount());
+        } else {
+            Log.e(this.getClass().getSimpleName(), "not the same");
+            arrayList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemChanged(position, getItemCount());
+
+            for (int i = (arrayList.size() - 1); i >= 0; i--) {
                 if (arrayList.get(i).getType() == verhicle.getType()) {
-                    int pos = i + 1;
-                    arrayList.add(pos, verhicle);
-                    notifyItemInserted(pos);
-                    notifyItemChanged(pos, getItemCount());
+                    if (verhicle.getType() == 1 && arrayList.get((arrayList.size() - 1)).getType() > 1000) {
+                        arrayList.remove((arrayList.size() - 1));
+                        notifyItemRemoved((arrayList.size() - 1));
+                        notifyItemChanged((arrayList.size() - 1), getItemCount());
+                    } else if (verhicle.getType() == 0 && arrayList.get(0).getType() > 1000) {
+                        arrayList.remove(0);
+                        notifyItemRemoved(0);
+                        notifyItemChanged(0, getItemCount());
+                    }
+
+                    arrayList.add((i + 1), verhicle);
+                    notifyItemInserted((i + 1));
+                    notifyItemChanged((i + 1), getItemCount());
+                    Log.e(this.getClass().getSimpleName(), "set again");
                     return;
                 }
             }
 
-            if (arrayList.size() == 0) {
-                if (verhicle.getType() == 1) {
-                    arrayList.add(0, new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
-                    arrayList.add(1, verhicle);
-                } else {
-                    arrayList.add(0, new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
-                    arrayList.add(1, verhicle);
+            arrayList.add(verhicle);
+
+            sortVerhicle();
+        }
+    }
+
+    private void sortVerhicle() {
+        Toast.makeText(activity, "sort", Toast.LENGTH_SHORT).show();
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                for (int i = (arrayList.size() - 1); i >= 0; i--) {
+                    if (arrayList.get(i).getType() > 1000)
+                        arrayList.remove(i);
                 }
-            } else {
-                if (verhicle.getType() == 1) {
-                    arrayList.add(new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
-                    arrayList.add(verhicle);
-                } else {
-                    arrayList.add(new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
-                    arrayList.add(verhicle);
+
+                Collections.sort(arrayList, new Comparator<Verhicle>() {
+                    @Override
+                    public int compare(Verhicle lhs, Verhicle rhs) {
+                        try {
+                            return String.valueOf(lhs.getType()).compareTo(String.valueOf(rhs.getType()));
+                        } catch (Exception e) {
+                            throw new IllegalArgumentException(e);
+                        }
+                    }
+                });
+
+                if (arrayList.size() > 0) {
+                    if (arrayList.get(0).getType() == 1) {
+                        arrayList.add(0, new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
+                    } else {
+                        arrayList.add(0, new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
+                    }
+
+                    for (int i = (arrayList.size() - 1); i > 0; i--) {
+                        if (arrayList.get((i - 1)).getType() < 10)
+                            if (arrayList.get(i).getType() != arrayList.get((i - 1)).getType()) {
+                                if (arrayList.get(0).getType() == 1) {
+                                    arrayList.add(i, new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
+                                } else {
+                                    arrayList.add(i, new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
+                                }
+                                break;
+                            }
+                    }
                 }
+                return null;
             }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                notifyDataSetChanged();
+            }
+        }.execute();
+
+        Log.e(this.getClass().getSimpleName(), "total array " + arrayList.size());
+    }
+
+    public void insertNewItem(int position, Verhicle verhicle) {
+        if (position == -1) {
+            Log.e(this.getClass().getSimpleName(), "insert");
+            insertItem(verhicle);
         } else {
-            arrayList.set(position, verhicle);
-            notifyItemChanged(position, getItemCount());
+            Log.e(this.getClass().getSimpleName(), "update");
+            updateItem(position, verhicle);
         }
     }
 }

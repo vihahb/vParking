@@ -81,19 +81,20 @@ public abstract class BasicFragment extends Fragment {
     }
 
     protected void startActivityForResult(Class clazz, int requestCode) {
-        startActivityForResult(new Intent(getActivity(), clazz), requestCode);
+        getActivity().startActivityForResult(new Intent(getActivity(), clazz), requestCode);
     }
 
     protected void startActivityForResult(Class clazz, String key, Object object, int requestCode) {
         Intent intent = new Intent(getActivity(), clazz);
         intent.putExtra(key, (Serializable) object);
-        startActivityForResult(intent, requestCode);
+        debug("" + requestCode);
+        getActivity().startActivityForResult(intent, requestCode);
     }
 
     protected void startActivityForResultWithInteger(Class clazz, String key, int data, int requestCode) {
         Intent intent = new Intent(getActivity(), clazz);
         intent.putExtra(key, data);
-        startActivityForResult(intent, requestCode);
+        getActivity().startActivityForResult(intent, requestCode);
     }
 
     protected void startActivityAndFinish(Class clazz) {

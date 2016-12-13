@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class VerhicleFragment extends BasicFragment implements VerhicleView {
     public static final int RESULT_ADD_VERHICLE = 66, REQUEST_ADD_VERHICLE = 99;
-    public static final int RESULT_UPDATE_VERHICLE = 22, REQUEST_UPDATE_VERHICLE = 33;
+    public static final int RESULT_UPDATE_VERHICLE = 22;
     private VerhiclePresenter presenter;
 
     private RecyclerView recyclerView;
@@ -117,19 +117,22 @@ public class VerhicleFragment extends BasicFragment implements VerhicleView {
     @Override
     public void onItemClicked(int position, Verhicle verhicle) {
         this.position = position;
-        startActivityForResult(AddVerhicleActivity.class, Constants.VERHICLE_MODEL, verhicle, REQUEST_UPDATE_VERHICLE);
+        startActivityForResult(AddVerhicleActivity.class, Constants.VERHICLE_MODEL, verhicle, REQUEST_ADD_VERHICLE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_ADD_VERHICLE && resultCode == RESULT_ADD_VERHICLE) {
-            if (data != null) {
-                int id = data.getIntExtra(Constants.VERHICLE_ID, -1);
-                presenter.getVerhicleById(id);
-                Log.e(this.getClass().getSimpleName(), "result id: " + id);
+        Log.e(this.getClass().getSimpleName(), "request " + requestCode + " result " + resultCode);
+        if (requestCode == REQUEST_ADD_VERHICLE) {
+            if (resultCode == RESULT_ADD_VERHICLE || resultCode == RESULT_UPDATE_VERHICLE) {
+                if (data != null) {
+                    int id = data.getIntExtra(Constants.VERHICLE_ID, -1);
+                    presenter.getVerhicleById(id);
+                    Log.e(this.getClass().getSimpleName(), "result id: " + id);
+                } else
+                    Log.e(this.getClass().getSimpleName(), "result data null");
             } else
-                Log.e(this.getClass().getSimpleName(), "result data null");
-        } else
-            position = -1;
+                position = -1;
+        }
     }
 }

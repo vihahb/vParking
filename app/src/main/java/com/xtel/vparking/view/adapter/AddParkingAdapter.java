@@ -1,10 +1,11 @@
-package com.xtel.vparking.view.fragment;
+package com.xtel.vparking.view.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.xtel.vparking.model.entity.Pictures;
+import com.xtel.vparking.view.fragment.ViewImageFragment;
 
 import java.util.ArrayList;
 
