@@ -92,6 +92,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         actionBar = getSupportActionBar();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        //noinspection deprecation
         drawer.setDrawerListener(toggle);
         toggle.syncState();
     }
@@ -296,10 +297,9 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
 
     @Override
     public void onBackPressed() {
-        if (CURRENT_FRAGMENT.equals(HOME_FRAGMENT)) {
-            if (HomeFragment.bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
-                HomeFragment.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
+        debug("clicked");
+        if (HomeFragment.bottomSheetBehavior != null && HomeFragment.bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
+            HomeFragment.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         } else if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -309,22 +309,44 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (CURRENT_FRAGMENT.equals(VERHICLE_FRAGMENT)) {
-            Fragment fragment = getSupportFragmentManager().findFragmentByTag(VERHICLE_FRAGMENT);
-            if (fragment != null) {
-                fragment.onActivityResult(requestCode, resultCode, data);
-            }
-        } else if (CURRENT_FRAGMENT.equals(MANAGER_FRAGMENT)) {
-            Fragment fragment = getSupportFragmentManager().findFragmentByTag(MANAGER_FRAGMENT);
-            if (fragment != null) {
-                fragment.onActivityResult(requestCode, resultCode, data);
-            }
-        } else if (CURRENT_FRAGMENT.equals(CHECKIN_FRAGMENT)) {
-            Fragment fragment = getSupportFragmentManager().findFragmentByTag(CHECKIN_FRAGMENT);
-            if (fragment != null) {
-                fragment.onActivityResult(requestCode, resultCode, data);
-            }
+//        super.onActivityResult(requestCode, resultCode, data);
+        switch (CURRENT_FRAGMENT) {
+            case VERHICLE_FRAGMENT:
+                Fragment fragment1 = getSupportFragmentManager().findFragmentByTag(VERHICLE_FRAGMENT);
+                if (fragment1 != null) {
+                    fragment1.onActivityResult(requestCode, resultCode, data);
+                }
+                break;
+            case MANAGER_FRAGMENT:
+                Fragment fragment2 = getSupportFragmentManager().findFragmentByTag(MANAGER_FRAGMENT);
+                if (fragment2 != null) {
+                    fragment2.onActivityResult(requestCode, resultCode, data);
+                }
+                break;
+            case CHECKIN_FRAGMENT:
+                Fragment fragment3 = getSupportFragmentManager().findFragmentByTag(CHECKIN_FRAGMENT);
+                if (fragment3 != null) {
+                    fragment3.onActivityResult(requestCode, resultCode, data);
+                }
+                break;
+            default:
+                break;
         }
+//        if (CURRENT_FRAGMENT.equals(VERHICLE_FRAGMENT)) {
+//            Fragment fragment = getSupportFragmentManager().findFragmentByTag(VERHICLE_FRAGMENT);
+//            if (fragment != null) {
+//                fragment.onActivityResult(requestCode, resultCode, data);
+//            }
+//        } else if (CURRENT_FRAGMENT.equals(MANAGER_FRAGMENT)) {
+//            Fragment fragment = getSupportFragmentManager().findFragmentByTag(MANAGER_FRAGMENT);
+//            if (fragment != null) {
+//                fragment.onActivityResult(requestCode, resultCode, data);
+//            }
+//        } else if (CURRENT_FRAGMENT.equals(CHECKIN_FRAGMENT)) {
+//            Fragment fragment = getSupportFragmentManager().findFragmentByTag(CHECKIN_FRAGMENT);
+//            if (fragment != null) {
+//                fragment.onActivityResult(requestCode, resultCode, data);
+//            }
+//        }
     }
 }
