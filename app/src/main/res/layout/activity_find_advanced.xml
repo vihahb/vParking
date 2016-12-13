@@ -50,6 +50,7 @@
             android:orientation="horizontal">
 
             <CheckBox
+                android:theme="@style/WhiteCheck"
                 android:id="@+id/chk_find_advanced_oto"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -65,7 +66,7 @@
                 android:layout_weight="0.1" />
 
             <CheckBox
-                app:theme="@style/WhiteCheck"
+                android:theme="@style/WhiteCheck"
                 android:id="@+id/chk_find_advanced_xemay"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -81,6 +82,7 @@
                 android:layout_weight="0.1" />
 
             <CheckBox
+                android:theme="@style/WhiteCheck"
                 android:id="@+id/chk_find_advanced_xedap"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

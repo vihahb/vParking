@@ -19,11 +19,11 @@ import android.widget.Spinner;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Brandname;
+import com.xtel.vparking.model.entity.RESP_Verhicle;
 import com.xtel.vparking.model.entity.Verhicle;
 import com.xtel.vparking.presenter.AddVerhiclePresenter;
 import com.xtel.vparking.view.activity.inf.AddVerhicleView;
 import com.xtel.vparking.view.adapter.CustomAddVerhicleAdapterSpinner;
-import com.xtel.vparking.view.fragment.VerhicleFragment;
 
 import java.util.ArrayList;
 
@@ -265,9 +265,9 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
     private boolean validVerhicleModel() {
         try {
             verhicle = (Verhicle) getIntent().getSerializableExtra(Constants.VERHICLE_MODEL);
-            Log.v("verhicle id", "" + String.valueOf(verhicle.getId()));
+            Log.v("verhicle id", String.valueOf(verhicle.getId()));
         } catch (Exception e) {
-            Log.e("Loi get Verhicle", "" + e.getMessage());
+//            Log.e("Loi get Verhicle", e.getMessage());
         }
 
         if (verhicle != null) {

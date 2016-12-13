@@ -116,41 +116,41 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         sp_price_type.setOnItemSelectedListener(this);
     }
 
-    private int initCheckBox(View view){
+    private int initCheckBox() {
         int type;
 
         if (chk_xemay.isChecked() && chk_oto.isChecked() && chk_xedap.isChecked()){
             type = 6;
             String mes = getActivity().getString(R.string.parking_all);
-            showSnackbar(view, mes);
+            showShortToast(mes);
         } else if (chk_xemay.isChecked() && chk_oto.isChecked()){
             type = 5;
             String mes = getActivity().getString(R.string.parking_xeoto_xemay);
-            showSnackbar(view, mes);
+            showShortToast(mes);
         } else  if (chk_xemay.isChecked() && chk_xedap.isChecked()){
             type = 4;
             String mes = getActivity().getString(R.string.parking_xemay_xedap);
-            showSnackbar(view, mes);
+            showShortToast(mes);
         } else if (chk_xedap.isChecked() && chk_oto.isChecked()){
             type = 6;
             String mes = getActivity().getString(R.string.parking_all);
-            showSnackbar(view, mes);
+            showShortToast(mes);
         } else if (chk_xemay.isChecked()){
             type = 3;
             String mes = getActivity().getString(R.string.parking_xemay);
-            showSnackbar(view, mes);
+            showShortToast(mes);
         } else if (chk_oto.isChecked()){
             type = 2;
             String mes = getActivity().getString(R.string.parking_xeoto);
-            showSnackbar(view, mes);
+            showShortToast(mes);
         } else if (chk_xedap.isChecked()){
             type = 1;
             String mes = getActivity().getString(R.string.parking_xedap);
-            showSnackbar(view, mes);
+            showShortToast(mes);
         } else {
             type = 6;
             String mes = getActivity().getString(R.string.parking_all);
-            showSnackbar(view, mes);
+            showShortToast(mes);
         }
         return type;
     }
@@ -177,12 +177,12 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         pickerDialog.show();
     }
 
-    private void getDataActivity(View view){
+    private void getDataActivity() {
         if (edt_price.getText().toString().isEmpty() || checkNumberInput(edt_price.getText().toString()) <= 0){
             String mes = getActivity().getString(R.string.loi_chontien);
-            showSnackbar(view, mes);
+            showShortToast(mes);
         } else {
-            int type_parking = initCheckBox(view);
+            int type_parking = initCheckBox();
             int type_price = price_type_integer;
             int price = Integer.parseInt(edt_price.getText().toString());
             String begin_time = edt_begin_time.getText().toString();
@@ -205,7 +205,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home)
-            finish();
+            getDataActivity();
         return super.onOptionsItemSelected(item);
     }
 
@@ -213,7 +213,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btn_find){
-            getDataActivity(v);
+            getDataActivity();
         } else if (id == R.id.edt_begin_time){
             PickTimeDialogBegin();
         } else if (id == R.id.edt_expired_time){

@@ -48,8 +48,8 @@ public class AddVerhiclePresenter {
 
             @Override
             public void onError(Error error) {
-                Log.e("brandname err code", "" + String.valueOf(error.getCode()));
-                Log.e("brandname err mess", ""  + error.getMessage());
+                Log.e("brandname err code", "null k: " + String.valueOf(error.getCode()));
+                Log.e("brandname err mess", "null k: " + error.getMessage());
             }
         });
 
