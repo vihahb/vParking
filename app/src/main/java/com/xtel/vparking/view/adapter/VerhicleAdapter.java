@@ -1,7 +1,6 @@
 package com.xtel.vparking.view.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xtel.vparking.R;
-import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Verhicle;
-import com.xtel.vparking.view.activity.AddVerhicleActivity;
-import com.xtel.vparking.view.activity.VerhicleActivity;
 import com.xtel.vparking.view.activity.inf.VerhicleView;
 
 import java.util.ArrayList;
@@ -42,7 +38,7 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final Verhicle verhicle = arrayList.get(position);
 
         if (holder instanceof ViewTitle) {
@@ -69,7 +65,7 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             view.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    verhicleView.onItemClicked(verhicle);
+                    verhicleView.onItemClicked(position, verhicle);
                 }
             });
         }
@@ -112,33 +108,38 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public void insertNewItem(Verhicle verhicle) {
-        for (int i = (arrayList.size() - 1); i > 0; i--) {
-            if (arrayList.get(i).getType() == verhicle.getType()) {
-                int position = i + 1;
-                arrayList.add(position, verhicle);
-                notifyItemInserted(position);
-                notifyItemChanged(position, getItemCount());
-                return;
+    public void insertNewItem(int position, Verhicle verhicle) {
+        if (position == -1) {
+            for (int i = (arrayList.size() - 1); i > 0; i--) {
+                if (arrayList.get(i).getType() == verhicle.getType()) {
+                    int pos = i + 1;
+                    arrayList.add(pos, verhicle);
+                    notifyItemInserted(pos);
+                    notifyItemChanged(pos, getItemCount());
+                    return;
+                }
             }
-        }
 
-        if (arrayList.size() == 0) {
-            if (verhicle.getType() == 1) {
-                arrayList.add(0, new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
-                arrayList.add(1, verhicle);
+            if (arrayList.size() == 0) {
+                if (verhicle.getType() == 1) {
+                    arrayList.add(0, new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
+                    arrayList.add(1, verhicle);
+                } else {
+                    arrayList.add(0, new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
+                    arrayList.add(1, verhicle);
+                }
             } else {
-                arrayList.add(0, new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
-                arrayList.add(1, verhicle);
+                if (verhicle.getType() == 1) {
+                    arrayList.add(new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
+                    arrayList.add(verhicle);
+                } else {
+                    arrayList.add(new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
+                    arrayList.add(verhicle);
+                }
             }
         } else {
-            if (verhicle.getType() == 1) {
-                arrayList.add(new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
-                arrayList.add(verhicle);
-            } else {
-                arrayList.add(new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
-                arrayList.add(verhicle);
-            }
+            arrayList.set(position, verhicle);
+            notifyItemChanged(position, getItemCount());
         }
     }
 }

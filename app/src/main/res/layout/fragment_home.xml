@@ -16,72 +16,67 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <View
-        android:id="@+id/view_parking_one"
-        android:layout_width="@dimen/fab_margin"
-        android:layout_height="@dimen/size_48"
-        android:layout_gravity="bottom|start|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:layout_anchor="@id/place_autocomplete_fragment"
-        app:layout_anchorGravity="bottom|right|end" />
+    <!--<View-->
+    <!--android:id="@+id/view_parking_one"-->
+    <!--android:layout_width="@dimen/fab_margin"-->
+    <!--android:layout_height="@dimen/size_48"-->
+    <!--android:layout_gravity="bottom|start|end"-->
+    <!--app:layout_anchor="@id/place_autocomplete_fragment"-->
+    <!--app:layout_anchorGravity="bottom|right|end" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_parking_fillter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_gravity="top|end"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/size_64"
         android:foreground="?android:attr/selectableItemBackground"
         app:backgroundTint="#00B13F"
         app:fabSize="normal"
-        app:layout_anchor="@id/view_parking_one"
-        app:layout_anchorGravity="bottom|right|end"
         app:srcCompat="@mipmap/ic_filter" />
 
-    <View
-        android:id="@+id/view_parking_two"
-        android:layout_width="@dimen/fab_margin"
-        android:layout_height="@dimen/fab_margin"
-        android:layout_gravity="bottom|start|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:layout_anchor="@id/fab_parking_fillter"
-        app:layout_anchorGravity="bottom|right|end" />
+    <!--<View-->
+    <!--android:id="@+id/view_parking_two"-->
+    <!--android:layout_width="@dimen/fab_margin"-->
+    <!--android:layout_height="@dimen/fab_margin"-->
+    <!--android:layout_gravity="bottom|start|end"-->
+    <!--android:layout_margin="@dimen/fab_margin"-->
+    <!--app:layout_anchor="@id/fab_parking_fillter"-->
+    <!--app:layout_anchorGravity="bottom|right|end" />-->
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_parking_thongbao"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:backgroundTint="@color/btn_fb_plus"
-        app:fabSize="normal"
-        app:layout_anchor="@id/view_parking_two"
-        app:layout_anchorGravity="bottom|right|end"
-        app:srcCompat="@mipmap/ic_speaker" />
+    <!--<android.support.design.widget.FloatingActionButton-->
+    <!--android:id="@+id/fab_parking_thongbao"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="bottom|start|end"-->
+    <!--android:layout_margin="@dimen/fab_margin"-->
+    <!--android:foreground="?android:attr/selectableItemBackground"-->
+    <!--app:backgroundTint="@color/btn_fb_plus"-->
+    <!--app:fabSize="normal"-->
+    <!--app:layout_anchor="@id/view_parking_two"-->
+    <!--app:layout_anchorGravity="bottom|right|end"-->
+    <!--app:srcCompat="@mipmap/ic_speaker" />-->
 
-    <View
-        android:id="@+id/view_parking_three"
-        android:layout_width="@dimen/fab_margin"
-        android:layout_height="@dimen/fab_margin"
-        android:layout_gravity="bottom|start|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:layout_anchor="@id/fab_parking_thongbao"
-        app:layout_anchorGravity="bottom|right|end" />
+    <!--<View-->
+    <!--android:id="@+id/view_parking_three"-->
+    <!--android:layout_width="@dimen/fab_margin"-->
+    <!--android:layout_height="@dimen/fab_margin"-->
+    <!--android:layout_gravity="bottom|start|end"-->
+    <!--android:layout_margin="@dimen/fab_margin"-->
+    <!--app:layout_anchor="@id/fab_parking_thongbao"-->
+    <!--app:layout_anchorGravity="bottom|right|end" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_parking_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginRight="@dimen/fab_margin"
-        android:layout_marginTop="@dimen/size_36"
+        android:layout_margin="@dimen/fab_margin"
         android:foreground="?android:attr/selectableItemBackground"
         app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal"
-        app:layout_anchor="@id/view_parking_three"
-        app:layout_anchorGravity="bottom|right|end"
         app:srcCompat="@drawable/ic_my_location_white_36dp" />
 
     <android.support.v4.widget.NestedScrollView

@@ -71,10 +71,11 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
         holder.img_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra(Constants.ID_PARKING, favotire.getId());
-                activity.setResult(HomeActivity.RESULT_GUID, intent);
-                activity.finish();
+                HomeActivity.getInstance().viewParkingSelected(favotire.getId());
+//                Intent intent = new Intent();
+//                intent.putExtra(Constants.ID_PARKING, favotire.getId());
+//                activity.setResult(HomeActivity.RESULT_GUID, intent);
+//                activity.finish();
             }
         });
 

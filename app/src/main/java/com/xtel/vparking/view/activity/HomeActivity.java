@@ -9,9 +9,9 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,12 +26,11 @@ import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.presenter.HomePresenter;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.inf.HomeView;
+import com.xtel.vparking.view.fragment.CheckInFragment;
+import com.xtel.vparking.view.fragment.FavoriteFragment;
 import com.xtel.vparking.view.fragment.HomeFragment;
 import com.xtel.vparking.view.fragment.ParkingManagementFragment;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.xtel.vparking.view.fragment.VerhicleFragment;
 
 /**
  * Created by Lê Công Long Vũ on 12/2/2016.
@@ -39,6 +38,8 @@ import java.util.List;
 
 public class HomeActivity extends BasicActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
         HomeView {
+    public static HomeActivity instance;
+
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private ImageView img_avatar;
@@ -46,8 +47,11 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     private Button btn_active_master;
     private Menu menu;
     private HomePresenter homePresenter;
+    private ActionBar actionBar;
 
-    private final String HOME_FRAGMENT = "home_fragment", MANAGER_FRAGMENT = "manager_fragment";
+    private final String HOME_FRAGMENT = "home_fragment", MANAGER_FRAGMENT = "manager_fragment", VERHICLE_FRAGMENT = "verhicle_fragment",
+            FAVORITE_FRAGMENT = "favorite_fragment", CHECKIN_FRAGMENT = "checkin_fragment";
+    private String CURRENT_FRAGMENT = "";
     public static final int REQUEST_CODE = 99;
     public static final int RESULT_GUID = 88;
     public static int PARKING_ID = -1;
@@ -56,37 +60,20 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         replaceFragment(R.id.home_layout_content, new HomeFragment(), HOME_FRAGMENT);
+        CURRENT_FRAGMENT = HOME_FRAGMENT;
 
         initView();
         initNavigation();
         initListener();
         homePresenter = new HomePresenter(this);
-
-//        test();
+        instance = this;
     }
 
-//    private void test() {
-//        ArrayList<Integer> myList = new ArrayList<>();
-//        myList.add(5);
-//        myList.add(1);
-//        myList.add(3);
-//        myList.add(2);
-//        myList.add(9);
-//        myList.add(15);
-//
-//        Collections.sort(myList);
-//
-//        for (int i = (myList.size() - 1); i >= 0; i--) {
-//            Log.e("sort", "item " + myList.get(i));
-//        }
-//
-//        Collections.reverse(myList);
-//
-//        for (int i = (myList.size() - 1); i >= 0; i--) {
-//            Log.e("sort", "item " + myList.get(i));
-//        }
-//    }
+    public static HomeActivity getInstance() {
+        return instance;
+    }
 
     private void initView() {
         drawer = (DrawerLayout) findViewById(R.id.home_drawer);
@@ -102,13 +89,11 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         Toolbar toolbar = (Toolbar) findViewById(R.id.home_toolbar);
         setSupportActionBar(toolbar);
 
+        actionBar = getSupportActionBar();
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            navigationView.setVerticalFadingEdgeEnabled(false);
-//        }
     }
 
     private void initListener() {
@@ -177,9 +162,16 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         return this;
     }
 
+    public void viewParkingSelected(int id) {
+        replaceHomeFragment();
+        PARKING_ID = id;
+    }
+
     private void replaceHomeFragment() {
         replaceFragment(R.id.home_layout_content, new HomeFragment(), HOME_FRAGMENT);
+        CURRENT_FRAGMENT = HOME_FRAGMENT;
 
+        actionBar.setTitle(getString(R.string.title_activity_home));
         if (menu != null) {
             menu.findItem(R.id.nav_parking_add).setVisible(false);
             menu.findItem(R.id.nav_parking_checkin).setVisible(true);
@@ -188,9 +180,44 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
 
     private void replaceManagementFragment() {
         replaceFragment(R.id.home_layout_content, new ParkingManagementFragment(), MANAGER_FRAGMENT);
+        CURRENT_FRAGMENT = MANAGER_FRAGMENT;
 
+        actionBar.setTitle(getString(R.string.title_activity_management));
         if (menu != null) {
             menu.findItem(R.id.nav_parking_add).setVisible(true);
+            menu.findItem(R.id.nav_parking_checkin).setVisible(false);
+        }
+    }
+
+    private void replaceFavoriteFragment() {
+        replaceFragment(R.id.home_layout_content, new FavoriteFragment(), FAVORITE_FRAGMENT);
+        CURRENT_FRAGMENT = FAVORITE_FRAGMENT;
+
+        actionBar.setTitle(getString(R.string.title_activity_favorite));
+        if (menu != null) {
+            menu.findItem(R.id.nav_parking_add).setVisible(true);
+            menu.findItem(R.id.nav_parking_checkin).setVisible(false);
+        }
+    }
+
+    private void replaceVerhicleFragment() {
+        replaceFragment(R.id.home_layout_content, new VerhicleFragment(), VERHICLE_FRAGMENT);
+        CURRENT_FRAGMENT = VERHICLE_FRAGMENT;
+
+        actionBar.setTitle(getString(R.string.title_activity_verhicle));
+        if (menu != null) {
+            menu.findItem(R.id.nav_parking_add).setVisible(true);
+            menu.findItem(R.id.nav_parking_checkin).setVisible(false);
+        }
+    }
+
+    private void replaceCheckInFragment() {
+        replaceFragment(R.id.home_layout_content, new CheckInFragment(), CHECKIN_FRAGMENT);
+        CURRENT_FRAGMENT = CHECKIN_FRAGMENT;
+
+        actionBar.setTitle(getString(R.string.title_activity_check_in));
+        if (menu != null) {
+            menu.findItem(R.id.nav_parking_add).setVisible(false);
             menu.findItem(R.id.nav_parking_checkin).setVisible(false);
         }
     }
@@ -204,11 +231,11 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         } else if (id == R.id.nav_parking_management) {
             replaceManagementFragment();
         } else if (id == R.id.nav_parking_favorite) {
-            startActivityForResult(FavoriteActivity.class, REQUEST_CODE);
+            replaceFavoriteFragment();
         } else if (id == R.id.nav_parking_verhicle) {
-            startActivity(VerhicleActivity.class);
+            replaceVerhicleFragment();
         } else if (id == R.id.nav_parking_checkin) {
-            startActivity(CheckInActivity.class);
+            replaceCheckInFragment();
         } else if (id == R.id.nav_parking_logout) {
             LoginManager.getInstance().logOut();
             SharedPreferencesUtils.getInstance().clearData();
@@ -238,7 +265,10 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         if (id == R.id.nav_parking_checkin) {
             startActivity(ScanQrActivity.class);
         } else if (id == R.id.nav_parking_add) {
-            startActivityForResult(AddParkingActivity.class, Constants.ADD_PARKING_REQUEST);
+            if (CURRENT_FRAGMENT.equals(MANAGER_FRAGMENT))
+                startActivityForResult(AddParkingActivity.class, Constants.ADD_PARKING_REQUEST);
+            else if (CURRENT_FRAGMENT.equals(VERHICLE_FRAGMENT))
+                startActivityForResult(AddVerhicleActivity.class, VerhicleFragment.REQUEST_ADD_VERHICLE);
         }
 
         return super.onOptionsItemSelected(item);
@@ -266,9 +296,10 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
 
     @Override
     public void onBackPressed() {
-        HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HOME_FRAGMENT);
-        if (fragment != null && fragment.bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
-            fragment.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        if (CURRENT_FRAGMENT.equals(HOME_FRAGMENT)) {
+            if (HomeFragment.bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
+                HomeFragment.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
         } else if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -279,11 +310,18 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_GUID) {
-            replaceHomeFragment();
-            PARKING_ID = data.getIntExtra(Constants.ID_PARKING, -1);
-        } else {
+        if (CURRENT_FRAGMENT.equals(VERHICLE_FRAGMENT)) {
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(VERHICLE_FRAGMENT);
+            if (fragment != null) {
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
+        } else if (CURRENT_FRAGMENT.equals(MANAGER_FRAGMENT)) {
             Fragment fragment = getSupportFragmentManager().findFragmentByTag(MANAGER_FRAGMENT);
+            if (fragment != null) {
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
+        } else if (CURRENT_FRAGMENT.equals(CHECKIN_FRAGMENT)) {
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(CHECKIN_FRAGMENT);
             if (fragment != null) {
                 fragment.onActivityResult(requestCode, resultCode, data);
             }

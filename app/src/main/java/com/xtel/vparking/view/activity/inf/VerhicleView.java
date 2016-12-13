@@ -16,6 +16,6 @@ public interface VerhicleView {
     void onGetVerhicleSuccess(ArrayList<Verhicle> arrayList);
     void onGetVerhicleError(Error error);
     void onGetVerhicleByIdSuccess(Verhicle verhicle);
-    void onItemClicked(Verhicle verhicle);
+    void onItemClicked(int position, Verhicle verhicle);
     Activity getActivity();
 }

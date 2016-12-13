@@ -35,7 +35,7 @@ public class CheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (viewType == view_title)
             return new ViewTitle(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_verhicle_title, parent, false));
         else
-            return new ViewItem(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_verhicle_item, parent, false));
+            return new ViewItem(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_check_in_item, parent, false));
     }
 
     @Override
@@ -57,12 +57,6 @@ public class CheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             view.txt_name.setText(verhicle.getName());
             view.txt_made_by.setText(verhicle.getBrandname().getName());
             view.txt_plate_number.setText(verhicle.getPlate_number());
-
-            if (verhicle.getFlag_default() == 1)
-                view.txt_default.setVisibility(View.VISIBLE);
-            else
-                view.txt_default.setVisibility(View.INVISIBLE);
-
             view.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
