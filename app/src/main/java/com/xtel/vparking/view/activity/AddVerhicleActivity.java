@@ -258,9 +258,9 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
         putData2Server(getId, update_name, update_desc, update_plate, update_type, update_flag, update_code);
     }
 
-    private void putData2Server(int id, String name, String desc, String plate_number, int type, int flag_default, String code) {
+    private void putData2Server(int id, String name, String plate_number, String desc, int type, int flag_default, String code) {
         Log.v("verhicle update id", String.valueOf(verhicle.getId()));
-        verhiclePresenter.updateVerhicle(id, name, desc, plate_number, type, flag_default, code);
+        verhiclePresenter.updateVerhicle(id, name, plate_number, desc, type, flag_default, code);
     }
 
     private boolean validVerhicleModel() {

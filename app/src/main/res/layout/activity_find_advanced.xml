@@ -42,6 +42,7 @@
         android:padding="@dimen/activity_vertical_margin">
 
         <LinearLayout
+            android:layout_marginBottom="@dimen/size_16"
             android:layout_marginLeft="@dimen/size_6"
             android:layout_marginRight="@dimen/size_6"
             android:layout_width="match_parent"
@@ -106,6 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="15sp"
+                android:layout_marginBottom="@dimen/size_10"
                 android:paddingLeft="@dimen/size_12"
                 android:text="@string/price" />
 
@@ -121,6 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="15sp"
+                android:layout_marginBottom="@dimen/size_10"
                 android:paddingLeft="@dimen/size_12"
                 android:text="@string/price_type" />
         </LinearLayout>
@@ -173,6 +176,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginBottom="@dimen/size_10"
                 android:textSize="15sp"
                 android:paddingLeft="@dimen/size_12"
                 android:text="@string/find_begin_time" />
@@ -189,6 +193,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="15sp"
+                android:layout_marginBottom="@dimen/size_10"
                 android:paddingLeft="@dimen/size_12"
                 android:text="@string/find_end_time" />
         </LinearLayout>
