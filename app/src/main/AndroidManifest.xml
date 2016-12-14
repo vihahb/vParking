@@ -142,6 +142,9 @@
             android:name=".view.activity.AddVerhicleActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
             android:label="@string/verhicle_add" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="5765ba05cf4f36a9301d3a8eb9fe7c9e53ecb745" />
     </application>
 
 </manifest>

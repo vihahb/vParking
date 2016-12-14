@@ -8,9 +8,11 @@ import android.content.pm.Signature;
 import android.util.Base64;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.facebook.accountkit.AccountKit;
 
+import io.fabric.sdk.android.Fabric;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -24,6 +26,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         FacebookSdk.sdkInitialize(getApplicationContext());
         AccountKit.initialize(getApplicationContext());
         try {
