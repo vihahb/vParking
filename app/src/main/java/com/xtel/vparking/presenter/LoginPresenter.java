@@ -85,6 +85,7 @@ public class LoginPresenter {
                     new AccountKitConfiguration.AccountKitConfigurationBuilder(
                             LoginType.PHONE, AccountKitActivity.ResponseType.CODE);
             configurationBuilder.setDefaultCountryCode("VN");
+        configurationBuilder.setTitleType(AccountKitActivity.TitleType.LOGIN);
             configurationBuilder.setReadPhoneStateEnabled(true);
             configurationBuilder.setReceiveSMS(true);
             intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,

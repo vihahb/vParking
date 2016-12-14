@@ -38,18 +38,20 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class FindAdvancedActivity extends BasicActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, FindAdvancedView {
-    private EditText edt_price, edt_begin_time, edt_end_time;
+    private EditText edt_begin_time, edt_end_time;
     private CheckBox chk_oto, chk_xemay, chk_xedap;
     private Button btn_find, btn_clear;
-    private Spinner sp_price_type;
+    private Spinner sp_price_type, sp_price;
     //Spinner Data
-    private ArrayAdapter<String> arrayAdapter;
+    private ArrayAdapter<String> arrayAdapter, priceAdapter;
     private String[] price_type = {"Tất cả", "Giờ", "Lượt", "Qua đêm"};
+    private ArrayList<String> arrPrice;
     //Date Time Picker
     int hour_begin, minutes_begin;
     int hour_end, minutes_end;
     String value_time;
     int price_type_integer;
+    int price;
     FindAdvancedPresenter presenter;
     Find findModel;
 
@@ -61,7 +63,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         presenter = new FindAdvancedPresenter(this);
         initToolbar();
         initWidget();
-        getData();
+        validModel();
 //        initSelectMoney();
     }
 
@@ -76,10 +78,10 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     }
 
     private void initWidget() {
-        edt_price = (EditText) findViewById(R.id.edt_price);
         edt_begin_time = (EditText) findViewById(R.id.edt_begin_time);
         edt_end_time = (EditText) findViewById(R.id.edt_expired_time);
 
+        sp_price = (Spinner) findViewById(R.id.spinner_price);
         sp_price_type = (Spinner) findViewById(R.id.spinner_price_type);
 
         chk_oto = (CheckBox) findViewById(R.id.chk_find_advanced_oto);
@@ -117,11 +119,28 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         edt_end_time.setText(time_end);
     }
 
+    private void initPrice() {
+        arrPrice = new ArrayList<>();
+        arrPrice.add("Tất cả");
+        for (int i = 1; i <= 95; i++) {
+            if (i % 5 == 0) {
+                arrPrice.add(String.valueOf(i));
+                Log.v("int ", String.valueOf(i));
+            }
+        }
+    }
+
     private void initSpinner(){
+        initPrice();
         arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_spinner_item_find, price_type);
         arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_find_ad);
         sp_price_type.setAdapter(arrayAdapter);
         sp_price_type.setOnItemSelectedListener(this);
+
+        priceAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_spinner_item_find, arrPrice);
+        priceAdapter.setDropDownViewResource(R.layout.custom_spinner_find_ad);
+        sp_price.setAdapter(priceAdapter);
+        sp_price.setOnItemSelectedListener(this);
     }
 
     private int initCheckBox() {
@@ -186,17 +205,10 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     }
 
     private void getDataActivity() {
-        int price;
         int type_parking;
         int type_price;
         String begin_time;
         String end_time;
-
-        if (edt_price.getText().toString().isEmpty() || checkNumberInput(edt_price.getText().toString()) <= 0){
-            price = -1;
-        } else {
-            price = Integer.parseInt(edt_price.getText().toString());
-        }
 
         type_parking = initCheckBox();
         type_price = price_type_integer;
@@ -219,7 +231,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home)
-            getDataActivity();
+            finish();
         return super.onOptionsItemSelected(item);
     }
 
@@ -241,6 +253,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         int spinner_id = parent.getId();
         String value_item;
+        String price_item;
         if (spinner_id == R.id.spinner_price_type){
             value_item = arrayAdapter.getItem(position).toString();
             if (value_item.equals("Giờ")){
@@ -253,6 +266,15 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
                 price_type_integer = 0;
             }
         }
+        if (spinner_id == R.id.spinner_price) {
+            price_item = priceAdapter.getItem(position).toString();
+            if (price_item.equals("Tất cả")) {
+                price = -1;
+            } else {
+                price = Integer.parseInt(price_item);
+            }
+        }
+
     }
 
     @Override
@@ -322,16 +344,6 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         return this;
     }
 
-    private int checkNumberInput(String number) {
-        try {
-            return Integer.parseInt(number);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return -1;
-    }
-
     private void setCheckBox(int type) {
         if (type == 1) {
             chk_xedap.setChecked(true);
@@ -349,6 +361,10 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
             chk_xemay.setChecked(true);
             chk_oto.setChecked(true);
             chk_xedap.setChecked(true);
+        } else {
+            chk_oto.setChecked(false);
+            chk_xemay.setChecked(false);
+            chk_xedap.setChecked(false);
         }
     }
 
@@ -364,10 +380,6 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         edt_end_time.setText(endtime);
         hour_end = parseHour(end_time);
         minutes_end = parseMinutes(end_time);
-    }
-
-    private void setPrice(int price) {
-        edt_price.setText(String.valueOf(price));
     }
 
     private void setPriceType(int price_types) {
@@ -410,26 +422,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         return minutes_parse;
     }
 
-    private void getData() {
-        if (validModel()) {
-            String begin_time = findModel.getBegin_time();
-            String end_time = findModel.getEnd_time();
-            int type = findModel.getType();
-            int price = findModel.getPrice();
-            int price_type = findModel.getPrice_type();
-            setCheckBox(type);
-            setBegin(begin_time);
-            setEnd(end_time);
-            setPrice(price);
-            setPriceType(price_type);
-        } else {
-            initSpinner();
-            initTimeBegin();
-            initTimeEnd();
-        }
-    }
-
-    private boolean validModel() {
+    private void validModel() {
         try {
             findModel = new Find();
             findModel = (Find) getIntent().getSerializableExtra(Constants.FIND_MODEL);
@@ -439,17 +432,49 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         }
 
         if (findModel.getBegin_time().isEmpty()) {
-            return false;
-        } else if (findModel.getEnd_time().isEmpty()) {
-            return false;
-        } else if (findModel.getPrice() == -1) {
-            return false;
-        } else if (findModel.getPrice_type() == -1) {
-            return false;
-        } else if (findModel.getType() == -1) {
-            return false;
+            initTimeBegin();
+        } else {
+            String begin_time = findModel.getBegin_time();
+            setBegin(begin_time);
         }
-        return true;
+
+        if (findModel.getEnd_time().isEmpty()) {
+            initTimeEnd();
+        } else {
+            String end_time = findModel.getEnd_time();
+            setEnd(end_time);
+        }
+
+        if (findModel.getPrice_type() == -1) {
+            initSpinner();
+        } else {
+            int price_type = findModel.getPrice_type();
+            setPriceType(price_type);
+        }
+
+
+        if (findModel.getType() == -1) {
+            setCheckBox(0);
+        } else {
+            int type = findModel.getType();
+            setCheckBox(type);
+        }
+
+        if (findModel.getPrice() == -1) {
+            sp_price.setSelection(0);
+        } else {
+            initPrice();
+            int price = findModel.getPrice();
+            String s_price = String.valueOf(price);
+            for (int i = 0; i < arrPrice.size(); i++) {
+                if (s_price == arrPrice.get(i).toString()) {
+                    sp_price.setSelection(i);
+                    Log.v("Spinner price pos", String.valueOf(i));
+                }
+            }
+
+        }
+
     }
 
     @Override
@@ -459,7 +484,6 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-        getDataActivity();
-//        super.onBackPressed();
+        super.onBackPressed();
     }
 }

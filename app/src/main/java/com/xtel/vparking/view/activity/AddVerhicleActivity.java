@@ -45,6 +45,10 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
     String brand_code;
     Verhicle verhicle;
 
+    //Update
+    String v_name, v_plate, v_des;
+    int v_type, v_flag;
+
     private ArrayList<Brandname> brandNames_arr;
     private CustomAddVerhicleAdapterSpinner adapter_spinner_brand;
 
@@ -164,17 +168,14 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
     }
 
     private boolean valid() {
-
-        if (edt_verhicle_name.getText().toString().isEmpty() || edt_verhicle_name.getText().toString() == "") {
+        if (edt_verhicle_name.getText().toString().isEmpty()) {
             mess = this.getString(R.string.check_verhicle_name);
             return false;
         } else if (edt_verhicle_plate.getText().toString().isEmpty() || edt_verhicle_plate.getText().toString() == "") {
             mess = this.getString(R.string.check_verhicle_plate);
             return false;
-        } else if (edt_verhicle_descriptions.getText().toString().isEmpty() || edt_verhicle_descriptions.getText().toString() == "") {
-            mess = this.getString(R.string.check_verhicle_des);
-            return false;
         }
+
         return true;
     }
 
@@ -204,12 +205,13 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
 
     private void addVerhicle() {
         if (valid()) {
-            Brandname brandname = new Brandname();
-            String v_name, v_plate, v_des;
-            int v_type, v_flag;
             v_name = edt_verhicle_name.getText().toString();
             v_plate = edt_verhicle_plate.getText().toString();
-            v_des = edt_verhicle_descriptions.getText().toString();
+            if (edt_verhicle_descriptions.getText().toString().isEmpty() || edt_verhicle_descriptions.getText().toString() == "") {
+                v_des = "Không có mô tả";
+            } else {
+                v_des = edt_verhicle_descriptions.getText().toString();
+            }
             v_type = getVerhicleType();
             v_flag = getFlagDefault();
             verhiclePresenter.addVerhicle(v_name, v_plate, v_des, v_type, v_flag, brand_code);
