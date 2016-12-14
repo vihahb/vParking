@@ -33,7 +33,7 @@ public class LoginActivity extends BasicActivity implements LoginView, View.OnCl
         initView();
     }
 
-    private void initView(){
+    private void initView() {
         btn_signin = (Button) findViewById(R.id.btn_Signin);
         btn_Facebook_login = (Button) findViewById(R.id.btn_fb_signin);
         btn_Facebook_login.setOnClickListener(this);
@@ -91,9 +91,9 @@ public class LoginActivity extends BasicActivity implements LoginView, View.OnCl
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.btn_fb_signin){
+        if (id == R.id.btn_fb_signin) {
             presenter.initOnLoginFacebook(this);
-        } else if (id == R.id.btn_Signin){
+        } else if (id == R.id.btn_Signin) {
             presenter.initOnLoginAccountKit(this, AccountKitActivity.class, v);
         }
     }

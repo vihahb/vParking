@@ -255,7 +255,7 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
         int update_type = getVerhicleType();
         int update_flag = getFlagDefault();
         String update_code = brand_code;
-        putData2Server(getId, update_name, update_desc, update_plate, update_type, update_flag, update_code);
+        putData2Server(getId, update_name, update_plate, update_desc, update_type, update_flag, update_code);
     }
 
     private void putData2Server(int id, String name, String plate_number, String desc, int type, int flag_default, String code) {

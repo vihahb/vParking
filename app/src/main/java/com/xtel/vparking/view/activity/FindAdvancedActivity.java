@@ -46,7 +46,8 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     private ArrayAdapter<String> arrayAdapter;
     private String[] price_type = {"Tất cả", "Giờ", "Lượt", "Qua đêm"};
     //Date Time Picker
-    int hour, minutes;
+    int hour_begin, minutes_begin;
+    int hour_end, minutes_end;
     String value_time;
     int price_type_integer;
     FindAdvancedPresenter presenter;
@@ -90,7 +91,8 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
 //        getData();
         initOnClick();
         initSpinner();
-        initTime();
+        initTimeBegin();
+        initTimeEnd();
     }
 
     private void initOnClick(){
@@ -100,13 +102,19 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         btn_clear.setOnClickListener(this);
     }
 
-    private void initTime(){
+    private void initTimeBegin() {
         Calendar calendar = Calendar.getInstance();
-        hour = calendar.get(Calendar.HOUR_OF_DAY);
-        minutes = calendar.get(Calendar.MINUTE);
-        String time_now = getHour(hour) + ":" + getMinute(minutes);
-        edt_begin_time.setText(time_now);
-        edt_end_time.setText(time_now);
+        hour_begin = 00;
+        minutes_begin = 01;
+        String time_begin = getHour(hour_begin) + ":" + getMinute(minutes_begin);
+        edt_begin_time.setText(time_begin);
+    }
+
+    private void initTimeEnd() {
+        hour_end = 23;
+        minutes_end = 59;
+        String time_end = getHour(hour_end) + ":" + getMinute(minutes_end);
+        edt_end_time.setText(time_end);
     }
 
     private void initSpinner(){
@@ -162,7 +170,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
                 value_time = getHour(hourOfDay) + ":" + getMinute(minute);
                 edt_begin_time.setText(value_time);
             }
-        },hour, minutes, true);
+        }, hour_begin, minutes_begin, true);
         pickerDialog.show();
     }
 
@@ -173,7 +181,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
                 value_time = getHour(hourOfDay) + ":" + getMinute(minute);
                 edt_end_time.setText(value_time);
             }
-        },hour, minutes, true);
+        }, hour_end, minutes_end, true);
         pickerDialog.show();
     }
 
@@ -349,15 +357,15 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     private void setBegin(String begin_time) {
         String begintime = parseHour(begin_time) + ":" + parseMinutes(begin_time);
         edt_begin_time.setText(begintime);
-        hour = parseHour(begin_time);
-        minutes = parseMinutes(begin_time);
+        hour_begin = parseHour(begin_time);
+        minutes_begin = parseMinutes(begin_time);
     }
 
     private void setEnd(String end_time) {
         String endtime = parseHour(end_time) + ":" + parseMinutes(end_time);
         edt_end_time.setText(endtime);
-        hour = parseHour(end_time);
-        minutes = parseMinutes(end_time);
+        hour_end = parseHour(end_time);
+        minutes_end = parseMinutes(end_time);
     }
 
     private void setPrice(int price) {
@@ -418,7 +426,8 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
             setPriceType(price_type);
         } else {
             initSpinner();
-            initTime();
+            initTimeBegin();
+            initTimeEnd();
         }
     }
 

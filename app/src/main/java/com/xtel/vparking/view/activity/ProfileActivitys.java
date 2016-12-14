@@ -82,7 +82,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         initView();
     }
 
-    private void initToolbar(){
+    private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profile);
         setSupportActionBar(toolbar);
 
@@ -90,7 +90,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void initView(){
+    private void initView() {
         edt_fname = (EditText) findViewById(R.id.edt_fullname);
         edt_email = (EditText) findViewById(R.id.edt_email);
         edt_ngaysinh = (EditText) findViewById(R.id.edt_birth_date);
@@ -109,14 +109,14 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         initViewData(getApplicationContext());
     }
 
-    private void initSpinner(){
+    private void initSpinner() {
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item, gender_spinner);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_gender.setAdapter(arrayAdapter);
         spinner_gender.setOnItemSelectedListener(this);
     }
 
-    private void initOnclick(){
+    private void initOnclick() {
         btnUpdate.setOnClickListener(this);
         img_change_avatar.setOnClickListener(this);
         edt_ngaysinh.setOnClickListener(this);
@@ -124,7 +124,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         onFocusChangeEditText();
     }
 
-    private void initViewData(Context context){
+    private void initViewData(Context context) {
         UserModel userModel = profilePresenter.initData();
 
         avatar = userModel.getAvatar();
@@ -210,7 +210,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         edt_fname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
+                if (hasFocus) {
                     respond_type = 1;
                     btn_clear.setVisibility(View.VISIBLE);
                     cleanEditText(respond_type);
@@ -224,7 +224,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         edt_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
+                if (hasFocus) {
                     respond_type = 2;
                     btn_clear_email.setVisibility(View.VISIBLE);
                     cleanEditText(respond_type);
@@ -260,13 +260,13 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.btn_profile_update){
+        if (id == R.id.btn_profile_update) {
             updateUser();
-        } else if (id == R.id.img_profile_change_avatar){
+        } else if (id == R.id.img_profile_change_avatar) {
             updateAvatar(getApplicationContext());
-        } else if (id == R.id.edt_birth_date){
+        } else if (id == R.id.edt_birth_date) {
             updateBirthday(this);
-        } else if (id == R.id.img_update_phone){
+        } else if (id == R.id.img_update_phone) {
             profilePresenter.onUpdatePhone(getApplicationContext(), AccountKitActivity.class);
         }
     }
@@ -313,7 +313,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         return true;
     }
 
-    private void updateAvatar(final Context context){
+    private void updateAvatar(final Context context) {
         Task.TakeBigPicture(context, getSupportFragmentManager(), true, new RequestWithStringListener() {
             @Override
             public void onSuccess(String url) {
@@ -332,8 +332,8 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         });
     }
 
-    private void updateUser(){
-        if (valid()){
+    private void updateUser() {
+        if (valid()) {
             profilePresenter.updateUser(full_name_update, email_update, birthday_update, gender_update, phone_update);
         }
     }

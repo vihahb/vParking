@@ -72,6 +72,7 @@ public class AddVerhiclePresenter {
             @Override
             public void onSuccess(RESP_Verhicle obj) {
                 Log.v("Verhicle ", "i1 " + obj.getId());
+                view.showProgressBar(false, false, null, view.getActivity().getString(R.string.parking_get_data));
                 putId(obj.getId());
                 view.showShortToast(view.getActivity().getString(R.string.verhicle_add_success));
             }
@@ -103,10 +104,12 @@ public class AddVerhiclePresenter {
         resp_verhicle.setBrandname(setCode(brand_code));
         final int id_put = resp_verhicle.getId();
 
+        Log.v("Verhicle", JsonHelper.toJson(resp_verhicle));
 
         VerhicleModel.getInstance().putVerhicle2Server(url, JsonHelper.toJson(resp_verhicle), session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
             public void onSuccess(RESP_Parking_Info obj) {
+                view.showProgressBar(false, false, null, view.getActivity().getString(R.string.parking_get_data));
                 putId(id_put);
                 view.showShortToast(view.getActivity().getString(R.string.update_message_success));
             }

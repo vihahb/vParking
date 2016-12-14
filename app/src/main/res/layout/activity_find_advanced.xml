@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context=".view.activity.FindAdvancedActivity"
     android:baselineAligned="false"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".view.activity.FindAdvancedActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -26,10 +26,10 @@
                 android:id="@+id/btn_clear_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:background="@android:color/transparent"
                 android:layout_gravity="right"
-                android:text="@string/button_clear_filter" />
+                android:background="@android:color/transparent"
+                android:text="@string/button_clear_filter"
+                android:textSize="18sp" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
@@ -42,16 +42,15 @@
         android:padding="@dimen/activity_vertical_margin">
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_38"
             android:layout_marginBottom="@dimen/size_16"
             android:layout_marginLeft="@dimen/size_6"
             android:layout_marginRight="@dimen/size_6"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_38"
             android:gravity="center"
             android:orientation="horizontal">
 
             <CheckBox
-                android:theme="@style/WhiteCheck"
                 android:id="@+id/chk_find_advanced_oto"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -59,7 +58,8 @@
                 android:buttonTint="@android:color/white"
                 android:gravity="left|center"
                 android:text="@string/oto"
-                android:textColor="@drawable/custom_checkbox_text" />
+                android:textColor="@drawable/custom_checkbox_text"
+                android:theme="@style/WhiteCheck" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -67,7 +67,6 @@
                 android:layout_weight="0.1" />
 
             <CheckBox
-                android:theme="@style/WhiteCheck"
                 android:id="@+id/chk_find_advanced_xemay"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -75,7 +74,8 @@
                 android:buttonTint="@android:color/white"
                 android:gravity="left|center"
                 android:text="@string/xemay"
-                android:textColor="@drawable/custom_checkbox_text" />
+                android:textColor="@drawable/custom_checkbox_text"
+                android:theme="@style/WhiteCheck" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -83,7 +83,6 @@
                 android:layout_weight="0.1" />
 
             <CheckBox
-                android:theme="@style/WhiteCheck"
                 android:id="@+id/chk_find_advanced_xedap"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -91,7 +90,8 @@
                 android:buttonTint="@android:color/white"
                 android:gravity="left|center"
                 android:text="@string/xedap"
-                android:textColor="@drawable/custom_checkbox_text" />
+                android:textColor="@drawable/custom_checkbox_text"
+                android:theme="@style/WhiteCheck" />
         </LinearLayout>
 
         <LinearLayout
@@ -105,11 +105,11 @@
                 style="@style/AddParking_Textview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="15sp"
                 android:layout_marginBottom="@dimen/size_10"
+                android:layout_weight="1"
                 android:paddingLeft="@dimen/size_12"
-                android:text="@string/price" />
+                android:text="@string/price"
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -121,11 +121,11 @@
                 style="@style/AddParking_Textview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="15sp"
                 android:layout_marginBottom="@dimen/size_10"
+                android:layout_weight="1"
                 android:paddingLeft="@dimen/size_12"
-                android:text="@string/price_type" />
+                android:text="@string/price_type"
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -141,12 +141,12 @@
                 android:background="@drawable/custom_edittext_findadvance"
                 android:gravity="center_vertical"
                 android:hint="0"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white"
                 android:inputType="number"
-                android:paddingLeft="@dimen/size_12"
                 android:maxLength="2"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:paddingLeft="@dimen/size_12"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -164,10 +164,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/size_4"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:orientation="horizontal">
 
             <TextView
@@ -175,11 +175,11 @@
                 style="@style/AddParking_Textview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginBottom="@dimen/size_10"
-                android:textSize="15sp"
+                android:layout_weight="1"
                 android:paddingLeft="@dimen/size_12"
-                android:text="@string/find_begin_time" />
+                android:text="@string/find_begin_time"
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -191,11 +191,11 @@
                 style="@style/AddParking_Textview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="15sp"
                 android:layout_marginBottom="@dimen/size_10"
+                android:layout_weight="1"
                 android:paddingLeft="@dimen/size_12"
-                android:text="@string/find_end_time" />
+                android:text="@string/find_end_time"
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -211,13 +211,13 @@
                 android:background="@drawable/custom_edittext_findadvance"
                 android:drawableRight="@mipmap/ic_timer_white_24dp"
                 android:focusable="false"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white"
                 android:gravity="center_vertical"
                 android:hint="@string/find_begin_time"
                 android:paddingLeft="@dimen/size_12"
                 android:paddingRight="@dimen/size_10"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -232,13 +232,13 @@
                 android:background="@drawable/custom_edittext_findadvance"
                 android:drawableRight="@mipmap/ic_timer_off_white_24dp"
                 android:focusable="false"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white"
                 android:gravity="center_vertical"
                 android:hint="@string/find_end_time"
                 android:paddingLeft="@dimen/size_12"
                 android:paddingRight="@dimen/size_10"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white" />
         </LinearLayout>
 
     </LinearLayout>
@@ -250,8 +250,8 @@
         android:background="@drawable/btn_purple_no_radius"
         android:foreground="?android:attr/selectableItemBackground"
         android:onClick="TimKiem"
-        android:visibility="gone"
         android:padding="@dimen/size_10"
         android:text="@string/find"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
 </LinearLayout>

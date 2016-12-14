@@ -21,7 +21,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_AUTH_ID) != null 
+                if (SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_AUTH_ID) != null
                         && SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION) != null) {
                     Log.e("auth_id", SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_AUTH_ID));
                     Log.e("auth_session", SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION));
