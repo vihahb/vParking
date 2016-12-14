@@ -191,19 +191,17 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         int type_price;
         String begin_time;
         String end_time;
+
         if (edt_price.getText().toString().isEmpty() || checkNumberInput(edt_price.getText().toString()) <= 0){
             price = -1;
-            type_parking = initCheckBox();
-            type_price = price_type_integer;
-            begin_time = edt_begin_time.getText().toString();
-            end_time = edt_end_time.getText().toString();
         } else {
-            type_parking = initCheckBox();
-            type_price = price_type_integer;
             price = Integer.parseInt(edt_price.getText().toString());
-            begin_time = edt_begin_time.getText().toString();
-            end_time = edt_end_time.getText().toString();
         }
+
+        type_parking = initCheckBox();
+        type_price = price_type_integer;
+        begin_time = edt_begin_time.getText().toString();
+        end_time = edt_end_time.getText().toString();
 
         onParkingResult(type_parking, price, type_price, begin_time, end_time);
     }
@@ -457,5 +455,11 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        getDataActivity();
+//        super.onBackPressed();
     }
 }

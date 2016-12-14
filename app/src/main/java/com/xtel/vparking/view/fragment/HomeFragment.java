@@ -527,10 +527,11 @@ public class HomeFragment extends BasicFragment implements
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e("onActivityResult", "request " + requestCode + " result " + resultCode);
         if (requestCode == Constants.FIND_ADVANDCED_RQ && resultCode == Constants.FIND_ADVANDCED_RS) {
-
             Find findModel = (Find) data.getExtras().getSerializable(Constants.FIND_MODEL);
-            if (findModel != null && isCanLoadMap) {
+            Log.e("onActivityResult", "request " + requestCode + " result " + resultCode + "    " + findModel.getPrice());
+            if (isCanLoadMap) {
                 Log.e("home", findModel.getPrice() + "   " + findModel.getPrice_type() + "   " + findModel.getType());
 
                 if (!isFindMyLocation)

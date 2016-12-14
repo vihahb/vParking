@@ -1,6 +1,7 @@
 package com.xtel.vparking.model.entity;
 
 import com.google.gson.annotations.Expose;
+import com.xtel.vparking.view.activity.inf.UserInfo;
 
 import java.util.ArrayList;
 
@@ -47,6 +48,8 @@ public class RESP_Parking_Info extends RESP_Basic {
     private ArrayList<Pictures> pictures;
     @Expose
     private int favorite;
+    @Expose
+    private UserInfo parking_owner;
 
     public RESP_Parking_Info() {
     }
@@ -201,5 +204,13 @@ public class RESP_Parking_Info extends RESP_Basic {
 
     public void setFavorite(int favorite) {
         this.favorite = favorite;
+    }
+
+    public UserInfo getParking_owner() {
+        return parking_owner;
+    }
+
+    public void setParking_owner(UserInfo parking_owner) {
+        this.parking_owner = parking_owner;
     }
 }

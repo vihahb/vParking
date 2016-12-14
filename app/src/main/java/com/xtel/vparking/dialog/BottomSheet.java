@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
+import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.DialogListener;
 import com.xtel.vparking.callback.RequestNoResultListener;
@@ -29,6 +30,7 @@ import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -47,7 +49,7 @@ public class BottomSheet {
     private RESP_Parking_Info resp_parking_info;
     private FragmentManager fragmentManager;
     private ViewPager viewPager;
-    private ImageView img_favorite;
+    private ImageView img_favorite, img_avatar;
     private TextView txt_address, txt_user_name, txt_user_age, txt_time, txt_parking_name, txt_cho_trong, txt_money, txt_dat_cho, txt_picture_count;
     private RatingBar ratingBar;
     private Button btn_danduong;
@@ -70,6 +72,7 @@ public class BottomSheet {
         view_header = (View) view.findViewById(R.id.layout_dialog_bottom_sheet_header);
         img_header_favorite = (ImageButton) view.findViewById(R.id.img_dialog_bottom_sheet_header_favorite);
         img_header_close = (ImageButton) view.findViewById(R.id.img_dialog_bottom_sheet_header_close);
+        img_avatar = (ImageView) view.findViewById(R.id.img_dialog_bottom_sheet_avatar);
         txt_header_name = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_header_name);
         txt_header_time = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_header_time);
         txt_header_address = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_header_address);
@@ -137,7 +140,24 @@ public class BottomSheet {
     public void initData(RESP_Parking_Info resp_parking_info) {
         this.resp_parking_info = resp_parking_info;
         initHeader();
+        setUpViewpager();
+        loadImage();
+        setUpFavorite();
 
+        String picture_count = "1/" + arrayList_bottom_sheet.size();
+        txt_picture_count.setText(picture_count);
+        txt_address.setText(resp_parking_info.getAddress());
+        txt_user_name.setText(resp_parking_info.getParking_owner().getFullname());
+        txt_user_age.setText(getAge(resp_parking_info.getParking_owner().getBirthday()));
+        txt_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
+        txt_parking_name.setText(resp_parking_info.getParking_name());
+        txt_cho_trong.setText(Constants.getPlaceNumber(context, resp_parking_info.getEmpty_number()));
+
+        txt_money.setText((resp_parking_info.getPrices().get(0).getPrice() + " K"));
+        txt_dat_cho.setText(resp_parking_info.getEmpty_number());
+    }
+
+    private void setUpViewpager() {
         arrayList_bottom_sheet.clear();
 
         if (resp_parking_info.getPictures().size() > 0)
@@ -148,25 +168,29 @@ public class BottomSheet {
             arrayList_bottom_sheet.add(null);
 
         viewPager.getAdapter().notifyDataSetChanged();
+    }
 
-        this.resp_parking_info = resp_parking_info;
-        String picture_count = "1/" + arrayList_bottom_sheet.size();
+    private void loadImage() {
+        if (resp_parking_info.getParking_owner().getAvatar() != null && !resp_parking_info.getParking_owner().getAvatar().isEmpty()) {
+            Picasso.with(context)
+                    .load(resp_parking_info.getParking_owner().getAvatar())
+                    .noPlaceholder()
+                    .into(img_avatar);
+        }
+    }
 
-        txt_picture_count.setText(picture_count);
-        txt_address.setText(resp_parking_info.getAddress());
-        txt_user_name.setText("No name");
-        txt_user_age.setText("No age");
-        txt_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
-        txt_parking_name.setText(resp_parking_info.getParking_name());
-        txt_cho_trong.setText(Constants.getPlaceNumber(context, resp_parking_info.getEmpty_number()));
+    private String getAge(String date) {
+        if (date == null || date.isEmpty())
+            return "None";
 
-        txt_money.setText((resp_parking_info.getPrices().get(0).getPrice() + " K"));
-        txt_dat_cho.setText("12,000");
-
-        if (this.resp_parking_info.getFavorite() == 1) {
-            img_favorite.setImageResource(R.mipmap.ic_favorite_red);
-        } else {
-            img_favorite.setImageResource(R.mipmap.ic_favorite_gray);
+        try {
+            Calendar calendar = Calendar.getInstance();
+            String[] time = date.split("/");
+            int age = calendar.get(Calendar.YEAR) - Integer.parseInt(time[0]);
+            Log.e(this.getClass().getSimpleName(), "now year " + calendar.get(Calendar.YEAR) + " old year " + time[2] + " age " + age + "   date  " + date);
+            return String.valueOf(age);
+        } catch (Exception e) {
+            return date;
         }
     }
 
@@ -179,11 +203,15 @@ public class BottomSheet {
         txt_header_address.setText(resp_parking_info.getAddress());
         txt_header_empty.setText(Constants.getPlaceNumberAndTotal(context, resp_parking_info.getEmpty_number(), resp_parking_info.getTotal_place()));
         txt_header_money.setText((resp_parking_info.getPrices().get(0).getPrice() + " K"));
+    }
 
+    private void setUpFavorite() {
         if (this.resp_parking_info.getFavorite() == 1) {
             img_header_favorite.setImageResource(R.mipmap.ic_favorite_red);
+            img_favorite.setImageResource(R.mipmap.ic_favorite_red);
         } else {
             img_header_favorite.setImageResource(R.mipmap.ic_favorite_gray);
+            img_favorite.setImageResource(R.mipmap.ic_favorite_gray);
         }
     }
 
@@ -287,16 +315,13 @@ public class BottomSheet {
             if (s == null || s.isEmpty()) {
                 if (resp_parking_info.getFavorite() == 1) {
                     resp_parking_info.setFavorite(0);
-                    img_favorite.setImageResource(R.mipmap.ic_favorite_gray);
-                    img_header_favorite.setImageResource(R.mipmap.ic_favorite_gray);
                     Toast.makeText(context, "Đã xóa bãi đỗ khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
                 } else {
                     resp_parking_info.setFavorite(1);
-                    img_favorite.setImageResource(R.mipmap.ic_favorite_red);
-                    img_header_favorite.setImageResource(R.mipmap.ic_favorite_red);
                     Toast.makeText(context, "Đã thêm bãi đỗ vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
                 }
 
+                setUpFavorite();
                 addingToFavorite = false;
                 dialogProgressBar.closeProgressBar();
             } else {

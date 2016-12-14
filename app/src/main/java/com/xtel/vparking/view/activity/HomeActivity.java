@@ -27,10 +27,10 @@ import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.presenter.HomePresenter;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.inf.HomeView;
-import com.xtel.vparking.view.fragment.VerhicleCheckedFragment;
 import com.xtel.vparking.view.fragment.FavoriteFragment;
 import com.xtel.vparking.view.fragment.HomeFragment;
 import com.xtel.vparking.view.fragment.ParkingManagementFragment;
+import com.xtel.vparking.view.fragment.VerhicleCheckedFragment;
 import com.xtel.vparking.view.fragment.VerhicleFragment;
 
 /**
@@ -312,43 +312,28 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
         Log.e(this.getClass().getSimpleName(), "request " + requestCode + " result " + resultCode);
-        switch (CURRENT_FRAGMENT) {
-            case VERHICLE_FRAGMENT:
-                Fragment fragment1 = getSupportFragmentManager().findFragmentByTag(VERHICLE_FRAGMENT);
-                if (fragment1 != null) {
-                    fragment1.onActivityResult(requestCode, resultCode, data);
-                }
-                break;
-            case MANAGER_FRAGMENT:
-                Fragment fragment2 = getSupportFragmentManager().findFragmentByTag(MANAGER_FRAGMENT);
-                if (fragment2 != null) {
-                    fragment2.onActivityResult(requestCode, resultCode, data);
-                }
-                break;
-            case CHECKIN_FRAGMENT:
-                Fragment fragment3 = getSupportFragmentManager().findFragmentByTag(CHECKIN_FRAGMENT);
-                if (fragment3 != null) {
-                    fragment3.onActivityResult(requestCode, resultCode, data);
-                }
-                break;
-            default:
-                break;
+        if (CURRENT_FRAGMENT.equals(HOME_FRAGMENT)) {
+            Log.e(this.getClass().getSimpleName(), "request " + requestCode + " result " + resultCode);
+            Fragment fragment0 = getSupportFragmentManager().findFragmentByTag(HOME_FRAGMENT);
+            if (fragment0 != null) {
+                Log.e(this.getClass().getSimpleName(), "request " + requestCode + " result " + resultCode);
+                fragment0.onActivityResult(requestCode, resultCode, data);
+            }
+        } else if (CURRENT_FRAGMENT.equals(VERHICLE_FRAGMENT)) {
+            Fragment fragment1 = getSupportFragmentManager().findFragmentByTag(VERHICLE_FRAGMENT);
+            if (fragment1 != null) {
+                fragment1.onActivityResult(requestCode, resultCode, data);
+            }
+        } else if (CURRENT_FRAGMENT.equals(MANAGER_FRAGMENT)) {
+            Fragment fragment2 = getSupportFragmentManager().findFragmentByTag(MANAGER_FRAGMENT);
+            if (fragment2 != null) {
+                fragment2.onActivityResult(requestCode, resultCode, data);
+            }
+        } else if (CURRENT_FRAGMENT.equals(CHECKIN_FRAGMENT)) {
+            Fragment fragment3 = getSupportFragmentManager().findFragmentByTag(CHECKIN_FRAGMENT);
+            if (fragment3 != null) {
+                fragment3.onActivityResult(requestCode, resultCode, data);
+            }
         }
-//        if (CURRENT_FRAGMENT.equals(VERHICLE_FRAGMENT)) {
-//            Fragment fragment = getSupportFragmentManager().findFragmentByTag(VERHICLE_FRAGMENT);
-//            if (fragment != null) {
-//                fragment.onActivityResult(requestCode, resultCode, data);
-//            }
-//        } else if (CURRENT_FRAGMENT.equals(MANAGER_FRAGMENT)) {
-//            Fragment fragment = getSupportFragmentManager().findFragmentByTag(MANAGER_FRAGMENT);
-//            if (fragment != null) {
-//                fragment.onActivityResult(requestCode, resultCode, data);
-//            }
-//        } else if (CURRENT_FRAGMENT.equals(CHECKIN_FRAGMENT)) {
-//            Fragment fragment = getSupportFragmentManager().findFragmentByTag(CHECKIN_FRAGMENT);
-//            if (fragment != null) {
-//                fragment.onActivityResult(requestCode, resultCode, data);
-//            }
-//        }
     }
 }
