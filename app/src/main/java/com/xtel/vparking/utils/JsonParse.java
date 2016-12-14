@@ -86,6 +86,10 @@ public class JsonParse {
             return MyApplication.context.getString(R.string.error_system);
         } else if (code == 1001) {
             return MyApplication.context.getString(R.string.error_no_parking);
+        } else if (code == 3002) {
+            return "Phương tiện không tồn tại";
+        } else if (code == 3003) {
+            return "Phương tiện đã check in bởi 1 user khác";
         } else {
             return content;
         }

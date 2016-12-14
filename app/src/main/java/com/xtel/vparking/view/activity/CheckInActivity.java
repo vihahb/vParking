@@ -1,68 +1,61 @@
-package com.xtel.vparking.view.fragment;
+package com.xtel.vparking.view.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.xtel.vparking.R;
-import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.model.entity.CheckInVerhicle;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.Verhicle;
 import com.xtel.vparking.presenter.CheckInPresenter;
 import com.xtel.vparking.utils.JsonParse;
-import com.xtel.vparking.view.activity.ScanQrActivity;
 import com.xtel.vparking.view.activity.inf.CheckInView;
 import com.xtel.vparking.view.adapter.CheckInAdapter;
 import com.xtel.vparking.view.widget.ProgressView;
 
 import java.util.ArrayList;
 
-public class CheckInFragment extends BasicFragment implements CheckInView {
-    public static final int RESULT_CHECK_IN = 66, REQUEST_CHECK_IN = 99;
+public class CheckInActivity extends BasicActivity implements CheckInView {
     private CheckInPresenter presenter;
+    public static final int RESULT_CHECK_IN = 66, REQUEST_CHECK_IN = 99;
+    public static final String CHECK_IN_OBJECT = "check_in_object";
 
     private RecyclerView recyclerView;
     private ArrayList<Verhicle> arrayList;
-    private CheckInAdapter adapter;
     private ProgressView progressView;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_check_in, container, false);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_check_in);
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        initRecyclerview(view);
-        initProgressView(view);
+        initToolbar(R.id.checkin_toolbar, null);
+        initRecyclerview();
+        initProgressView();
 
         presenter = new CheckInPresenter(this);
         presenter.getAllVerhicle();
     }
 
-    private void initRecyclerview(View view) {
-        recyclerView = (RecyclerView) view.findViewById(R.id.checkin_recyclerview);
+    private void initRecyclerview() {
+        recyclerView = (RecyclerView) findViewById(R.id.checkin_recyclerview);
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         arrayList = new ArrayList<>();
-        adapter = new CheckInAdapter(getActivity(), arrayList, this);
+        CheckInAdapter adapter = new CheckInAdapter(this, arrayList, this);
         recyclerView.setAdapter(adapter);
     }
 
-    private void initProgressView(View view) {
-        progressView = new ProgressView(null, view);
+    private void initProgressView() {
+        progressView = new ProgressView(this, null);
         progressView.initData(R.mipmap.icon_parking, "Không có phương tiện nào", "Kiểm tra lại", "Đang tải dữ liệu", Color.parseColor("#5c5ca7"));
         progressView.setUpWithView(recyclerView);
         progressView.showProgressbar();
@@ -99,18 +92,26 @@ public class CheckInFragment extends BasicFragment implements CheckInView {
     }
 
     @Override
-    public void onItemClicked(Verhicle verhicle) {
-        startActivityForResult(ScanQrActivity.class, REQUEST_CHECK_IN);
+    public void onItemClicked(CheckInVerhicle checkInVerhicle) {
+        startActivityForResult(ScanQrActivity.class, CHECK_IN_OBJECT, checkInVerhicle, REQUEST_CHECK_IN);
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CHECK_IN && resultCode == RESULT_CHECK_IN) {
-            if (data != null) {
-                int id = data.getIntExtra(Constants.VERHICLE_ID, -1);
-                Log.e(this.getClass().getSimpleName(), "result id: " + id);
-            } else
-                Log.e(this.getClass().getSimpleName(), "result data null");
+            finish();
         }
     }
 }

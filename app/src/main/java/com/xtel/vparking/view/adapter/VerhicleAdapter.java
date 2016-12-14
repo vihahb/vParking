@@ -53,6 +53,8 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (verhicle.getType() == type_car)
                 view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_car_black_24dp, 0, 0, 0);
             else if (verhicle.getType() == type_bike)
+                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_motobike, 0, 0, 0);
+            else
                 view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_bike_black_24dp, 0, 0, 0);
 
             view.txt_title.setText(verhicle.getName());
@@ -153,6 +155,9 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             Log.e(this.getClass().getSimpleName(), "the same");
             arrayList.set(position, verhicle);
             notifyItemChanged(position, getItemCount());
+
+            if (verhicle.getFlag_default() == 1)
+                clearDefault(position);
         } else {
             Log.e(this.getClass().getSimpleName(), "not the same");
             arrayList.remove(position);
@@ -174,15 +179,27 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     arrayList.add((i + 1), verhicle);
                     notifyItemInserted((i + 1));
                     notifyItemChanged((i + 1), getItemCount());
+
+                    if (verhicle.getFlag_default() == 1)
+                        clearDefault((i + 1));
+
                     Log.e(this.getClass().getSimpleName(), "set again");
                     return;
                 }
             }
 
             arrayList.add(verhicle);
-
             sortVerhicle();
         }
+    }
+
+    private void clearDefault(int position) {
+        for (int i = (arrayList.size() - 1); i >= 0; i--) {
+            if (i != position)
+                arrayList.get(i).setFlag_default(0);
+        }
+
+        notifyItemChanged(0, getItemCount());
     }
 
     private void sortVerhicle() {
@@ -195,6 +212,9 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     if (arrayList.get(i).getType() > 1000)
                         arrayList.remove(i);
                 }
+
+                if (arrayList.get((arrayList.size() - 1)).getFlag_default() == 1)
+                    clearDefault((arrayList.size() - 1));
 
                 Collections.sort(arrayList, new Comparator<Verhicle>() {
                     @Override

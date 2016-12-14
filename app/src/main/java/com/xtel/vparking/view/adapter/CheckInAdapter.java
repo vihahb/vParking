@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xtel.vparking.R;
+import com.xtel.vparking.model.entity.CheckInVerhicle;
 import com.xtel.vparking.model.entity.Verhicle;
 import com.xtel.vparking.view.activity.inf.CheckInView;
-import com.xtel.vparking.view.activity.inf.VerhicleView;
 
 import java.util.ArrayList;
 
@@ -35,7 +35,7 @@ public class CheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (viewType == view_title)
             return new ViewTitle(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_verhicle_title, parent, false));
         else
-            return new ViewItem(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_check_in_item, parent, false));
+            return new ViewItem(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_verhicle_item, parent, false));
     }
 
     @Override
@@ -48,6 +48,8 @@ public class CheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if (verhicle.getType() == type_car)
                 view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_car_black_24dp, 0, 0, 0);
             else if (verhicle.getType() == type_bike)
+                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_motobike, 0, 0, 0);
+            else
                 view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_bike_black_24dp, 0, 0, 0);
 
             view.txt_title.setText(verhicle.getName());
@@ -60,7 +62,10 @@ public class CheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             view.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    checkInView.onItemClicked(verhicle);
+                    CheckInVerhicle checkInVerhicle = new CheckInVerhicle();
+                    checkInVerhicle.setCheckin_type(verhicle.getType());
+                    checkInVerhicle.setVerhicle_id(verhicle.getId());
+                    checkInView.onItemClicked(checkInVerhicle);
                 }
             });
         }

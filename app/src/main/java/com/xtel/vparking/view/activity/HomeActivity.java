@@ -27,7 +27,7 @@ import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.presenter.HomePresenter;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.inf.HomeView;
-import com.xtel.vparking.view.fragment.CheckInFragment;
+import com.xtel.vparking.view.fragment.VerhicleCheckedFragment;
 import com.xtel.vparking.view.fragment.FavoriteFragment;
 import com.xtel.vparking.view.fragment.HomeFragment;
 import com.xtel.vparking.view.fragment.ParkingManagementFragment;
@@ -214,7 +214,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     }
 
     private void replaceCheckInFragment() {
-        replaceFragment(R.id.home_layout_content, new CheckInFragment(), CHECKIN_FRAGMENT);
+        replaceFragment(R.id.home_layout_content, new VerhicleCheckedFragment(), CHECKIN_FRAGMENT);
         CURRENT_FRAGMENT = CHECKIN_FRAGMENT;
 
         actionBar.setTitle(getString(R.string.title_activity_check_in));
@@ -265,7 +265,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.nav_parking_checkin) {
-            startActivity(ScanQrActivity.class);
+            startActivity(CheckInActivity.class);
         } else if (id == R.id.nav_parking_add) {
             if (CURRENT_FRAGMENT.equals(MANAGER_FRAGMENT))
                 startActivityForResult(AddParkingActivity.class, Constants.ADD_PARKING_REQUEST);

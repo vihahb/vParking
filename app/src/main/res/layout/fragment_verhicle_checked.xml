@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/material_background"
-    tools:context=".view.fragment.CheckInFragment">
+    tools:context=".view.fragment.VerhicleCheckedFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/checkin.recyclerview"
+        android:id="@+id/checked.recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
