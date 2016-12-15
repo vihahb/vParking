@@ -1,6 +1,5 @@
 package com.xtel.vparking.presenter;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.xtel.vparking.callback.RequestNoResultListener;
@@ -10,23 +9,17 @@ import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.VerhicleModel;
 import com.xtel.vparking.model.entity.Error;
-import com.xtel.vparking.model.entity.RESP_Verhicle_List;
-import com.xtel.vparking.model.entity.Verhicle;
 import com.xtel.vparking.view.activity.inf.RESP_Check_In;
-import com.xtel.vparking.view.activity.inf.VerhicleCheckedView;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import com.xtel.vparking.view.activity.inf.CheckedView;
 
 /**
  * Created by Lê Công Long Vũ on 12/2/2016.
  */
 
-public class VerhicleCheckedPresenter {
-    private VerhicleCheckedView view;
+public class CheckedPresenter {
+    private CheckedView view;
 
-    public VerhicleCheckedPresenter(VerhicleCheckedView view) {
+    public CheckedPresenter(CheckedView view) {
         this.view = view;
     }
 

@@ -2,11 +2,13 @@ package com.xtel.vparking.model.entity;
 
 import com.google.gson.annotations.Expose;
 
+import java.io.Serializable;
+
 /**
  * Created by Lê Công Long Vũ on 12/5/2016.
  */
 
-public class Parking {
+public class Parking implements Serializable {
     @Expose
     private int id;
     @Expose

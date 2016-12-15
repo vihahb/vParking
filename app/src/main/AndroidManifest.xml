@@ -128,9 +128,15 @@
             android:name=".view.activity.CheckInActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
             android:label="@string/title_activity_check_in" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="5765ba05cf4f36a9301d3a8eb9fe7c9e53ecb745" />
+
+        <activity
+            android:name=".view.activity.CheckOutActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:label="@string/title_activity_check_out" />
     </application>
 
 </manifest>

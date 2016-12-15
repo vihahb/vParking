@@ -14,57 +14,53 @@ import android.view.ViewGroup;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.model.entity.CheckIn;
 import com.xtel.vparking.model.entity.Error;
-import com.xtel.vparking.model.entity.Verhicle;
-import com.xtel.vparking.presenter.VerhiclePresenter;
+import com.xtel.vparking.presenter.CheckedPresenter;
 import com.xtel.vparking.utils.JsonParse;
-import com.xtel.vparking.view.activity.AddVerhicleActivity;
-import com.xtel.vparking.view.activity.inf.VerhicleView;
-import com.xtel.vparking.view.adapter.VerhicleAdapter;
-import com.xtel.vparking.view.fragment.BasicFragment;
+import com.xtel.vparking.view.activity.CheckOutActivity;
+import com.xtel.vparking.view.activity.HomeActivity;
+import com.xtel.vparking.view.activity.inf.CheckedView;
+import com.xtel.vparking.view.adapter.CheckedAdapter;
 import com.xtel.vparking.view.widget.ProgressView;
 
 import java.util.ArrayList;
 
-/**
- * Created by Lê Công Long Vũ on 12/9/2016.
- */
-
-public class VerhicleFragment extends BasicFragment implements VerhicleView {
-    public static final int RESULT_ADD_VERHICLE = 66, REQUEST_ADD_VERHICLE = 99;
-    public static final int RESULT_UPDATE_VERHICLE = 22;
-    private VerhiclePresenter presenter;
+public class CheckedFragment extends BasicFragment implements CheckedView {
+    public static final int RESULT_CHECK_OUT = 66, RESULT_FIND = 88, REQUEST_CHECKED = 99;
+    public static final String CHECKED_OBJECT = "checked_object", CHECKED_ID = "checked_id";
+    private CheckedPresenter presenter;
 
     private RecyclerView recyclerView;
-    private ArrayList<Verhicle> arrayList;
-    private VerhicleAdapter adapter;
+    private CheckedAdapter adapter;
+    private ArrayList<CheckIn> arrayList;
     private ProgressView progressView;
 
-    private int position = -1;
+    private int PARKING_ID = -1;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_verhicle, container, false);
+        return inflater.inflate(R.layout.fragment_verhicle_checked, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        presenter = new VerhiclePresenter(this);
+        presenter = new CheckedPresenter(this);
         initRecyclerview(view);
         initProgressView(view);
     }
 
     private void initRecyclerview(View view) {
-        recyclerView = (RecyclerView) view.findViewById(R.id.verhicle_recyclerview);
+        recyclerView = (RecyclerView) view.findViewById(R.id.checked_recyclerview);
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         arrayList = new ArrayList<>();
-        adapter = new VerhicleAdapter(getActivity(), arrayList, this);
+        adapter = new CheckedAdapter(getActivity(), arrayList, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -112,8 +108,17 @@ public class VerhicleFragment extends BasicFragment implements VerhicleView {
         }
     }
 
+    private void removeVerhicle(String transaction) {
+        for (int i = (arrayList.size() - 1); i >= 0; i--) {
+            if (arrayList.get(i).getTransaction().equals(transaction)) {
+                adapter.removeItem(i);
+                return;
+            }
+        }
+    }
+
     @Override
-    public void onGetVerhicleSuccess(ArrayList<Verhicle> arrayList) {
+    public void onGetVerhicleSuccess(ArrayList<CheckIn> arrayList) {
         this.arrayList.addAll(arrayList);
         checkListData();
     }
@@ -126,32 +131,33 @@ public class VerhicleFragment extends BasicFragment implements VerhicleView {
     }
 
     @Override
-    public void onGetVerhicleByIdSuccess(Verhicle verhicle) {
-        Log.e(this.getClass().getSimpleName(), "insert position " + position);
-        adapter.insertNewItem(position, verhicle);
-        checkListData();
-        position = -1;
+    public void onItemClicked(CheckIn checkIn) {
+        startActivityForResult(CheckOutActivity.class, CHECKED_OBJECT, checkIn, REQUEST_CHECKED);
     }
 
     @Override
-    public void onItemClicked(int position, Verhicle verhicle) {
-        this.position = position;
-        startActivityForResult(AddVerhicleActivity.class, Constants.VERHICLE_MODEL, verhicle, REQUEST_ADD_VERHICLE);
+    public void onResume() {
+        super.onResume();
+        if (PARKING_ID != -1)
+            HomeActivity.getInstance().viewParkingSelected(PARKING_ID);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e(this.getClass().getSimpleName(), "request " + requestCode + " result " + resultCode);
-        if (requestCode == REQUEST_ADD_VERHICLE) {
-            if (resultCode == RESULT_ADD_VERHICLE || resultCode == RESULT_UPDATE_VERHICLE) {
+        if (requestCode == REQUEST_CHECKED) {
+            if (resultCode == RESULT_CHECK_OUT) {
                 if (data != null) {
-                    int id = data.getIntExtra(Constants.VERHICLE_ID, -1);
-                    presenter.getVerhicleById(id);
-                    Log.e(this.getClass().getSimpleName(), "result id: " + id);
-                } else
-                    Log.e(this.getClass().getSimpleName(), "result data null");
+                    String transaction = data.getStringExtra(CHECKED_ID);
+                    removeVerhicle(transaction);
+                }
+            } else if (resultCode == RESULT_FIND) {
+                if (data != null) {
+                    final int id = data.getIntExtra(Constants.ID_PARKING, -1);
+                    PARKING_ID = id;
+                    Log.e("checked", "result id is " + id);
+                }
             } else
-                position = -1;
+                PARKING_ID = -1;
         }
     }
 }

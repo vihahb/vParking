@@ -16,4 +16,8 @@ public class CheckInModel extends BasicModel {
     public void checkInVerhicle(String url, String jsonObject, String session, ResponseHandle responseHandle) {
         requestServer.postApi(url, jsonObject, session, responseHandle);
     }
+
+    public void checkOutVerhicle(String url, String jsonObject, String session, ResponseHandle responseHandle) {
+        requestServer.postApi(url, jsonObject, session, responseHandle);
+    }
 }

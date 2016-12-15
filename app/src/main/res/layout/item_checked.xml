@@ -16,50 +16,50 @@
     android:paddingTop="@dimen/size_8">
 
     <TextView
+        android:id="@+id/item_txt_checked_icon"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@mipmap/ic_dot_gray"
-        android:drawableStart="@mipmap/ic_dot_gray" />
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/size_16"
         android:layout_marginLeft="@dimen/size_16"
+        android:layout_marginRight="@dimen/size_16"
         android:layout_marginStart="@dimen/size_16"
         android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/item.txt_verhicle_name"
+            android:id="@+id/item_txt_checked_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_menu_black_24dp"
+            android:drawablePadding="@dimen/size_12"
+            android:drawableStart="@drawable/ic_menu_black_24dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
             android:maxLines="1"
             android:singleLine="true"
-            android:ellipsize="end"
             android:text="Ô tô của mình" />
 
         <TextView
-            android:id="@+id/item.txt_verhicle_made_by"
-            android:layout_width="wrap_content"
+            android:id="@+id/item_txt_checked_time"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_2"
+            android:drawableLeft="@mipmap/ic_time"
+            android:drawablePadding="@dimen/size_12"
+            android:drawableStart="@mipmap/ic_time"
+            android:gravity="center_vertical"
             android:text="Honda" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/item.txt_verhicle_car_number_plate"
+        android:id="@+id/item_txt_checked_car_number_plate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/size_16"
-        android:layout_marginStart="@dimen/size_16"
+        android:layout_marginLeft="@dimen/size_8"
+        android:layout_marginStart="@dimen/size_8"
         android:text="3025-3260" />
-
-    <TextView
-        android:id="@+id/item.txt_verhicle_default"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/size_16"
-        android:layout_marginStart="@dimen/size_16"
-        android:drawableEnd="@mipmap/ic_done_gray"
-        android:drawableRight="@mipmap/ic_done_gray"
-        android:visibility="invisible" />
 </LinearLayout>

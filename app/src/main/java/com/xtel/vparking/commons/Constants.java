@@ -81,6 +81,7 @@ public class Constants {
     public static final String PARKING_GET_CHECK_IN_BY_USER = "v1.0/user/checkin";
     public static final String PARKING_VERHICLE = "v1.0/user/verhicle";
     public static final String PARKING_CHECK_IN = "v1.0/user/checkin";
+    public static final String PARKING_CHECK_OUT = "v1.0/user/checkout";
     public static final String PARKING_VERHICLE_BY_ID = "v1.0/user/verhicle/";
     public static final String PARKING_ADD_PARKING = "v1.0/admin/parking";
     public static final String PARKING_GET_FAVORITE = "v1.0/user/favorite";
@@ -150,10 +151,15 @@ public class Constants {
         else if (begin == null)
             return "Đóng cửa: " + end;
         else if (end == null)
-            return "Mở của: " + begin;
+            return "Mở cửa: " + begin;
         else if (begin.equals(end))
             return "Cả ngày";
         return begin + " đến " + end;
+    }
+
+    public static String convertDate(String date) {
+
+        return date;
     }
 
     public static String getPlaceNumber(Context context, String number) {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -35,12 +36,10 @@ public class CheckInActivity extends BasicActivity implements CheckInView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_in);
 
+        presenter = new CheckInPresenter(this);
         initToolbar(R.id.checkin_toolbar, null);
         initRecyclerview();
         initProgressView();
-
-        presenter = new CheckInPresenter(this);
-        presenter.getAllVerhicle();
     }
 
     private void initRecyclerview() {
@@ -56,22 +55,41 @@ public class CheckInActivity extends BasicActivity implements CheckInView {
 
     private void initProgressView() {
         progressView = new ProgressView(this, null);
-        progressView.initData(R.mipmap.icon_parking, "Không có phương tiện nào", "Kiểm tra lại", "Đang tải dữ liệu", Color.parseColor("#5c5ca7"));
+        progressView.initData(R.mipmap.icon_parking, "Không có phương tiện nào", getString(R.string.touch_to_try_again), "Đang tải dữ liệu", Color.parseColor("#5c5ca7"));
         progressView.setUpWithView(recyclerView);
-        progressView.showProgressbar();
 
-        progressView.setButtonwClicked(new View.OnClickListener() {
+        progressView.onLayoutClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressView.showProgressbar();
+                progressView.hideData();
+                progressView.setRefreshing(true);
+                presenter.getAllVerhicle();
+            }
+        });
+
+        progressView.onRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                progressView.hideData();
+                progressView.setRefreshing(true);
+                presenter.getAllVerhicle();
+            }
+        });
+
+        progressView.onSwipeLayoutPost(new Runnable() {
+            @Override
+            public void run() {
+                progressView.hideData();
+                progressView.setRefreshing(true);
                 presenter.getAllVerhicle();
             }
         });
     }
 
     private void checkListData() {
+        progressView.setRefreshing(false);
         if (arrayList.size() == 0) {
-            progressView.updateData(R.mipmap.icon_parking, "Không có phương tiện nào", "Kiểm tra lại");
+            progressView.updateData(R.mipmap.icon_parking, "Không có phương tiện nào", getString(R.string.touch_to_try_again));
             progressView.showData();
         } else {
             recyclerView.getAdapter().notifyDataSetChanged();
@@ -87,13 +105,14 @@ public class CheckInActivity extends BasicActivity implements CheckInView {
 
     @Override
     public void onGetVerhicleError(Error error) {
-        progressView.updateData(R.mipmap.icon_parking, JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_coloi)), "Kiểm tra lại");
+        progressView.setRefreshing(false);
+        progressView.updateData(R.mipmap.icon_parking, JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_coloi)), getString(R.string.touch_to_try_again));
         progressView.showData();
     }
 
     @Override
     public void onItemClicked(CheckInVerhicle checkInVerhicle) {
-        startActivityForResult(ScanQrActivity.class, CHECK_IN_OBJECT, checkInVerhicle, REQUEST_CHECK_IN);
+        startActivityForResult(CheckOutActivity.class, CHECK_IN_OBJECT, checkInVerhicle, REQUEST_CHECK_IN);
     }
 
     @Override

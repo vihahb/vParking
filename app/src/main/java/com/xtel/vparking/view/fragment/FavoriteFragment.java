@@ -3,6 +3,7 @@ package com.xtel.vparking.view.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,10 +39,9 @@ public class FavoriteFragment extends BasicFragment implements FavoriteView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        presenter = new FavoritePresenter(this);
         initRecyclerview(view);
         initProgressView(view);
-        presenter = new FavoritePresenter(this);
-        presenter.getParkingFavorite();
     }
 
     private void initRecyclerview(View view) {
@@ -58,22 +58,41 @@ public class FavoriteFragment extends BasicFragment implements FavoriteView {
 
     private void initProgressView(View view) {
         progressView = new ProgressView(null, view);
-        progressView.initData(R.mipmap.icon_parking, "Không có bãi đỗ yêu thích nào", "Kiểm tra lại", "Đang tải dữ liệu", Color.parseColor("#5c5ca7"));
+        progressView.initData(R.mipmap.icon_parking, "Không có bãi đỗ yêu thích nào", getString(R.string.touch_to_try_again), "Đang tải dữ liệu", Color.parseColor("#5c5ca7"));
         progressView.setUpWithView(recyclerView);
-        progressView.showProgressbar();
 
-        progressView.setButtonwClicked(new View.OnClickListener() {
+        progressView.onLayoutClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressView.showProgressbar();
+                progressView.hideData();
+                progressView.setRefreshing(true);
+                presenter.getParkingFavorite();
+            }
+        });
+
+        progressView.onRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                progressView.hideData();
+                progressView.setRefreshing(true);
+                presenter.getParkingFavorite();
+            }
+        });
+
+        progressView.onSwipeLayoutPost(new Runnable() {
+            @Override
+            public void run() {
+                progressView.hideData();
+                progressView.setRefreshing(true);
                 presenter.getParkingFavorite();
             }
         });
     }
 
     private void checkListData() {
+        progressView.setRefreshing(false);
         if (arrayList.size() == 0) {
-            progressView.updateData(R.mipmap.icon_parking, "Không có bãi đỗ yêu thích nào", "Kiểm tra lại");
+            progressView.updateData(R.mipmap.icon_parking, "Không có bãi đỗ yêu thích nào", getString(R.string.touch_to_try_again));
             progressView.showData();
         } else {
             recyclerView.getAdapter().notifyDataSetChanged();
@@ -99,7 +118,8 @@ public class FavoriteFragment extends BasicFragment implements FavoriteView {
 
     @Override
     public void onGetParkingFavoriteError(Error error) {
-        progressView.updateData(R.mipmap.icon_parking, JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_coloi)), "Kiểm tra lại");
+        progressView.setRefreshing(false);
+        progressView.updateData(R.mipmap.icon_parking, JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_coloi)), getString(R.string.touch_to_try_again));
         progressView.showData();
     }
 }

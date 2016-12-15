@@ -155,6 +155,7 @@ public class HomeFragment extends BasicFragment implements
             @Override
             public void onError(Status status) {
                 // TODO: Handle the error.
+                Log.e(this.getClass().getSimpleName(), "error search " + status.getStatusMessage());
             }
         });
     }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/size_16"
+    android:paddingLeft="@dimen/size_16"
+    android:paddingRight="@dimen/size_16"
+    android:paddingTop="@dimen/size_8">
+
+    <TextView
+        android:id="@+id/check_out_txt_parking_name"
+        style="@style/TextView_CheckOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_menu_black_24dp"
+        android:drawableStart="@drawable/ic_menu_black_24dp"
+        android:text="@string/updating" />
+
+    <TextView
+        android:id="@+id/check_out_txt_parking_address"
+        style="@style/TextView_CheckOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/ic_my_address"
+        android:drawableStart="@mipmap/ic_my_address"
+        android:text="@string/updating" />
+
+    <TextView
+        android:id="@+id/check_out_txt_parking_time"
+        style="@style/TextView_CheckOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/ic_time"
+        android:drawableStart="@mipmap/ic_time"
+        android:text="@string/updating" />
+
+    <TextView
+        android:id="@+id/check_out_txt_parking_price"
+        style="@style/TextView_CheckOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/ic_money_gray_24"
+        android:drawableStart="@mipmap/ic_money_gray_24"
+        android:text="@string/updating" />
+</LinearLayout>

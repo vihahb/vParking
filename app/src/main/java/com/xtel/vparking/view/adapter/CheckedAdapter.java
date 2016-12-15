@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.model.entity.CheckIn;
-import com.xtel.vparking.view.activity.inf.VerhicleCheckedView;
+import com.xtel.vparking.view.activity.inf.CheckedView;
 
 import java.util.ArrayList;
 
@@ -20,17 +20,17 @@ import java.util.ArrayList;
 public class CheckedAdapter extends RecyclerView.Adapter<CheckedAdapter.ViewHolder> {
     private Activity activity;
     private ArrayList<CheckIn> arrayList;
-    private VerhicleCheckedView verhicleCheckedView;
+    private CheckedView checkedView;
 
-    public CheckedAdapter(Activity activity, ArrayList<CheckIn> arrayList, VerhicleCheckedView verhicleCheckedView) {
+    public CheckedAdapter(Activity activity, ArrayList<CheckIn> arrayList, CheckedView checkedView) {
         this.activity = activity;
         this.arrayList = arrayList;
-        this.verhicleCheckedView = verhicleCheckedView;
+        this.checkedView = checkedView;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_check_in_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_checked, parent, false));
     }
 
     @Override
@@ -45,14 +45,14 @@ public class CheckedAdapter extends RecyclerView.Adapter<CheckedAdapter.ViewHold
             holder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_bike_black_24dp, 0, 0, 0);
         }
 
-        holder.txt_name.setText(checkIn.getVehicle().getName());
+        holder.txt_name.setText(checkIn.getParking().getAddress());
         holder.txt_plate_number.setText(checkIn.getVehicle().getPlate_number());
         holder.txt_time.setText(checkIn.getCheckin_time());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verhicleCheckedView.onItemClicked(checkIn);
+                checkedView.onItemClicked(checkIn);
             }
         });
     }
@@ -68,10 +68,16 @@ public class CheckedAdapter extends RecyclerView.Adapter<CheckedAdapter.ViewHold
         ViewHolder(View itemView) {
             super(itemView);
 
-            txt_icon = (TextView) itemView.findViewById(R.id.item_txt_check_in_icon);
-            txt_time = (TextView) itemView.findViewById(R.id.item_txt_check_in_time);
-            txt_name = (TextView) itemView.findViewById(R.id.item_txt_check_in_name);
-            txt_plate_number = (TextView) itemView.findViewById(R.id.item_txt_check_in_car_number_plate);
+            txt_icon = (TextView) itemView.findViewById(R.id.item_txt_checked_icon);
+            txt_time = (TextView) itemView.findViewById(R.id.item_txt_checked_time);
+            txt_name = (TextView) itemView.findViewById(R.id.item_txt_checked_name);
+            txt_plate_number = (TextView) itemView.findViewById(R.id.item_txt_checked_car_number_plate);
         }
+    }
+
+    public void removeItem(int position) {
+        arrayList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemChanged(position, getItemCount());
     }
 }

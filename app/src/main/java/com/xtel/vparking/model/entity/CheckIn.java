@@ -2,11 +2,13 @@ package com.xtel.vparking.model.entity;
 
 import com.google.gson.annotations.Expose;
 
+import java.io.Serializable;
+
 /**
  * Created by Lê Công Long Vũ on 12/14/2016.
  */
 
-public class CheckIn {
+public class CheckIn implements Serializable {
     @Expose
     private String transaction;
     @Expose
@@ -16,9 +18,9 @@ public class CheckIn {
     @Expose
     private String ticket_code;
     @Expose
-    private Parking parking;
+    private ParkingObj parking;
     @Expose
-    private Verhicle vehicle;
+    private VerhicleObj vehicle;
 
     public String getTransaction() {
         return transaction;
@@ -52,19 +54,19 @@ public class CheckIn {
         this.ticket_code = ticket_code;
     }
 
-    public Parking getParking() {
+    public ParkingObj getParking() {
         return parking;
     }
 
-    public void setParking(Parking parking) {
+    public void setParking(ParkingObj parking) {
         this.parking = parking;
     }
 
-    public Verhicle getVehicle() {
+    public VerhicleObj getVehicle() {
         return vehicle;
     }
 
-    public void setVehicle(Verhicle vehicle) {
+    public void setVehicle(VerhicleObj vehicle) {
         this.vehicle = vehicle;
     }
 }

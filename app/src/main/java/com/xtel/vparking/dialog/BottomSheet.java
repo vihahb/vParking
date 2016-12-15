@@ -147,14 +147,18 @@ public class BottomSheet {
         String picture_count = "1/" + arrayList_bottom_sheet.size();
         txt_picture_count.setText(picture_count);
         txt_address.setText(resp_parking_info.getAddress());
-        txt_user_name.setText(resp_parking_info.getParking_owner().getFullname());
+        txt_user_name.setText(resp_parking_info.getParking_owner().getFullname() + "fd fdsfds fdsf dsfdsf");
         txt_user_age.setText(getAge(resp_parking_info.getParking_owner().getBirthday()));
-        txt_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
-        txt_parking_name.setText(resp_parking_info.getParking_name());
+        txt_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()) + "Fdf sfdsf sdf fdsfds sdfds ");
+        txt_parking_name.setText(resp_parking_info.getParking_name() + "fdsf sdf ds fsdfsdf fsdf s");
         txt_cho_trong.setText(Constants.getPlaceNumber(context, resp_parking_info.getEmpty_number()));
 
-        txt_money.setText((resp_parking_info.getPrices().get(0).getPrice() + " K"));
+        txt_money.setText((resp_parking_info.getPrices().get(0).getPrice() + "K/h"));
         txt_dat_cho.setText(resp_parking_info.getEmpty_number());
+
+        txt_user_name.setSelected(true);
+        txt_time.setSelected(true);
+        txt_parking_name.setSelected(true);
     }
 
     private void setUpViewpager() {

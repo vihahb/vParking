@@ -79,7 +79,7 @@ public class JsonParse {
 
     public static String getCodeMessage(int code, String content) {
         if (code == 2) {
-            return  MyApplication.context.getString(R.string.error_session_invalid);
+            return MyApplication.context.getString(R.string.error_session_invalid);
         } else if (code == 3) {
             return MyApplication.context.getString(R.string.error_no_permission);
         } else if (code == 4) {
@@ -90,6 +90,8 @@ public class JsonParse {
             return "Phương tiện không tồn tại";
         } else if (code == 3003) {
             return "Phương tiện đã check in bởi 1 user khác";
+        } else if (code == 3004) {
+            return "Bạn chưa check in hoạc đã check out";
         } else {
             return content;
         }

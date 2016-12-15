@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by Mr. M.2 on 12/2/2016.
  */
 
-public interface VerhicleCheckedView {
+public interface CheckedView {
 
     void onGetVerhicleSuccess(ArrayList<CheckIn> arrayList);
     void onGetVerhicleError(Error error);

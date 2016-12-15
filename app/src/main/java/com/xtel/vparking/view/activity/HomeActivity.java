@@ -29,8 +29,8 @@ import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.inf.HomeView;
 import com.xtel.vparking.view.fragment.FavoriteFragment;
 import com.xtel.vparking.view.fragment.HomeFragment;
-import com.xtel.vparking.view.fragment.ParkingManagementFragment;
-import com.xtel.vparking.view.fragment.VerhicleCheckedFragment;
+import com.xtel.vparking.view.fragment.ManagementFragment;
+import com.xtel.vparking.view.fragment.CheckedFragment;
 import com.xtel.vparking.view.fragment.VerhicleFragment;
 
 /**
@@ -181,7 +181,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     }
 
     private void replaceManagementFragment() {
-        replaceFragment(R.id.home_layout_content, new ParkingManagementFragment(), MANAGER_FRAGMENT);
+        replaceFragment(R.id.home_layout_content, new ManagementFragment(), MANAGER_FRAGMENT);
         CURRENT_FRAGMENT = MANAGER_FRAGMENT;
 
         actionBar.setTitle(getString(R.string.title_activity_management));
@@ -214,7 +214,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     }
 
     private void replaceCheckInFragment() {
-        replaceFragment(R.id.home_layout_content, new VerhicleCheckedFragment(), CHECKIN_FRAGMENT);
+        replaceFragment(R.id.home_layout_content, new CheckedFragment(), CHECKIN_FRAGMENT);
         CURRENT_FRAGMENT = CHECKIN_FRAGMENT;
 
         actionBar.setTitle(getString(R.string.title_activity_check_in));

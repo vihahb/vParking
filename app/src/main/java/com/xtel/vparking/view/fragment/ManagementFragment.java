@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,7 +25,7 @@ import com.xtel.vparking.view.widget.ProgressView;
 
 import java.util.ArrayList;
 
-public class ParkingManagementFragment extends BasicFragment implements ManagementView {
+public class ManagementFragment extends BasicFragment implements ManagementView {
     private ArrayList<ParkingInfo> arrayList;
     private RecyclerView recyclerView;
     private ParkingManagementAdapter parkingManagementAdapter;
@@ -43,10 +44,8 @@ public class ParkingManagementFragment extends BasicFragment implements Manageme
         super.onViewCreated(view, savedInstanceState);
 
         presenter = new ManagementPresenter(this);
-
         initRecyclerview(view);
         initProgressView(view);
-        presenter.getParkingByUser();
     }
 
     private void initRecyclerview(View view) {
@@ -62,17 +61,46 @@ public class ParkingManagementFragment extends BasicFragment implements Manageme
 
     private void initProgressView(View view) {
         progressView = new ProgressView(null, view);
-        progressView.initData(R.mipmap.icon_parking, "Bạn chưa có bãi đỗ nào nào", "Kiểm tra lại", "Đang tải dữ liệu", Color.parseColor("#5c5ca7"));
+        progressView.initData(R.mipmap.icon_parking, "Bạn chưa có bãi đỗ nào nào", getString(R.string.touch_to_try_again), "Đang tải dữ liệu", Color.parseColor("#5c5ca7"));
         progressView.setUpWithView(recyclerView);
-        progressView.showProgressbar();
 
-        progressView.setButtonwClicked(new View.OnClickListener() {
+        progressView.onLayoutClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressView.showProgressbar();
+                progressView.hideData();
+                progressView.setRefreshing(true);
                 presenter.getParkingByUser();
             }
         });
+
+        progressView.onRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                progressView.hideData();
+                progressView.setRefreshing(true);
+                presenter.getParkingByUser();
+            }
+        });
+
+        progressView.onSwipeLayoutPost(new Runnable() {
+            @Override
+            public void run() {
+                progressView.hideData();
+                progressView.setRefreshing(true);
+                presenter.getParkingByUser();
+            }
+        });
+    }
+
+    private void checkListData() {
+        progressView.setRefreshing(false);
+        if (arrayList.size() == 0) {
+            progressView.updateData(R.mipmap.icon_parking, "Bạn chưa có bãi đỗ nào", getString(R.string.touch_to_try_again));
+            progressView.showData();
+        } else {
+            recyclerView.getAdapter().notifyDataSetChanged();
+            progressView.hide();
+        }
     }
 
     @Override
@@ -83,7 +111,8 @@ public class ParkingManagementFragment extends BasicFragment implements Manageme
 
     @Override
     public void onGetParkingByUserError(Error error) {
-        progressView.updateData(R.mipmap.icon_parking, JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_coloi)), "Kiểm tra lại");
+        progressView.setRefreshing(false);
+        progressView.updateData(R.mipmap.icon_parking, JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_coloi)), getString(R.string.touch_to_try_again));
         progressView.showData();
     }
 
@@ -96,16 +125,6 @@ public class ParkingManagementFragment extends BasicFragment implements Manageme
     @Override
     public Activity getFragmentActivity() {
         return getActivity();
-    }
-
-    private void checkListData() {
-        if (arrayList.size() == 0) {
-            progressView.updateData(R.mipmap.icon_parking, "Bạn chưa có bãi đỗ nào", "Kiểm tra lại");
-            progressView.showData();
-        } else {
-            recyclerView.getAdapter().notifyDataSetChanged();
-            progressView.hide();
-        }
     }
 
     @Override

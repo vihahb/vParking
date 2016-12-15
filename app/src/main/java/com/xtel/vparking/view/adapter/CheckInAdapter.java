@@ -35,7 +35,7 @@ public class CheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (viewType == view_title)
             return new ViewTitle(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_verhicle_title, parent, false));
         else
-            return new ViewItem(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_verhicle_item, parent, false));
+            return new ViewItem(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_check_in, parent, false));
     }
 
     @Override
@@ -101,10 +101,10 @@ public class CheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private ViewItem(View itemView) {
             super(itemView);
 
-            txt_name = (TextView) itemView.findViewById(R.id.item_txt_verhicle_name);
-            txt_plate_number = (TextView) itemView.findViewById(R.id.item_txt_verhicle_car_number_plate);
-            txt_made_by = (TextView) itemView.findViewById(R.id.item_txt_verhicle_made_by);
-            txt_default = (TextView) itemView.findViewById(R.id.item_txt_verhicle_default);
+            txt_name = (TextView) itemView.findViewById(R.id.item_txt_check_in_name);
+            txt_plate_number = (TextView) itemView.findViewById(R.id.item_txt_check_in_car_number_plate);
+            txt_made_by = (TextView) itemView.findViewById(R.id.item_txt_check_in_made_by);
+            txt_default = (TextView) itemView.findViewById(R.id.item_txt_check_in_default);
         }
     }
 }

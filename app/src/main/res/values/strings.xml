@@ -11,6 +11,7 @@
     <string name="title_activity_home">Tìm bãi đỗ xe</string>
     <string name="title_activity_tao_bai_do">Tạo bãi đỗ</string>
     <string name="title_activity_check_in">Check in</string>
+    <string name="title_activity_check_out">Check out</string>
     <string name="title_activity_favorite">Bãi đỗ yêu thích</string>
 
     <string name="spalsh_text">Tìm bãi đỗ xe gần bạn nhất</string>
@@ -158,7 +159,7 @@
     <string name="rate">Rate</string>
     <string name="dan_duong">Dẫn đường</string>
     <string name="vi_tri_trong">Vị trí trống</string>
-    <string name="thoi_gian_gio">Thời gian giờ</string>
+    <string name="bottom_sheet_price">Giá</string>
     <string name="so_dat_cho">Số đặt chỗ</string>
 
     <string name="title_activity_user_sign_up">ĐĂNG KÝ TÀI KHOẢN</string>
@@ -190,9 +191,14 @@
     <!-- Check in -->
     <string name="gift_code">Gift Code</string>
     <string name="check_in">CHECK IN</string>
+    <string name="check_out">CHECK OUT</string>
     <string name="input_gift_code">Nhập Gift Code</string>
     <string name="checking" tools:ignore="TypographyEllipsis">Đang check...</string>
     <string name="put_qr_code_into_the_frame">Đưa QR Code vào đúng khung hình</string>
+
+    <!-- Check out -->
+    <string name="updating" tools:ignore="TypographyEllipsis">Đang cập nhật...</string>
+    <string name="touch_to_try_again">Chạm để thử lại</string>
 
     <!-- Facebook API ID -->
     <string name="facebook_app_id">1623661414599437</string>
