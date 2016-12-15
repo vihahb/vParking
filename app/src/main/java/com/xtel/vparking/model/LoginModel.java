@@ -30,6 +30,10 @@ public class LoginModel extends BasicModel {
         return SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_AVATAR);
     }
 
+    public String getUserQrCode() {
+        return SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_QR);
+    }
+
     public void getNewSession(String url, String jsonObject, ResponseHandle<RESP_Login> responseHandle){
         requestServer.postApi(url, jsonObject, null, responseHandle);
     }
