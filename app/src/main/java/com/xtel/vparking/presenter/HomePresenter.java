@@ -9,6 +9,7 @@ import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.HomeModel;
+import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonParse;
@@ -41,10 +42,10 @@ public class HomePresenter {
     }
 
     public void updateUserData() {
-        String avatar = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_AVATAR);
-        String full_name = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_FULL_NAME);
+//        String avatar = LoginModel.getInstance().get
+//        String full_name = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_FULL_NAME);
 
-        homeView.onUserDataUpdate(avatar, full_name);
+//        homeView.onUserDataUpdate(avatar, full_name);
     }
 
     public void activeParkingMaster() {
