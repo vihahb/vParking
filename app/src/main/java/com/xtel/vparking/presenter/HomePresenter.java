@@ -42,10 +42,10 @@ public class HomePresenter {
     }
 
     public void updateUserData() {
-//        String avatar = LoginModel.getInstance().get
-//        String full_name = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_FULL_NAME);
+        String avatar = LoginModel.getInstance().getAvatar();
+        String full_name = LoginModel.getInstance().getName();
 
-//        homeView.onUserDataUpdate(avatar, full_name);
+        homeView.onUserDataUpdate(avatar, full_name);
     }
 
     public void activeParkingMaster() {

@@ -89,7 +89,6 @@ public class FavoriteFragment extends BasicFragment implements FavoriteView {
         });
     }
 
-//    con chó vi
     private void checkListData() {
         progressView.setRefreshing(false);
         if (arrayList.size() == 0) {

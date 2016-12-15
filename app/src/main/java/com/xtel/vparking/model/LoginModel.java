@@ -22,6 +22,14 @@ public class LoginModel extends BasicModel {
         return SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
     }
 
+    public String getName() {
+        return SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_FULL_NAME);
+    }
+
+    public String getAvatar() {
+        return SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_AVATAR);
+    }
+
     public void getNewSession(String url, String jsonObject, ResponseHandle<RESP_Login> responseHandle){
         requestServer.postApi(url, jsonObject, null, responseHandle);
     }
