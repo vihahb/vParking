@@ -27,10 +27,10 @@ import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.presenter.HomePresenter;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.inf.HomeView;
+import com.xtel.vparking.view.fragment.CheckedFragment;
 import com.xtel.vparking.view.fragment.FavoriteFragment;
 import com.xtel.vparking.view.fragment.HomeFragment;
 import com.xtel.vparking.view.fragment.ManagementFragment;
-import com.xtel.vparking.view.fragment.CheckedFragment;
 import com.xtel.vparking.view.fragment.VerhicleFragment;
 
 /**
@@ -156,7 +156,18 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         } else
             img_avatar.setImageResource(R.mipmap.ic_user);
 
-        txt_name.setText(name);
+        if (name == null) {
+            txt_name.setText(getString(R.string.update_user_profile));
+            txt_name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_border_color_white_24dp, 0, 0, 0);
+        } else {
+            if (name.isEmpty()) {
+                txt_name.setText(getString(R.string.update_user_profile));
+                txt_name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_border_color_white_24dp, 0, 0, 0);
+            } else {
+                txt_name.setText(name);
+                txt_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            }
+        }
     }
 
     @Override

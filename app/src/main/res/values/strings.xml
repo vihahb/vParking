@@ -26,6 +26,9 @@
     <string name="doing" tools:ignore="TypographyEllipsis">Đang thực hiện...</string>
     <string name="adding" tools:ignore="TypographyEllipsis">Đang tạo bãi đỗ...</string>
 
+    <!-- Home -->
+    <string name="update_user_profile">Cập nhật thông tin</string>
+
     <!-- Parking -->
     <string name="parking_checkin">Check in</string>
     <string name="parking_home">Trang chủ</string>
@@ -58,6 +61,7 @@
     <string name="verhicle_default">Phương tiện mặc định</string>
     <string name="verhicle_add">Thêm phương tiện</string>
     <string name="verhicle_add_success">Thêm phương tiện thành công</string>
+
     <!-- Profile -->
     <string name="email">E-mail</string>
     <string name="gender">Giới tính</string>
