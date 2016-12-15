@@ -133,20 +133,14 @@
             android:layout_height="@dimen/size_40"
             android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/edt_price"
+            <Spinner
+                android:id="@+id/spinner_price"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/size_40"
                 android:layout_weight="1"
                 android:background="@drawable/custom_edittext_findadvance"
-                android:gravity="center_vertical"
-                android:hint="0"
-                android:inputType="number"
-                android:maxLength="2"
                 android:paddingLeft="@dimen/size_12"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white" />
+                android:paddingRight="@dimen/size_10" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -251,7 +245,6 @@
         android:foreground="?android:attr/selectableItemBackground"
         android:onClick="TimKiem"
         android:padding="@dimen/size_10"
-        android:text="@string/find"
-        android:textColor="@android:color/white"
-        android:visibility="gone" />
+        android:text="@string/filter"
+        android:textColor="@android:color/white" />
 </LinearLayout>

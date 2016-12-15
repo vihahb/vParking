@@ -54,6 +54,8 @@
             android:background="@drawable/btn_login"/>
 
         <LinearLayout
+            android:layout_marginTop="@dimen/size_12"
+            android:layout_marginBottom="@dimen/size_10"
             android:id="@+id/ln_line_or"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,13 +66,14 @@
                 android:layout_weight="1"
                 android:textStyle="bold"
                 android:layout_gravity="center"
-                android:background="#ffffff" />
+                android:background="#eeeeee" />
             <TextView
-                android:textSize="18sp"
-                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textColor="#eeeeee"
                 android:gravity="center"
                 android:id="@+id/tv_or"
                 android:layout_margin="@dimen/size_4"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/or_text"/>
@@ -80,11 +83,11 @@
                 android:layout_height="1sp"
                 android:layout_weight="1"
                 android:textStyle="bold"
-                android:background="#ffffff" />
+                android:background="#eeeeee" />
         </LinearLayout>
 
         <Button
-            android:elevation="0dp"
+            android:elevation="@dimen/size_6"
             android:id="@+id/btn_fb_signin"
             android:paddingRight="40dp"
             android:drawableLeft="@mipmap/ic_fb_singin"

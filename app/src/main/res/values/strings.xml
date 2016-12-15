@@ -15,7 +15,7 @@
     <string name="title_activity_favorite">Bãi đỗ yêu thích</string>
 
     <string name="spalsh_text">Tìm bãi đỗ xe gần bạn nhất</string>
-    <string name="or_text">OR</string>
+    <string name="or_text">hoặc</string>
     <string name="signin_mobile">ĐĂNG NHẬP BẰNG SỐ ĐIỆN THOẠI</string>
     <string name="signup">ĐĂNG KÝ</string>
     <string name="singin_facebook">ĐĂNG NHẬP BẰNG FACEBOOK</string>
@@ -106,6 +106,7 @@
     <string name="price_type">Kiểu giá</string>
     <string name="subcribe_noti">Nhận thông báo</string>
     <string name="find">Tìm kiếm</string>
+    <string name="filter">Lọc</string>
     <string name="loi_chonanh">Vui lòng chọn ảnh đại diện</string>
     <string name="loi_vitri">Vui lòng chọn vị trí</string>
     <string name="loi_nhapten">Vui lòng nhập tên bãi đỗ xe</string>
@@ -153,7 +154,7 @@
 
     <!-- Find Advanced -->
     <string name="find_price">Mức giá</string>
-    <string name="button_clear_filter">Clear</string>
+    <string name="button_clear_filter">Xoá</string>
 
     <!-- Chi tiết -->
     <string name="rate">Rate</string>
