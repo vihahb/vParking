@@ -1,12 +1,14 @@
 package com.xtel.vparking.presenter;
 
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.VerhicleModel;
 import com.xtel.vparking.model.entity.Error;
@@ -26,26 +28,42 @@ import java.util.Comparator;
 
 public class VerhiclePresenter {
     private VerhicleView view;
+    private boolean isViewing = true;
 
     public VerhiclePresenter(VerhicleView view) {
         this.view = view;
     }
 
-    public void getAllVerhicle() {
+    public void checkInternet() {
+        if (!NetWorkInfo.isOnline(view.getActivity())) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    view.onNetworkDisable();
+                }
+            }, 500);
+        } else {
+            getAllVerhicle();
+        }
+    }
+
+    private void getAllVerhicle() {
         String url = Constants.SERVER_PARKING + Constants.PARKING_VERHICLE;
         String session = LoginModel.getInstance().getSession();
         VerhicleModel.getInstance().getAllVerhicle(url, session, new ResponseHandle<RESP_Verhicle_List>(RESP_Verhicle_List.class) {
             @Override
             public void onSuccess(RESP_Verhicle_List obj) {
-                sortVerhicle(obj.getData());
+                if (isViewing)
+                    sortVerhicle(obj.getData());
             }
 
             @Override
             public void onError(Error error) {
-                if (error.getCode() == 2)
-                    getNewSessionVerhicle();
-                else
-                    view.onGetVerhicleError(error);
+                if (isViewing)
+                    if (error.getCode() == 2)
+                        getNewSessionVerhicle();
+                    else
+                        view.onGetVerhicleError(error);
             }
         });
     }
@@ -55,14 +73,14 @@ public class VerhiclePresenter {
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
-                Log.e("verhicle", "get new session success");
-                getAllVerhicle();
+                if (isViewing)
+                    getAllVerhicle();
             }
 
             @Override
             public void onError() {
-                Log.e("verhicle", "get new session error");
-                view.onGetVerhicleError(new Error(2, "ERROR", "Bạn đã hết phiên làm việc"));
+                if (isViewing)
+                    view.onGetVerhicleError(new Error(2, "ERROR", "Bạn đã hết phiên làm việc"));
             }
         });
     }
@@ -107,8 +125,8 @@ public class VerhiclePresenter {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-
-                view.onGetVerhicleSuccess(arrayList);
+                if (isViewing)
+                    view.onGetVerhicleSuccess(arrayList);
             }
         }.execute();
 
@@ -125,18 +143,18 @@ public class VerhiclePresenter {
         VerhicleModel.getInstance().getVerhicleById(url, session, new ResponseHandle<RESP_Verhicle>(RESP_Verhicle.class) {
             @Override
             public void onSuccess(RESP_Verhicle obj) {
-                Log.e("verhicle", "object success " + JsonHelper.toJson(obj));
+                if (isViewing) {
+                    Verhicle verhicle = new Verhicle();
+                    verhicle.setId(obj.getId());
+                    verhicle.setPlate_number(obj.getPlate_number());
+                    verhicle.setType(obj.getType());
+                    verhicle.setName(obj.getName());
+                    verhicle.setDesc(obj.getDesc());
+                    verhicle.setFlag_default(obj.getFlag_default());
+                    verhicle.setBrandname(obj.getBrandname());
 
-                Verhicle verhicle = new Verhicle();
-                verhicle.setId(obj.getId());
-                verhicle.setPlate_number(obj.getPlate_number());
-                verhicle.setType(obj.getType());
-                verhicle.setName(obj.getName());
-                verhicle.setDesc(obj.getDesc());
-                verhicle.setFlag_default(obj.getFlag_default());
-                verhicle.setBrandname(obj.getBrandname());
-
-                view.onGetVerhicleByIdSuccess(verhicle);
+                    view.onGetVerhicleByIdSuccess(verhicle);
+                }
             }
 
             @Override
@@ -148,18 +166,20 @@ public class VerhiclePresenter {
     }
 
     private void getNewSessionVerhicleById(final int id) {
-        Log.e("verhicle", "get new session " + id);
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
-                getVerhicleById(id);
-                Log.e("verhicle", "get new session success " + id);
+                if (isViewing)
+                    getVerhicleById(id);
             }
 
             @Override
             public void onError() {
-                Log.e("verhicle", "get new session error " + id);
             }
         });
+    }
+
+    public void destroyView() {
+        isViewing = false;
     }
 }

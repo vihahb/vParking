@@ -21,7 +21,6 @@ import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.AddVerhicleActivity;
 import com.xtel.vparking.view.activity.inf.VerhicleView;
 import com.xtel.vparking.view.adapter.VerhicleAdapter;
-import com.xtel.vparking.view.fragment.BasicFragment;
 import com.xtel.vparking.view.widget.ProgressView;
 
 import java.util.ArrayList;
@@ -76,29 +75,29 @@ public class VerhicleFragment extends BasicFragment implements VerhicleView {
         progressView.onLayoutClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getAllVerhicle();
+                checkInternet();
             }
         });
 
         progressView.onRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getAllVerhicle();
+                checkInternet();
             }
         });
 
         progressView.onSwipeLayoutPost(new Runnable() {
             @Override
             public void run() {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getAllVerhicle();
+                checkInternet();
             }
         });
+    }
+
+    private void checkInternet() {
+        progressView.hideData();
+        progressView.setRefreshing(true);
+        presenter.checkInternet();
     }
 
     private void checkListData() {
@@ -110,6 +109,13 @@ public class VerhicleFragment extends BasicFragment implements VerhicleView {
             recyclerView.getAdapter().notifyDataSetChanged();
             progressView.hide();
         }
+    }
+
+    @Override
+    public void onNetworkDisable() {
+        progressView.setRefreshing(false);
+        progressView.updateData(R.mipmap.icon_parking, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
+        progressView.showData();
     }
 
     @Override
@@ -137,6 +143,12 @@ public class VerhicleFragment extends BasicFragment implements VerhicleView {
     public void onItemClicked(int position, Verhicle verhicle) {
         this.position = position;
         startActivityForResult(AddVerhicleActivity.class, Constants.VERHICLE_MODEL, verhicle, REQUEST_ADD_VERHICLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        presenter.destroyView();
+        super.onDestroy();
     }
 
     @Override

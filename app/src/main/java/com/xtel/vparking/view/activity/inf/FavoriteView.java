@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public interface FavoriteView {
 
+    void onNetworkDisable();
     void showShortToast(String message);
     void showLongToast(String message);
     void onGetParkingFavoriteSuccess(ArrayList<Favotire> arrayList);

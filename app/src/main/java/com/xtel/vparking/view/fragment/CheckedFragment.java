@@ -72,29 +72,29 @@ public class CheckedFragment extends BasicFragment implements CheckedView {
         progressView.onLayoutClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getAllVerhicle();
+                checkInternet();
             }
         });
 
         progressView.onRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getAllVerhicle();
+                checkInternet();
             }
         });
 
         progressView.onSwipeLayoutPost(new Runnable() {
             @Override
             public void run() {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getAllVerhicle();
+                checkInternet();
             }
         });
+    }
+
+    private void checkInternet() {
+        progressView.hideData();
+        progressView.setRefreshing(true);
+        presenter.checkInternet();
     }
 
     private void checkListData() {
@@ -115,6 +115,13 @@ public class CheckedFragment extends BasicFragment implements CheckedView {
                 return;
             }
         }
+    }
+
+    @Override
+    public void onNetworkDisable() {
+        progressView.setRefreshing(false);
+        progressView.updateData(R.mipmap.icon_parking, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
+        progressView.showData();
     }
 
     @Override
@@ -140,6 +147,12 @@ public class CheckedFragment extends BasicFragment implements CheckedView {
         super.onResume();
         if (PARKING_ID != -1)
             HomeActivity.getInstance().viewParkingSelected(PARKING_ID);
+    }
+
+    @Override
+    public void onDestroy() {
+        presenter.destroyView();
+        super.onDestroy();
     }
 
     @Override

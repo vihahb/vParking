@@ -18,7 +18,6 @@ import com.xtel.vparking.presenter.FavoritePresenter;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.inf.FavoriteView;
 import com.xtel.vparking.view.adapter.FavoriteAdapter;
-import com.xtel.vparking.view.fragment.BasicFragment;
 import com.xtel.vparking.view.widget.ProgressView;
 
 import java.util.ArrayList;
@@ -64,29 +63,29 @@ public class FavoriteFragment extends BasicFragment implements FavoriteView {
         progressView.onLayoutClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getParkingFavorite();
+                checkInternet();
             }
         });
 
         progressView.onRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getParkingFavorite();
+                checkInternet();
             }
         });
 
         progressView.onSwipeLayoutPost(new Runnable() {
             @Override
             public void run() {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getParkingFavorite();
+                checkInternet();
             }
         });
+    }
+
+    private void checkInternet() {
+        progressView.hideData();
+        progressView.setRefreshing(true);
+        presenter.checkInternet();
     }
 
     private void checkListData() {
@@ -98,6 +97,13 @@ public class FavoriteFragment extends BasicFragment implements FavoriteView {
             recyclerView.getAdapter().notifyDataSetChanged();
             progressView.hide();
         }
+    }
+
+    @Override
+    public void onNetworkDisable() {
+        progressView.setRefreshing(false);
+        progressView.updateData(R.mipmap.icon_parking, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
+        progressView.showData();
     }
 
     @Override
@@ -121,5 +127,11 @@ public class FavoriteFragment extends BasicFragment implements FavoriteView {
         progressView.setRefreshing(false);
         progressView.updateData(R.mipmap.icon_parking, JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_coloi)), getString(R.string.touch_to_try_again));
         progressView.showData();
+    }
+
+    @Override
+    public void onDestroy() {
+        presenter.destroyView();
+        super.onDestroy();
     }
 }

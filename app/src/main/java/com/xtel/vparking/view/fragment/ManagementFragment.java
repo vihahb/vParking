@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.ParkingInfo;
 import com.xtel.vparking.presenter.ManagementPresenter;
@@ -67,29 +69,29 @@ public class ManagementFragment extends BasicFragment implements ManagementView 
         progressView.onLayoutClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getParkingByUser();
+                checkInternet();
             }
         });
 
         progressView.onRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getParkingByUser();
+                checkInternet();
             }
         });
 
         progressView.onSwipeLayoutPost(new Runnable() {
             @Override
             public void run() {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getParkingByUser();
+                checkInternet();
             }
         });
+    }
+
+    private void checkInternet() {
+        progressView.hideData();
+        progressView.setRefreshing(true);
+        presenter.checkInternet();
     }
 
     private void checkListData() {
@@ -101,6 +103,13 @@ public class ManagementFragment extends BasicFragment implements ManagementView 
             recyclerView.getAdapter().notifyDataSetChanged();
             progressView.hide();
         }
+    }
+
+    @Override
+    public void onNetworkDisable() {
+        progressView.setRefreshing(false);
+        progressView.updateData(R.mipmap.icon_parking, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
+        progressView.showData();
     }
 
     @Override
@@ -123,11 +132,6 @@ public class ManagementFragment extends BasicFragment implements ManagementView 
     }
 
     @Override
-    public Activity getFragmentActivity() {
-        return getActivity();
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         Log.e("ql_result", "null k: " + requestCode + "        " + resultCode);
@@ -140,5 +144,11 @@ public class ManagementFragment extends BasicFragment implements ManagementView 
                 presenter.getParkingInfo(id);
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        presenter.destroyView();
+        super.onDestroy();
     }
 }

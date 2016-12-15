@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public interface CheckedView {
 
+    void onNetworkDisable();
     void onGetVerhicleSuccess(ArrayList<CheckIn> arrayList);
     void onGetVerhicleError(Error error);
     void onItemClicked(CheckIn checkIn);

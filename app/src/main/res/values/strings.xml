@@ -204,6 +204,7 @@
     <!-- Check out -->
     <string name="updating" tools:ignore="TypographyEllipsis">Đang cập nhật...</string>
     <string name="touch_to_try_again">Chạm để thử lại</string>
+    <string name="no_internet">Không có kết nối internet</string>
 
     <!-- Facebook API ID -->
     <string name="facebook_app_id">1623661414599437</string>

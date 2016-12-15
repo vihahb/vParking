@@ -22,7 +22,6 @@ import com.xtel.vparking.model.entity.RESP_Parking;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.model.entity.RESP_Router;
 import com.xtel.vparking.model.entity.Steps;
-import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.view.activity.HomeActivity;
 import com.xtel.vparking.view.activity.inf.HomeFragmentView;
 import com.xtel.vparking.view.fragment.HomeFragment;
@@ -36,6 +35,7 @@ import java.util.List;
 
 public class HomeFragmentPresenter {
     private HomeFragmentView view;
+    private boolean isViewing = true;
 
     public HomeFragmentPresenter(HomeFragmentView view) {
         this.view = view;
@@ -43,8 +43,10 @@ public class HomeFragmentPresenter {
 
     public void checkResultSearch() {
         if (HomeActivity.PARKING_ID != -1) {
-            view.onSearchParking(HomeActivity.PARKING_ID);
-            getParkingInfo(HomeActivity.PARKING_ID);
+            if (isViewing) {
+                view.onSearchParking(HomeActivity.PARKING_ID);
+                getParkingInfo(HomeActivity.PARKING_ID);
+            }
         }
 
         HomeActivity.PARKING_ID = -1;
@@ -52,23 +54,24 @@ public class HomeFragmentPresenter {
 
     public void checkFindOption(Find find_option) {
         if (find_option.getType() == -1 && find_option.getPrice_type() == -1 && find_option.getPrice() == -1 &&
-                find_option.getBegin_time().isEmpty() && find_option.getEnd_time().isEmpty())
-            view.onCheckFindOptionSuccess(R.mipmap.ic_filter);
-        else
+                find_option.getBegin_time().isEmpty() && find_option.getEnd_time().isEmpty()) {
+            if (isViewing)
+                view.onCheckFindOptionSuccess(R.mipmap.ic_filter);
+        } else if (isViewing)
             view.onCheckFindOptionSuccess(R.mipmap.ic_edit_filter);
     }
 
-    public LatLng getMyLocation() {
+    public void getMyLocation() {
         if (HomeFragment.mGoogleApiClient.isConnected()) {
             if (checkPermission()) {
                 Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(HomeFragment.mGoogleApiClient);
                 if (mLastLocation != null) {
-                    view.onGetMyLocationSuccess(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+                    if (isViewing)
+                        view.onGetMyLocationSuccess(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
                 }
             }
         } else
             HomeFragment.mGoogleApiClient.connect();
-        return null;
     }
 
     public void getParkingInfo(final int id) {
@@ -78,15 +81,15 @@ public class HomeFragmentPresenter {
         ParkingModel.getInstanse().getParkingInfo(url, session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
             public void onSuccess(RESP_Parking_Info obj) {
-                Log.e(this.getClass().getSimpleName(), "parking info " + JsonHelper.toJson(obj));
-                view.onGetParkingInfoSuccess(obj);
+                if (isViewing)
+                    view.onGetParkingInfoSuccess(obj);
             }
 
             @Override
             public void onError(Error error) {
                 if (error.getCode() == 2)
                     getNewSessionParkingInfo(id);
-                else
+                else if (isViewing)
                     view.onGetParkingInfoError(error);
             }
         });
@@ -98,12 +101,12 @@ public class HomeFragmentPresenter {
             @Override
             public void onSuccess() {
                 getParkingInfo(id);
-                Log.e("home", "new: " + LoginModel.getInstance().getSession());
             }
 
             @Override
             public void onError() {
-                view.onGetParkingInfoError(new Error(2, "ERROR", view.getActivity().getString(R.string.error_session_invalid)));
+                if (isViewing)
+                    view.onGetParkingInfoError(new Error(2, "ERROR", view.getActivity().getString(R.string.error_session_invalid)));
             }
         });
     }
@@ -126,12 +129,14 @@ public class HomeFragmentPresenter {
         ParkingModel.getInstanse().getParkingAround(url, new ResponseHandle<RESP_Parking>(RESP_Parking.class) {
             @Override
             public void onSuccess(RESP_Parking obj) {
-                view.onGetParkingAroundSuccess(obj.getData());
+                if (isViewing)
+                    view.onGetParkingAroundSuccess(obj.getData());
             }
 
             @Override
             public void onError(Error error) {
-                view.onGetParkingAroundError(error);
+                if (isViewing)
+                    view.onGetParkingAroundError(error);
             }
         });
     }
@@ -154,16 +159,18 @@ public class HomeFragmentPresenter {
                     LatLng latLng = new LatLng(from_lat, from_lng);
                     PolylineOptions polylineOptions = getPolylineOption(obj.getRoutes().get(0).getLegs().get(0).getSteps());
 
-                    if (polylineOptions != null)
-                        view.onGetPolylineSuccess(latLng, polylineOptions);
-                    else
-                        view.onGetPolylineError("Không thể đẫn đường");
+                    if (isViewing)
+                        if (polylineOptions != null)
+                            view.onGetPolylineSuccess(latLng, polylineOptions);
+                        else
+                            view.onGetPolylineError("Không thể đẫn đường");
                 }
             }
 
             @Override
             public void onError(Error error) {
-                view.onGetPolylineError("Không thể đẫn đường");
+                if (isViewing)
+                    view.onGetPolylineError("Không thể đẫn đường");
             }
         });
     }
@@ -186,5 +193,9 @@ public class HomeFragmentPresenter {
         }
 
         return null;
+    }
+
+    public void destroyView() {
+        isViewing = false;
     }
 }

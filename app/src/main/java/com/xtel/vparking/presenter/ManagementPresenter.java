@@ -1,9 +1,12 @@
 package com.xtel.vparking.presenter;
 
+import android.os.Handler;
+
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.Error;
@@ -18,40 +21,57 @@ import com.xtel.vparking.view.activity.inf.ManagementView;
 
 public class ManagementPresenter {
     private ManagementView view;
+    private boolean isViewing = true;
 
     public ManagementPresenter(ManagementView view) {
         this.view = view;
     }
 
-    public void getParkingByUser() {
+    public void checkInternet() {
+        if (!NetWorkInfo.isOnline(view.getActivity())) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    view.onNetworkDisable();
+                }
+            }, 500);
+        } else {
+            getParkingByUser();
+        }
+    }
+
+    private void getParkingByUser() {
         String session = LoginModel.getInstance().getSession();
         String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
         ParkingModel.getInstanse().getParkingByUser(url, session, new ResponseHandle<RESP_Parking_Info_List>(RESP_Parking_Info_List.class) {
             @Override
             public void onSuccess(RESP_Parking_Info_List obj) {
-                view.onGetParkingByUserSuccess(obj.getData());
+                if (isViewing)
+                    view.onGetParkingByUserSuccess(obj.getData());
             }
 
             @Override
             public void onError(Error error) {
                 if (error.getCode() == 2)
                     getNewSessionAddParking();
-                else
+                else if (isViewing)
                     view.onGetParkingByUserError(error);
             }
         });
     }
 
     private void getNewSessionAddParking() {
-        GetNewSession.getNewSession(view.getFragmentActivity(), new RequestNoResultListener() {
+        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
-                getParkingByUser();
+                if (isViewing)
+                    getParkingByUser();
             }
 
             @Override
             public void onError() {
-                view.onGetParkingByUserError(new Error(2, "", "Đã xảy ra lỗi"));
+                if (isViewing)
+                    view.onGetParkingByUserError(new Error(2, "", "Đã xảy ra lỗi"));
             }
         });
     }
@@ -63,48 +83,56 @@ public class ManagementPresenter {
         ParkingModel.getInstanse().getParkingInfo(url, session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
             public void onSuccess(RESP_Parking_Info obj) {
-                ParkingInfo parkingInfo = new ParkingInfo();
-                parkingInfo.setId(obj.getId());
-                parkingInfo.setUid(obj.getUid());
-                parkingInfo.setLat(obj.getLat());
-                parkingInfo.setLng(obj.getLng());
-                parkingInfo.setType(obj.getType());
-                parkingInfo.setStatus(obj.getStatus());
-                parkingInfo.setCode(obj.getCode());
-                parkingInfo.setBegin_time(obj.getBegin_time());
-                parkingInfo.setEnd_time(obj.getEnd_time());
-                parkingInfo.setAddress(obj.getAddress());
-                parkingInfo.setParking_name(obj.getParking_name());
-                parkingInfo.setParking_desc(obj.getParking_desc());
-                parkingInfo.setTotal_place(obj.getTotal_place());
-                parkingInfo.setEmpty_number(obj.getEmpty_number());
-                parkingInfo.setQr_code(obj.getQr_code());
-                parkingInfo.setBar_code(obj.getBar_code());
-                parkingInfo.setPrices(obj.getPrices());
-                parkingInfo.setPictures(obj.getPictures());
-                parkingInfo.setFavorite(obj.getFavorite());
+                if (isViewing) {
+                    ParkingInfo parkingInfo = new ParkingInfo();
+                    parkingInfo.setId(obj.getId());
+                    parkingInfo.setUid(obj.getUid());
+                    parkingInfo.setLat(obj.getLat());
+                    parkingInfo.setLng(obj.getLng());
+                    parkingInfo.setType(obj.getType());
+                    parkingInfo.setStatus(obj.getStatus());
+                    parkingInfo.setCode(obj.getCode());
+                    parkingInfo.setBegin_time(obj.getBegin_time());
+                    parkingInfo.setEnd_time(obj.getEnd_time());
+                    parkingInfo.setAddress(obj.getAddress());
+                    parkingInfo.setParking_name(obj.getParking_name());
+                    parkingInfo.setParking_desc(obj.getParking_desc());
+                    parkingInfo.setTotal_place(obj.getTotal_place());
+                    parkingInfo.setEmpty_number(obj.getEmpty_number());
+                    parkingInfo.setQr_code(obj.getQr_code());
+                    parkingInfo.setBar_code(obj.getBar_code());
+                    parkingInfo.setPrices(obj.getPrices());
+                    parkingInfo.setPictures(obj.getPictures());
+                    parkingInfo.setFavorite(obj.getFavorite());
 
-                view.onGetParkingInfoSuccess(parkingInfo);
+                    view.onGetParkingInfoSuccess(parkingInfo);
+                }
             }
 
             @Override
             public void onError(Error error) {
                 if (error.getCode() == 2)
-                    getNewSessionParkingInfo(id);
+                    if (isViewing)
+                        getNewSessionParkingInfo(id);
             }
         });
     }
 
     private void getNewSessionParkingInfo(final int id) {
-        GetNewSession.getNewSession(view.getFragmentActivity(), new RequestNoResultListener() {
+        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
-                getParkingInfo(id);
+                if (isViewing)
+                    getParkingInfo(id);
             }
 
             @Override
-            public void onError() {}
+            public void onError() {
+            }
         });
     }
 
+    public void destroyView() {
+        isViewing = false;
+    }
 }

@@ -1,12 +1,14 @@
 package com.xtel.vparking.presenter;
 
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.VerhicleModel;
 import com.xtel.vparking.model.entity.Error;
@@ -29,7 +31,20 @@ public class CheckInPresenter {
         this.view = view;
     }
 
-    public void getAllVerhicle() {
+    public void checkInternet() {
+        if (!NetWorkInfo.isOnline(view.getActivity())) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    view.onNetworkDisable();
+                }
+            }, 500);
+        } else {
+            getAllVerhicle();
+        }
+    }
+
+    private void getAllVerhicle() {
         String url = Constants.SERVER_PARKING + Constants.PARKING_VERHICLE;
         String session = LoginModel.getInstance().getSession();
         VerhicleModel.getInstance().getAllVerhicle(url, session, new ResponseHandle<RESP_Verhicle_List>(RESP_Verhicle_List.class) {

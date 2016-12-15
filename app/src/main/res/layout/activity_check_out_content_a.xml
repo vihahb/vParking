@@ -7,14 +7,21 @@
     android:orientation="vertical"
     android:padding="@dimen/size_16">
 
-    <TextView
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:text="VPARKING\nTICKET"-->
+        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--android:textStyle="bold" />-->
+
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="VPARKING\nTICKET"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/white"
-        android:textStyle="bold" />
+        android:src="@mipmap/ic_parking_ticket"
+        android:contentDescription="@null"
+        android:scaleType="fitCenter"
+        android:layout_height="@dimen/size_80" />
 
     <View
         android:layout_width="match_parent"

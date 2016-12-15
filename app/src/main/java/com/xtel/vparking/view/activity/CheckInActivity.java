@@ -61,29 +61,29 @@ public class CheckInActivity extends BasicActivity implements CheckInView {
         progressView.onLayoutClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getAllVerhicle();
+                checkInternet();
             }
         });
 
         progressView.onRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getAllVerhicle();
+                checkInternet();
             }
         });
 
         progressView.onSwipeLayoutPost(new Runnable() {
             @Override
             public void run() {
-                progressView.hideData();
-                progressView.setRefreshing(true);
-                presenter.getAllVerhicle();
+                checkInternet();
             }
         });
+    }
+
+    private void checkInternet() {
+        progressView.hideData();
+        progressView.setRefreshing(true);
+        presenter.checkInternet();
     }
 
     private void checkListData() {
@@ -95,6 +95,13 @@ public class CheckInActivity extends BasicActivity implements CheckInView {
             recyclerView.getAdapter().notifyDataSetChanged();
             progressView.hide();
         }
+    }
+
+    @Override
+    public void onNetworkDisable() {
+        progressView.setRefreshing(false);
+        progressView.updateData(R.mipmap.icon_parking, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
+        progressView.showData();
     }
 
     @Override
@@ -112,7 +119,7 @@ public class CheckInActivity extends BasicActivity implements CheckInView {
 
     @Override
     public void onItemClicked(CheckInVerhicle checkInVerhicle) {
-        startActivityForResult(CheckOutActivity.class, CHECK_IN_OBJECT, checkInVerhicle, REQUEST_CHECK_IN);
+        startActivityForResult(ScanQrActivity.class, CHECK_IN_OBJECT, checkInVerhicle, REQUEST_CHECK_IN);
     }
 
     @Override

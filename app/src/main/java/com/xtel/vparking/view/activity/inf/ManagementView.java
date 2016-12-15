@@ -14,8 +14,9 @@ import java.util.ArrayList;
 
 public interface ManagementView {
 
-    public void onGetParkingByUserSuccess(ArrayList<ParkingInfo> arrayList);
-    public void onGetParkingByUserError(Error error);
-    public void onGetParkingInfoSuccess(ParkingInfo parkingInfo);
-    public Activity getFragmentActivity();
+    void onNetworkDisable();
+    void onGetParkingByUserSuccess(ArrayList<ParkingInfo> arrayList);
+    void onGetParkingByUserError(Error error);
+    void onGetParkingInfoSuccess(ParkingInfo parkingInfo);
+    Activity getActivity();
 }

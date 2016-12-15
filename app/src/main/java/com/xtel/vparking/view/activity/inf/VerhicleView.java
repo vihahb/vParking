@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public interface VerhicleView {
 
+    void onNetworkDisable();
     void onGetVerhicleSuccess(ArrayList<Verhicle> arrayList);
     void onGetVerhicleError(Error error);
     void onGetVerhicleByIdSuccess(Verhicle verhicle);

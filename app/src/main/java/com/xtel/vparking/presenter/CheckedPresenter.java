@@ -1,16 +1,18 @@
 package com.xtel.vparking.presenter;
 
+import android.os.Handler;
 import android.util.Log;
 
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.VerhicleModel;
 import com.xtel.vparking.model.entity.Error;
-import com.xtel.vparking.view.activity.inf.RESP_Check_In;
 import com.xtel.vparking.view.activity.inf.CheckedView;
+import com.xtel.vparking.view.activity.inf.RESP_Check_In;
 
 /**
  * Created by Lê Công Long Vũ on 12/2/2016.
@@ -18,44 +20,62 @@ import com.xtel.vparking.view.activity.inf.CheckedView;
 
 public class CheckedPresenter {
     private CheckedView view;
+    private boolean isViewing = true;
 
     public CheckedPresenter(CheckedView view) {
         this.view = view;
     }
 
-    public void getAllVerhicle() {
+    public void checkInternet() {
+        if (!NetWorkInfo.isOnline(view.getActivity())) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    view.onNetworkDisable();
+                }
+            }, 500);
+        } else {
+            getAllVerhicle();
+        }
+    }
+
+    private void getAllVerhicle() {
         String url = Constants.SERVER_PARKING + Constants.PARKING_GET_CHECK_IN_BY_USER;
         String session = LoginModel.getInstance().getSession();
         VerhicleModel.getInstance().getAllVerhicle(url, session, new ResponseHandle<RESP_Check_In>(RESP_Check_In.class) {
             @Override
             public void onSuccess(RESP_Check_In obj) {
-                view.onGetVerhicleSuccess(obj.getData());
+                if (isViewing)
+                    view.onGetVerhicleSuccess(obj.getData());
             }
 
             @Override
             public void onError(Error error) {
                 if (error.getCode() == 2)
                     getNewSessionVerhicle();
-                else
+                else if (isViewing)
                     view.onGetVerhicleError(error);
             }
         });
     }
 
     private void getNewSessionVerhicle() {
-        Log.e("verhicle", "get new session");
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
-                Log.e("verhicle", "get new session success");
-                getAllVerhicle();
+                if (isViewing)
+                    getAllVerhicle();
             }
 
             @Override
             public void onError() {
-                Log.e("verhicle", "get new session error");
-                view.onGetVerhicleError(new Error(2, "ERROR", "Bạn đã hết phiên làm việc"));
+                if (isViewing)
+                    view.onGetVerhicleError(new Error(2, "ERROR", "Bạn đã hết phiên làm việc"));
             }
         });
+    }
+
+    public void destroyView() {
+        isViewing = false;
     }
 }

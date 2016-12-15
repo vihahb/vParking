@@ -26,21 +26,16 @@ import android.view.animation.Interpolator;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -73,7 +68,6 @@ public class HomeFragment extends BasicFragment implements
 
     private HomeFragmentPresenter presenter;
 
-    private final String TAG = "HomeFragment";
     private GoogleMap mMap, mMap_bottom;
     public static GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
@@ -81,7 +75,7 @@ public class HomeFragment extends BasicFragment implements
     private FloatingActionButton fab_filter, fab_location;
 
     public static BottomSheetBehavior bottomSheetBehavior;
-    private boolean isFindMyLocation, isScrollDown, isCanLoadMap = true;
+    private boolean isFindMyLocation, isCanLoadMap = true;
     private int isLoadNewParking = 0;
 
     private Marker pickMarker;
@@ -96,7 +90,7 @@ public class HomeFragment extends BasicFragment implements
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return  inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
@@ -104,14 +98,13 @@ public class HomeFragment extends BasicFragment implements
         super.onViewCreated(view, savedInstanceState);
 
         find_option = new Find(-1, -1, -1, "", "");
-
         createLocationRequest();
         initGoogleMap();
         initWidget(view);
-        initSearchView();
         initBottomSheet(view);
         initGooogleBottomSheet();
         initBottomSheetView(view);
+
         presenter = new HomeFragmentPresenter(this);
     }
 
@@ -139,33 +132,13 @@ public class HomeFragment extends BasicFragment implements
         fab_location.setOnClickListener(this);
     }
 
-    private void initSearchView() {
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        autocompleteFragment.setBoundsBias(new LatLngBounds(new LatLng(20.725517, 104.634451), new LatLng(21.937487, 106.759183)));
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                if (mMap != null) {
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude), 15));
-                    if (!isFindMyLocation)
-                        isFindMyLocation = true;
-                }
-            }
-
-            @Override
-            public void onError(Status status) {
-                // TODO: Handle the error.
-                Log.e(this.getClass().getSimpleName(), "error search " + status.getStatusMessage());
-            }
-        });
-    }
-
     protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        if (mLocationRequest == null) {
+            mLocationRequest = new LocationRequest();
+            mLocationRequest.setInterval(10000);
+            mLocationRequest.setFastestInterval(5000);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        }
     }
 
     private void initBottomSheet(View view) {
@@ -175,15 +148,16 @@ public class HomeFragment extends BasicFragment implements
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_SETTLING) {
-                    Log.e(TAG, "STATE_SETTLING");
-                    if (isScrollDown)
-                        dialogBottomSheet.showHeader();
-                    else
-                        dialogBottomSheet.hideHeader();
-                } else if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                    Log.e(TAG, "STATE_DRAGGING");
-                } else if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+//                if (newState == BottomSheetBehavior.STATE_SETTLING) {
+//                    if (isScrollDown)
+//                        dialogBottomSheet.showHeader();
+//                    else
+//                        dialogBottomSheet.hideHeader();
+//                } else
+//                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+//                    Log.e(TAG, "STATE_DRAGGING");
+//                } else
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     showFloatingActionButton(fab_filter);
                     showFloatingActionButton(fab_location);
 //                    showFloatingActionButton(fab_thongbao);
@@ -201,10 +175,10 @@ public class HomeFragment extends BasicFragment implements
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     nestedScrollView.scrollTo(0, 0);
                     dialogBottomSheet.showHeader();
-                    isScrollDown = false;
+//                    isScrollDown = false;
                 } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     dialogBottomSheet.hideHeader();
-                    isScrollDown = true;
+//                    isScrollDown = true;
                 }
             }
 
@@ -236,9 +210,7 @@ public class HomeFragment extends BasicFragment implements
 
     private void showFloatingActionButton(View view) {
         view.setVisibility(View.VISIBLE);
-        ViewCompat.animate(view).scaleX(1.0F).scaleY(1.0F).alpha(1.0F)
-                .setInterpolator(INTERPOLATOR).withLayer().setListener(null)
-                .start();
+        ViewCompat.animate(view).scaleX(1.0F).scaleY(1.0F).alpha(1.0F).setInterpolator(INTERPOLATOR).withLayer().setListener(null).start();
     }
 
     private void initGooogleBottomSheet() {
@@ -321,6 +293,29 @@ public class HomeFragment extends BasicFragment implements
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
         }
         mMap_bottom.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()), 15));
+    }
+
+    public void searchPlace(Place place) {
+//        showShortToast("change");
+//        SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+//        autocompleteFragment.setBoundsBias(new LatLngBounds(new LatLng(20.725517, 104.634451), new LatLng(21.937487, 106.759183)));
+//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+//            @Override
+//            public void onPlaceSelected(Place place) {
+        // TODO: Get info about the selected place.
+        if (mMap != null) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude), 15));
+            if (!isFindMyLocation)
+                isFindMyLocation = true;
+        }
+//            }
+//
+//            @Override
+//            public void onError(Status status) {
+//                // TODO: Handle the error.
+//                Log.e(this.getClass().getSimpleName(), "error search " + status.getStatusMessage());
+//            }
+//        });
     }
 
     private boolean checkPermission() {
@@ -483,6 +478,7 @@ public class HomeFragment extends BasicFragment implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+        presenter.destroyView();
         super.onDestroy();
     }
 
@@ -529,12 +525,9 @@ public class HomeFragment extends BasicFragment implements
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e("onActivityResult", "request " + requestCode + " result " + resultCode);
         if (requestCode == Constants.FIND_ADVANDCED_RQ && resultCode == Constants.FIND_ADVANDCED_RS) {
             Find findModel = (Find) data.getExtras().getSerializable(Constants.FIND_MODEL);
-            Log.e("onActivityResult", "request " + requestCode + " result " + resultCode + "    " + findModel.getPrice());
             if (isCanLoadMap) {
-                Log.e("home", findModel.getPrice() + "   " + findModel.getPrice_type() + "   " + findModel.getType());
 
                 if (!isFindMyLocation)
                     isFindMyLocation = true;
@@ -546,7 +539,6 @@ public class HomeFragment extends BasicFragment implements
                 double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
 
                 presenter.getParkingAround(latitude, longtitude, find_option);
-//                presenter.getMyLocation();
             }
         } else if (requestCode == HomeActivity.REQUEST_CODE && resultCode == HomeActivity.RESULT_GUID) {
             if (data != null) {

@@ -18,9 +18,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
@@ -50,6 +57,9 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     private HomePresenter homePresenter;
     private ActionBar actionBar;
 
+    private LinearLayout layout_search;
+    private PlaceAutocompleteFragment autocompleteFragment;
+
     private final String HOME_FRAGMENT = "home_fragment", MANAGER_FRAGMENT = "manager_fragment", VERHICLE_FRAGMENT = "verhicle_fragment",
             FAVORITE_FRAGMENT = "favorite_fragment", CHECKIN_FRAGMENT = "checkin_fragment";
     private String CURRENT_FRAGMENT = "";
@@ -62,12 +72,12 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        replaceFragment(R.id.home_layout_content, new HomeFragment(), HOME_FRAGMENT);
-        CURRENT_FRAGMENT = HOME_FRAGMENT;
-
         initView();
+        initSearchView();
         initNavigation();
         initListener();
+
+        replaceHomeFragment();
         homePresenter = new HomePresenter(this);
         instance = this;
     }
@@ -80,10 +90,30 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         drawer = (DrawerLayout) findViewById(R.id.home_drawer);
         navigationView = (NavigationView) findViewById(R.id.home_navigationview);
         btn_active_master = (Button) findViewById(R.id.home_btn_active);
+        layout_search = (LinearLayout) findViewById(R.id.home_layout_search);
 
         View view = navigationView.getHeaderView(0);
         img_avatar = (ImageView) view.findViewById(R.id.header_img_avatar);
         txt_name = (TextView) view.findViewById(R.id.header_txt_name);
+    }
+
+    private void initSearchView() {
+        autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        autocompleteFragment.setBoundsBias(new LatLngBounds(new LatLng(20.725517, 104.634451), new LatLng(21.937487, 106.759183)));
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+
+                HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HOME_FRAGMENT);
+                fragment.searchPlace(place);
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+            }
+        });
     }
 
     private void initNavigation() {
@@ -181,6 +211,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     }
 
     private void replaceHomeFragment() {
+        layout_search.setVisibility(View.VISIBLE);
         replaceFragment(R.id.home_layout_content, new HomeFragment(), HOME_FRAGMENT);
         CURRENT_FRAGMENT = HOME_FRAGMENT;
 
@@ -192,6 +223,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     }
 
     private void replaceManagementFragment() {
+        layout_search.setVisibility(View.GONE);
         replaceFragment(R.id.home_layout_content, new ManagementFragment(), MANAGER_FRAGMENT);
         CURRENT_FRAGMENT = MANAGER_FRAGMENT;
 
@@ -203,6 +235,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     }
 
     private void replaceFavoriteFragment() {
+        layout_search.setVisibility(View.GONE);
         replaceFragment(R.id.home_layout_content, new FavoriteFragment(), FAVORITE_FRAGMENT);
         CURRENT_FRAGMENT = FAVORITE_FRAGMENT;
 
@@ -214,6 +247,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     }
 
     private void replaceVerhicleFragment() {
+        layout_search.setVisibility(View.GONE);
         replaceFragment(R.id.home_layout_content, new VerhicleFragment(), VERHICLE_FRAGMENT);
         CURRENT_FRAGMENT = VERHICLE_FRAGMENT;
 
@@ -225,6 +259,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     }
 
     private void replaceCheckInFragment() {
+        layout_search.setVisibility(View.GONE);
         replaceFragment(R.id.home_layout_content, new CheckedFragment(), CHECKIN_FRAGMENT);
         CURRENT_FRAGMENT = CHECKIN_FRAGMENT;
 
