@@ -8,6 +8,7 @@ import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.commons.NetWorkInfo;
+import com.xtel.vparking.dialog.QrCodeBottomSheet;
 import com.xtel.vparking.model.HomeModel;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.entity.Error;
@@ -87,5 +88,15 @@ public class HomePresenter {
 //                Toast.makeText(homeView.getActivity(), homeView.getActivity().getString(R.string.error_session_invalid), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void showQrCode() {
+        String qrcode = LoginModel.getInstance().getUserQrCode();
+
+        if (qrcode != null) {
+            if (!qrcode.isEmpty()) {
+                homeView.onShowQrCode(qrcode);
+            }
+        }
     }
 }

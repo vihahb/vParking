@@ -1,8 +1,11 @@
 package com.xtel.vparking.view.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.NavigationView;
@@ -13,6 +16,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +35,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.model.entity.Find;
 import com.xtel.vparking.presenter.HomePresenter;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.inf.HomeView;
@@ -46,11 +51,12 @@ import com.xtel.vparking.view.fragment.VerhicleFragment;
 
 public class HomeActivity extends BasicActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
         HomeView {
+    @SuppressLint("StaticFieldLeak")
     public static HomeActivity instance;
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
-    private ImageView img_avatar;
+    private ImageView img_avatar, img_qr;
     private TextView txt_name;
     private Button btn_active_master;
     private Menu menu;
@@ -58,7 +64,6 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     private ActionBar actionBar;
 
     private LinearLayout layout_search;
-    private PlaceAutocompleteFragment autocompleteFragment;
 
     private final String HOME_FRAGMENT = "home_fragment", MANAGER_FRAGMENT = "manager_fragment", VERHICLE_FRAGMENT = "verhicle_fragment",
             FAVORITE_FRAGMENT = "favorite_fragment", CHECKIN_FRAGMENT = "checkin_fragment";
@@ -66,6 +71,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     public static final int REQUEST_CODE = 99;
     public static final int RESULT_GUID = 88;
     public static int PARKING_ID = -1;
+    public static Find find_option = new Find(-1, -1, -1, "", "");;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,11 +100,12 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
 
         View view = navigationView.getHeaderView(0);
         img_avatar = (ImageView) view.findViewById(R.id.header_img_avatar);
+        img_qr = (ImageView) view.findViewById(R.id.header_img_qr);
         txt_name = (TextView) view.findViewById(R.id.header_txt_name);
     }
 
     private void initSearchView() {
-        autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         autocompleteFragment.setBoundsBias(new LatLngBounds(new LatLng(20.725517, 104.634451), new LatLng(21.937487, 106.759183)));
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -131,6 +138,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     private void initListener() {
         navigationView.setNavigationItemSelectedListener(this);
         img_avatar.setOnClickListener(this);
+        img_qr.setOnClickListener(this);
         btn_active_master.setOnClickListener(this);
     }
 
@@ -177,14 +185,16 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
 
     @Override
     public void onUserDataUpdate(String avatar, String name) {
+        Log.e(this.getClass().getSimpleName(), avatar + "        " + name);
         if (avatar != null && !avatar.isEmpty()) {
             Picasso.with(HomeActivity.this)
                     .load(avatar)
                     .noPlaceholder()
                     .error(R.mipmap.ic_launcher)
                     .into(img_avatar);
-        } else
+        } else {
             img_avatar.setImageResource(R.mipmap.ic_user);
+        }
 
         if (name == null) {
             txt_name.setText(getString(R.string.update_user_profile));
@@ -198,6 +208,48 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
                 txt_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
         }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    public void onShowQrCode(String url) {
+        drawer.closeDrawer(GravityCompat.START);
+
+        final Dialog bottomSheetDialog = new Dialog(HomeActivity.this, R.style.MaterialDialogSheet);
+        bottomSheetDialog.setContentView(R.layout.qr_code_bottom_sheet);
+        bottomSheetDialog.setCancelable(true);
+        bottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        bottomSheetDialog.getWindow().setGravity(Gravity.CENTER);
+
+
+//        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(HomeActivity.this);
+//        bottomSheetDialog.setContentView(R.layout.qr_code_bottom_sheet);
+////
+//        bottomSheetDialog.getWindow().setLayout(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+//        bottomSheetDialog.getWindow().setGravity(Gravity.CENTER);
+
+        Button txt_close = (Button) bottomSheetDialog.findViewById(R.id.dialog_txt_close);
+        ImageView img_qr_code = (ImageView) bottomSheetDialog.findViewById(R.id.dialog_qr_code);
+
+        Picasso.with(this)
+                .load(url)
+                .noPlaceholder()
+                .into(img_qr_code);
+
+        if (txt_close != null)
+            txt_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bottomSheetDialog.dismiss();
+                }
+            });
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                bottomSheetDialog.show();
+            }
+        }, 200);
     }
 
     @Override
@@ -331,6 +383,8 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
             drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.home_btn_active) {
             homePresenter.activeParkingMaster();
+        } else if (id == R.id.header_img_qr) {
+            homePresenter.showQrCode();
         }
     }
 

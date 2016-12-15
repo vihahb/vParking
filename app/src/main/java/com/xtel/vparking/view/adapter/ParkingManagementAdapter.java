@@ -32,7 +32,7 @@ public class ParkingManagementAdapter extends RecyclerView.Adapter<ParkingManage
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quan_ly_bai_do, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_management, parent, false));
     }
 
     @Override

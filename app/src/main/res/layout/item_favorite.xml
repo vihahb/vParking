@@ -1,119 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:swipe="http://schemas.android.com/tools"
+    android:id="@+id/item_swipe_favorite"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/size_8"
-    android:layout_marginLeft="@dimen/size_8"
-    android:layout_marginRight="@dimen/size_8"
-    android:layout_marginStart="@dimen/size_8"
-    android:layout_marginTop="@dimen/size_8"
-    android:orientation="vertical">
+    android:layout_marginBottom="@dimen/size_1"
+    swipe:leftEdgeSwipeOffset="0"
+    swipe:rightEdgeSwipeOffset="0">
 
-    <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/item_swipe_favorite"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:tag="Bottom3">
+
+        <ImageButton
+            android:id="@+id/item.img_favorite_view"
+            android:layout_width="@dimen/size_90"
+            android:layout_height="match_parent"
+            android:background="@color/btn_fb_plus"
+            android:clickable="true"
+            android:contentDescription="@null"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_remove_red_eye_white_36dp" />
+
+        <ImageButton
+            android:id="@+id/item.img_favorite_delete"
+            android:layout_width="@dimen/size_90"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:clickable="true"
+            android:contentDescription="@null"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_delete_forever_white_36dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/item.layout_favorite_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        swipe:leftEdgeSwipeOffset="0"
-        swipe:rightEdgeSwipeOffset="0">
+        android:clickable="true"
+        android:background="@android:color/white"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:padding="@dimen/size_16">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:tag="Bottom3">
-
-            <ImageButton
-                android:id="@+id/item.img_favorite_view"
-                android:layout_width="@dimen/size_90"
-                android:layout_height="match_parent"
-                android:background="@color/btn_fb_plus"
-                android:clickable="true"
-                android:contentDescription="@null"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:src="@drawable/ic_remove_red_eye_white_36dp" />
-
-            <ImageButton
-                android:id="@+id/item.img_favorite_delete"
-                android:layout_width="@dimen/size_90"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
-                android:clickable="true"
-                android:contentDescription="@null"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:src="@drawable/ic_delete_forever_white_36dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/item.layout_favorite_content"
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:orientation="vertical"
-            android:padding="@dimen/size_16">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
 
-            <TableLayout
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical">
+                android:layout_height="@dimen/size_36">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_36">
+                <TextView
+                    android:id="@+id/item.txt_favorite_name"
+                    style="@style/Quanly_item_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_menu_black_24dp"
+                    android:drawableStart="@drawable/ic_menu_black_24dp" />
+            </TableRow>
 
-                    <TextView
-                        android:id="@+id/item.txt_favorite_name"
-                        style="@style/Quanly_item_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableLeft="@drawable/ic_menu_black_24dp"
-                        android:drawableStart="@drawable/ic_menu_black_24dp" />
-                </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_36"
+                android:layout_marginTop="@dimen/size_8">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_36"
-                    android:layout_marginTop="@dimen/size_8">
+                <TextView
+                    android:id="@+id/item.txt_favorite_time"
+                    style="@style/Quanly_item_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/ic_time"
+                    android:drawableStart="@mipmap/ic_time" />
 
-                    <TextView
-                        android:id="@+id/item.txt_favorite_time"
-                        style="@style/Quanly_item_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableLeft="@mipmap/ic_time"
-                        android:drawableStart="@mipmap/ic_time" />
+                <TextView
+                    android:id="@+id/item.txt_favorite_money"
+                    style="@style/Quanly_item_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/ic_note"
+                    android:drawableStart="@mipmap/ic_note"
+                    android:paddingLeft="@dimen/size_8"
+                    android:paddingStart="@dimen/size_8" />
+            </TableRow>
 
-                    <TextView
-                        android:id="@+id/item.txt_favorite_money"
-                        style="@style/Quanly_item_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableLeft="@mipmap/ic_note"
-                        android:drawableStart="@mipmap/ic_note"
-                        android:paddingLeft="@dimen/size_8"
-                        android:paddingStart="@dimen/size_8" />
-                </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_36"
+                android:layout_marginTop="@dimen/size_8">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_36"
-                    android:layout_marginTop="@dimen/size_8">
-
-                    <TextView
-                        android:id="@+id/item.txt_favorite_address"
-                        style="@style/Quanly_item_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableLeft="@mipmap/ic_my_address"
-                        android:drawableStart="@mipmap/ic_my_address" />
-                </TableRow>
-            </TableLayout>
-        </LinearLayout>
-    </com.daimajia.swipe.SwipeLayout>
-</android.support.v7.widget.CardView>
+                <TextView
+                    android:id="@+id/item.txt_favorite_address"
+                    style="@style/Quanly_item_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/ic_my_address"
+                    android:drawableStart="@mipmap/ic_my_address" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</com.daimajia.swipe.SwipeLayout>

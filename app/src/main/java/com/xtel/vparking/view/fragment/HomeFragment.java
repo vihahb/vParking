@@ -85,7 +85,6 @@ public class HomeFragment extends BasicFragment implements
     private RESP_Parking_Info resp_parking_info;
 
     private int actionType = -1;
-    private Find find_option;
 
     @Nullable
     @Override
@@ -97,7 +96,6 @@ public class HomeFragment extends BasicFragment implements
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        find_option = new Find(-1, -1, -1, "", "");
         createLocationRequest();
         initGoogleMap();
         initWidget(view);
@@ -145,6 +143,17 @@ public class HomeFragment extends BasicFragment implements
         final NestedScrollView nestedScrollView = (NestedScrollView) view.findViewById(R.id.bottom_sheet_home);
 
         bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottom_sheet_home));
+//        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+//            @Override
+//            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+//
+//            }
+//
+//            @Override
+//            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+//
+//            }
+//        });
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -269,7 +278,7 @@ public class HomeFragment extends BasicFragment implements
         double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
         double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
 
-        presenter.getParkingAround(latitude, longtitude, find_option);
+        presenter.getParkingAround(latitude, longtitude, HomeActivity.find_option);
     }
 
     private void showDialogParkingDetail() {
@@ -408,7 +417,7 @@ public class HomeFragment extends BasicFragment implements
 
             double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
             double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
-            presenter.getParkingAround(latitude, longtitude, find_option);
+            presenter.getParkingAround(latitude, longtitude, HomeActivity.find_option);
         }
     }
 
@@ -418,7 +427,7 @@ public class HomeFragment extends BasicFragment implements
 
         if (id == R.id.fab_parking_fillter) {
 //            startActivityForResultWithInteger();
-            startActivityForResult(FindAdvancedActivity.class, Constants.FIND_MODEL, find_option, Constants.FIND_ADVANDCED_RQ);
+            startActivityForResult(FindAdvancedActivity.class, Constants.FIND_MODEL, HomeActivity.find_option, Constants.FIND_ADVANDCED_RQ);
 //            startActivityForResult(new Intent(getContext(), FindAdvancedActivity.class), Constants.FIND_ADVANDCED_RQ);
         } else if (id == R.id.fab_parking_location) {
             if (isCanLoadMap) {
@@ -486,7 +495,7 @@ public class HomeFragment extends BasicFragment implements
     public void onResume() {
         super.onResume();
         presenter.checkResultSearch();
-        presenter.checkFindOption(find_option);
+        presenter.checkFindOption(HomeActivity.find_option);
 
         if (mGoogleApiClient.isConnected())
             try {
@@ -533,12 +542,12 @@ public class HomeFragment extends BasicFragment implements
                     isFindMyLocation = true;
 
                 actionType = 1;
-                find_option = findModel;
+                HomeActivity.find_option = findModel;
 
                 double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
                 double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
 
-                presenter.getParkingAround(latitude, longtitude, find_option);
+                presenter.getParkingAround(latitude, longtitude, HomeActivity.find_option);
             }
         } else if (requestCode == HomeActivity.REQUEST_CODE && resultCode == HomeActivity.RESULT_GUID) {
             if (data != null) {

@@ -8,12 +8,29 @@
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <com.xtel.vparking.view.widget.RoundImage
-        android:id="@+id/header_img_avatar"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:contentDescription="@null"
-        android:scaleType="centerCrop" />
+    <FrameLayout
+        android:layout_width="@dimen/size_83"
+        android:layout_height="@dimen/size_83">
+
+        <com.xtel.vparking.view.widget.RoundImage
+            android:id="@+id/header_img_avatar"
+            android:layout_width="@dimen/size_80"
+            android:layout_height="@dimen/size_80"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop" />
+
+        <ImageButton
+            android:id="@+id/header_img_qr"
+            android:layout_width="@dimen/size_30"
+            android:layout_height="@dimen/size_30"
+            android:layout_gravity="bottom|right|end"
+            android:background="@drawable/round_background_red"
+            android:clickable="true"
+            android:contentDescription="@null"
+            android:padding="@dimen/size_6"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/ic_check_in" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/header_txt_name"

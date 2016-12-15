@@ -1,10 +1,8 @@
 package com.xtel.vparking.view.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +14,6 @@ import android.view.ViewGroup;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
-import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.ParkingInfo;
 import com.xtel.vparking.presenter.ManagementPresenter;
@@ -38,7 +35,7 @@ public class ManagementFragment extends BasicFragment implements ManagementView 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.quan_ly_bai_do_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_management, container, false);
     }
 
     @Override

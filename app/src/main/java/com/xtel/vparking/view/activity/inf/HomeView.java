@@ -12,5 +12,6 @@ public interface HomeView extends IView {
     void onActiveMasterSuccess();
     void onActiveMasterFailed(String error);
     void onUserDataUpdate(String avatar, String name);
+    void onShowQrCode(String url);
     Activity getActivity();
 }
