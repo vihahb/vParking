@@ -148,8 +148,10 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
     public void handleResult(Result result) {
         if (NetWorkInfo.isOnline(ScanQrActivity.this))
             presenter.startCheckIn(edt_gift_code.getText().toString(), result.getText());
-        else
+        else {
             showShortToast(getString(R.string.no_internet));
+            mScannerView.resumeCameraPreview(this);
+        }
     }
 
     @Override

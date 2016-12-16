@@ -125,7 +125,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     }
 
     public void TakePicture(final View view) {
-        presenter.takePicture(getSupportFragmentManager());
+        presenter.takePicture(getSupportFragmentManager(), view);
     }
 
     private void getAddress() {

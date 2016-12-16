@@ -95,7 +95,7 @@ public class ManagementFragment extends BasicFragment implements ManagementView 
         progressView.setRefreshing(false);
         if (arrayList.size() == 0) {
             progressView.updateData(R.mipmap.icon_parking, "Bạn chưa có bãi đỗ nào", getString(R.string.touch_to_try_again));
-            progressView.showData();
+            progressView.show();
         } else {
             recyclerView.getAdapter().notifyDataSetChanged();
             progressView.hide();
