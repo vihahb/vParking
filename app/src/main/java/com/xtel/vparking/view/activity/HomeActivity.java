@@ -194,7 +194,7 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
                     .error(R.mipmap.ic_launcher)
                     .into(img_avatar);
         } else {
-            img_avatar.setImageResource(R.mipmap.icon_account);
+            img_avatar.setImageResource(R.mipmap.icon_account_1);
         }
 
         if (name == null) {
