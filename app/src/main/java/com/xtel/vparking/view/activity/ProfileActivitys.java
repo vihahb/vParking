@@ -3,9 +3,12 @@ package com.xtel.vparking.view.activity;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,6 +27,8 @@ import com.facebook.accountkit.ui.AccountKitActivity;
 import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestWithStringListener;
+import com.xtel.vparking.commons.NetWorkInfo;
+import com.xtel.vparking.model.entity.Profile;
 import com.xtel.vparking.model.entity.UserModel;
 import com.xtel.vparking.presenter.ProfilePresenter;
 import com.xtel.vparking.utils.Task;
@@ -138,12 +143,15 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
 
         calendar = Calendar.getInstance();
         date = new Date();
-        if (avatar != null)
+        if (avatar != null) {
             Picasso.with(context)
                     .load(avatar)
-                    .placeholder(R.mipmap.ic_user)
-                    .error(R.mipmap.ic_user)
+                    .placeholder(R.mipmap.icon_account)
+                    .error(R.mipmap.icon_account)
                     .into(img_avatar);
+        } else {
+            img_avatar.setImageResource(R.mipmap.icon_account);
+        }
 
         //Gender spinner
         if (gender == 1) {
@@ -263,11 +271,11 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         if (id == R.id.btn_profile_update) {
             updateUser();
         } else if (id == R.id.img_profile_change_avatar) {
-            updateAvatar(getApplicationContext());
+            updateAvatar(ProfileActivitys.this);
         } else if (id == R.id.edt_birth_date) {
             updateBirthday(this);
         } else if (id == R.id.img_update_phone) {
-            profilePresenter.onUpdatePhone(getApplicationContext(), AccountKitActivity.class);
+            updateMyPhone(ProfileActivitys.this);
         }
     }
 
@@ -313,28 +321,17 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         return true;
     }
 
+    private void updateMyPhone(Context context){
+        checkNetwork(context, 3);
+    }
+
     private void updateAvatar(final Context context) {
-        Task.TakeBigPicture(context, getSupportFragmentManager(), true, new RequestWithStringListener() {
-            @Override
-            public void onSuccess(String url) {
-                avatar = url;
-                Picasso.with(context)
-                        .load(avatar)
-                        .error(R.mipmap.ic_user)
-                        .into(img_avatar);
-                profilePresenter.updateAvatar(avatar);
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
+        checkNetwork(context, 2);
     }
 
     private void updateUser() {
         if (valid()) {
-            profilePresenter.updateUser(full_name_update, email_update, birthday_update, gender_update, phone_update);
+            checkNetwork(ProfileActivitys.this, 1);
         }
     }
 
@@ -417,5 +414,54 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         profilePresenter.initResultAccountKit(requestCode, resultCode, data);
+    }
+
+    private void checkNetwork(final Context context, int type){
+        if (!NetWorkInfo.isOnline(context)){
+            AlertDialog.Builder dialog = new AlertDialog.Builder(context, R.style.TimePicker);
+            dialog.setTitle("Kết nối không thành công");
+            dialog.setMessage("Rất tiếc, không thể kết nối internet. Vui lòng kiểm tra kết nối Internet.");
+            dialog.setPositiveButton("Cài đặt", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                    Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                    //get gps
+                }
+            });
+            dialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                }
+            });
+            dialog.show();
+        } else {
+            if (type == 1){
+                profilePresenter.updateUser(full_name_update, email_update, birthday_update, gender_update, phone_update);
+            } else if (type == 2){
+                Task.TakeBigPicture(context, getSupportFragmentManager(), true, new RequestWithStringListener() {
+                    @Override
+                    public void onSuccess(String url) {
+                        avatar = url;
+                        Picasso.with(context)
+                                .load(avatar)
+                                .error(R.mipmap.ic_user)
+                                .into(img_avatar);
+                        profilePresenter.updateAvatar(avatar);
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+            } else if (type == 3){
+                profilePresenter.onUpdatePhone(getApplicationContext(), AccountKitActivity.class);
+            }
+        }
     }
 }

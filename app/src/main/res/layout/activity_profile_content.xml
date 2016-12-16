@@ -35,7 +35,7 @@
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/round_background_white"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/ic_user" />
+                    android:src="@mipmap/icon_account" />
 
                 <FrameLayout
                     android:layout_width="@dimen/size_38"
