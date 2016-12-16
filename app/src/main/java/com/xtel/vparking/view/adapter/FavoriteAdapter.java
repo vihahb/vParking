@@ -69,6 +69,11 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
         holder.img_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!NetWorkInfo.isOnline(view.getActivity())) {
+                    view.showShortToast(view.getActivity().getString(R.string.no_internet));
+                    return;
+                }
+
                 HomeActivity.getInstance().viewParkingSelected(favotire.getId());
             }
         });
@@ -76,7 +81,7 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
         holder.img_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (NetWorkInfo.isOnline(view.getActivity())) {
+                if (!NetWorkInfo.isOnline(view.getActivity())) {
                     view.showShortToast(view.getActivity().getString(R.string.no_internet));
                     return;
                 }
@@ -89,11 +94,6 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
         holder.layout_content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (NetWorkInfo.isOnline(view.getActivity())) {
-                    view.showShortToast(view.getActivity().getString(R.string.no_internet));
-                    return;
-                }
-
                 if (!mItemManger.isOpen(position))
                     holder.swipeLayout.open();
                 else

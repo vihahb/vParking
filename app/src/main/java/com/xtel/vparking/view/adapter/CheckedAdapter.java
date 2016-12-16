@@ -51,7 +51,7 @@ public class CheckedAdapter extends RecyclerView.Adapter<CheckedAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (NetWorkInfo.isOnline(checkedView.getActivity())) {
+                if (!NetWorkInfo.isOnline(checkedView.getActivity())) {
                     checkedView.showShortToast(checkedView.getActivity().getString(R.string.no_internet));
                     return;
                 }

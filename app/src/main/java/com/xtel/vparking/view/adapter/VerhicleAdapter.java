@@ -73,7 +73,7 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             view.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (NetWorkInfo.isOnline(verhicleView.getActivity())) {
+                    if (!NetWorkInfo.isOnline(verhicleView.getActivity())) {
                         verhicleView.showShortToast(verhicleView.getActivity().getString(R.string.no_internet));
                         return;
                     }

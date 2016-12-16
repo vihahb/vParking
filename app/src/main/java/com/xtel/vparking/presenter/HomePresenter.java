@@ -46,7 +46,7 @@ public class HomePresenter {
         String avatar = LoginModel.getInstance().getAvatar();
         String full_name = LoginModel.getInstance().getName();
 
-        homeView.onUserDataUpdate(null, null);
+        homeView.onUserDataUpdate(avatar, full_name);
     }
 
     public void activeParkingMaster() {

@@ -82,7 +82,7 @@ public class AddParkingPresenter {
                              int transport_type, String total_place, String begin_time, String end_time,
                              ArrayList<Prices> arrayList_price) {
 
-        if (NetWorkInfo.isOnline(view.getActivity())) {
+        if (!NetWorkInfo.isOnline(view.getActivity())) {
             view.showShortToast(view.getActivity().getString(R.string.no_internet));
             return;
         }
