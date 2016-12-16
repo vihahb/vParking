@@ -2,7 +2,7 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="40dp"
     android:drawableRight="@mipmap/ic_keyboard_arrow_down_white_24dp"
     android:ellipsize="marquee"
     android:background="@android:color/transparent"

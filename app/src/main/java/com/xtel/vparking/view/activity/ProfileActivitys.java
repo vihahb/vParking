@@ -132,7 +132,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
     private void initViewData(Context context) {
         UserModel userModel = profilePresenter.initData();
 
-        avatar = userModel.getAvatar();
+//        avatar = userModel.getAvatar();
         full_name = userModel.getFullname();
         gender = userModel.getGender();
         email = userModel.getEmail();
@@ -150,7 +150,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
                     .error(R.mipmap.icon_account)
                     .into(img_avatar);
         } else {
-            img_avatar.setImageResource(R.mipmap.icon_account);
+            img_avatar.setImageResource(R.mipmap.icon_account_1);
         }
 
         //Gender spinner

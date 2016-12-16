@@ -20,7 +20,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-import com.facebook.accountkit.ui.AccountKitActivity;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.NetWorkInfo;
