@@ -1,9 +1,13 @@
 package com.xtel.vparking.view.activity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,8 +20,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
+import com.facebook.accountkit.ui.AccountKitActivity;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.Brandname;
 import com.xtel.vparking.model.entity.Verhicle;
 import com.xtel.vparking.presenter.AddVerhiclePresenter;
@@ -110,14 +116,14 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
         btn_verhicle_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addVerhicle();
+                checkNetWork(AddVerhicleActivity.this, 1);
             }
         });
 
         btn_verhicle_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateVerhicle();
+                checkNetWork(AddVerhicleActivity.this, 2);
             }
         });
 
@@ -292,7 +298,6 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
         finish();
     }
 
-
     @Override
     public Activity getActivity() {
         return this;
@@ -323,5 +328,37 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
         if (item.getItemId() == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
+    }
+
+    private void checkNetWork(final Context context, int type){
+        if (!NetWorkInfo.isOnline(context)){
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(context, R.style.TimePicker);
+            dialog.setTitle("Kết nối không thành công");
+            dialog.setMessage("Rất tiếc, không thể kết nối internet. Vui lòng kiểm tra kết nối Internet.");
+            dialog.setPositiveButton("Cài đặt", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                    Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                    //get gps
+                }
+            });
+            dialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                }
+            });
+            dialog.show();
+        } else {
+            if (type == 1){
+                addVerhicle();
+            } else if (type == 2){
+                updateVerhicle();
+            }
+        }
     }
 }

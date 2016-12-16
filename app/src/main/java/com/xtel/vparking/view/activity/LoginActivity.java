@@ -1,15 +1,20 @@
 package com.xtel.vparking.view.activity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 
 import com.facebook.accountkit.ui.AccountKitActivity;
 import com.xtel.vparking.R;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.presenter.LoginPresenter;
 import com.xtel.vparking.view.activity.inf.LoginView;
@@ -92,9 +97,9 @@ public class LoginActivity extends BasicActivity implements LoginView, View.OnCl
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btn_fb_signin) {
-            presenter.initOnLoginFacebook(this);
+            checkNetWork(LoginActivity.this, 1 , v);
         } else if (id == R.id.btn_Signin) {
-            presenter.initOnLoginAccountKit(this, AccountKitActivity.class, v);
+            checkNetWork(LoginActivity.this, 2, v);
         }
     }
 
@@ -119,5 +124,38 @@ public class LoginActivity extends BasicActivity implements LoginView, View.OnCl
     public void onBackPressed() {
 //        super.onBackPressed();
         presenter.showConfirmExitApp();
+    }
+
+    private void checkNetWork(final Context context, int type, View view){
+        if (!NetWorkInfo.isOnline(context)){
+            AlertDialog.Builder dialog = new AlertDialog.Builder(context, R.style.TimePicker);
+            dialog.setTitle("Kết nối không thành công");
+            dialog.setMessage("Rất tiếc, không thể kết nối internet. Vui lòng kiểm tra kết nối Internet.");
+            dialog.setPositiveButton("Cài đặt", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                    Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                    //get gps
+                }
+            });
+            dialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                    finish();
+                }
+            });
+            dialog.show();
+        } else {
+            if (type == 1) {
+                presenter.initOnLoginFacebook(this);
+            } else if (type == 2){
+                presenter.initOnLoginAccountKit(this, AccountKitActivity.class, view);
+            }
+        }
     }
 }

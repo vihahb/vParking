@@ -1,13 +1,19 @@
 package com.xtel.vparking.view.activity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -26,6 +32,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     Log.e("auth_id", SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_AUTH_ID));
                     Log.e("auth_session", SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION));
                     startActivity(new Intent(SplashScreenActivity.this, HomeActivity.class));
+                    finish();
                 } else {
                     startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
                     finish();
@@ -33,4 +40,5 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         }, 1000);
     }
+
 }
