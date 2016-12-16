@@ -185,6 +185,11 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     }
 
     @Override
+    public void showShortToast(String message) {
+        super.showShortToast(message);
+    }
+
+    @Override
     public void onTakePictureSuccess(Uri uri) {
         showProgressBar(false, false, null, "Upda file...");
 

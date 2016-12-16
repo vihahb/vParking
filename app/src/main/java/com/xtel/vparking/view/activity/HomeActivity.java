@@ -2,7 +2,6 @@ package com.xtel.vparking.view.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +15,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +33,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.Find;
 import com.xtel.vparking.presenter.HomePresenter;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
@@ -49,7 +48,7 @@ import com.xtel.vparking.view.fragment.VerhicleFragment;
  * Created by Lê Công Long Vũ on 12/2/2016.
  */
 
-public class HomeActivity extends BasicActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
+public class HomeActivity extends IActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
         HomeView {
     @SuppressLint("StaticFieldLeak")
     public static HomeActivity instance;
@@ -71,7 +70,8 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     public static final int REQUEST_CODE = 99;
     public static final int RESULT_GUID = 88;
     public static int PARKING_ID = -1;
-    public static Find find_option = new Find(-1, -1, -1, "", "");;
+    public static Find find_option = new Find(-1, -1, -1, "", "");
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +139,7 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         navigationView.setNavigationItemSelectedListener(this);
         img_avatar.setOnClickListener(this);
         img_qr.setOnClickListener(this);
+        txt_name.setOnClickListener(this);
         btn_active_master.setOnClickListener(this);
     }
 
@@ -198,11 +199,11 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
 
         if (name == null) {
             txt_name.setText(getString(R.string.update_user_profile));
-            txt_name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_border_color_white_24dp, 0, 0, 0);
+            txt_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_border_color_white_18dp, 0);
         } else {
             if (name.isEmpty()) {
                 txt_name.setText(getString(R.string.update_user_profile));
-                txt_name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_border_color_white_24dp, 0, 0, 0);
+                txt_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_border_color_white_18dp, 0);
             } else {
                 txt_name.setText(name);
                 txt_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -215,41 +216,10 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
     public void onShowQrCode(String url) {
         drawer.closeDrawer(GravityCompat.START);
 
-        final Dialog bottomSheetDialog = new Dialog(HomeActivity.this, R.style.MaterialDialogSheet);
-        bottomSheetDialog.setContentView(R.layout.qr_code_bottom_sheet);
-        bottomSheetDialog.setCancelable(true);
-        bottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        bottomSheetDialog.getWindow().setGravity(Gravity.CENTER);
-
-
-//        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(HomeActivity.this);
-//        bottomSheetDialog.setContentView(R.layout.qr_code_bottom_sheet);
-////
-//        bottomSheetDialog.getWindow().setLayout(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-//        bottomSheetDialog.getWindow().setGravity(Gravity.CENTER);
-
-        Button txt_close = (Button) bottomSheetDialog.findViewById(R.id.dialog_txt_close);
-        ImageView img_qr_code = (ImageView) bottomSheetDialog.findViewById(R.id.dialog_qr_code);
-
-        Picasso.with(this)
-                .load(url)
-                .noPlaceholder()
-                .into(img_qr_code);
-
-        if (txt_close != null)
-            txt_close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    bottomSheetDialog.dismiss();
-                }
-            });
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                bottomSheetDialog.show();
-            }
-        }, 200);
+        if (NetWorkInfo.isOnline(HomeActivity.this))
+            showQrCode(url);
+        else
+            showShortToast(getString(R.string.no_internet));
     }
 
     @Override
@@ -324,24 +294,28 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
+        final int id = item.getItemId();
 
-        if (id == R.id.nav_parking_home) {
-            replaceHomeFragment();
-        } else if (id == R.id.nav_parking_management) {
-            replaceManagementFragment();
-        } else if (id == R.id.nav_parking_favorite) {
-            replaceFavoriteFragment();
-        } else if (id == R.id.nav_parking_verhicle) {
-            replaceVerhicleFragment();
-        } else if (id == R.id.nav_parking_checkin) {
-            replaceCheckInFragment();
-        } else if (id == R.id.nav_parking_logout) {
-            LoginManager.getInstance().logOut();
-            SharedPreferencesUtils.getInstance().clearData();
-            startActivityAndFinish(LoginActivity.class);
-        }
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (id == R.id.nav_parking_home) {
+                    replaceHomeFragment();
+                } else if (id == R.id.nav_parking_management) {
+                    replaceManagementFragment();
+                } else if (id == R.id.nav_parking_favorite) {
+                    replaceFavoriteFragment();
+                } else if (id == R.id.nav_parking_verhicle) {
+                    replaceVerhicleFragment();
+                } else if (id == R.id.nav_parking_checkin) {
+                    replaceCheckInFragment();
+                } else if (id == R.id.nav_parking_logout) {
+                    LoginManager.getInstance().logOut();
+                    SharedPreferencesUtils.getInstance().clearData();
+                    startActivityAndFinish(LoginActivity.class);
+                }
+            }
+        }, 200);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -365,10 +339,13 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         if (id == R.id.nav_parking_checkin) {
             startActivity(CheckInActivity.class);
         } else if (id == R.id.nav_parking_add) {
-            if (CURRENT_FRAGMENT.equals(MANAGER_FRAGMENT))
-                startActivityForResult(AddParkingActivity.class, Constants.ADD_PARKING_REQUEST);
-            else if (CURRENT_FRAGMENT.equals(VERHICLE_FRAGMENT))
-                startActivityForResult(AddVerhicleActivity.class, VerhicleFragment.REQUEST_ADD_VERHICLE);
+            if (NetWorkInfo.isOnline(HomeActivity.this)) {
+                if (CURRENT_FRAGMENT.equals(MANAGER_FRAGMENT))
+                    startActivityForResult(AddParkingActivity.class, Constants.ADD_PARKING_REQUEST);
+                else if (CURRENT_FRAGMENT.equals(VERHICLE_FRAGMENT))
+                    startActivityForResult(AddVerhicleActivity.class, VerhicleFragment.REQUEST_ADD_VERHICLE);
+            } else
+                showShortToast(getString(R.string.no_internet));
         }
 
         return super.onOptionsItemSelected(item);
@@ -381,8 +358,14 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
         if (id == R.id.header_img_avatar) {
             startActivity(ProfileActivitys.class);
             drawer.closeDrawer(GravityCompat.START);
+        } else if (id == R.id.header_txt_name) {
+            startActivity(ProfileActivitys.class);
+            drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.home_btn_active) {
-            homePresenter.activeParkingMaster();
+            if (NetWorkInfo.isOnline(HomeActivity.this))
+                homePresenter.activeParkingMaster();
+            else
+                showShortToast(getString(R.string.no_internet));
         } else if (id == R.id.header_img_qr) {
             homePresenter.showQrCode();
         }
@@ -430,9 +413,16 @@ public class HomeActivity extends BasicActivity implements NavigationView.OnNavi
                 fragment2.onActivityResult(requestCode, resultCode, data);
             }
         } else if (CURRENT_FRAGMENT.equals(CHECKIN_FRAGMENT)) {
-            Fragment fragment3 = getSupportFragmentManager().findFragmentByTag(CHECKIN_FRAGMENT);
-            if (fragment3 != null) {
-                fragment3.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == CheckedFragment.REQUEST_CHECKED && resultCode == CheckedFragment.RESULT_FIND) {
+                if (data != null) {
+                    int id = data.getIntExtra(Constants.ID_PARKING, -1);
+                    viewParkingSelected(id);
+                }
+            } else {
+                Fragment fragment3 = getSupportFragmentManager().findFragmentByTag(CHECKIN_FRAGMENT);
+                if (fragment3 != null) {
+                    fragment3.onActivityResult(requestCode, resultCode, data);
+                }
             }
         }
     }

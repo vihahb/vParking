@@ -157,23 +157,11 @@ public class HomeFragment extends BasicFragment implements
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-//                if (newState == BottomSheetBehavior.STATE_SETTLING) {
-//                    if (isScrollDown)
-//                        dialogBottomSheet.showHeader();
-//                    else
-//                        dialogBottomSheet.hideHeader();
-//                } else
-//                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-//                    Log.e(TAG, "STATE_DRAGGING");
-//                } else
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     showFloatingActionButton(fab_filter);
                     showFloatingActionButton(fab_location);
-//                    showFloatingActionButton(fab_thongbao);
 
-                    dialogBottomSheet.changeCloseToFavorite();
                     dialogBottomSheet.clearData();
-                    dialogBottomSheet.showHeader();
                     nestedScrollView.scrollTo(0, 0);
                     mMap_bottom.clear();
                     resp_parking_info = null;
@@ -272,7 +260,6 @@ public class HomeFragment extends BasicFragment implements
 
     private void closeGuid() {
         mMap.clear();
-//        clearMarker();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;

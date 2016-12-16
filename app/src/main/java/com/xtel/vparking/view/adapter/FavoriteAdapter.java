@@ -1,10 +1,9 @@
 package com.xtel.vparking.view.adapter;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +21,7 @@ import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.Favotire;
 import com.xtel.vparking.utils.JsonHelper;
@@ -43,13 +43,11 @@ import okhttp3.Response;
  */
 
 public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHolder> {
-    private Activity activity;
     private ArrayList<Favotire> arrayList;
     private FavoriteView view;
     private ProgressDialog progressDialog;
 
-    public FavoriteAdapter(Activity activity, ArrayList<Favotire> arrayList, FavoriteView view) {
-        this.activity = activity;
+    public FavoriteAdapter(ArrayList<Favotire> arrayList, FavoriteView view) {
         this.arrayList = arrayList;
         this.view = view;
     }
@@ -72,16 +70,17 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 HomeActivity.getInstance().viewParkingSelected(favotire.getId());
-//                Intent intent = new Intent();
-//                intent.putExtra(Constants.ID_PARKING, favotire.getId());
-//                activity.setResult(HomeActivity.RESULT_GUID, intent);
-//                activity.finish();
             }
         });
 
         holder.img_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (NetWorkInfo.isOnline(view.getActivity())) {
+                    view.showShortToast(view.getActivity().getString(R.string.no_internet));
+                    return;
+                }
+
                 mItemManger.closeItem(position);
                 new RemoveFromFavorite().execute(favotire.getId(), position);
             }
@@ -90,6 +89,11 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
         holder.layout_content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (NetWorkInfo.isOnline(view.getActivity())) {
+                    view.showShortToast(view.getActivity().getString(R.string.no_internet));
+                    return;
+                }
+
                 if (!mItemManger.isOpen(position))
                     holder.swipeLayout.open();
                 else
@@ -158,10 +162,6 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty(Constants.JSON_PARKING_ID, params[0]);
 
-                Log.e("pk_fa_url", url);
-                Log.e("pk_fa_session", session);
-                Log.e("pk_fa_json", jsonObject.toString());
-
                 RequestBody body = RequestBody.create(JSON, jsonObject.toString());
                 Request request = new Request.Builder()
                         .url(url)
@@ -181,8 +181,12 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            progressDialog.dismiss();
-            Log.e("pk_fa_result", "null k: " + s);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.dismiss();
+                }
+            }, 500);
 
             if (s == null || s.isEmpty()) {
                 arrayList.remove(position);

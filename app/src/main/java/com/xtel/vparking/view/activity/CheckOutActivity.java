@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.DialogListener;
 import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.CheckIn;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
@@ -24,8 +25,6 @@ public class CheckOutActivity extends BasicActivity implements View.OnClickListe
     private CheckOutPresenter presenter;
 
     private TextView txt_time, txt_verhicle, txt_parking_name, txt_parking_address, txt_parking_time, txt_parking_price;
-    private Button btn_check_out;
-    private FloatingActionButton fab_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +45,12 @@ public class CheckOutActivity extends BasicActivity implements View.OnClickListe
         txt_parking_address = (TextView) findViewById(R.id.check_out_txt_parking_address);
         txt_parking_time = (TextView) findViewById(R.id.check_out_txt_parking_time);
         txt_parking_price = (TextView) findViewById(R.id.check_out_txt_parking_price);
-        btn_check_out = (Button) findViewById(R.id.check_out_btn);
-        fab_view = (FloatingActionButton) findViewById(R.id.check_out_fab);
 
-        fab_view.setOnClickListener(this);
+        Button btn_check_out = (Button) findViewById(R.id.check_out_btn);
+        FloatingActionButton fab_view = (FloatingActionButton) findViewById(R.id.check_out_fab);
+
         btn_check_out.setOnClickListener(this);
+        fab_view.setOnClickListener(this);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class CheckOutActivity extends BasicActivity implements View.OnClickListe
     @Override
     public void onCheckOutSuccess(final CheckIn checkIn) {
         closeProgressBar();
-        showDialogNotification("Thông báo", "Bạn đã check out thành công", new DialogListener() {
+        showDialogNotification("Thông báo", "Check out thành công", new DialogListener() {
             @Override
             public void onClicked(Object object) {
                 Intent intent = new Intent();
@@ -117,7 +117,7 @@ public class CheckOutActivity extends BasicActivity implements View.OnClickListe
     @Override
     public void onCheckOutError(Error error) {
         closeProgressBar();
-        showDialogNotification("Thông báo", JsonParse.getCodeMessage(error.getCode(), "Có lỗi xảy ra"), new DialogListener() {
+        showDialogNotification("Thông báo", JsonParse.getCodeMessage(error.getCode(), getString(R.string.error)), new DialogListener() {
             @Override
             public void onClicked(Object object) {
 
@@ -146,11 +146,14 @@ public class CheckOutActivity extends BasicActivity implements View.OnClickListe
     public void onClick(View v) {
         int id = v.getId();
 
-        if (id == R.id.check_out_btn) {
-            showProgressBar(false, false, null, getString(R.string.doing));
-            presenter.checkOut();
-        } else if (id == R.id.check_out_fab) {
-            presenter.viewParking();
-        }
+        if (NetWorkInfo.isOnline(CheckOutActivity.this)) {
+            if (id == R.id.check_out_btn) {
+                showProgressBar(false, false, null, getString(R.string.doing));
+                presenter.checkOut();
+            } else if (id == R.id.check_out_fab) {
+                presenter.viewParking();
+            }
+        } else
+            showShortToast(getString(R.string.no_internet));
     }
 }

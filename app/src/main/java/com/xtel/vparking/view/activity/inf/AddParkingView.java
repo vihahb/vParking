@@ -14,6 +14,7 @@ import java.util.List;
 
 public interface AddParkingView {
 
+    void showShortToast(String message);
     void onTakePictureSuccess(Uri uri);
     void onPostPictureSuccess(String url);
     void onPostPictureError(String error);

@@ -50,7 +50,7 @@ public class FavoriteFragment extends BasicFragment implements FavoriteView {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         arrayList = new ArrayList<>();
-        RecyclerView.Adapter adapter = new FavoriteAdapter(getActivity(), arrayList, this);
+        RecyclerView.Adapter adapter = new FavoriteAdapter(arrayList, this);
         ((FavoriteAdapter) adapter).setMode(Attributes.Mode.Single);
         recyclerView.setAdapter(adapter);
     }
@@ -102,7 +102,7 @@ public class FavoriteFragment extends BasicFragment implements FavoriteView {
     @Override
     public void onNetworkDisable() {
         progressView.setRefreshing(false);
-        progressView.updateData(R.mipmap.icon_parking, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
+        progressView.updateData(R.mipmap.ic_no_internet, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
         progressView.showData();
     }
 

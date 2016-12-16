@@ -17,7 +17,6 @@ public class DialogProgressBar {
     public DialogProgressBar(Context context, boolean isTouchOutside, boolean isCancel, String title, String message) {
         progressDialog = new ProgressDialog(context, R.style.AppCompatAlertDialogStyle);
         progressDialog.setCanceledOnTouchOutside(isTouchOutside);
-        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         progressDialog.setCancelable(isCancel);
 
         if (title != null)

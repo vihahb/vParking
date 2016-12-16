@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -146,11 +147,12 @@ public class BottomSheet {
 
         String picture_count = "1/" + arrayList_bottom_sheet.size();
         txt_picture_count.setText(picture_count);
+
         txt_address.setText(resp_parking_info.getAddress());
-        txt_user_name.setText(resp_parking_info.getParking_owner().getFullname() + "fd fdsfds fdsf dsfdsf");
+        txt_user_name.setText(resp_parking_info.getParking_owner().getFullname());
         txt_user_age.setText(getAge(resp_parking_info.getParking_owner().getBirthday()));
-        txt_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()) + "Fdf sfdsf sdf fdsfds sdfds ");
-        txt_parking_name.setText(resp_parking_info.getParking_name() + "fdsf sdf ds fsdfsdf fsdf s");
+        txt_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
+        txt_parking_name.setText(resp_parking_info.getParking_name());
         txt_cho_trong.setText(Constants.getPlaceNumber(context, resp_parking_info.getEmpty_number()));
 
         txt_money.setText((resp_parking_info.getPrices().get(0).getPrice() + "K/h"));
@@ -227,11 +229,12 @@ public class BottomSheet {
         view_header.setVisibility(View.VISIBLE);
     }
 
-    public boolean isShowHeader() {
-        return view_header.getVisibility() == View.VISIBLE;
-    }
-
     public void clearData() {
+        showHeader();
+
+        img_header_close.setVisibility(View.GONE);
+        img_header_favorite.setVisibility(View.VISIBLE);
+
         arrayList_bottom_sheet.clear();
         viewPager.getAdapter().notifyDataSetChanged();
     }
@@ -256,11 +259,6 @@ public class BottomSheet {
     public void changeFavoriteToClose() {
         img_header_close.setVisibility(View.VISIBLE);
         img_header_favorite.setVisibility(View.GONE);
-    }
-
-    public void changeCloseToFavorite() {
-        img_header_close.setVisibility(View.GONE);
-        img_header_favorite.setVisibility(View.VISIBLE);
     }
 
     private DialogProgressBar dialogProgressBar;
@@ -327,7 +325,12 @@ public class BottomSheet {
 
                 setUpFavorite();
                 addingToFavorite = false;
-                dialogProgressBar.closeProgressBar();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogProgressBar.closeProgressBar();
+                    }
+                }, 500);
             } else {
                 Error error = JsonHelper.getObjectNoException(s, Error.class);
 
@@ -339,22 +342,6 @@ public class BottomSheet {
                         dialogProgressBar.closeProgressBar();
                         JsonParse.getCodeError(context, view, error.getCode(), "Không thể thêm vào danh sách yêu thích");
                     }
-                else {
-                    addingToFavorite = false;
-                    dialogProgressBar.closeProgressBar();
-
-                    if (resp_parking_info.getFavorite() == 1) {
-                        resp_parking_info.setFavorite(0);
-                        img_favorite.setImageResource(R.mipmap.ic_favorite_gray);
-                        img_header_favorite.setImageResource(R.mipmap.ic_favorite_gray);
-                        Toast.makeText(context, "Đã xóa bãi đỗ khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
-                    } else {
-                        resp_parking_info.setFavorite(1);
-                        img_favorite.setImageResource(R.mipmap.ic_favorite_red);
-                        img_header_favorite.setImageResource(R.mipmap.ic_favorite_red);
-                        Toast.makeText(context, "Đã thêm bãi đỗ vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
-                    }
-                }
             }
         }
     }

@@ -19,7 +19,7 @@ import com.xtel.vparking.model.entity.ParkingInfo;
 import com.xtel.vparking.presenter.ManagementPresenter;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.inf.ManagementView;
-import com.xtel.vparking.view.adapter.ParkingManagementAdapter;
+import com.xtel.vparking.view.adapter.ManagementAdapter;
 import com.xtel.vparking.view.widget.ProgressView;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class ManagementFragment extends BasicFragment implements ManagementView {
     private ArrayList<ParkingInfo> arrayList;
     private RecyclerView recyclerView;
-    private ParkingManagementAdapter parkingManagementAdapter;
+    private ManagementAdapter managementAdapter;
     private ProgressView progressView;
 
     private ManagementPresenter presenter;
@@ -54,8 +54,8 @@ public class ManagementFragment extends BasicFragment implements ManagementView 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         arrayList = new ArrayList<>();
-        parkingManagementAdapter = new ParkingManagementAdapter(getContext(), arrayList);
-        recyclerView.setAdapter(parkingManagementAdapter);
+        managementAdapter = new ManagementAdapter(getContext(), arrayList);
+        recyclerView.setAdapter(managementAdapter);
     }
 
     private void initProgressView(View view) {
@@ -105,7 +105,7 @@ public class ManagementFragment extends BasicFragment implements ManagementView 
     @Override
     public void onNetworkDisable() {
         progressView.setRefreshing(false);
-        progressView.updateData(R.mipmap.icon_parking, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
+        progressView.updateData(R.mipmap.ic_no_internet, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
         progressView.showData();
     }
 
@@ -124,7 +124,7 @@ public class ManagementFragment extends BasicFragment implements ManagementView 
 
     @Override
     public void onGetParkingInfoSuccess(ParkingInfo parkingInfo) {
-        parkingManagementAdapter.addNewItem(parkingInfo);
+        managementAdapter.addNewItem(parkingInfo);
         checkListData();
     }
 

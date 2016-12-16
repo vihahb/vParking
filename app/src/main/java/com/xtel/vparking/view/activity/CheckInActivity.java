@@ -49,7 +49,7 @@ public class CheckInActivity extends BasicActivity implements CheckInView {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         arrayList = new ArrayList<>();
-        CheckInAdapter adapter = new CheckInAdapter(this, arrayList, this);
+        CheckInAdapter adapter = new CheckInAdapter(arrayList, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -98,9 +98,14 @@ public class CheckInActivity extends BasicActivity implements CheckInView {
     }
 
     @Override
+    public void showShortToast(String message) {
+        super.showShortToast(message);
+    }
+
+    @Override
     public void onNetworkDisable() {
         progressView.setRefreshing(false);
-        progressView.updateData(R.mipmap.icon_parking, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
+        progressView.updateData(R.mipmap.ic_no_internet, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
         progressView.showData();
     }
 

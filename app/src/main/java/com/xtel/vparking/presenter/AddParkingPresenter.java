@@ -15,6 +15,7 @@ import com.xtel.vparking.callback.RequestWithStringListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.Error;
@@ -24,7 +25,6 @@ import com.xtel.vparking.model.entity.Prices;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.Task;
-import com.xtel.vparking.view.activity.AddParkingActivity;
 import com.xtel.vparking.view.activity.inf.AddParkingView;
 
 import java.util.ArrayList;
@@ -44,6 +44,11 @@ public class AddParkingPresenter {
     }
 
     public void takePicture(FragmentManager fragmentManager) {
+        if (!NetWorkInfo.isOnline(view.getActivity())) {
+            view.showShortToast(view.getActivity().getString(R.string.no_internet));
+            return;
+        }
+
         TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(view.getActivity())
                 .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
                     @Override
@@ -76,6 +81,11 @@ public class AddParkingPresenter {
     public void validateData(View _view, ArrayList<Pictures> arrayList_picture, String parking_name, PlaceModel placeModel,
                              int transport_type, String total_place, String begin_time, String end_time,
                              ArrayList<Prices> arrayList_price) {
+
+        if (NetWorkInfo.isOnline(view.getActivity())) {
+            view.showShortToast(view.getActivity().getString(R.string.no_internet));
+            return;
+        }
 
         if (arrayList_picture.size() == 0) {
             view.onValidateError(_view, view.getActivity().getString(R.string.loi_chonanh));

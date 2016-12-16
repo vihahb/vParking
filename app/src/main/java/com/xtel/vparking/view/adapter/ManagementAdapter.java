@@ -21,11 +21,11 @@ import java.util.ArrayList;
  * Created by Lê Công Long Vũ on 11/5/2016.
  */
 
-public class ParkingManagementAdapter extends RecyclerView.Adapter<ParkingManagementAdapter.ViewHolder> {
+public class ManagementAdapter extends RecyclerView.Adapter<ManagementAdapter.ViewHolder> {
     private Context context;
     private ArrayList<ParkingInfo> arrayList;
 
-    public ParkingManagementAdapter(Context context, ArrayList<ParkingInfo> arrayList) {
+    public ManagementAdapter(Context context, ArrayList<ParkingInfo> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
     }

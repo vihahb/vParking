@@ -112,9 +112,14 @@ public class VerhicleFragment extends BasicFragment implements VerhicleView {
     }
 
     @Override
+    public void showShortToast(String message) {
+        super.showShortToast(message);
+    }
+
+    @Override
     public void onNetworkDisable() {
         progressView.setRefreshing(false);
-        progressView.updateData(R.mipmap.icon_parking, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
+        progressView.updateData(R.mipmap.ic_no_internet, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
         progressView.showData();
     }
 

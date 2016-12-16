@@ -36,8 +36,6 @@ public class CheckedFragment extends BasicFragment implements CheckedView {
     private ArrayList<CheckIn> arrayList;
     private ProgressView progressView;
 
-    private int PARKING_ID = -1;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,7 +58,7 @@ public class CheckedFragment extends BasicFragment implements CheckedView {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         arrayList = new ArrayList<>();
-        adapter = new CheckedAdapter(getActivity(), arrayList, this);
+        adapter = new CheckedAdapter(arrayList, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -118,9 +116,14 @@ public class CheckedFragment extends BasicFragment implements CheckedView {
     }
 
     @Override
+    public void showShortToast(String message) {
+        super.showShortToast(message);
+    }
+
+    @Override
     public void onNetworkDisable() {
         progressView.setRefreshing(false);
-        progressView.updateData(R.mipmap.icon_parking, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
+        progressView.updateData(R.mipmap.ic_no_internet, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
         progressView.showData();
     }
 
@@ -143,13 +146,6 @@ public class CheckedFragment extends BasicFragment implements CheckedView {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (PARKING_ID != -1)
-            HomeActivity.getInstance().viewParkingSelected(PARKING_ID);
-    }
-
-    @Override
     public void onDestroy() {
         presenter.destroyView();
         super.onDestroy();
@@ -163,14 +159,7 @@ public class CheckedFragment extends BasicFragment implements CheckedView {
                     String transaction = data.getStringExtra(CHECKED_ID);
                     removeVerhicle(transaction);
                 }
-            } else if (resultCode == RESULT_FIND) {
-                if (data != null) {
-                    final int id = data.getIntExtra(Constants.ID_PARKING, -1);
-                    PARKING_ID = id;
-                    Log.e("checked", "result id is " + id);
-                }
-            } else
-                PARKING_ID = -1;
+            }
         }
     }
 }

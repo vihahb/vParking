@@ -2,7 +2,6 @@ package com.xtel.vparking.view.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 import com.google.zxing.Result;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.DialogListener;
-import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.presenter.ScanQrPresenter;
 import com.xtel.vparking.utils.JsonParse;
@@ -147,7 +146,10 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
 
     @Override
     public void handleResult(Result result) {
-        presenter.startCheckIn(edt_gift_code.getText().toString(), result.getText());
+        if (NetWorkInfo.isOnline(ScanQrActivity.this))
+            presenter.startCheckIn(edt_gift_code.getText().toString(), result.getText());
+        else
+            showShortToast(getString(R.string.no_internet));
     }
 
     @Override

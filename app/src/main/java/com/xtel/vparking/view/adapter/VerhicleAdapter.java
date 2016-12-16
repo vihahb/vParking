@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xtel.vparking.R;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.Verhicle;
 import com.xtel.vparking.view.activity.inf.VerhicleView;
 
@@ -32,7 +33,6 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.activity = activity;
         this.arrayList = arrayList;
         this.verhicleView = verhicleView;
-        Toast.makeText(activity, "change", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -73,6 +73,11 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             view.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (NetWorkInfo.isOnline(verhicleView.getActivity())) {
+                        verhicleView.showShortToast(verhicleView.getActivity().getString(R.string.no_internet));
+                        return;
+                    }
+
                     verhicleView.onItemClicked(position, verhicle);
                 }
             });

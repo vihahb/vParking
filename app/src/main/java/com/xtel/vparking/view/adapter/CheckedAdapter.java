@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xtel.vparking.R;
+import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.CheckIn;
 import com.xtel.vparking.view.activity.inf.CheckedView;
 
@@ -18,12 +19,10 @@ import java.util.ArrayList;
  */
 
 public class CheckedAdapter extends RecyclerView.Adapter<CheckedAdapter.ViewHolder> {
-    private Activity activity;
     private ArrayList<CheckIn> arrayList;
     private CheckedView checkedView;
 
-    public CheckedAdapter(Activity activity, ArrayList<CheckIn> arrayList, CheckedView checkedView) {
-        this.activity = activity;
+    public CheckedAdapter(ArrayList<CheckIn> arrayList, CheckedView checkedView) {
         this.arrayList = arrayList;
         this.checkedView = checkedView;
     }
@@ -52,6 +51,11 @@ public class CheckedAdapter extends RecyclerView.Adapter<CheckedAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (NetWorkInfo.isOnline(checkedView.getActivity())) {
+                    checkedView.showShortToast(checkedView.getActivity().getString(R.string.no_internet));
+                    return;
+                }
+
                 checkedView.onItemClicked(checkIn);
             }
         });

@@ -52,6 +52,7 @@
     <string name="parking_get_data" tools:ignore="TypographyEllipsis">Đang tải dữ liệu...</string>
     <string name="loi_coloi">Có lỗi xảy ra</string>
     <string name="get_session_success">Lấy phiên mới thành công</string>
+    <string name="not_update">Chưa cập nhật</string>
 
     <!-- Verhicle -->
     <string name="verhicle_name">Tên phương tiện</string>

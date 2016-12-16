@@ -3,11 +3,13 @@
     <item android:state_pressed="true">
         <shape>
             <solid android:color="#F2F2F2" />
+            <corners android:radius="@dimen/size_2" />
         </shape>
     </item>
     <item>
         <shape>
             <solid android:color="@android:color/transparent" />
+            <corners android:radius="@dimen/size_2" />
         </shape>
     </item>
 </selector>
