@@ -43,9 +43,9 @@ public class AddParkingPresenter {
         this.view = view;
     }
 
-    public void takePicture(FragmentManager fragmentManager) {
+    public void takePicture(FragmentManager fragmentManager, View _view) {
         if (!NetWorkInfo.isOnline(view.getActivity())) {
-            view.showShortToast(view.getActivity().getString(R.string.no_internet));
+            view.onValidateError(_view, view.getActivity().getString(R.string.no_internet));
             return;
         }
 
@@ -82,11 +82,6 @@ public class AddParkingPresenter {
                              int transport_type, String total_place, String begin_time, String end_time,
                              ArrayList<Prices> arrayList_price) {
 
-        if (!NetWorkInfo.isOnline(view.getActivity())) {
-            view.showShortToast(view.getActivity().getString(R.string.no_internet));
-            return;
-        }
-
         if (arrayList_picture.size() == 0) {
             view.onValidateError(_view, view.getActivity().getString(R.string.loi_chonanh));
         } else if (parking_name.isEmpty()) {
@@ -100,6 +95,11 @@ public class AddParkingPresenter {
         } else if (!checkListPrice(arrayList_price)) {
             view.onValidateError(_view, view.getActivity().getString(R.string.error_choose_money_price));
         } else {
+            if (!NetWorkInfo.isOnline(view.getActivity())) {
+                view.onValidateError(_view, view.getActivity().getString(R.string.no_internet));
+                return;
+            }
+
             RESP_Parking_Info object = new RESP_Parking_Info();
             object.setLat(placeModel.getLatitude());
             object.setLng(placeModel.getLongtitude());

@@ -16,7 +16,7 @@ import com.xtel.vparking.R;
 
 public class ProgressView {
     private View view;
-    private LinearLayout layout_data, layout_pro;
+    private LinearLayout layout_data;
     private ImageView imageView;
     private TextView textView_data, textView_pro;
     private ProgressBar progressBar;
@@ -25,7 +25,6 @@ public class ProgressView {
     public ProgressView(Activity activity, View view) {
         if (view == null) {
             layout_data = (LinearLayout) activity.findViewById(R.id.layout_progress_view_data);
-            layout_pro = (LinearLayout) activity.findViewById(R.id.layout_progress_view_pro);
             imageView = (ImageView) activity.findViewById(R.id.img_progress_view_data);
             textView_data = (TextView) activity.findViewById(R.id.txt_progress_view_data);
             textView_pro = (TextView) activity.findViewById(R.id.txt_progress_view_pro);
@@ -33,7 +32,6 @@ public class ProgressView {
             swipeRefreshLayout = (SwipeRefreshLayout) activity.findViewById(R.id.swipe_progress_view);
         } else {
             layout_data = (LinearLayout) view.findViewById(R.id.layout_progress_view_data);
-            layout_pro = (LinearLayout) view.findViewById(R.id.layout_progress_view_pro);
             imageView = (ImageView) view.findViewById(R.id.img_progress_view_data);
             textView_data = (TextView) view.findViewById(R.id.txt_progress_view_data);
             textView_pro = (TextView) view.findViewById(R.id.txt_progress_view_pro);
@@ -87,8 +85,8 @@ public class ProgressView {
     public void showData() {
         if (view != null && view.getVisibility() == View.VISIBLE)
             view.setVisibility(View.GONE);
-        if (layout_pro.getVisibility() == View.VISIBLE)
-            layout_pro.setVisibility(View.GONE);
+        if (layout_data.getVisibility() == View.VISIBLE)
+            layout_data.setVisibility(View.GONE);
         layout_data.setVisibility(View.VISIBLE);
     }
 
@@ -99,13 +97,14 @@ public class ProgressView {
             layout_data.setVisibility(View.GONE);
     }
 
-//    public void showProgressbar() {
-//        if (view != null && view.getVisibility() == View.VISIBLE)
-//            view.setVisibility(View.GONE);
-//        if (layout_data.getVisibility() == View.VISIBLE)
-//            layout_data.setVisibility(View.GONE);
-//        layout_pro.setVisibility(View.VISIBLE);
-//    }
+    public void show() {
+        if (layout_data.getVisibility() == View.GONE)
+            layout_data.setVisibility(View.VISIBLE);
+        if (swipeRefreshLayout.getVisibility() == View.GONE)
+            swipeRefreshLayout.setVisibility(View.VISIBLE);
+        if (view != null)
+            view.setVisibility(View.GONE);
+    }
 
     public void hide() {
         if (layout_data.getVisibility() == View.VISIBLE)

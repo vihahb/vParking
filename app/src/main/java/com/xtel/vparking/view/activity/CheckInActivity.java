@@ -91,7 +91,7 @@ public class CheckInActivity extends BasicActivity implements CheckInView {
         progressView.setRefreshing(false);
         if (arrayList.size() == 0) {
             progressView.updateData(R.mipmap.icon_parking, "Không có phương tiện nào", getString(R.string.touch_to_try_again));
-            progressView.showData();
+            progressView.show();
         } else {
             recyclerView.getAdapter().notifyDataSetChanged();
             progressView.hide();

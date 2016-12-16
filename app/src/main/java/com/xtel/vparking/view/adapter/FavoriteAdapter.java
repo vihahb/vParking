@@ -212,8 +212,7 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
                 }
             }
 
-            if (arrayList.size() == 0)
-                view.onGetParkingFavoriteSuccess(arrayList);
+            view.onRemoveItemSuccess();
         }
     }
 

@@ -7,19 +7,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.xtel.vparking.R;
-import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.CheckIn;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.presenter.CheckedPresenter;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.CheckOutActivity;
-import com.xtel.vparking.view.activity.HomeActivity;
 import com.xtel.vparking.view.activity.inf.CheckedView;
 import com.xtel.vparking.view.adapter.CheckedAdapter;
 import com.xtel.vparking.view.widget.ProgressView;
@@ -39,7 +36,7 @@ public class CheckedFragment extends BasicFragment implements CheckedView {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_verhicle_checked, container, false);
+        return inflater.inflate(R.layout.fragment_checked, container, false);
     }
 
     @Override
@@ -99,7 +96,7 @@ public class CheckedFragment extends BasicFragment implements CheckedView {
         progressView.setRefreshing(false);
         if (arrayList.size() == 0) {
             progressView.updateData(R.mipmap.icon_parking, "Không có phương tiện nào", getString(R.string.touch_to_try_again));
-            progressView.showData();
+            progressView.show();
         } else {
             recyclerView.getAdapter().notifyDataSetChanged();
             progressView.hide();

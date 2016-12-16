@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,12 +91,12 @@ public class FavoriteFragment extends BasicFragment implements FavoriteView {
 
     private void checkListData() {
         progressView.setRefreshing(false);
-        if (arrayList.size() == 0) {
-            progressView.updateData(R.mipmap.icon_parking, "Không có bãi đỗ yêu thích nào", getString(R.string.touch_to_try_again));
-            progressView.showData();
-        } else {
+        if (arrayList.size() > 0) {
             recyclerView.getAdapter().notifyDataSetChanged();
             progressView.hide();
+        } else {
+            progressView.updateData(R.mipmap.icon_parking, "Không có bãi đỗ yêu thích nào", getString(R.string.touch_to_try_again));
+            progressView.show();
         }
     }
 
@@ -104,6 +105,11 @@ public class FavoriteFragment extends BasicFragment implements FavoriteView {
         progressView.setRefreshing(false);
         progressView.updateData(R.mipmap.ic_no_internet, getString(R.string.no_internet), getString(R.string.touch_to_try_again));
         progressView.showData();
+    }
+
+    @Override
+    public void onRemoveItemSuccess() {
+        checkListData();
     }
 
     @Override

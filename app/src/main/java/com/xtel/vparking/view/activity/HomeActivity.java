@@ -228,13 +228,13 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
     }
 
     public void viewParkingSelected(int id) {
-        replaceHomeFragment();
         PARKING_ID = id;
+        replaceHomeFragment();
     }
 
     private void replaceHomeFragment() {
-        layout_search.setVisibility(View.VISIBLE);
         replaceFragment(R.id.home_layout_content, new HomeFragment(), HOME_FRAGMENT);
+        layout_search.setVisibility(View.VISIBLE);
         CURRENT_FRAGMENT = HOME_FRAGMENT;
 
         actionBar.setTitle(getString(R.string.title_activity_home));
@@ -315,7 +315,7 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
                     startActivityAndFinish(LoginActivity.class);
                 }
             }
-        }, 200);
+        }, 300);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -339,13 +339,14 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
         if (id == R.id.nav_parking_checkin) {
             startActivity(CheckInActivity.class);
         } else if (id == R.id.nav_parking_add) {
-            if (NetWorkInfo.isOnline(HomeActivity.this)) {
-                if (CURRENT_FRAGMENT.equals(MANAGER_FRAGMENT))
-                    startActivityForResult(AddParkingActivity.class, Constants.ADD_PARKING_REQUEST);
-                else if (CURRENT_FRAGMENT.equals(VERHICLE_FRAGMENT))
+            if (CURRENT_FRAGMENT.equals(MANAGER_FRAGMENT))
+                startActivityForResult(AddParkingActivity.class, Constants.ADD_PARKING_REQUEST);
+            else if (CURRENT_FRAGMENT.equals(VERHICLE_FRAGMENT)) {
+                if (NetWorkInfo.isOnline(HomeActivity.this)) {
                     startActivityForResult(AddVerhicleActivity.class, VerhicleFragment.REQUEST_ADD_VERHICLE);
-            } else
-                showShortToast(getString(R.string.no_internet));
+                } else
+                    showShortToast(getString(R.string.no_internet));
+            }
         }
 
         return super.onOptionsItemSelected(item);
