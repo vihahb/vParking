@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_check_out"
@@ -61,9 +61,7 @@
                     android:paddingStart="@dimen/size_16"
                     android:text="@string/check_out"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/font_13"
-                    app:elevation="0dp"
-                    app:stateListAnimator="@null" />
+                    android:textSize="@dimen/font_13" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </ScrollView>

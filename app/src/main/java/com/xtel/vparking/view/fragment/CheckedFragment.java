@@ -107,6 +107,7 @@ public class CheckedFragment extends BasicFragment implements CheckedView {
         for (int i = (arrayList.size() - 1); i >= 0; i--) {
             if (arrayList.get(i).getTransaction().equals(transaction)) {
                 adapter.removeItem(i);
+                checkListData();
                 return;
             }
         }
