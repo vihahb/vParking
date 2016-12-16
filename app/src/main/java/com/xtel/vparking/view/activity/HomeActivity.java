@@ -362,10 +362,7 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
             startActivity(ProfileActivitys.class);
             drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.home_btn_active) {
-            if (NetWorkInfo.isOnline(HomeActivity.this))
-                homePresenter.activeParkingMaster();
-            else
-                showShortToast(getString(R.string.no_internet));
+            homePresenter.activeParkingMaster();
         } else if (id == R.id.header_img_qr) {
             homePresenter.showQrCode();
         }

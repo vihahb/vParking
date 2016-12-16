@@ -16,6 +16,7 @@ import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.MyApplication;
+import com.xtel.vparking.view.activity.HomeActivity;
 import com.xtel.vparking.view.activity.inf.HomeView;
 
 import java.io.UnsupportedEncodingException;
@@ -50,7 +51,10 @@ public class HomePresenter {
     }
 
     public void activeParkingMaster() {
-        homeView.showShortToast("get parking");
+        if (!NetWorkInfo.isOnline(homeView.getActivity())) {
+            homeView.showShortToast(homeView.getActivity().getString(R.string.no_internet));
+            return;
+        }
 
         try {
             String url = Constants.SERVER_PARKING + Constants.PARKING_ACTIVE;
