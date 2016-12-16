@@ -128,6 +128,10 @@ public class ProgressView {
         swipeRefreshLayout.setRefreshing(refresh);
     }
 
+    public void disableSwipe() {
+        swipeRefreshLayout.setEnabled(false);
+    }
+
     public void onSwipeLayoutPost(Runnable runnable) {
         swipeRefreshLayout.post(runnable);
     }

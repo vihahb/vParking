@@ -374,6 +374,9 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
 
         if (img_avatar != null && txt_name != null)
             homePresenter.updateUserData();
+
+        if (PARKING_ID != -1)
+            viewParkingSelected(PARKING_ID);
     }
 
     @Override
@@ -412,8 +415,7 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
         } else if (CURRENT_FRAGMENT.equals(CHECKIN_FRAGMENT)) {
             if (requestCode == CheckedFragment.REQUEST_CHECKED && resultCode == CheckedFragment.RESULT_FIND) {
                 if (data != null) {
-                    int id = data.getIntExtra(Constants.ID_PARKING, -1);
-                    viewParkingSelected(id);
+                    PARKING_ID = data.getIntExtra(Constants.ID_PARKING, -1);
                 }
             } else {
                 Fragment fragment3 = getSupportFragmentManager().findFragmentByTag(CHECKIN_FRAGMENT);
