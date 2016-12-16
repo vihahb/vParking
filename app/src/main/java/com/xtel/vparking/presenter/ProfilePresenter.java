@@ -71,7 +71,6 @@ public class ProfilePresenter {
                 if (error.getCode() == 2) {
                     getNewSessionAvatar(avatar);
                 } else
-//                    view.showShortToast(view.getActivity().getString(R.string.update_message_failed) + error);
                 Log.e("Update code: ", String.valueOf(error.getCode()));
                 Log.e("Update message: ", error.getMessage());
             }
@@ -109,7 +108,6 @@ public class ProfilePresenter {
                 if (error.getCode() == 2) {
                     getNewSessionUser(name, email, birthday, gender, phone);
                 } else
-//                    view.showShortToast(view.getActivity().getString(R.string.update_message_failed) + error);
                 Log.e("Update code: ", String.valueOf(error.getCode()));
                 Log.e("Update message: ", error.getMessage());
             }
