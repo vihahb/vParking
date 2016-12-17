@@ -70,7 +70,6 @@ public class BottomSheet {
 
         initView(view);
         initViewPager(view);
-        header_height = view_header.getHeight();
     }
 
     private void initView(View view) {
@@ -211,6 +210,7 @@ public class BottomSheet {
         txt_header_address.setText(resp_parking_info.getAddress());
         txt_header_empty.setText(Constants.getPlaceNumberAndTotal(context, resp_parking_info.getEmpty_number(), resp_parking_info.getTotal_place()));
         txt_header_money.setText((resp_parking_info.getPrices().get(0).getPrice() + " K"));
+        header_height = view_header.getHeight();
     }
 
     public void setMarginHeader(float view) {
