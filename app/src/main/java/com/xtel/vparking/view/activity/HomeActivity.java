@@ -245,7 +245,7 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
     }
 
     private void replaceManagementFragment() {
-        layout_search.setVisibility(View.GONE);
+        layout_search.setVisibility(View.INVISIBLE);
         replaceFragment(R.id.home_layout_content, new ManagementFragment(), MANAGER_FRAGMENT);
         CURRENT_FRAGMENT = MANAGER_FRAGMENT;
 
@@ -257,7 +257,7 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
     }
 
     private void replaceFavoriteFragment() {
-        layout_search.setVisibility(View.GONE);
+        layout_search.setVisibility(View.INVISIBLE);
         replaceFragment(R.id.home_layout_content, new FavoriteFragment(), FAVORITE_FRAGMENT);
         CURRENT_FRAGMENT = FAVORITE_FRAGMENT;
 
@@ -269,7 +269,7 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
     }
 
     private void replaceVerhicleFragment() {
-        layout_search.setVisibility(View.GONE);
+        layout_search.setVisibility(View.INVISIBLE);
         replaceFragment(R.id.home_layout_content, new VerhicleFragment(), VERHICLE_FRAGMENT);
         CURRENT_FRAGMENT = VERHICLE_FRAGMENT;
 
@@ -281,7 +281,7 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
     }
 
     private void replaceCheckInFragment() {
-        layout_search.setVisibility(View.GONE);
+        layout_search.setVisibility(View.INVISIBLE);
         replaceFragment(R.id.home_layout_content, new CheckedFragment(), CHECKIN_FRAGMENT);
         CURRENT_FRAGMENT = CHECKIN_FRAGMENT;
 
