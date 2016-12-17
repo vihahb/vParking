@@ -27,10 +27,12 @@ import com.facebook.accountkit.ui.AccountKitActivity;
 import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestWithStringListener;
+import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.Profile;
 import com.xtel.vparking.model.entity.UserModel;
 import com.xtel.vparking.presenter.ProfilePresenter;
+import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.utils.Task;
 import com.xtel.vparking.view.activity.inf.ProfileView;
 
@@ -132,7 +134,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
     private void initViewData(Context context) {
         UserModel userModel = profilePresenter.initData();
 
-//        avatar = userModel.getAvatar();
+        avatar = userModel.getAvatar();
         full_name = userModel.getFullname();
         gender = userModel.getGender();
         email = userModel.getEmail();
@@ -459,6 +461,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
 
                     }
                 });
+                SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_AVATAR, avatar);
             } else if (type == 3){
                 profilePresenter.onUpdatePhone(getApplicationContext(), AccountKitActivity.class);
             }
