@@ -11,8 +11,10 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +31,7 @@ import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
+import com.xtel.vparking.view.adapter.ViewImageAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,8 +41,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import com.xtel.vparking.view.adapter.ViewImageAdapter;
 
 /**
  * Created by Lê Công Long Vũ on 11/24/2016.
@@ -54,12 +55,14 @@ public class BottomSheet {
     private TextView txt_address, txt_user_name, txt_user_age, txt_time, txt_parking_name, txt_cho_trong, txt_money, txt_dat_cho, txt_picture_count;
     private RatingBar ratingBar;
     private Button btn_danduong;
-    private View view_header;
+    private LinearLayout view_header, view_content;
     private ArrayList<String> arrayList_bottom_sheet;
     private boolean addingToFavorite;
 
     private ImageButton img_header_favorite, img_header_close;
     private TextView txt_header_name, txt_header_time, txt_header_address, txt_header_empty, txt_header_money;
+
+    private int header_height;
 
     public BottomSheet(Context context, View view, FragmentManager fragmentManager) {
         this.context = context;
@@ -67,10 +70,12 @@ public class BottomSheet {
 
         initView(view);
         initViewPager(view);
+        header_height = view_header.getHeight();
     }
 
     private void initView(View view) {
-        view_header = (View) view.findViewById(R.id.layout_dialog_bottom_sheet_header);
+        view_header = (LinearLayout) view.findViewById(R.id.layout_dialog_bottom_sheet_header);
+        view_content = (LinearLayout) view.findViewById(R.id.layout_dialog_bottom_sheet_content);
         img_header_favorite = (ImageButton) view.findViewById(R.id.img_dialog_bottom_sheet_header_favorite);
         img_header_close = (ImageButton) view.findViewById(R.id.img_dialog_bottom_sheet_header_close);
         img_avatar = (ImageView) view.findViewById(R.id.img_dialog_bottom_sheet_avatar);
@@ -201,14 +206,19 @@ public class BottomSheet {
     }
 
     private void initHeader() {
-        if (view_header.getVisibility() == View.GONE)
-            view_header.setVisibility(View.VISIBLE);
-
         txt_header_name.setText(resp_parking_info.getParking_name());
         txt_header_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
         txt_header_address.setText(resp_parking_info.getAddress());
         txt_header_empty.setText(Constants.getPlaceNumberAndTotal(context, resp_parking_info.getEmpty_number(), resp_parking_info.getTotal_place()));
         txt_header_money.setText((resp_parking_info.getPrices().get(0).getPrice() + " K"));
+    }
+
+    public void setMarginHeader(float view) {
+        int _view = header_height - ((int) (header_height * view));
+
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view_content.getLayoutParams();
+        params.setMargins(0, _view, 0, 0);
+        view_content.setLayoutParams(params);
     }
 
     private void setUpFavorite() {
@@ -221,17 +231,7 @@ public class BottomSheet {
         }
     }
 
-    public void hideHeader() {
-        view_header.setVisibility(View.GONE);
-    }
-
-    public void showHeader() {
-        view_header.setVisibility(View.VISIBLE);
-    }
-
     public void clearData() {
-        showHeader();
-
         img_header_close.setVisibility(View.GONE);
         img_header_favorite.setVisibility(View.VISIBLE);
 

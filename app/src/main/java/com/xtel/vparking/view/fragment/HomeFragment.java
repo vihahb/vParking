@@ -89,7 +89,7 @@ public class HomeFragment extends BasicFragment implements
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return  inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
@@ -158,19 +158,12 @@ public class HomeFragment extends BasicFragment implements
 
                     if (!isCanLoadMap)
                         closeGuid();
-                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    nestedScrollView.scrollTo(0, 0);
-                    dialogBottomSheet.showHeader();
-//                    isScrollDown = false;
-                } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    dialogBottomSheet.hideHeader();
-//                    isScrollDown = true;
                 }
             }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
+                dialogBottomSheet.setMarginHeader(slideOffset);
             }
         });
 
@@ -221,7 +214,6 @@ public class HomeFragment extends BasicFragment implements
         dialogBottomSheet.onContentCliecked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogBottomSheet.hideHeader();
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
@@ -281,26 +273,11 @@ public class HomeFragment extends BasicFragment implements
     }
 
     public void searchPlace(Place place) {
-//        showShortToast("change");
-//        SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment) getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-//        autocompleteFragment.setBoundsBias(new LatLngBounds(new LatLng(20.725517, 104.634451), new LatLng(21.937487, 106.759183)));
-//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-//            @Override
-//            public void onPlaceSelected(Place place) {
-        // TODO: Get info about the selected place.
         if (mMap != null) {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude), 15));
             if (!isFindMyLocation)
                 isFindMyLocation = true;
         }
-//            }
-//
-//            @Override
-//            public void onError(Status status) {
-//                // TODO: Handle the error.
-//                Log.e(this.getClass().getSimpleName(), "error search " + status.getStatusMessage());
-//            }
-//        });
     }
 
     private boolean checkPermission() {
