@@ -1,6 +1,7 @@
 package com.xtel.vparking.presenter;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
@@ -26,7 +27,9 @@ import com.xtel.vparking.model.entity.Prices;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.Task;
+import com.xtel.vparking.view.MyApplication;
 import com.xtel.vparking.view.activity.inf.AddParkingView;
+import com.xtel.vparking.view.fragment.ManagementFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -103,7 +106,13 @@ public class AddParkingPresenter extends BasicPresenter {
         new Task.ConvertImage(view.getActivity(), true, new RequestWithStringListener() {
             @Override
             public void onSuccess(String url) {
-                view.onPostPictureSuccess(url);
+                if (object == null)
+                    view.onPostPictureSuccess(url);
+                else {
+                    object.getPictures().clear();
+                    object.getPictures().add(new Pictures(-1, url));
+                    addPicture();
+                }
             }
 
             @Override
@@ -120,6 +129,37 @@ public class AddParkingPresenter extends BasicPresenter {
         } else {
             view.onDeletePictureSuccess();
         }
+    }
+
+    private void addPicture() {
+        ParkingModel.getInstanse().addPicture(JsonHelper.toJson(object), new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+            @Override
+            public void onSuccess(RESP_Parking_Info obj) {
+                view.onAddPictureSuccess(object.getPictures().get((object.getPictures().size() - 1)).getUrl());
+            }
+
+            @Override
+            public void onError(Error error) {
+                if (error.getCode() == 2)
+                    getNewSessionAddPicture();
+                else
+                    view.onAddPictureError(error);
+            }
+        });
+    }
+
+    private void getNewSessionAddPicture() {
+        GetNewSession.getNewSession(MyApplication.context, new RequestNoResultListener() {
+            @Override
+            public void onSuccess() {
+                addPicture();
+            }
+
+            @Override
+            public void onError() {
+                view.onAddPictureError(new Error(2, "", view.getActivity().getString(R.string.error)));
+            }
+        });
     }
 
     public void deletePrice(final int position, final int id) {
@@ -262,8 +302,10 @@ public class AddParkingPresenter extends BasicPresenter {
             public void onError(Error error) {
                 if (error.getCode() == 2)
                     getNewSessionAddParking(resp_parking_info);
-                else
+                else {
+                    object = null;
                     view.onAddParkingError(error);
+                }
             }
         });
     }
@@ -277,6 +319,7 @@ public class AddParkingPresenter extends BasicPresenter {
 
             @Override
             public void onError() {
+                object = null;
                 view.onAddParkingError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
             }
         });
@@ -353,5 +396,20 @@ public class AddParkingPresenter extends BasicPresenter {
     @Override
     public void getSessionError() {
         view.onDeletePictureError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
+    }
+
+    public void backToManagement(ArrayList<Pictures> picturesArrayList, ArrayList<Prices> pricesArrayList) {
+        if (object != null) {
+            object.getPictures().clear();
+            object.getPrices().clear();
+            object.getPictures().addAll(picturesArrayList);
+            object.getPrices().addAll(pricesArrayList);
+
+            Intent intent = new Intent();
+            intent.putExtra(ManagementFragment.PARKING_MODEL, object);
+            view.getActivity().setResult(ManagementFragment.RESULT_UPDATE, intent);
+        }
+
+        view.getActivity().finish();
     }
 }

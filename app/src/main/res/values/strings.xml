@@ -137,6 +137,7 @@
     <string name="parking_xemay_xedap">Loại bãi đỗ: Xe máy - Xe đạp</string>
     <string name="parking_xeoto_xemay">Loại bãi đỗ: Xe máy - Xe ô tô</string>
     <string name="parking_all">Loại bãi đỗ: Tất cả</string>
+    <string name="update">Cập nhật</string>
 
     <string-array name="add_transport">
         <item>Loại bãi đỗ</item>

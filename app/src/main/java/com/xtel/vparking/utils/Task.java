@@ -208,6 +208,7 @@ public class Task {
                             Log.e("tb_up_error", e.toString());
 //                            dialogProgressBar.hideProgressBar();
                             Toast.makeText(context, context.getString(R.string.error_server_request), Toast.LENGTH_SHORT).show();
+                            requestWithStringListener.onError();
                         } else {
 //                            dialogProgressBar.hideProgressBar();
                             Log.e("tb_up_result", result);

@@ -155,33 +155,6 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            setResult(8);
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlaceAutocomplete.getPlace(this, data);
-
-                if (placeModel == null)
-                    placeModel = new PlaceModel();
-                placeModel.setAddress(place.getAddress().toString());
-                placeModel.setLatitude(place.getLatLng().latitude);
-                placeModel.setLongtitude(place.getLatLng().longitude);
-
-                edt_address.setText(place.getAddress());
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
     public void onClick(View v) {
         int id = v.getId();
 
@@ -229,7 +202,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
             img_position = (viewPager.getCurrentItem() + 1) + "/" + arrayList_picture.size();
         txt_image_number.setText(img_position);
 
-        btn_action.setText("Cập nhật");
+        btn_action.setText(getString(R.string.update));
     }
 
     @Override
@@ -280,6 +253,42 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     }
 
     @Override
+    public void onPostPictureError(String error) {
+        closeProgressBar();
+        showShortToast(error);
+        img_load.setImageResource(R.mipmap.ic_parking_background);
+    }
+
+    @Override
+    public void onAddPictureSuccess(String url) {
+        arrayList_picture.add(new Pictures(-1, url));
+        viewPager.getAdapter().notifyDataSetChanged();
+
+        if (arrayList_picture.size() == 1)
+            txt_image_number.setText("1/1");
+        else {
+            String text = (viewPager.getCurrentItem() + 1) + "/" + arrayList_picture.size();
+            txt_image_number.setText(text);
+        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                img_load.setImageResource(R.mipmap.ic_parking_background);
+            }
+        }, 1000);
+
+        closeProgressBar();
+    }
+
+    @Override
+    public void onAddPictureError(Error error) {
+        closeProgressBar();
+        showShortToast(JsonParse.getCodeMessage(error.getCode(), getString(R.string.error)));
+        img_load.setImageResource(R.mipmap.ic_parking_background);
+    }
+
+    @Override
     public void onDeletePictureSuccess() {
         closeProgressBar();
         arrayList_picture.remove(viewPager.getCurrentItem());
@@ -307,13 +316,6 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     public void onDeletePriceError(Error error) {
         closeProgressBar();
         showShortToast(JsonParse.getCodeMessage(error.getCode(), getString(R.string.error)));
-    }
-
-    @Override
-    public void onPostPictureError(String error) {
-        closeProgressBar();
-        showShortToast(error);
-        img_load.setImageResource(R.mipmap.ic_parking_background);
     }
 
     @Override
@@ -397,5 +399,36 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        presenter.backToManagement(arrayList_picture, arrayList_price);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            presenter.backToManagement(arrayList_picture, arrayList_price);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+
+                if (placeModel == null)
+                    placeModel = new PlaceModel();
+                placeModel.setAddress(place.getAddress().toString());
+                placeModel.setLatitude(place.getLatLng().latitude);
+                placeModel.setLongtitude(place.getLatLng().longitude);
+
+                edt_address.setText(place.getAddress());
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -18,6 +18,8 @@ public interface AddParkingView {
     void onGetDataSuccess(ParkingInfo object);
     void onTakePictureSuccess(Uri uri);
     void onPostPictureSuccess(String url);
+    void onAddPictureSuccess(String url);
+    void onAddPictureError(Error error);
     void onDeletePictureSuccess();
     void onDeletePictureError(Error error);
     void onDeletePriceSuccess(int position);

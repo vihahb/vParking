@@ -38,6 +38,12 @@ public class ParkingModel extends BasicModel {
         requestServer.getApi(url, null, responseHandle);
     }
 
+    public void addPicture(String jsonObject, ResponseHandle responseHandle) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PICTURE;
+        String session = LoginModel.getInstance().getSession();
+        requestServer.postApi(url, jsonObject, session, responseHandle);
+    }
+
     public void deleteParkingPicrute(int id, ResponseHandle responseHandle) {
         String url = Constants.SERVER_PARKING + Constants.PARKING_DELETE_PICTURE + id;
         String session = LoginModel.getInstance().getSession();
