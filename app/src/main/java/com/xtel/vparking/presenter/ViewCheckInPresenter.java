@@ -25,6 +25,7 @@ public class ViewCheckInPresenter {
 
     public ViewCheckInPresenter(IViewCheckIn view, int id) {
         this.view = view;
+        this.id = id;
     }
 
     public void getCheckIn() {
