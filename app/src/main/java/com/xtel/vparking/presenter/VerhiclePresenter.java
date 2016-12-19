@@ -34,7 +34,7 @@ public class VerhiclePresenter {
         this.view = view;
     }
 
-    public void checkInternet() {
+    public void getAllVerhicle() {
         if (!NetWorkInfo.isOnline(view.getActivity())) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -42,12 +42,10 @@ public class VerhiclePresenter {
                     view.onNetworkDisable();
                 }
             }, 500);
-        } else {
-            getAllVerhicle();
-        }
-    }
 
-    private void getAllVerhicle() {
+            return;
+        }
+
         String url = Constants.SERVER_PARKING + Constants.PARKING_VERHICLE;
         String session = LoginModel.getInstance().getSession();
         VerhicleModel.getInstance().getAllVerhicle(url, session, new ResponseHandle<RESP_Verhicle_List>(RESP_Verhicle_List.class) {

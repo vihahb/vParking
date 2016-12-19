@@ -74,7 +74,7 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
                     return;
                 }
 
-                HomeActivity.getInstance().viewParkingSelected(favotire.getId());
+                HomeActivity.getView().onViewParkingSelected(favotire.getId());
             }
         });
 

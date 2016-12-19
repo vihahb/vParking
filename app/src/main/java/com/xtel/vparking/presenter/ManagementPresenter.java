@@ -27,7 +27,7 @@ public class ManagementPresenter {
         this.view = view;
     }
 
-    public void checkInternet() {
+    public void getParkingByUser() {
         if (!NetWorkInfo.isOnline(view.getActivity())) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -35,12 +35,10 @@ public class ManagementPresenter {
                     view.onNetworkDisable();
                 }
             }, 500);
-        } else {
-            getParkingByUser();
-        }
-    }
 
-    private void getParkingByUser() {
+            return;
+        }
+
         String session = LoginModel.getInstance().getSession();
         String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
         ParkingModel.getInstanse().getParkingByUser(url, session, new ResponseHandle<RESP_Parking_Info_List>(RESP_Parking_Info_List.class) {

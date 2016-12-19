@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.view.View;
 
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.RESP_Parking_Info;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public interface AddParkingView {
 
     void showShortToast(String message);
+    void onGetDataSuccess(RESP_Parking_Info object);
     void onTakePictureSuccess(Uri uri);
     void onPostPictureSuccess(String url);
     void onPostPictureError(String error);

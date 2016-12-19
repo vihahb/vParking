@@ -18,8 +18,7 @@ public class ProgressView {
     private View view;
     private LinearLayout layout_data;
     private ImageView imageView;
-    private TextView textView_data, textView_pro;
-    private ProgressBar progressBar;
+    private TextView textView_data;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     public ProgressView(Activity activity, View view) {
@@ -27,15 +26,11 @@ public class ProgressView {
             layout_data = (LinearLayout) activity.findViewById(R.id.layout_progress_view_data);
             imageView = (ImageView) activity.findViewById(R.id.img_progress_view_data);
             textView_data = (TextView) activity.findViewById(R.id.txt_progress_view_data);
-            textView_pro = (TextView) activity.findViewById(R.id.txt_progress_view_pro);
-            progressBar = (ProgressBar) activity.findViewById(R.id.pro_progress_view_pro);
             swipeRefreshLayout = (SwipeRefreshLayout) activity.findViewById(R.id.swipe_progress_view);
         } else {
             layout_data = (LinearLayout) view.findViewById(R.id.layout_progress_view_data);
             imageView = (ImageView) view.findViewById(R.id.img_progress_view_data);
             textView_data = (TextView) view.findViewById(R.id.txt_progress_view_data);
-            textView_pro = (TextView) view.findViewById(R.id.txt_progress_view_pro);
-            progressBar = (ProgressBar) view.findViewById(R.id.pro_progress_view_pro);
             swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_progress_view);
         }
     }
@@ -57,14 +52,6 @@ public class ProgressView {
                 textViewData += "\n" + button;
             this.textView_data.setText(textViewData);
         }
-
-        if (textViewPro == null)
-            this.textView_pro.setVisibility(View.GONE);
-        else
-            this.textView_pro.setText(textViewPro);
-
-        if (color != -1)
-            this.progressBar.getIndeterminateDrawable().setColorFilter(color, android.graphics.PorterDuff.Mode.MULTIPLY);
     }
 
     public void updateData(int imageView, String textView, String button) {

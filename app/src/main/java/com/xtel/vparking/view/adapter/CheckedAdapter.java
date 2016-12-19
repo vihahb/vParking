@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xtel.vparking.R;
+import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.CheckIn;
 import com.xtel.vparking.view.activity.inf.CheckedView;
@@ -46,7 +47,7 @@ public class CheckedAdapter extends RecyclerView.Adapter<CheckedAdapter.ViewHold
 
         holder.txt_name.setText(checkIn.getParking().getAddress());
         holder.txt_plate_number.setText(checkIn.getVehicle().getPlate_number());
-        holder.txt_time.setText(checkIn.getCheckin_time());
+        holder.txt_time.setText(Constants.convertDate(checkIn.getCheckin_time()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

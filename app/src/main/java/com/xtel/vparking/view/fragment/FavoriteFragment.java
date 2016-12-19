@@ -64,29 +64,29 @@ public class FavoriteFragment extends BasicFragment implements FavoriteView {
         progressView.onLayoutClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkInternet();
+                getParkingFavorite();
             }
         });
 
         progressView.onRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                checkInternet();
+                getParkingFavorite();
             }
         });
 
         progressView.onSwipeLayoutPost(new Runnable() {
             @Override
             public void run() {
-                checkInternet();
+                getParkingFavorite();
             }
         });
     }
 
-    private void checkInternet() {
+    private void getParkingFavorite() {
         progressView.hideData();
         progressView.setRefreshing(true);
-        presenter.checkInternet();
+        presenter.getParkingFavorite();
     }
 
     private void checkListData() {

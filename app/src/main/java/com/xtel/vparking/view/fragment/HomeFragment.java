@@ -159,6 +159,8 @@ public class HomeFragment extends BasicFragment implements
                     if (!isCanLoadMap)
                         closeGuid();
                 }
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED)
+                    nestedScrollView.scrollTo(0, 0);
             }
 
             @Override

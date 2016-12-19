@@ -37,4 +37,9 @@ public class ParkingModel extends BasicModel {
     public void getPolyLine(String url, ResponseHandle responseHandle) {
         requestServer.getApi(url, null, responseHandle);
     }
+
+    public void getParkingCheckinByParkingID(int parking_id, ResponseHandle responseHandle) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_GET_CHECKIN_BY_PARKING_ID + parking_id;
+        requestServer.getApi(url, null, responseHandle);
+    }
 }

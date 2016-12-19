@@ -38,9 +38,22 @@ import gun0912.tedbottompicker.TedBottomPicker;
 
 public class AddParkingPresenter {
     private AddParkingView view;
+    private RESP_Parking_Info object;
 
     public AddParkingPresenter(AddParkingView view) {
         this.view = view;
+        getData();
+    }
+
+    private void getData() {
+        try {
+            object = (RESP_Parking_Info) view.getActivity().getIntent().getSerializableExtra(Constants.PARKING_MODEL);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (object != null)
+            view.onGetDataSuccess(object);
     }
 
     public void takePicture(FragmentManager fragmentManager, View _view) {
@@ -100,7 +113,7 @@ public class AddParkingPresenter {
                 return;
             }
 
-            RESP_Parking_Info object = new RESP_Parking_Info();
+            object = new RESP_Parking_Info();
             object.setLat(placeModel.getLatitude());
             object.setLng(placeModel.getLongtitude());
             object.setType(transport_type);
@@ -191,7 +204,6 @@ public class AddParkingPresenter {
                 view.onGetTimeSuccess(isBegin, getHour(selectedHour), getMinute(selectedMinute));
             }
         }, hour, minute, true);//Yes 24 hour time.
-        mTimePicker.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mTimePicker.show();
     }
 

@@ -32,6 +32,7 @@ import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.Pictures;
 import com.xtel.vparking.model.entity.PlaceModel;
 import com.xtel.vparking.model.entity.Prices;
+import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.presenter.AddParkingPresenter;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.inf.AddParkingView;
@@ -48,12 +49,10 @@ import java.util.ArrayList;
 public class AddParkingActivity extends BasicActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, AddParkingView {
 
     private AddParkingPresenter presenter;
-    //    private ImageView img_picture;
     private TextView txt_image_number;
     private EditText edt_parking_name, edt_place_number, edt_address, edt_begin_time, edt_end_time;
     private Spinner sp_transport_type;
 
-    PriceAdapter adapter;
     private ArrayList<Prices> arrayList_price;
 
     private ViewPager viewPager;
@@ -107,7 +106,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
         arrayList_price = new ArrayList<>();
         arrayList_price.add(new Prices(0, 1, 3));
-        adapter = new PriceAdapter(getApplicationContext(), arrayList_price);
+        PriceAdapter adapter = new PriceAdapter(getApplicationContext(), arrayList_price);
         recyclerView.setAdapter(adapter);
     }
 
@@ -187,6 +186,11 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     @Override
     public void showShortToast(String message) {
         super.showShortToast(message);
+    }
+
+    @Override
+    public void onGetDataSuccess(RESP_Parking_Info object) {
+
     }
 
     @Override

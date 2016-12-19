@@ -236,7 +236,11 @@ public class BottomSheet {
         img_header_favorite.setVisibility(View.VISIBLE);
 
         arrayList_bottom_sheet.clear();
-        viewPager.getAdapter().notifyDataSetChanged();
+        try {
+            viewPager.getAdapter().notifyDataSetChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void onContentCliecked(View.OnClickListener onClickListener) {

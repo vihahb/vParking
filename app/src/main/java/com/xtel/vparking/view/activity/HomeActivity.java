@@ -50,8 +50,7 @@ import com.xtel.vparking.view.fragment.VerhicleFragment;
 
 public class HomeActivity extends IActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
         HomeView {
-    @SuppressLint("StaticFieldLeak")
-    public static HomeActivity instance;
+    public static HomeView view;
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
@@ -85,11 +84,11 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
 
         replaceHomeFragment();
         homePresenter = new HomePresenter(this);
-        instance = this;
+        view = this;
     }
 
-    public static HomeActivity getInstance() {
-        return instance;
+    public static HomeView getView() {
+        return view;
     }
 
     private void initView() {
@@ -191,23 +190,18 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
             Picasso.with(HomeActivity.this)
                     .load(avatar)
                     .noPlaceholder()
-                    .error(R.mipmap.ic_launcher)
+                    .error(R.mipmap.icon_account_1)
                     .into(img_avatar);
         } else {
             img_avatar.setImageResource(R.mipmap.icon_account_1);
         }
 
-        if (name == null) {
+        if (name == null || name.isEmpty()) {
             txt_name.setText(getString(R.string.update_user_profile));
             txt_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_border_color_white_18dp, 0);
         } else {
-            if (name.isEmpty()) {
-                txt_name.setText(getString(R.string.update_user_profile));
-                txt_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_border_color_white_18dp, 0);
-            } else {
-                txt_name.setText(name);
-                txt_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            }
+            txt_name.setText(name);
+            txt_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
     }
 
@@ -223,13 +217,14 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
     }
 
     @Override
-    public Activity getActivity() {
-        return this;
-    }
-
-    public void viewParkingSelected(int id) {
+    public void onViewParkingSelected(int id) {
         PARKING_ID = id;
         replaceHomeFragment();
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
     }
 
     private void replaceHomeFragment() {
@@ -376,8 +371,9 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
         if (img_avatar != null && txt_name != null)
             homePresenter.updateUserData();
 
-        if (PARKING_ID != -1)
-            viewParkingSelected(PARKING_ID);
+        if (PARKING_ID != -1) {
+            replaceHomeFragment();
+        }
     }
 
     @Override
@@ -394,7 +390,6 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
         Log.e(this.getClass().getSimpleName(), "request " + requestCode + " result " + resultCode);
         if (CURRENT_FRAGMENT.equals(HOME_FRAGMENT)) {
             Log.e(this.getClass().getSimpleName(), "request " + requestCode + " result " + resultCode);

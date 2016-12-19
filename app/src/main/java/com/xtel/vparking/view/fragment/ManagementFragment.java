@@ -66,29 +66,29 @@ public class ManagementFragment extends BasicFragment implements ManagementView 
         progressView.onLayoutClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkInternet();
+                getParkingByUser();
             }
         });
 
         progressView.onRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                checkInternet();
+                getParkingByUser();
             }
         });
 
         progressView.onSwipeLayoutPost(new Runnable() {
             @Override
             public void run() {
-                checkInternet();
+                getParkingByUser();
             }
         });
     }
 
-    private void checkInternet() {
+    private void getParkingByUser() {
         progressView.hideData();
         progressView.setRefreshing(true);
-        presenter.checkInternet();
+        presenter.getParkingByUser();
     }
 
     private void checkListData() {

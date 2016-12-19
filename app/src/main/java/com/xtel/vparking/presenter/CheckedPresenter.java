@@ -26,7 +26,7 @@ public class CheckedPresenter {
         this.view = view;
     }
 
-    public void checkInternet() {
+    public void getAllVerhicle() {
         if (!NetWorkInfo.isOnline(view.getActivity())) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -34,12 +34,10 @@ public class CheckedPresenter {
                     view.onNetworkDisable();
                 }
             }, 500);
-        } else {
-            getAllVerhicle();
-        }
-    }
 
-    private void getAllVerhicle() {
+            return;
+        }
+
         String url = Constants.SERVER_PARKING + Constants.PARKING_GET_CHECK_IN_BY_USER;
         String session = LoginModel.getInstance().getSession();
         VerhicleModel.getInstance().getAllVerhicle(url, session, new ResponseHandle<RESP_Check_In>(RESP_Check_In.class) {

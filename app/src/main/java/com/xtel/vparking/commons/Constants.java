@@ -36,17 +36,6 @@ public class Constants {
     public static final String USER_QR = "user_qr";
     public static final String USER_BAR = "user_bar";
 
-//    //Update user
-//    public static final String INFO_F_NAME = "first_name";
-//    public static final String INFO_l_NAME = "last_name";
-//    public static final String INFO_GENDER = "gender";
-//    public static final String INFO_BIRTH_DAY = "birth_day";
-//    public static final String INFO_PHONE = "phone";
-//    public static final String INFO_ADDRESS = "address";
-//    public static final String INFO_AVAR = "avatar";
-//    public static final String INFO_EMAIL = "email";
-
-
     //Device Info
     public static final String DEVICE_ID = "deviceid";
     public static final String DEVICE_OS_NAME = "os_name";
@@ -96,6 +85,7 @@ public class Constants {
     public static final String BRAND_NAME = "brandname";
     public static final String BRANDNAME_VERSION = "?version=";
     public static final String ADD_VERHICLE = "v1.0/user/verhicle";
+    public static final String PARKING_GET_CHECKIN_BY_PARKING_ID = "v1.0/admin/parking/";
 
 
     public static final String JSON_ERROR = "error";
@@ -158,8 +148,8 @@ public class Constants {
     }
 
     public static String convertDate(String date) {
-
-        return date;
+        String newData[] = date.split("/");
+        return newData[2] + "/" + newData[1] + "/" + newData[0];
     }
 
     public static String getPlaceNumber(Context context, String number) {

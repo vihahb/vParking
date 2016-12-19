@@ -75,29 +75,29 @@ public class VerhicleFragment extends BasicFragment implements VerhicleView {
         progressView.onLayoutClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkInternet();
+                getAllVerhicle();
             }
         });
 
         progressView.onRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                checkInternet();
+                getAllVerhicle();
             }
         });
 
         progressView.onSwipeLayoutPost(new Runnable() {
             @Override
             public void run() {
-                checkInternet();
+                getAllVerhicle();
             }
         });
     }
 
-    private void checkInternet() {
+    private void getAllVerhicle() {
         progressView.hideData();
         progressView.setRefreshing(true);
-        presenter.checkInternet();
+        presenter.getAllVerhicle();
     }
 
     private void checkListData() {

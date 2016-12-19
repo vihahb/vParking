@@ -25,7 +25,7 @@ public class FavoritePresenter {
         this.view = view;
     }
 
-    public void checkInternet() {
+    public void getParkingFavorite() {
         if (!NetWorkInfo.isOnline(view.getActivity())) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -33,12 +33,10 @@ public class FavoritePresenter {
                     view.onNetworkDisable();
                 }
             }, 500);
-        } else {
-            getParkingFavorite();
-        }
-    }
 
-    private void getParkingFavorite() {
+            return;
+        }
+
         String session = LoginModel.getInstance().getSession();
         String url = Constants.SERVER_PARKING + Constants.PARKING_GET_FAVORITE;
         ParkingModel.getInstanse().getParkingByUser(url, session, new ResponseHandle<RESP_Favorite>(RESP_Favorite.class) {
