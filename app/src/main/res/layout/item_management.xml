@@ -1,107 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipe="http://schemas.android.com/tools"
+    android:id="@+id/item_swipe_favorite"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/size_134"
-    android:layout_marginTop="@dimen/size_2"
-    android:background="@android:color/white"
-    android:baselineAligned="false"
-    android:orientation="horizontal"
-    android:padding="@dimen/size_12">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/size_1"
+    swipe:leftEdgeSwipeOffset="0"
+    swipe:rightEdgeSwipeOffset="0">
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="@dimen/size_110"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        card_view:cardCornerRadius="@dimen/size_8"
-        card_view:cardElevation="0dp">
+        android:gravity="center"
+        android:tag="Bottom3">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <ImageButton
+            android:id="@+id/item_management_img_view"
+            android:layout_width="@dimen/size_90"
+            android:layout_height="match_parent"
+            android:background="@color/btn_fb_plus"
+            android:clickable="true"
+            android:contentDescription="@null"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_remove_red_eye_white_36dp" />
 
-            <com.xtel.vparking.view.widget.SquareImageView
-                android:id="@+id/img_item_quan_ly_bai_do_avatar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@null"
-                android:scaleType="centerCrop"/>
+        <ImageButton
+            android:id="@+id/item_management_img_update"
+            android:layout_width="@dimen/size_90"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:clickable="true"
+            android:contentDescription="@null"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_delete_forever_white_36dp" />
+    </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_36"
-                android:layout_gravity="bottom"
-                android:alpha="0.3"
-                android:background="@android:color/black" />
-
-            <TextView
-                android:id="@+id/txt_item_quan_ly_bai_do_name"
-                style="@style/Quanly_item_title"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_36"
-                android:layout_gravity="bottom"
-                android:gravity="center"
-                android:textColor="@android:color/white" />
-        </FrameLayout>
-    </android.support.v7.widget.CardView>
-
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/item_management_layout_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/size_12"
-        android:layout_marginStart="@dimen/size_12"
-        android:orientation="vertical">
+        android:layout_height="@dimen/size_134"
+        android:layout_marginTop="@dimen/size_2"
+        android:background="@android:color/white"
+        android:baselineAligned="false"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_12">
 
-        <TextView
-            android:id="@+id/txt_item_quan_ly_bai_do_address"
-            style="@style/Quanly_item_textview"
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="@dimen/size_110"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            card_view:cardCornerRadius="@dimen/size_8"
+            card_view:cardElevation="0dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.xtel.vparking.view.widget.SquareImageView
+                    android:id="@+id/img_item_management_avatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@null"
+                    android:scaleType="centerCrop" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_36"
+                    android:layout_gravity="bottom"
+                    android:alpha="0.3"
+                    android:background="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/txt_item_management_name"
+                    style="@style/Quanly_item_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_36"
+                    android:layout_gravity="bottom"
+                    android:gravity="center"
+                    android:textColor="@android:color/white" />
+            </FrameLayout>
+        </android.support.v7.widget.CardView>
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/ic_my_address"
-            android:drawableStart="@mipmap/ic_my_address" />
-
-        <TextView
-            android:id="@+id/txt_item_quan_ly_bai_do_empty"
-            style="@style/Quanly_item_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/layout_item_quan_ly_bai_do_bottom"
-            android:layout_below="@+id/txt_item_quan_ly_bai_do_address"
-            android:drawableLeft="@mipmap/ic_still_empty"
-            android:drawableStart="@mipmap/ic_still_empty" />
-
-        <LinearLayout
-            android:id="@+id/layout_item_quan_ly_bai_do_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/img_quan_ly_bai_do_minus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:contentDescription="@null"
-                android:src="@mipmap/ic_minus" />
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/size_12"
+            android:layout_marginStart="@dimen/size_12"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txt_item_quan_ly_bai_do_number"
-                style="@style/Quanly_item_title"
-                android:layout_width="0dp"
+                android:id="@+id/txt_item_management_address"
+                style="@style/Quanly_item_textview"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/colorPrimary" />
+                android:drawableLeft="@mipmap/ic_my_address"
+                android:drawableStart="@mipmap/ic_my_address" />
 
-            <ImageButton
-                android:id="@+id/img_quan_ly_bai_do_plus"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/txt_item_management_empty"
+                style="@style/Quanly_item_textview"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:contentDescription="@null"
-                android:src="@mipmap/ic_plus" />
-        </LinearLayout>
-    </RelativeLayout>
-</LinearLayout>
+                android:layout_above="@+id/layout_item_management_bottom"
+                android:layout_below="@+id/txt_item_management_address"
+                android:drawableLeft="@mipmap/ic_still_empty"
+                android:drawableStart="@mipmap/ic_still_empty" />
+
+            <LinearLayout
+                android:id="@+id/layout_item_management_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/img_item_management_minus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@null"
+                    android:src="@mipmap/ic_minus" />
+
+                <TextView
+                    android:id="@+id/txt_item_management_number"
+                    style="@style/Quanly_item_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/colorPrimary" />
+
+                <ImageButton
+                    android:id="@+id/img_item_management_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@null"
+                    android:src="@mipmap/ic_plus" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</com.daimajia.swipe.SwipeLayout>

@@ -90,12 +90,12 @@ public abstract class BasicActivity extends AppCompatActivity {
             progressDialog.dismiss();
     }
 
-    protected void showDialog(String title, String content, String button, View.OnClickListener onClickListener) {
+    protected void showDialog(boolean isTouchOutside, boolean isCancelable, String title, String content, String button, View.OnClickListener onClickListener) {
         dialog = new Dialog(BasicActivity.this, R.style.Theme_Transparent);
         dialog.setContentView(R.layout.dialog_notification);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(isTouchOutside);
+        dialog.setCanceledOnTouchOutside(isCancelable);
 
         TextView txt_title = (TextView) dialog.findViewById(R.id.txt_dialog_notification_title);
         TextView txt_content = (TextView) dialog.findViewById(R.id.txt_dialog_notification_content);

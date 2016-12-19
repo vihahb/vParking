@@ -3,6 +3,7 @@ package com.xtel.vparking.view.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.view.MyApplication;
@@ -14,20 +15,23 @@ import com.xtel.vparking.view.fragment.ViewHistoryFragment;
  */
 
 public class ViewParkingAdapter extends FragmentStatePagerAdapter {
-    String[] list_title;
+    private String[] list_title;
+    private int id;
 
-    public ViewParkingAdapter(FragmentManager fm) {
+    public ViewParkingAdapter(FragmentManager fm, int id) {
         super(fm);
         list_title = MyApplication.context.getResources().getStringArray(R.array.view_parking_title);
+        this.id = id;
+        Log.e("vp", "id adapter " + id);
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return ViewCheckInFragment.newInstance();
+                return ViewCheckInFragment.newInstance(id);
             case 1:
-                return ViewHistoryFragment.newInstance();
+                return ViewHistoryFragment.newInstance(id);
             default:
                 return null;
         }

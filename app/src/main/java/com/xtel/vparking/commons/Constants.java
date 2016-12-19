@@ -90,8 +90,11 @@ public class Constants {
     public static final String PARKING_GET_CHECKIN_BY_PARKING_ID = "v1.0/admin/parking/";
     public static final String PARKING_DELETE_PICTURE = "v1.0/admin/parking/picture/";
     public static final String PARKING_DELETE_PRICE = "v1.0/admin/parking/price/";
+    public static final String PARKING_ADD_PRICES = "/v1.0/m/authenticate";
     public static final String PARKING_ADD_PICTURE = "v1.0/admin/parking/pictures";
-
+    public static final String PARKING_CHECKIN_BY_PARKING_ID = "v1.0/admin/parking/";
+    public static final String PARKING_CHECKIN_PAGE = "/checkin?page=";
+    public static final String PARKING_CHECKIN_SIZE = "&pagesize=";
 
     public static final String JSON_ERROR = "error";
     public static final String JSON_MESSAGE = "message";

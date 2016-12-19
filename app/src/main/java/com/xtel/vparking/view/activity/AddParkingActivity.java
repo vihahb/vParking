@@ -151,7 +151,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     public void addParking(View view) {
         presenter.validateData(view, arrayList_picture, edt_parking_name.getText().toString(), placeModel,
                 sp_transport_type.getSelectedItemPosition(), edt_place_number.getText().toString(),
-                edt_begin_time.getText().toString(), edt_end_time.getText().toString(), arrayList_price);
+                edt_begin_time.getText().toString(), edt_end_time.getText().toString(), arrayList_price, btn_action.getText().toString());
     }
 
     @Override
@@ -329,7 +329,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     @Override
     public void onAddParkingSuccess(final int id) {
         closeProgressBar();
-        showDialog("THÔNG BÁO", "Tin đã được đăng thành công", "OK", new View.OnClickListener() {
+        showDialog(false, false, "THÔNG BÁO", "Tin đã được đăng thành công", "OK", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -349,7 +349,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     @Override
     public void onUpdateParkingSuccess(final ParkingInfo parkingInfo) {
         closeProgressBar();
-        showDialog("THÔNG BÁO", "Tin đã cập nhật thành công", "OK", new View.OnClickListener() {
+        showDialog(false, false, "THÔNG BÁO", "Tin đã cập nhật thành công", "OK", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();

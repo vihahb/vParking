@@ -10,22 +10,24 @@ import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.VerhicleModel;
 import com.xtel.vparking.model.entity.Error;
-import com.xtel.vparking.view.activity.inf.CheckedView;
 import com.xtel.vparking.model.entity.RESP_Check_In;
+import com.xtel.vparking.view.activity.inf.CheckedView;
+import com.xtel.vparking.view.activity.inf.IViewCheckIn;
 
 /**
  * Created by Lê Công Long Vũ on 12/2/2016.
  */
 
-public class CheckedPresenter {
-    private CheckedView view;
+public class ViewCheckInPresenter {
+    private IViewCheckIn view;
     private boolean isViewing = true;
+    private int id = -1, page = 1, size = 20;
 
-    public CheckedPresenter(CheckedView view) {
+    public ViewCheckInPresenter(IViewCheckIn view, int id) {
         this.view = view;
     }
 
-    public void getAllVerhicle() {
+    public void getCheckIn() {
         if (!NetWorkInfo.isOnline(view.getActivity())) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -37,13 +39,14 @@ public class CheckedPresenter {
             return;
         }
 
-        String url = Constants.SERVER_PARKING + Constants.PARKING_GET_CHECK_IN_BY_USER;
-        String session = LoginModel.getInstance().getSession();
-        VerhicleModel.getInstance().getAllVerhicle(url, session, new ResponseHandle<RESP_Check_In>(RESP_Check_In.class) {
+        VerhicleModel.getInstance().getCheckInByParkingId(id, page, size, new ResponseHandle<RESP_Check_In>(RESP_Check_In.class) {
             @Override
             public void onSuccess(RESP_Check_In obj) {
-                if (isViewing)
+                if (isViewing) {
+                    page++;
+                    size += 20;
                     view.onGetVerhicleSuccess(obj.getData());
+                }
             }
 
             @Override
@@ -61,7 +64,7 @@ public class CheckedPresenter {
             @Override
             public void onSuccess() {
                 if (isViewing)
-                    getAllVerhicle();
+                    getCheckIn();
             }
 
             @Override

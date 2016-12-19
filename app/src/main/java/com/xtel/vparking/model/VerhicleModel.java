@@ -1,6 +1,7 @@
 package com.xtel.vparking.model;
 
 import com.xtel.vparking.callback.ResponseHandle;
+import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.RESP_Brandname;
 import com.xtel.vparking.model.entity.RESP_Verhicle;
 
@@ -16,6 +17,13 @@ public class VerhicleModel extends BasicModel {
     }
 
     public void getAllVerhicle(String url, String session, ResponseHandle responseHandle) {
+        requestServer.getApi(url, session, responseHandle);
+    }
+
+    public void getCheckInByParkingId(int id, int page, int size, ResponseHandle responseHandle) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_CHECKIN_BY_PARKING_ID + id +
+                Constants.PARKING_CHECKIN_PAGE + page + Constants.PARKING_CHECKIN_SIZE + size;
+        String session = LoginModel.getInstance().getSession();
         requestServer.getApi(url, session, responseHandle);
     }
 

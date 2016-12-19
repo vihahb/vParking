@@ -7,14 +7,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.daimajia.swipe.util.Attributes;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
-import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.ParkingInfo;
 import com.xtel.vparking.presenter.ManagementPresenter;
@@ -28,9 +27,9 @@ import java.util.ArrayList;
 public class ManagementFragment extends BasicFragment implements ManagementView {
     private ArrayList<ParkingInfo> arrayList;
     private RecyclerView recyclerView;
-    private ManagementAdapter managementAdapter;
     private ProgressView progressView;
 
+    private ManagementAdapter managementAdapter;
     private ManagementPresenter presenter;
     public static final String PARKING_MODEL = "parking_model";
     public static final int REQUEST_UPDATE = 99, RESULT_UPDATE = 66;
@@ -58,6 +57,7 @@ public class ManagementFragment extends BasicFragment implements ManagementView 
 
         arrayList = new ArrayList<>();
         managementAdapter = new ManagementAdapter(getActivity(), arrayList);
+        managementAdapter.setMode(Attributes.Mode.Single);
         recyclerView.setAdapter(managementAdapter);
     }
 

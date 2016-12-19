@@ -44,6 +44,7 @@ public class AddParkingPresenter extends BasicPresenter {
     private AddParkingView view;
     private ParkingInfo object;
     private int picture_id = -1;
+    private String button = "";
 
     private ICmd cmd = new ICmd() {
         @Override
@@ -106,7 +107,7 @@ public class AddParkingPresenter extends BasicPresenter {
         new Task.ConvertImage(view.getActivity(), true, new RequestWithStringListener() {
             @Override
             public void onSuccess(String url) {
-                if (object == null)
+                if (!button.equals(view.getActivity().getString(R.string.update_btn)))
                     view.onPostPictureSuccess(url);
                 else {
                     object.getPictures().clear();
@@ -197,7 +198,9 @@ public class AddParkingPresenter extends BasicPresenter {
 
     public void validateData(View _view, ArrayList<Pictures> arrayList_picture, String parking_name, PlaceModel placeModel,
                              int transport_type, String total_place, String begin_time, String end_time,
-                             ArrayList<Prices> arrayList_price) {
+                             ArrayList<Prices> arrayList_price, String button) {
+
+        this.button = button;
 
         if (arrayList_picture.size() == 0) {
             view.onValidateError(_view, view.getActivity().getString(R.string.loi_chonanh));
@@ -217,7 +220,7 @@ public class AddParkingPresenter extends BasicPresenter {
                 return;
             }
 
-            if (object == null) {
+            if (!button.equals(view.getActivity().getString(R.string.update_btn))) {
                 view.showProgressBar(false, false, null, view.getActivity().getString(R.string.adding));
 
                 object = new ParkingInfo();
@@ -255,11 +258,11 @@ public class AddParkingPresenter extends BasicPresenter {
                 object.setTotal_place(total_place);
                 object.setEmpty_number(total_place);
 
-                object.setPrices(null);
-                object.setPictures(null);
+//                object.setPrices(null);
+//                object.setPictures(null);
 
                 Log.e("parking", "update");
-                updateParking(object);
+                updatePrices(arrayList_price);
             }
         }
     }
@@ -303,7 +306,8 @@ public class AddParkingPresenter extends BasicPresenter {
                 if (error.getCode() == 2)
                     getNewSessionAddParking(resp_parking_info);
                 else {
-                    object = null;
+                    if (!button.equals(view.getActivity().getString(R.string.update_btn)))
+                        object = null;
                     view.onAddParkingError(error);
                 }
             }
@@ -319,10 +323,21 @@ public class AddParkingPresenter extends BasicPresenter {
 
             @Override
             public void onError() {
-                object = null;
+                if (!button.equals(view.getActivity().getString(R.string.update_btn)))
+                    object = null;
                 view.onAddParkingError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
             }
         });
+    }
+
+    private void updatePrices(ArrayList<Prices> arrayList_price) {
+//        for (int i = arrayList_price.size(); i >= 0; i--) {
+//            boolean exits = true;
+//
+//            for (int z = object.getPrices().size() - 1; z >= 0; z--) {
+//                if (object.getPrices().get(z).getId() ==)
+//            }
+//        }
     }
 
     private void updateParking(final ParkingInfo resp_parking_info) {
