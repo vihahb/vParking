@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.ParkingInfo;
 import com.xtel.vparking.presenter.ManagementPresenter;
@@ -31,6 +32,8 @@ public class ManagementFragment extends BasicFragment implements ManagementView 
     private ProgressView progressView;
 
     private ManagementPresenter presenter;
+    public static final String PARKING_MODEL = "parking_model";
+    public static final int REQUEST_UPDATE = 99, RESULT_UPDATE = 66;
 
     @Nullable
     @Override
@@ -54,7 +57,7 @@ public class ManagementFragment extends BasicFragment implements ManagementView 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         arrayList = new ArrayList<>();
-        managementAdapter = new ManagementAdapter(getContext(), arrayList);
+        managementAdapter = new ManagementAdapter(getActivity(), arrayList);
         recyclerView.setAdapter(managementAdapter);
     }
 
@@ -130,16 +133,17 @@ public class ManagementFragment extends BasicFragment implements ManagementView 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        Log.e("ql_result", "null k: " + requestCode + "        " + resultCode);
-
         if (requestCode == Constants.ADD_PARKING_REQUEST && resultCode == Constants.ADD_PARKING_RESULT) {
             int id = data.getIntExtra(Constants.INTENT_PARKING_ID, -1);
 
-            Log.e("ql_result_id", "null k: " + id);
             if (id != -1) {
                 presenter.getParkingInfo(id);
             }
+        } else if (requestCode == REQUEST_UPDATE && resultCode == RESULT_UPDATE) {
+            ParkingInfo parkingInfo = (ParkingInfo) data.getSerializableExtra(PARKING_MODEL);
+
+            if (parkingInfo != null)
+                managementAdapter.updateItem(parkingInfo);
         }
     }
 

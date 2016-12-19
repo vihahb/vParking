@@ -2,7 +2,6 @@ package com.xtel.vparking.presenter;
 
 import android.app.TimePickerDialog;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.widget.TimePicker;
 
 import com.xtel.vparking.R;
+import com.xtel.vparking.callback.ICmd;
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.RequestWithStringListener;
 import com.xtel.vparking.callback.ResponseHandle;
@@ -19,6 +19,7 @@ import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.ParkingInfo;
 import com.xtel.vparking.model.entity.Pictures;
 import com.xtel.vparking.model.entity.PlaceModel;
 import com.xtel.vparking.model.entity.Prices;
@@ -36,24 +37,45 @@ import gun0912.tedbottompicker.TedBottomPicker;
  * Created by Lê Công Long Vũ on 12/2/2016.
  */
 
-public class AddParkingPresenter {
+public class AddParkingPresenter extends BasicPresenter {
     private AddParkingView view;
-    private RESP_Parking_Info object;
+    private ParkingInfo object;
+    private int picture_id = -1;
+
+    private ICmd cmd = new ICmd() {
+        @Override
+        public void execute(Object... params) {
+            ParkingModel.getInstanse().deleteParkingPicrute(picture_id, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+                @Override
+                public void onSuccess(RESP_Parking_Info obj) {
+                    view.onDeletePictureSuccess();
+                }
+
+                @Override
+                public void onError(Error error) {
+                    if (error.getCode() == 2)
+                        getNewSession(cmd);
+                    else
+                        view.onDeletePictureError(error);
+                }
+            });
+        }
+    };
 
     public AddParkingPresenter(AddParkingView view) {
         this.view = view;
-        getData();
     }
 
-    private void getData() {
+    public void getData() {
         try {
-            object = (RESP_Parking_Info) view.getActivity().getIntent().getSerializableExtra(Constants.PARKING_MODEL);
+            object = (ParkingInfo) view.getActivity().getIntent().getSerializableExtra(Constants.PARKING_MODEL);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (object != null)
+        if (object != null) {
             view.onGetDataSuccess(object);
+        }
     }
 
     public void takePicture(FragmentManager fragmentManager, View _view) {
@@ -91,6 +113,48 @@ public class AddParkingPresenter {
         }).execute(bitmap);
     }
 
+    public void deletePicture(int id) {
+        if (id != -1) {
+            picture_id = id;
+            cmd.execute();
+        } else {
+            view.onDeletePictureSuccess();
+        }
+    }
+
+    public void deletePrice(final int position, final int id) {
+        Log.e("price", "presenter " + position + "     " + id);
+        view.showProgressBar(false, false, null, "Deleting price...");
+        ParkingModel.getInstanse().deleteParkingPrice(id, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+            @Override
+            public void onSuccess(RESP_Parking_Info obj) {
+                view.onDeletePriceSuccess(position);
+            }
+
+            @Override
+            public void onError(Error error) {
+                if (error.getCode() == 2)
+                    getNewSessionDeleteParkingPrices(position, id);
+                else
+                    view.onDeletePriceError(error);
+            }
+        });
+    }
+
+    private void getNewSessionDeleteParkingPrices(final int position, final int id) {
+        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
+            @Override
+            public void onSuccess() {
+                deletePrice(position, id);
+            }
+
+            @Override
+            public void onError() {
+                view.onDeletePriceError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
+            }
+        });
+    }
+
     public void validateData(View _view, ArrayList<Pictures> arrayList_picture, String parking_name, PlaceModel placeModel,
                              int transport_type, String total_place, String begin_time, String end_time,
                              ArrayList<Prices> arrayList_price) {
@@ -113,24 +177,50 @@ public class AddParkingPresenter {
                 return;
             }
 
-            object = new RESP_Parking_Info();
-            object.setLat(placeModel.getLatitude());
-            object.setLng(placeModel.getLongtitude());
-            object.setType(transport_type);
-            object.setAddress(placeModel.getAddress());
-            object.setParking_name(parking_name);
+            if (object == null) {
+                view.showProgressBar(false, false, null, view.getActivity().getString(R.string.adding));
 
-            if (!begin_time.isEmpty())
-                object.setBegin_time(begin_time);
-            if (!end_time.isEmpty())
-                object.setBegin_time(end_time);
+                object = new ParkingInfo();
+                object.setLat(placeModel.getLatitude());
+                object.setLng(placeModel.getLongtitude());
+                object.setType(transport_type);
+                object.setAddress(placeModel.getAddress());
+                object.setParking_name(parking_name);
 
-            object.setTotal_place(total_place);
-            object.setEmpty_number(total_place);
-            object.setPrices(arrayList_price);
-            object.setPictures(arrayList_picture);
+                if (!begin_time.isEmpty())
+                    object.setBegin_time(begin_time);
+                if (!end_time.isEmpty())
+                    object.setBegin_time(end_time);
 
-            addParking(object);
+                object.setTotal_place(total_place);
+                object.setEmpty_number(total_place);
+                object.setPrices(arrayList_price);
+                object.setPictures(arrayList_picture);
+
+                addParking(object);
+            } else {
+                view.showProgressBar(false, false, null, view.getActivity().getString(R.string.updating));
+
+                object.setLat(placeModel.getLatitude());
+                object.setLng(placeModel.getLongtitude());
+                object.setType(transport_type);
+                object.setAddress(placeModel.getAddress());
+                object.setParking_name(parking_name);
+
+                if (!begin_time.isEmpty())
+                    object.setBegin_time(begin_time);
+                if (!end_time.isEmpty())
+                    object.setBegin_time(end_time);
+
+                object.setTotal_place(total_place);
+                object.setEmpty_number(total_place);
+
+                object.setPrices(null);
+                object.setPictures(null);
+
+                Log.e("parking", "update");
+                updateParking(object);
+            }
         }
     }
 
@@ -153,7 +243,7 @@ public class AddParkingPresenter {
         return -1;
     }
 
-    private void addParking(final RESP_Parking_Info resp_parking_info) {
+    private void addParking(final ParkingInfo resp_parking_info) {
         String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
         String jsonObject = JsonHelper.toJson(resp_parking_info);
         String session = LoginModel.getInstance().getSession();
@@ -171,14 +261,53 @@ public class AddParkingPresenter {
             @Override
             public void onError(Error error) {
                 if (error.getCode() == 2)
-                    getNewSesstionAddParking(resp_parking_info);
+                    getNewSessionAddParking(resp_parking_info);
                 else
                     view.onAddParkingError(error);
             }
         });
     }
 
-    private void getNewSesstionAddParking(final RESP_Parking_Info resp_parking_info) {
+    private void getNewSessionAddParking(final ParkingInfo resp_parking_info) {
+        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
+            @Override
+            public void onSuccess() {
+                addParking(resp_parking_info);
+            }
+
+            @Override
+            public void onError() {
+                view.onAddParkingError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
+            }
+        });
+    }
+
+    private void updateParking(final ParkingInfo resp_parking_info) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
+        String jsonObject = JsonHelper.toJson(resp_parking_info);
+        String session = LoginModel.getInstance().getSession();
+
+        Log.e("ud_session", session);
+        Log.e("ud_url", url);
+        Log.e("ud_json", jsonObject);
+
+        ParkingModel.getInstanse().updateParking(url, jsonObject, session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+            @Override
+            public void onSuccess(RESP_Parking_Info obj) {
+                view.onUpdateParkingSuccess(object);
+            }
+
+            @Override
+            public void onError(Error error) {
+                if (error.getCode() == 2)
+                    getNewSessionUpdateParking(resp_parking_info);
+                else
+                    view.onAddParkingError(error);
+            }
+        });
+    }
+
+    private void getNewSessionUpdateParking(final ParkingInfo resp_parking_info) {
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
@@ -219,5 +348,10 @@ public class AddParkingPresenter {
             return "0" + minute;
         else
             return String.valueOf(minute);
+    }
+
+    @Override
+    public void getSessionError() {
+        view.onDeletePictureError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
     }
 }

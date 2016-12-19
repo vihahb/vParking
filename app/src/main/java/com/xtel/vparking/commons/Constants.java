@@ -1,9 +1,11 @@
 package com.xtel.vparking.commons;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.xtel.vparking.R;
+import com.xtel.vparking.view.MyApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +88,8 @@ public class Constants {
     public static final String BRANDNAME_VERSION = "?version=";
     public static final String ADD_VERHICLE = "v1.0/user/verhicle";
     public static final String PARKING_GET_CHECKIN_BY_PARKING_ID = "v1.0/admin/parking/";
+    public static final String PARKING_DELETE_PICTURE = "v1.0/admin/parking/picture/";
+    public static final String PARKING_DELETE_PRICE = "v1.0/admin/parking/price/";
 
 
     public static final String JSON_ERROR = "error";
@@ -152,9 +156,9 @@ public class Constants {
         return newData[2] + "/" + newData[1] + "/" + newData[0];
     }
 
-    public static String getPlaceNumber(Context context, String number) {
+    public static String getPlaceNumber(String number) {
         if (number == null)
-            return context.getString(R.string.unlimited);
+            return MyApplication.context.getString(R.string.unlimited);
         return String.valueOf(number);
     }
 

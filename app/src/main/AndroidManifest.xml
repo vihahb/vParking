@@ -136,7 +136,7 @@
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
             android:label="@string/title_activity_check_out" />
         <activity
-            android:name=".view.activity.ParkingDetailActivity"
+            android:name=".view.activity.ViewParkingActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
             android:label="@string/title_activity_check_out" />
     </application>

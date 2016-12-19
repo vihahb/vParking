@@ -9,6 +9,15 @@ public class PlaceModel {
     private double latitude;
     private double longtitude;
 
+    public PlaceModel() {
+    }
+
+    public PlaceModel(String address, double latitude, double longtitude) {
+        this.address = address;
+        this.latitude = latitude;
+        this.longtitude = longtitude;
+    }
+
     public String getAddress() {
         return address;
     }

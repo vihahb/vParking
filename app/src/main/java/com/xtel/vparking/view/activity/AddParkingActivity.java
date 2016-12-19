@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -29,15 +30,16 @@ import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.ParkingInfo;
 import com.xtel.vparking.model.entity.Pictures;
 import com.xtel.vparking.model.entity.PlaceModel;
 import com.xtel.vparking.model.entity.Prices;
-import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.presenter.AddParkingPresenter;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.inf.AddParkingView;
-import com.xtel.vparking.view.adapter.PriceAdapter;
 import com.xtel.vparking.view.adapter.AddParkingAdapter;
+import com.xtel.vparking.view.adapter.PriceAdapter;
+import com.xtel.vparking.view.fragment.ManagementFragment;
 import com.xtel.vparking.view.widget.BitmapTransform;
 
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     private EditText edt_parking_name, edt_place_number, edt_address, edt_begin_time, edt_end_time;
     private Spinner sp_transport_type;
 
+    private PriceAdapter priceAdapter;
     private ArrayList<Prices> arrayList_price;
 
     private ViewPager viewPager;
@@ -60,6 +63,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     private PlaceModel placeModel;
     private ArrayList<Pictures> arrayList_picture;
+    private Button btn_action;
 
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
@@ -68,14 +72,14 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_parking);
 
+        presenter = new AddParkingPresenter(this);
         initToolbar(R.id.toolbar_add_parking, null);
         initWidger();
         initSpinner();
         initRecyclerview();
         initListener();
         initViewPager();
-
-        presenter = new AddParkingPresenter(this);
+        presenter.getData();
     }
 
     private void initWidger() {
@@ -89,6 +93,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         edt_end_time = (EditText) findViewById(R.id.edt_add_parking_end_time);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager_add_parking);
+        btn_action = (Button) findViewById(R.id.btn_add_parking);
     }
 
     private void initSpinner() {
@@ -105,9 +110,9 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         arrayList_price = new ArrayList<>();
-        arrayList_price.add(new Prices(0, 1, 3));
-        PriceAdapter adapter = new PriceAdapter(getApplicationContext(), arrayList_price);
-        recyclerView.setAdapter(adapter);
+        arrayList_price.add(new Prices(-1, 0, 1, 3));
+        priceAdapter = new PriceAdapter(getApplicationContext(), arrayList_price, presenter);
+        recyclerView.setAdapter(priceAdapter);
     }
 
     private void initListener() {
@@ -123,8 +128,15 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         viewPager.addOnPageChangeListener(this);
     }
 
-    public void TakePicture(final View view) {
+    public void TakePicture(View view) {
         presenter.takePicture(getSupportFragmentManager(), view);
+    }
+
+    public void DeletePicture(View view) {
+        if (arrayList_picture.size() > 0) {
+            showProgressBar(false, false, null, "Deleting file...");
+            presenter.deletePicture((int) arrayList_picture.get(viewPager.getCurrentItem()).getId());
+        }
     }
 
     private void getAddress() {
@@ -137,7 +149,6 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     }
 
     public void addParking(View view) {
-        showProgressBar(false, false, null, getString(R.string.adding));
         presenter.validateData(view, arrayList_picture, edt_parking_name.getText().toString(), placeModel,
                 sp_transport_type.getSelectedItemPosition(), edt_place_number.getText().toString(),
                 edt_begin_time.getText().toString(), edt_end_time.getText().toString(), arrayList_price);
@@ -189,13 +200,41 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     }
 
     @Override
-    public void onGetDataSuccess(RESP_Parking_Info object) {
+    public void showProgressBar(boolean isTouchOutside, boolean isCancel, String title, String message) {
+        super.showProgressBar(isTouchOutside, isCancel, title, message);
+    }
 
+    @Override
+    public void onGetDataSuccess(ParkingInfo object) {
+        if (placeModel == null) {
+            placeModel = new PlaceModel(object.getAddress(), object.getLat(), object.getLng());
+        }
+
+        edt_address.setText(placeModel.getAddress());
+        edt_parking_name.setText(object.getParking_name());
+        sp_transport_type.setSelection((int) object.getType());
+        edt_place_number.setText(object.getTotal_place());
+        edt_begin_time.setText(object.getBegin_time());
+        edt_end_time.setText(object.getBegin_time());
+
+        arrayList_price.clear();
+        arrayList_price.addAll(object.getPrices());
+        priceAdapter.notifyDataSetChanged();
+
+        arrayList_picture.addAll(object.getPictures());
+        viewPager.getAdapter().notifyDataSetChanged();
+
+        String img_position = "";
+        if (arrayList_picture.size() > 0)
+            img_position = (viewPager.getCurrentItem() + 1) + "/" + arrayList_picture.size();
+        txt_image_number.setText(img_position);
+
+        btn_action.setText("Cập nhật");
     }
 
     @Override
     public void onTakePictureSuccess(Uri uri) {
-        showProgressBar(false, false, null, "Upda file...");
+        showProgressBar(false, false, null, "updating file...");
 
         Picasso.with(AddParkingActivity.this)
                 .load(uri)
@@ -220,7 +259,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     @Override
     public void onPostPictureSuccess(String url) {
-        arrayList_picture.add(new Pictures(url));
+        arrayList_picture.add(new Pictures(-1, url));
         viewPager.getAdapter().notifyDataSetChanged();
 
         if (arrayList_picture.size() == 1)
@@ -241,9 +280,40 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     }
 
     @Override
+    public void onDeletePictureSuccess() {
+        closeProgressBar();
+        arrayList_picture.remove(viewPager.getCurrentItem());
+
+        String img_position = "";
+        if (arrayList_picture.size() > 0)
+            img_position = (viewPager.getCurrentItem() + 1) + "/" + arrayList_picture.size();
+        txt_image_number.setText(img_position);
+        viewPager.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDeletePictureError(Error error) {
+        closeProgressBar();
+        showShortToast(JsonParse.getCodeMessage(error.getCode(), getString(R.string.error)));
+    }
+
+    @Override
+    public void onDeletePriceSuccess(int position) {
+        closeProgressBar();
+        priceAdapter.deleteItem(position);
+    }
+
+    @Override
+    public void onDeletePriceError(Error error) {
+        closeProgressBar();
+        showShortToast(JsonParse.getCodeMessage(error.getCode(), getString(R.string.error)));
+    }
+
+    @Override
     public void onPostPictureError(String error) {
         closeProgressBar();
         showShortToast(error);
+        img_load.setImageResource(R.mipmap.ic_parking_background);
     }
 
     @Override
@@ -269,6 +339,26 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
                 }
 
                 setResult(99, intent);
+                finish();
+            }
+        });
+    }
+
+    @Override
+    public void onUpdateParkingSuccess(final ParkingInfo parkingInfo) {
+        closeProgressBar();
+        showDialog("THÔNG BÁO", "Tin đã cập nhật thành công", "OK", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+
+                try {
+                    intent.putExtra(ManagementFragment.PARKING_MODEL, parkingInfo);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                setResult(ManagementFragment.RESULT_UPDATE, intent);
                 finish();
             }
         });

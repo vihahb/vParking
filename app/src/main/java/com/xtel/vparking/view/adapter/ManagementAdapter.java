@@ -1,8 +1,8 @@
 package com.xtel.vparking.view.adapter;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +14,8 @@ import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.ParkingInfo;
+import com.xtel.vparking.view.activity.AddParkingActivity;
+import com.xtel.vparking.view.fragment.ManagementFragment;
 
 import java.util.ArrayList;
 
@@ -22,11 +24,11 @@ import java.util.ArrayList;
  */
 
 public class ManagementAdapter extends RecyclerView.Adapter<ManagementAdapter.ViewHolder> {
-    private Context context;
+    private Activity activity;
     private ArrayList<ParkingInfo> arrayList;
 
-    public ManagementAdapter(Context context, ArrayList<ParkingInfo> arrayList) {
-        this.context = context;
+    public ManagementAdapter(Activity activity, ArrayList<ParkingInfo> arrayList) {
+        this.activity = activity;
         this.arrayList = arrayList;
     }
 
@@ -36,14 +38,14 @@ public class ManagementAdapter extends RecyclerView.Adapter<ManagementAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        ParkingInfo parkingInfo = arrayList.get(position);
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        final ParkingInfo parkingInfo = arrayList.get(position);
 
         if (parkingInfo.getPictures() != null && parkingInfo.getPictures().size() > 0) {
             String picture = parkingInfo.getPictures().get(0).getUrl();
 
             if (picture != null && !picture.isEmpty())
-                Picasso.with(context)
+                Picasso.with(activity)
                         .load(picture)
                         .error(R.mipmap.ic_parking_background)
                         .fit()
@@ -53,24 +55,30 @@ public class ManagementAdapter extends RecyclerView.Adapter<ManagementAdapter.Vi
         } else
             holder.img_avatar.setImageResource(R.mipmap.ic_parking_background);
 
-        Log.e("adapter_number_place", "null k: " + parkingInfo.getEmpty_number());
-
         holder.txt_name.setText(parkingInfo.getParking_name());
         holder.txt_address.setText(parkingInfo.getAddress());
-        holder.txt_number.setText(Constants.getPlaceNumber(context, parkingInfo.getEmpty_number()));
+        holder.txt_number.setText(Constants.getPlaceNumber(parkingInfo.getEmpty_number()));
         setStatus(holder.txt_empty, parkingInfo.getStatus());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, AddParkingActivity.class);
+                intent.putExtra(Constants.PARKING_MODEL, parkingInfo);
+                activity.startActivityForResult(intent, ManagementFragment.REQUEST_UPDATE);
+            }
+        });
     }
 
     private void setStatus(TextView textView, double status) {
         if (status == 0) {
-            textView.setText(context.getString(R.string.controng));
+            textView.setText(activity.getString(R.string.controng));
             textView.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_still_empty, 0, 0, 0);
         } else {
-            textView.setText(context.getString(R.string.hetcho));
+            textView.setText(activity.getString(R.string.hetcho));
             textView.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_still_empty, 0, 0, 0);
         }
     }
-
 
     @Override
     public int getItemCount() {
@@ -98,6 +106,15 @@ public class ManagementAdapter extends RecyclerView.Adapter<ManagementAdapter.Vi
     public void addNewItem(ParkingInfo parkingInfo) {
         arrayList.add(parkingInfo);
         notifyItemRangeInserted(arrayList.size() - 1, arrayList.size());
-//        notifyItemInserted(arrayList.size() - 1);
+    }
+
+    public void updateItem(ParkingInfo parkingInfo) {
+        for (int i = (arrayList.size() - 1); i >= 0; i--) {
+            if (arrayList.get(i).getId() == parkingInfo.getId()) {
+                arrayList.set(i, parkingInfo);
+                notifyItemChanged(i, getItemCount());
+                return;
+            }
+        }
     }
 }

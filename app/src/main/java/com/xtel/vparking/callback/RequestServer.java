@@ -34,6 +34,10 @@ public class RequestServer {
         new PutToServer(responseHandle).execute(url, jsonObject, session);
     }
 
+    public void deleteApi(String url, String delete, String session, ResponseHandle responseHandle) {
+        new DeleteToServer(responseHandle).execute(url, delete, session);
+    }
+
     private class PostToServer extends AsyncTask<String, Integer, String> {
         private final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         private ResponseHandle responseHandle;
@@ -148,6 +152,49 @@ public class RequestServer {
                 return response.body().string();
             } catch (IOException e) {
                 e.printStackTrace();
+                Log.e(this.getClass().getSimpleName(), "Error: " + e.toString());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.e(this.getClass().getSimpleName(), "Success: " + s);
+            responseHandle.onSuccess(s);
+        }
+    }
+
+    private class DeleteToServer extends AsyncTask<String, Integer, String> {
+        private final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        private ResponseHandle responseHandle;
+
+        DeleteToServer(ResponseHandle responseHandle) {
+            this.responseHandle = responseHandle;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                OkHttpClient client = new OkHttpClient();
+
+                Request.Builder builder = new Request.Builder();
+                builder.url(params[0]);
+
+                if (params[1] != null) {
+                    RequestBody body = RequestBody.create(JSON, params[1]);
+                    builder.delete(body);
+                }
+
+                if (params[2] != null)
+                    builder.header(Constants.JSON_SESSION, params[2]);
+
+                Request request = builder.build();
+                Log.e(this.getClass().getSimpleName(), "Request: " + request.toString());
+
+                Response response = client.newCall(request).execute();
+                return response.body().string();
+            } catch (IOException e) {
                 Log.e(this.getClass().getSimpleName(), "Error: " + e.toString());
                 return null;
             }

@@ -157,7 +157,7 @@ public class BottomSheet {
         txt_user_age.setText(getAge(resp_parking_info.getParking_owner().getBirthday()));
         txt_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
         txt_parking_name.setText(resp_parking_info.getParking_name());
-        txt_cho_trong.setText(Constants.getPlaceNumber(context, resp_parking_info.getEmpty_number()));
+        txt_cho_trong.setText(Constants.getPlaceNumber(resp_parking_info.getEmpty_number()));
 
         txt_money.setText((resp_parking_info.getPrices().get(0).getPrice() + "K/h"));
         txt_dat_cho.setText(resp_parking_info.getEmpty_number());

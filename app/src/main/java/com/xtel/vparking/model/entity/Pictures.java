@@ -8,13 +8,13 @@ import java.io.Serializable;
  * Created by Lê Công Long Vũ on 11/10/2016.
  */
 
-public class Pictures {
+public class Pictures implements Serializable {
     @Expose
     private double id;
     @Expose
     private String url;
 
-    public Pictures(String url) {
+    public Pictures(int id, String url) {
         this.url = url;
     }
 

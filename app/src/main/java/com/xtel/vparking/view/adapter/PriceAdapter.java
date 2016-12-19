@@ -17,6 +17,7 @@ import android.widget.Spinner;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.model.entity.Prices;
+import com.xtel.vparking.presenter.AddParkingPresenter;
 
 import java.util.ArrayList;
 
@@ -25,16 +26,18 @@ import java.util.ArrayList;
  */
 
 public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> {
+    private AddParkingPresenter presenter;
     private ArrayList<Prices> arrayList;
     private ArrayAdapter adapter_transport, adapter_price;
 
     @SuppressWarnings("unchecked")
-    public PriceAdapter(Context context, ArrayList<Prices> arrayList) {
+    public PriceAdapter(Context context, ArrayList<Prices> arrayList, AddParkingPresenter presenter) {
         adapter_transport = new ArrayAdapter(context, R.layout.item_spinner_narmal, context.getResources().getStringArray(R.array.add_transport_type));
         adapter_transport.setDropDownViewResource(R.layout.item_spinner_dropdown_item);
         adapter_price = new ArrayAdapter(context, R.layout.item_spinner_narmal, context.getResources().getStringArray(R.array.add_price_type));
         adapter_price.setDropDownViewResource(R.layout.item_spinner_dropdown_item);
         this.arrayList = arrayList;
+        this.presenter = presenter;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
     @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(final ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        Prices prices = arrayList.get(position);
+        final Prices prices = arrayList.get(position);
 
         holder.sp_for.setAdapter(adapter_transport);
         holder.sp_type.setAdapter(adapter_price);
@@ -74,30 +77,6 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
             holder.img_add.setImageResource(R.drawable.ic_add_box_white_36dp);
         else
             holder.img_add.setImageResource(R.mipmap.ic_close_box);
-
-//        final TextWatcher textWatcher = new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if (holder.edt_price.isFocused()) {
-//                    Log.e("price", "add text " + position);
-////                    Log.e("price", "add text to " + position + "    " + arrayList.size());
-////
-////                    int money;
-////                    if (s != null && !s.toString().isEmpty())
-////                        money = Integer.parseInt(s.toString());
-////                    else
-////                        money = 0;
-////
-////                    arrayList.get(position).setPrice(money);
-//                }
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {}
-//        };
 
         try {
             holder.edt_price.removeTextChangedListener(holder.textWatcher);
@@ -143,13 +122,18 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
                 if (position == (arrayList.size() - 1)) {
                     holder.img_add.setImageResource(R.mipmap.ic_close_box);
 
-                    arrayList.add(new Prices(0, 1, 3));
+                    arrayList.add(new Prices(-1, 0, 1, 3));
                     notifyItemInserted((arrayList.size() - 1));
                     notifyItemRangeChanged((arrayList.size() - 1), getItemCount());
                 } else {
-                    arrayList.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, arrayList.size());
+                    if (arrayList.get(position).getId() == -1) {
+                        arrayList.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, arrayList.size());
+                    } else {
+                        Log.e("price", "data  " + position + "     " + prices.getId());
+                        presenter.deletePrice(position, prices.getId());
+                    }
                 }
             }
         });
@@ -175,7 +159,8 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
 
             textWatcher = new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -193,12 +178,19 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
                 }
 
                 @Override
-                public void afterTextChanged(Editable s) {}
+                public void afterTextChanged(Editable s) {
+                }
             };
         }
     }
 
     public ArrayList<Prices> getArrayList() {
         return this.arrayList;
+    }
+
+    public void deleteItem(int position) {
+        arrayList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemChanged(position, getItemCount());
     }
 }

@@ -9,13 +9,9 @@ import android.widget.Toast;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Error;
-import com.xtel.vparking.model.entity.RESP_Parking;
 import com.xtel.vparking.view.MyApplication;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * Created by Lê Công Long Vũ on 11/9/2016.
@@ -69,6 +65,31 @@ public class JsonParse {
                 Snackbar.make(view, activity.getString(R.string.error_no_parking), Snackbar.LENGTH_SHORT).show();
             else
                 Toast.makeText(activity, activity.getString(R.string.error_no_parking), Toast.LENGTH_SHORT).show();
+        } else if (code == 3002) {
+            if (view != null)
+                Snackbar.make(view, "Phương tiện không tồn tại", Snackbar.LENGTH_SHORT).show();
+            else
+                Toast.makeText(activity, "Phương tiện không tồn tại", Toast.LENGTH_SHORT).show();
+        } else if (code == 3003) {
+            if (view != null)
+                Snackbar.make(view, "Phương tiện đã check in bởi 1 user khác", Snackbar.LENGTH_SHORT).show();
+            else
+                Toast.makeText(activity, "Phương tiện đã check in bởi 1 user khác", Toast.LENGTH_SHORT).show();
+        } else if (code == 3004) {
+            if (view != null)
+                Snackbar.make(view, "Bạn chưa check in hoạc đã check out", Snackbar.LENGTH_SHORT).show();
+            else
+                Toast.makeText(activity, "Bạn chưa check in hoạc đã check out", Toast.LENGTH_SHORT).show();
+        } else if (code == 3006) {
+            if (view != null)
+                Snackbar.make(view, "Ảnh không tồn tại", Snackbar.LENGTH_SHORT).show();
+            else
+                Toast.makeText(activity, "Ảnh không tồn tại", Toast.LENGTH_SHORT).show();
+        } else if (code == 3007) {
+            if (view != null)
+                Snackbar.make(view, "Giá không tồn tại", Snackbar.LENGTH_SHORT).show();
+            else
+                Toast.makeText(activity, "Giá không tồn tại", Toast.LENGTH_SHORT).show();
         } else {
             if (view != null)
                 Snackbar.make(view, content, Snackbar.LENGTH_SHORT).show();
@@ -92,6 +113,10 @@ public class JsonParse {
             return "Phương tiện đã check in bởi 1 user khác";
         } else if (code == 3004) {
             return "Bạn chưa check in hoạc đã check out";
+        } else if (code == 3006) {
+            return "Ảnh không tồn tại";
+        } else if (code == 3007) {
+            return "Giá không tồn tại";
         } else {
             return content;
         }

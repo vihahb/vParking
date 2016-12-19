@@ -156,6 +156,7 @@
                     android:drawableEnd="@drawable/ic_access_time_white_24dp"
                     android:drawableRight="@drawable/ic_access_time_white_24dp"
                     android:text="@string/add_time_zero"
+                    android:hint="@string/add_time_zero"
                     app:theme="@style/AddParking_Editext.ButtumLine" />
 
                 <EditText
@@ -168,6 +169,7 @@
                     android:drawableEnd="@drawable/ic_access_time_white_24dp"
                     android:drawableRight="@drawable/ic_access_time_white_24dp"
                     android:text="@string/add_time_end"
+                    android:hint="@string/add_time_end"
                     app:theme="@style/AddParking_Editext.ButtumLine" />
             </TableRow>
         </TableLayout>
@@ -227,6 +229,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btn_add_parking"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_48"
         android:background="@color/btn_fb_plus"

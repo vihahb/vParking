@@ -219,4 +219,10 @@
     <string name="check_verhicle_name">Vui lòng nhập tên phương tiện</string>
     <string name="check_verhicle_plate">Vui lòng nhập biển số phương tiện</string>
     <string name="check_verhicle_des">Vui lòng nhập mô tả</string>
+
+    <!-- Detail -->
+    <string-array name="view_parking_title">
+        <item>Check in</item>
+        <item>History</item>
+    </string-array>
 </resources>

@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by Lê Công Long Vũ on 11/10/2016.
  */
 
-public class Prices {
+public class Prices implements Serializable {
     @Expose
     private int id;
     @Expose
@@ -27,7 +27,7 @@ public class Prices {
     public Prices() {
     }
 
-    public Prices(int price, int price_type, int price_for) {
+    public Prices(int id, int price, int price_type, int price_for) {
         this.id = id;
         this.price = price;
         this.price_type = price_type;

@@ -38,6 +38,22 @@ public class ParkingModel extends BasicModel {
         requestServer.getApi(url, null, responseHandle);
     }
 
+    public void deleteParkingPicrute(int id, ResponseHandle responseHandle) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_DELETE_PICTURE + id;
+        String session = LoginModel.getInstance().getSession();
+        requestServer.deleteApi(url, "", session, responseHandle);
+    }
+
+    public void deleteParkingPrice(int id, ResponseHandle responseHandle) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_DELETE_PRICE + id;
+        String session = LoginModel.getInstance().getSession();
+        requestServer.deleteApi(url, "", session, responseHandle);
+    }
+
+    public void updateParking(String url, String json, String session, ResponseHandle responseHandle) {
+        requestServer.putApi(url, json, session, responseHandle);
+    }
+
     public void getParkingCheckinByParkingID(int parking_id, ResponseHandle responseHandle) {
         String url = Constants.SERVER_PARKING + Constants.PARKING_GET_CHECKIN_BY_PARKING_ID + parking_id;
         requestServer.getApi(url, null, responseHandle);
