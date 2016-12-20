@@ -49,6 +49,7 @@
     <string name="hotenl">Họ</string>
     <string name="hotenf">Tên</string>
     <string name="birth_day_info">Ngày sinh</string>
+    <string name="day_info">Ngày</string>
     <string name="address_info">Địa chỉ</string>
     <string name="hoantat">Hoàn tất</string>
     <string name="parking_get_data" tools:ignore="TypographyEllipsis">Đang tải dữ liệu...</string>

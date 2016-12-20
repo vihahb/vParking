@@ -1,5 +1,7 @@
 package com.xtel.vparking.model;
 
+import android.util.Log;
+
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.RESP_Brandname;
@@ -43,4 +45,18 @@ public class VerhicleModel extends BasicModel {
         requestServer.putApi(url, object, session, responseHandle);
     }
 
+    public void getDataHistory(int id, String begin_time, String end_time, int page, int pagesize, ResponseHandle responseHandle) {
+        String url = Constants.SERVER_PARKING
+                + Constants.HISTORY_CHECK
+                + id
+                + Constants.HISTORY
+                + Constants.BEGIN_TIME + begin_time
+                + Constants.END_TIME + end_time
+                + Constants.PAGE + page
+                + Constants.PAGE_SIZE + pagesize;
+
+        String session = LoginModel.getInstance().getSession();
+        Log.v("Url: ", url);
+        requestServer.getApi(url, session, responseHandle);
+    }
 }
