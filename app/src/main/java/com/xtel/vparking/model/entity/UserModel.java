@@ -3,11 +3,13 @@ package com.xtel.vparking.model.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by vivhp on 11/17/2016.
  */
 
-public class UserModel {
+public class UserModel implements Serializable {
 
     @Expose
     private String uid;
