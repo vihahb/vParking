@@ -71,7 +71,6 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
     public static final int RESULT_GUID = 88;
     public static int PARKING_ID = -1;
     public static Find find_option = new Find(-1, -1, -1, "", "");
-    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

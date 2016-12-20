@@ -58,7 +58,7 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             view.txt_name.setText(checkIn.getUser().getFullname());
-            view.txt_time.setText(Constants.convertDate(checkIn.getCheckin_time()));
+            view.txt_time.setText(Constants.convertDataTime(checkIn.getCheckin_time()));
             view.txt_brand_name.setText(checkIn.getVehicle().getBrandname().getName());
             view.txt_plate_number.setText(checkIn.getVehicle().getPlate_number());
 

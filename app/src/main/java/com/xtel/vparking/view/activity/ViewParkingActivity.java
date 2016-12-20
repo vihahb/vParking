@@ -9,10 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.xtel.vparking.R;
-import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.presenter.ViewParkingPresenter;
 import com.xtel.vparking.view.activity.inf.IParkingView;
 import com.xtel.vparking.view.adapter.ViewParkingAdapter;
+import com.xtel.vparking.view.widget.NoPageTransformer;
 
 public class ViewParkingActivity extends BasicActivity implements IParkingView {
     private ViewParkingPresenter presenter;
@@ -34,6 +34,7 @@ public class ViewParkingActivity extends BasicActivity implements IParkingView {
         ViewPager viewPager = (ViewPager) findViewById(R.id.detail_viewpager);
         ViewParkingAdapter adapter = new ViewParkingAdapter(getSupportFragmentManager(), id);
         viewPager.setAdapter(adapter);
+        viewPager.setPageTransformer(false, new NoPageTransformer());
 
         tabLayout.setupWithViewPager(viewPager);
     }

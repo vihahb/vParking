@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 
+import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.ICmd;
 import com.xtel.vparking.callback.RequestNoResultListener;
@@ -171,6 +172,13 @@ public class AddParkingPresenter extends BasicPresenter {
             @Override
             public void onSuccess(RESP_Parking_Info obj) {
                 view.onDeletePriceSuccess(position);
+
+                for (int i = object.getPrices().size() - 1; i >= 0; i--) {
+                    if (object.getPrices().get(i).getId() == id) {
+                        object.getPrices().remove(i);
+                        return;
+                    }
+                }
             }
 
             @Override
@@ -257,11 +265,11 @@ public class AddParkingPresenter extends BasicPresenter {
                 object.setTotal_place(total_place);
                 object.setEmpty_number(total_place);
 
-//                object.setPrices(null);
-//                object.setPictures(null);
+                ArrayList<Prices> all_price = object.getPrices();
+                object.setPrices(arrayList_price);
 
+                deleteAllPrice(all_price);
                 Log.e("parking", "update");
-                updatePrices();
             }
         }
     }
@@ -325,15 +333,77 @@ public class AddParkingPresenter extends BasicPresenter {
         });
     }
 
-    private void updatePrices() {
-//        for (int i = arrayList_price.size(); i >= 0; i--) {
-//            boolean exits = true;
-//
-//            for (int z = object.getPrices().size() - 1; z >= 0; z--) {
-//                if (object.getPrices().get(z).getId() ==)
-//            }
-//        }
-        updateParking();
+    private void deleteAllPrice(final ArrayList<Prices> arrayList) {
+        if (arrayList.size() > 0) {
+            ParkingModel.getInstanse().deleteParkingPrice(arrayList.get(0).getId(), new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+                @Override
+                public void onSuccess(RESP_Parking_Info obj) {
+                    arrayList.remove(0);
+                    deleteAllPrice(arrayList);
+                }
+
+                @Override
+                public void onError(Error error) {
+                    if (error.getCode() == 2)
+                        getNewSessionDeleteAllPrice(arrayList);
+                    else
+                        view.onUpdateParkingError(error);
+                }
+            });
+        } else
+            addAllPrice();
+    }
+
+    private void getNewSessionDeleteAllPrice(final ArrayList<Prices> arrayList) {
+        GetNewSession.getNewSession(MyApplication.context, new RequestNoResultListener() {
+            @Override
+            public void onSuccess() {
+                deleteAllPrice(arrayList);
+            }
+
+            @Override
+            public void onError() {
+                view.onUpdateParkingError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
+            }
+        });
+    }
+
+    private void addAllPrice() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("id", object.getId());
+        jsonObject.addProperty("prices", JsonHelper.toJson(object.getPrices()));
+
+        Log.e("add_price", jsonObject.toString());
+        Log.e("add_price_2", JsonHelper.toJson(object));
+
+        ParkingModel.getInstanse().addPPrices(JsonHelper.toJson(object), new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+            @Override
+            public void onSuccess(RESP_Parking_Info obj) {
+                updateParking();
+            }
+
+            @Override
+            public void onError(Error error) {
+                if (error.getCode() == 2)
+                    getNewSessionAddPrice();
+                else
+                    view.onUpdateParkingError(error);
+            }
+        });
+    }
+
+    private void getNewSessionAddPrice() {
+        GetNewSession.getNewSession(MyApplication.context, new RequestNoResultListener() {
+            @Override
+            public void onSuccess() {
+                addAllPrice();
+            }
+
+            @Override
+            public void onError() {
+                view.onUpdateParkingError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
+            }
+        });
     }
 
     private void updateParking() {
@@ -412,13 +482,13 @@ public class AddParkingPresenter extends BasicPresenter {
     public void backToManagement(ArrayList<Pictures> picturesArrayList, ArrayList<Prices> pricesArrayList) {
         if (object != null) {
             object.getPictures().clear();
-            object.getPrices().clear();
             object.getPictures().addAll(picturesArrayList);
-            object.getPrices().addAll(pricesArrayList);
 
             Intent intent = new Intent();
             intent.putExtra(ManagementFragment.PARKING_MODEL, object);
             view.getActivity().setResult(ManagementFragment.RESULT_UPDATE, intent);
+
+            Log.e("add", "set ok");
         }
 
         view.getActivity().finish();

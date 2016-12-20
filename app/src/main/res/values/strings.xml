@@ -130,6 +130,7 @@
     <string name="error_choose_transport">Vui lòng chọn phương tiện</string>
     <string name="error_choose_transport_price">Vui lòng chọn phương tiện</string>
     <string name="error_choose_money_price">Vui lòng chọn giá</string>
+    <string name="error_updating">Cập nhật thất bại</string>
 
     <string name="parking_xedap">Loại bãi đỗ: Xe đạp</string>
     <string name="parking_xemay">Loại bãi đỗ: Xe máy</string>

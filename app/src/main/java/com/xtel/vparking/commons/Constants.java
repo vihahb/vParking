@@ -1,13 +1,18 @@
 package com.xtel.vparking.commons;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.xtel.vparking.R;
 import com.xtel.vparking.view.MyApplication;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -90,7 +95,7 @@ public class Constants {
     public static final String PARKING_GET_CHECKIN_BY_PARKING_ID = "v1.0/admin/parking/";
     public static final String PARKING_DELETE_PICTURE = "v1.0/admin/parking/picture/";
     public static final String PARKING_DELETE_PRICE = "v1.0/admin/parking/price/";
-    public static final String PARKING_ADD_PRICES = "/v1.0/m/authenticate";
+    public static final String PARKING_ADD_PRICES = "v1.0/admin/parking/prices";
     public static final String PARKING_ADD_PICTURE = "v1.0/admin/parking/pictures";
     public static final String PARKING_CHECKIN_BY_PARKING_ID = "v1.0/admin/parking/";
     public static final String PARKING_CHECKIN_PAGE = "/checkin?page=";
@@ -178,6 +183,22 @@ public class Constants {
     public static String convertDate(String date) {
         String newData[] = date.split("/");
         return newData[2] + "/" + newData[1] + "/" + newData[0];
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public static String convertDataTime(String dateTime) {
+        try {
+            SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            Date date = defaultFormat.parse(dateTime);
+            SimpleDateFormat newFormat = new SimpleDateFormat("mm:hh dd-MM-yyyy");
+            Log.e("convert", "time" + newFormat.format(date));
+            return newFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Log.e("error", "convert " + e.toString());
+        }
+
+        return dateTime;
     }
 
     public static String getPlaceNumber(String number) {
