@@ -143,6 +143,26 @@ public class Constants {
     public static final String VERHICLE_ID = "verhicle_id";
     public static final String VERHICLE_MODEL = "verhicle_model";
 
+//    Check in
+    public static final String CHECKING_TIME = "checkin_time";
+    public static final String VERHICLE_NAME = "verhicle_name";
+    public static final String PLATE_NUMBER = "plate_number";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static String getTime(String begin, String end) {
         if (begin == null && end == null)
             return "Cả ngày";

@@ -12,20 +12,23 @@ import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.CheckIn;
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.ParkingCheckIn;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonHelper;
-import com.xtel.vparking.view.activity.inf.CheckOutView;
+import com.xtel.vparking.view.activity.inf.ITichketView;
 import com.xtel.vparking.view.fragment.CheckedFragment;
 
 /**
  * Created by Lê Công Long Vũ on 12/14/2016.
  */
 
-public class CheckOutPresenter {
-    CheckOutView view;
+public class TicketPresenter {
+    private ITichketView view;
     private CheckIn checkIn;
+    private ParkingCheckIn parkingCheckIn;
+    private int parking_id = -1;
 
-    public CheckOutPresenter(CheckOutView view) {
+    public TicketPresenter(ITichketView view) {
         this.view = view;
     }
 
@@ -36,11 +39,21 @@ public class CheckOutPresenter {
             e.printStackTrace();
         }
 
-        if (checkIn != null) {
-            view.onGetDataSuccess(checkIn);
-            getParkingInfo(checkIn.getParking().getId());
+        try {
+            parking_id = view.getActivity().getIntent().getIntExtra(Constants.ID_PARKING, -1);
+            parkingCheckIn = (ParkingCheckIn) view.getActivity().getIntent().getSerializableExtra(CheckedFragment.CHECKED_OBJECT);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        else
+
+        if (checkIn != null) {
+            view.onGetDataSuccess(checkIn.getVehicle().getName(), checkIn.getCheckin_time(), checkIn.getVehicle().getPlate_number());
+            getParkingInfo(checkIn.getParking().getId());
+        } else if (parkingCheckIn != null && parking_id != -1) {
+            view.hideButton();
+            view.onGetDataSuccess(parkingCheckIn.getVehicle().getName(), parkingCheckIn.getCheckin_time(), parkingCheckIn.getVehicle().getPlate_number());
+            getParkingInfo(parking_id);
+        } else
             view.onGetDataError();
     }
 
@@ -81,14 +94,15 @@ public class CheckOutPresenter {
     }
 
     public void viewParking() {
-        view.onViewParking(checkIn.getParking().getId());
+        if (checkIn != null)
+            view.onViewParking(checkIn.getParking().getId());
+        else
+            view.onViewParking(parking_id);
     }
 
     public void checkOut() {
         String url = Constants.SERVER_PARKING + Constants.PARKING_CHECK_OUT;
         String session = LoginModel.getInstance().getSession();
-//        String jsonObjec = "{transaction:\"" + checkIn.getTransaction() + "\"}";
-//        Log.e(this.getClass().getSimpleName(), "json object " + jsonObjec);
 
         CheckInModel.getInstance().checkOutVerhicle(url, JsonHelper.toJson(checkIn), session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override

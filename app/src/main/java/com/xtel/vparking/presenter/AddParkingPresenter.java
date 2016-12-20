@@ -44,7 +44,7 @@ public class AddParkingPresenter extends BasicPresenter {
     private AddParkingView view;
     private ParkingInfo object;
     private int picture_id = -1;
-    private String button = "";
+    private boolean isUpdate = false;
 
     private ICmd cmd = new ICmd() {
         @Override
@@ -78,6 +78,7 @@ public class AddParkingPresenter extends BasicPresenter {
         }
 
         if (object != null) {
+            isUpdate = true;
             view.onGetDataSuccess(object);
         }
     }
@@ -107,7 +108,7 @@ public class AddParkingPresenter extends BasicPresenter {
         new Task.ConvertImage(view.getActivity(), true, new RequestWithStringListener() {
             @Override
             public void onSuccess(String url) {
-                if (!button.equals(view.getActivity().getString(R.string.update_btn)))
+                if (!isUpdate)
                     view.onPostPictureSuccess(url);
                 else {
                     object.getPictures().clear();
@@ -198,9 +199,7 @@ public class AddParkingPresenter extends BasicPresenter {
 
     public void validateData(View _view, ArrayList<Pictures> arrayList_picture, String parking_name, PlaceModel placeModel,
                              int transport_type, String total_place, String begin_time, String end_time,
-                             ArrayList<Prices> arrayList_price, String button) {
-
-        this.button = button;
+                             ArrayList<Prices> arrayList_price) {
 
         if (arrayList_picture.size() == 0) {
             view.onValidateError(_view, view.getActivity().getString(R.string.loi_chonanh));
@@ -220,7 +219,7 @@ public class AddParkingPresenter extends BasicPresenter {
                 return;
             }
 
-            if (!button.equals(view.getActivity().getString(R.string.update_btn))) {
+            if (!isUpdate) {
                 view.showProgressBar(false, false, null, view.getActivity().getString(R.string.adding));
 
                 object = new ParkingInfo();
@@ -302,7 +301,7 @@ public class AddParkingPresenter extends BasicPresenter {
                 if (error.getCode() == 2)
                     getNewSessionAddParking();
                 else {
-                    if (!button.equals(view.getActivity().getString(R.string.update_btn)))
+                    if (!isUpdate)
                         object = null;
                     view.onAddParkingError(error);
                 }
@@ -319,7 +318,7 @@ public class AddParkingPresenter extends BasicPresenter {
 
             @Override
             public void onError() {
-                if (!button.equals(view.getActivity().getString(R.string.update_btn)))
+                if (!isUpdate)
                     object = null;
                 view.onAddParkingError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
             }

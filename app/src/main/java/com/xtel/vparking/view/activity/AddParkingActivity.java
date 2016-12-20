@@ -151,7 +151,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     public void addParking(View view) {
         presenter.validateData(view, arrayList_picture, edt_parking_name.getText().toString(), placeModel,
                 sp_transport_type.getSelectedItemPosition(), edt_place_number.getText().toString(),
-                edt_begin_time.getText().toString(), edt_end_time.getText().toString(), arrayList_price, btn_action.getText().toString());
+                edt_begin_time.getText().toString(), edt_end_time.getText().toString(), arrayList_price);
     }
 
     @Override
