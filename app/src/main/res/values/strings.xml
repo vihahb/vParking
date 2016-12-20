@@ -12,6 +12,7 @@
     <string name="title_activity_tao_bai_do">Tạo bãi đỗ</string>
     <string name="title_activity_check_in">Check in</string>
     <string name="title_activity_check_out">Check out</string>
+    <string name="title_activity_view_parking">Danh sách check in</string>
     <string name="title_activity_detail">Quản lý bãi đỗ</string>
     <string name="title_activity_favorite">Bãi đỗ yêu thích</string>
 
