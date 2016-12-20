@@ -100,6 +100,12 @@ public class Constants {
     public static final String PARKING_CHECKIN_BY_PARKING_ID = "v1.0/admin/parking/";
     public static final String PARKING_CHECKIN_PAGE = "/checkin?page=";
     public static final String PARKING_CHECKIN_SIZE = "&pagesize=";
+    public static final String HISTORY_CHECK = "v1.0/admin/parking/";
+    public static final String HISTORY = "/history";
+    public static final String BEGIN_TIME = "?begin=";
+    public static final String END_TIME = "&end=";
+    public static final String PAGE = "&page=";
+    public static final String PAGE_SIZE = "&pagesize=";
 
     public static final String JSON_ERROR = "error";
     public static final String JSON_MESSAGE = "message";

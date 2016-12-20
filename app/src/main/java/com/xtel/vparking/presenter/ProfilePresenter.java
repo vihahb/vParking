@@ -195,7 +195,7 @@ public class ProfilePresenter {
                 toastMessage = "Verify Cancelled";
             } else {
                 if (loginResult.getAccessToken() != null) {
-                    toastMessage = "Success:" + loginResult.getAccessToken().getAccountId();
+//                    toastMessage = "Success:" + loginResult.getAccessToken().getAccountId();
                     AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
                         @Override
                         public void onSuccess(Account account) {
@@ -203,6 +203,8 @@ public class ProfilePresenter {
                             phone_result = String.valueOf(account.getPhoneNumber());
                             SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_PHONE, phone_result);
                             view.updatePhone(phone_result);
+                            String result = "Update success: " + account.getPhoneNumber();
+                            view.showShortToast(result);
                         }
 
                         @Override
@@ -213,7 +215,6 @@ public class ProfilePresenter {
                 }
             }
             // Surface the result to your user in an appropriate way.
-            view.showShortToast(toastMessage);
         }
     }
 }

@@ -147,6 +147,17 @@
         <item name="android:singleLine">true</item>
     </style>
 
+    <style name="TextView_History">
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:textSize">@dimen/font_13</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+
     <style name="AddParking_Editext_Border">
         <item name="android:paddingRight">@dimen/size_8</item>
         <item name="android:paddingLeft">@dimen/size_8</item>
