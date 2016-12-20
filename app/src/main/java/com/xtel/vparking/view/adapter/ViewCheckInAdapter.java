@@ -35,7 +35,7 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == view_item)
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_checked, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_check_in, parent, false));
         else
             return new ViewProgress(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_progressbar, parent, false));
     }
@@ -43,7 +43,7 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (isLoadMore && position == arrayList.size())
-                checkedView.onEndlessScroll();
+            checkedView.onEndlessScroll();
 
         if (holder instanceof ViewHolder) {
             ViewHolder view = (ViewHolder) holder;
@@ -58,8 +58,14 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             view.txt_name.setText(checkIn.getUser().getFullname());
-            view.txt_plate_number.setText(checkIn.getVehicle().getPlate_number());
             view.txt_time.setText(Constants.convertDate(checkIn.getCheckin_time()));
+            view.txt_brand_name.setText(checkIn.getVehicle().getBrandname().getName());
+            view.txt_plate_number.setText(checkIn.getVehicle().getPlate_number());
+
+            if (checkIn.getUser().getPhone() == null)
+                view.txt_phone.setText(checkedView.getActivity().getString(R.string.not_update));
+            else
+                view.txt_phone.setText(checkIn.getUser().getPhone());
 
             view.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -95,15 +101,17 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView txt_icon, txt_name, txt_plate_number, txt_time;
+        private TextView txt_icon, txt_name, txt_time, txt_phone, txt_brand_name, txt_plate_number;
 
         ViewHolder(View itemView) {
             super(itemView);
 
-            txt_icon = (TextView) itemView.findViewById(R.id.item_txt_checked_icon);
-            txt_time = (TextView) itemView.findViewById(R.id.item_txt_checked_time);
-            txt_name = (TextView) itemView.findViewById(R.id.item_txt_checked_name);
-            txt_plate_number = (TextView) itemView.findViewById(R.id.item_txt_checked_car_number_plate);
+            txt_icon = (TextView) itemView.findViewById(R.id.item_txt_view_check_in_icon);
+            txt_time = (TextView) itemView.findViewById(R.id.item_txt_view_check_in_time);
+            txt_name = (TextView) itemView.findViewById(R.id.item_txt_view_check_in_name);
+            txt_phone = (TextView) itemView.findViewById(R.id.item_txt_view_check_in_phone);
+            txt_brand_name = (TextView) itemView.findViewById(R.id.item_txt_view_check_in_brand_name);
+            txt_plate_number = (TextView) itemView.findViewById(R.id.item_view_check_in_txt_number_plate);
         }
     }
 

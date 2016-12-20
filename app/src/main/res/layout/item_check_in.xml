@@ -9,10 +9,8 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/size_8"
-    android:paddingEnd="@dimen/size_16"
     android:paddingLeft="@dimen/size_16"
     android:paddingRight="@dimen/size_16"
-    android:paddingStart="@dimen/size_16"
     android:paddingTop="@dimen/size_8">
 
     <TextView
@@ -30,18 +28,18 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/item_view_check_in_textview"
             android:id="@+id/item_txt_check_in_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:singleLine="true"
             android:text="Ô tô của mình" />
 
         <TextView
             android:id="@+id/item.txt_check_in_made_by"
-            android:layout_width="wrap_content"
+            style="@style/item_view_check_in_textview"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_4"
             android:text="Honda" />
     </LinearLayout>
 
