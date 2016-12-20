@@ -240,7 +240,7 @@ public class AddParkingPresenter extends BasicPresenter {
                 object.setPrices(arrayList_price);
                 object.setPictures(arrayList_picture);
 
-                addParking(object);
+                addParking();
             } else {
                 view.showProgressBar(false, false, null, view.getActivity().getString(R.string.updating));
 
@@ -262,7 +262,7 @@ public class AddParkingPresenter extends BasicPresenter {
 //                object.setPictures(null);
 
                 Log.e("parking", "update");
-                updatePrices(arrayList_price);
+                updatePrices();
             }
         }
     }
@@ -286,14 +286,10 @@ public class AddParkingPresenter extends BasicPresenter {
         return -1;
     }
 
-    private void addParking(final ParkingInfo resp_parking_info) {
+    private void addParking() {
         String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
-        String jsonObject = JsonHelper.toJson(resp_parking_info);
+        String jsonObject = JsonHelper.toJson(object);
         String session = LoginModel.getInstance().getSession();
-
-        Log.e("tb_session", session);
-        Log.e("tb_url", url);
-        Log.e("tb_json", jsonObject);
 
         ParkingModel.getInstanse().addParking(url, jsonObject, session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
@@ -304,7 +300,7 @@ public class AddParkingPresenter extends BasicPresenter {
             @Override
             public void onError(Error error) {
                 if (error.getCode() == 2)
-                    getNewSessionAddParking(resp_parking_info);
+                    getNewSessionAddParking();
                 else {
                     if (!button.equals(view.getActivity().getString(R.string.update_btn)))
                         object = null;
@@ -314,11 +310,11 @@ public class AddParkingPresenter extends BasicPresenter {
         });
     }
 
-    private void getNewSessionAddParking(final ParkingInfo resp_parking_info) {
+    private void getNewSessionAddParking() {
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
-                addParking(resp_parking_info);
+                addParking();
             }
 
             @Override
@@ -330,7 +326,7 @@ public class AddParkingPresenter extends BasicPresenter {
         });
     }
 
-    private void updatePrices(ArrayList<Prices> arrayList_price) {
+    private void updatePrices() {
 //        for (int i = arrayList_price.size(); i >= 0; i--) {
 //            boolean exits = true;
 //
@@ -338,11 +334,12 @@ public class AddParkingPresenter extends BasicPresenter {
 //                if (object.getPrices().get(z).getId() ==)
 //            }
 //        }
+        updateParking();
     }
 
-    private void updateParking(final ParkingInfo resp_parking_info) {
+    private void updateParking() {
         String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
-        String jsonObject = JsonHelper.toJson(resp_parking_info);
+        String jsonObject = JsonHelper.toJson(object);
         String session = LoginModel.getInstance().getSession();
 
         Log.e("ud_session", session);
@@ -358,18 +355,18 @@ public class AddParkingPresenter extends BasicPresenter {
             @Override
             public void onError(Error error) {
                 if (error.getCode() == 2)
-                    getNewSessionUpdateParking(resp_parking_info);
+                    getNewSessionUpdateParking();
                 else
                     view.onAddParkingError(error);
             }
         });
     }
 
-    private void getNewSessionUpdateParking(final ParkingInfo resp_parking_info) {
+    private void getNewSessionUpdateParking() {
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
-                addParking(resp_parking_info);
+                addParking();
             }
 
             @Override

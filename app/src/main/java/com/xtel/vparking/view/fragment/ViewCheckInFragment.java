@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
-import com.xtel.vparking.model.entity.CheckIn;
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.ParkingCheckIn;
 import com.xtel.vparking.presenter.ViewCheckInPresenter;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.CheckOutActivity;
@@ -36,7 +36,7 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
 
     private RecyclerView recyclerView;
     private ViewCheckInAdapter adapter;
-    private ArrayList<CheckIn> arrayList;
+    private ArrayList<ParkingCheckIn> arrayList;
     private ProgressView progressView;
 
     public static ViewCheckInFragment newInstance(int id) {
@@ -157,8 +157,10 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
     }
 
     @Override
-    public void onGetVerhicleSuccess(ArrayList<CheckIn> arrayList) {
+    public void onGetVerhicleSuccess(ArrayList<ParkingCheckIn> arrayList) {
         this.arrayList.addAll(arrayList);
+        if (arrayList.size() < 8)
+            adapter.setLoadMore(false);
         checkListData();
     }
 
@@ -170,7 +172,12 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
     }
 
     @Override
-    public void onItemClicked(CheckIn checkIn) {
+    public void onEndlessScroll() {
+        presenter.getCheckIn();
+    }
+
+    @Override
+    public void onItemClicked(ParkingCheckIn checkIn) {
         startActivityForResult(CheckOutActivity.class, CHECKED_OBJECT, checkIn, REQUEST_CHECKED);
     }
 

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.NetWorkInfo;
-import com.xtel.vparking.model.entity.CheckIn;
+import com.xtel.vparking.model.entity.ParkingCheckIn;
 import com.xtel.vparking.view.activity.inf.IViewCheckIn;
 
 import java.util.ArrayList;
@@ -21,13 +21,13 @@ import java.util.ArrayList;
  */
 
 public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private ArrayList<CheckIn> arrayList;
+    private ArrayList<ParkingCheckIn> arrayList;
     private IViewCheckIn checkedView;
     private boolean isLoadMore = true;
 
     private static final int view_item = 1, view_progress = 2;
 
-    public ViewCheckInAdapter(ArrayList<CheckIn> arrayList, IViewCheckIn checkedView) {
+    public ViewCheckInAdapter(ArrayList<ParkingCheckIn> arrayList, IViewCheckIn checkedView) {
         this.arrayList = arrayList;
         this.checkedView = checkedView;
     }
@@ -37,14 +37,17 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (viewType == view_item)
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_checked, parent, false));
         else
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_checked, parent, false));
+            return new ViewProgress(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_progressbar, parent, false));
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (isLoadMore && position == arrayList.size())
+                checkedView.onEndlessScroll();
+
         if (holder instanceof ViewHolder) {
             ViewHolder view = (ViewHolder) holder;
-            final CheckIn checkIn = arrayList.get(position);
+            final ParkingCheckIn checkIn = arrayList.get(position);
 
             if (checkIn.getCheckin_type() == 1) {
                 view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_car_black_24dp, 0, 0, 0);
@@ -54,7 +57,7 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_bike_black_24dp, 0, 0, 0);
             }
 
-            view.txt_name.setText(checkIn.getParking().getAddress());
+            view.txt_name.setText(checkIn.getUser().getFullname());
             view.txt_plate_number.setText(checkIn.getVehicle().getPlate_number());
             view.txt_time.setText(Constants.convertDate(checkIn.getCheckin_time()));
 
@@ -85,13 +88,13 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-        if (position == (arrayList.size() - 1))
+        if (position == arrayList.size())
             return view_progress;
         else
             return view_item;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    private class ViewHolder extends RecyclerView.ViewHolder {
         private TextView txt_icon, txt_name, txt_plate_number, txt_time;
 
         ViewHolder(View itemView) {
@@ -104,7 +107,7 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    class ViewProgress extends RecyclerView.ViewHolder {
+    private class ViewProgress extends RecyclerView.ViewHolder {
         private ProgressBar progressBar;
 
         ViewProgress(View itemView) {
@@ -112,6 +115,14 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             progressBar = (ProgressBar) itemView.findViewById(R.id.item_progress_bar);
         }
+    }
+
+    public void setLoadMore(boolean isLoad) {
+        isLoadMore = isLoad;
+    }
+
+    public boolean isLoadMore() {
+        return isLoadMore;
     }
 
     public void removeItem(int position) {

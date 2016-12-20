@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.xtel.vparking.model.entity.CheckIn;
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.ParkingCheckIn;
 
 import java.util.ArrayList;
 
@@ -15,8 +16,9 @@ public interface IViewCheckIn {
 
     void showShortToast(String message);
     void onNetworkDisable();
-    void onGetVerhicleSuccess(ArrayList<CheckIn> arrayList);
+    void onGetVerhicleSuccess(ArrayList<ParkingCheckIn> arrayList);
     void onGetVerhicleError(Error error);
-    void onItemClicked(CheckIn checkIn);
+    void onEndlessScroll();
+    void onItemClicked(ParkingCheckIn checkIn);
     Activity getActivity();
 }

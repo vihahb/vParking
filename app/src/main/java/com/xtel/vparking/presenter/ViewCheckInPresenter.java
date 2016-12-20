@@ -11,6 +11,7 @@ import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.VerhicleModel;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Check_In;
+import com.xtel.vparking.model.entity.RESP_Parking_Check_In;
 import com.xtel.vparking.view.activity.inf.CheckedView;
 import com.xtel.vparking.view.activity.inf.IViewCheckIn;
 
@@ -21,7 +22,7 @@ import com.xtel.vparking.view.activity.inf.IViewCheckIn;
 public class ViewCheckInPresenter {
     private IViewCheckIn view;
     private boolean isViewing = true;
-    private int id = -1, page = 1, size = 20;
+    private int id = -1, page = 1, size = 8;
 
     public ViewCheckInPresenter(IViewCheckIn view, int id) {
         this.view = view;
@@ -40,12 +41,12 @@ public class ViewCheckInPresenter {
             return;
         }
 
-        VerhicleModel.getInstance().getCheckInByParkingId(id, page, size, new ResponseHandle<RESP_Check_In>(RESP_Check_In.class) {
+        VerhicleModel.getInstance().getCheckInByParkingId(id, page, size, new ResponseHandle<RESP_Parking_Check_In>(RESP_Parking_Check_In.class) {
             @Override
-            public void onSuccess(RESP_Check_In obj) {
+            public void onSuccess(RESP_Parking_Check_In obj) {
                 if (isViewing) {
                     page++;
-                    size += 20;
+                    size += 8;
                     view.onGetVerhicleSuccess(obj.getData());
                 }
             }

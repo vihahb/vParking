@@ -22,6 +22,12 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/detail_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
     <android.support.design.widget.TabLayout
         android:id="@+id/detail_tablayout"
         style="@style/MyTabLayout"
@@ -31,9 +37,4 @@
         android:theme="@style/AppTheme.AppBarOverlay"
         app:tabGravity="fill"
         app:tabMode="fixed" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/detail_viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 </LinearLayout>
