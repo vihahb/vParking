@@ -151,7 +151,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     public void addParking(View view) {
         presenter.validateData(view, arrayList_picture, edt_parking_name.getText().toString(), placeModel,
                 sp_transport_type.getSelectedItemPosition(), edt_place_number.getText().toString(),
-                edt_begin_time.getText().toString(), edt_end_time.getText().toString(), arrayList_price, btn_action.getText().toString());
+                edt_begin_time.getText().toString(), edt_end_time.getText().toString(), arrayList_price);
     }
 
     @Override
@@ -192,6 +192,9 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
         arrayList_price.clear();
         arrayList_price.addAll(object.getPrices());
+        if (arrayList_price.size() == 0)
+            arrayList_price.add(new Prices(-1, 0, 1, 3));
+
         priceAdapter.notifyDataSetChanged();
 
         arrayList_picture.addAll(object.getPictures());
@@ -370,6 +373,12 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     public void onAddParkingError(Error error) {
         closeProgressBar();
         showShortToast(JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_addparking)));
+    }
+
+    @Override
+    public void onUpdateParkingError(Error error) {
+        closeProgressBar();
+        showShortToast(JsonParse.getCodeMessage(error.getCode(), getString(R.string.error_updating)));
     }
 
     @Override

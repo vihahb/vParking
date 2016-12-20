@@ -1,6 +1,5 @@
 package com.xtel.vparking.view.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -65,12 +64,13 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
 
     private final String HOME_FRAGMENT = "home_fragment", MANAGER_FRAGMENT = "manager_fragment", VERHICLE_FRAGMENT = "verhicle_fragment",
             FAVORITE_FRAGMENT = "favorite_fragment", CHECKIN_FRAGMENT = "checkin_fragment";
+    public static final int RESULT_FIND = 88;
+
     private String CURRENT_FRAGMENT = "";
     public static final int REQUEST_CODE = 99;
     public static final int RESULT_GUID = 88;
     public static int PARKING_ID = -1;
     public static Find find_option = new Find(-1, -1, -1, "", "");
-    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -404,12 +404,18 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
                 fragment1.onActivityResult(requestCode, resultCode, data);
             }
         } else if (CURRENT_FRAGMENT.equals(MANAGER_FRAGMENT)) {
-            Fragment fragment2 = getSupportFragmentManager().findFragmentByTag(MANAGER_FRAGMENT);
-            if (fragment2 != null) {
-                fragment2.onActivityResult(requestCode, resultCode, data);
+                if (requestCode == CheckedFragment.REQUEST_CHECKED && resultCode == RESULT_FIND) {
+                if (data != null) {
+                    PARKING_ID = data.getIntExtra(Constants.ID_PARKING, -1);
+                }
+            } else {
+                Fragment fragment2 = getSupportFragmentManager().findFragmentByTag(MANAGER_FRAGMENT);
+                if (fragment2 != null) {
+                    fragment2.onActivityResult(requestCode, resultCode, data);
+                }
             }
         } else if (CURRENT_FRAGMENT.equals(CHECKIN_FRAGMENT)) {
-            if (requestCode == CheckedFragment.REQUEST_CHECKED && resultCode == CheckedFragment.RESULT_FIND) {
+            if (requestCode == CheckedFragment.REQUEST_CHECKED && resultCode == 88) {
                 if (data != null) {
                     PARKING_ID = data.getIntExtra(Constants.ID_PARKING, -1);
                 }

@@ -29,6 +29,7 @@ public interface AddParkingView {
     void onAddParkingSuccess(int id);
     void onUpdateParkingSuccess(ParkingInfo parkingInfo);
     void onAddParkingError(Error error);
+    void onUpdateParkingError(Error error);
     void onValidateError(View view, String error);
     Activity getActivity();
 }

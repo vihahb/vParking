@@ -132,13 +132,13 @@
             android:value="5765ba05cf4f36a9301d3a8eb9fe7c9e53ecb745" />
 
         <activity
-            android:name=".view.activity.CheckOutActivity"
+            android:name=".view.activity.TichketActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
             android:label="@string/title_activity_check_out" />
         <activity
             android:name=".view.activity.ViewParkingActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
-            android:label="@string/title_activity_check_out" />
+            android:label="@string/title_activity_view_parking" />
     </application>
 
 </manifest>

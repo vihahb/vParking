@@ -85,6 +85,8 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
         }
 
         holder.edt_price.addTextChangedListener(holder.textWatcher);
+        if (prices.getId() != -1)
+            holder.edt_price.setEnabled(false);
 
         holder.sp_for.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

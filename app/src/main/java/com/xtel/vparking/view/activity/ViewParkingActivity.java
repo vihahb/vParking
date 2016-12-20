@@ -1,6 +1,7 @@
 package com.xtel.vparking.view.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -11,9 +12,11 @@ import com.xtel.vparking.R;
 import com.xtel.vparking.presenter.ViewParkingPresenter;
 import com.xtel.vparking.view.activity.inf.IParkingView;
 import com.xtel.vparking.view.adapter.ViewParkingAdapter;
+import com.xtel.vparking.view.widget.NoPageTransformer;
 
 public class ViewParkingActivity extends BasicActivity implements IParkingView {
-    ViewParkingPresenter presenter;
+    private ViewParkingPresenter presenter;
+    public static final int REQUEST_VIEW = 99, RESULT_VIEW = 88;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class ViewParkingActivity extends BasicActivity implements IParkingView {
         ViewPager viewPager = (ViewPager) findViewById(R.id.detail_viewpager);
         ViewParkingAdapter adapter = new ViewParkingAdapter(getSupportFragmentManager(), id);
         viewPager.setAdapter(adapter);
+        viewPager.setPageTransformer(false, new NoPageTransformer());
 
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -60,5 +64,14 @@ public class ViewParkingActivity extends BasicActivity implements IParkingView {
         if (item.getItemId() == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_VIEW && resultCode == RESULT_VIEW) {
+            setResult(HomeActivity.RESULT_FIND, data);
+            finish();
+        }
     }
 }

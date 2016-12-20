@@ -18,7 +18,8 @@ import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.ParkingCheckIn;
 import com.xtel.vparking.presenter.ViewCheckInPresenter;
 import com.xtel.vparking.utils.JsonParse;
-import com.xtel.vparking.view.activity.CheckOutActivity;
+import com.xtel.vparking.view.activity.TichketActivity;
+import com.xtel.vparking.view.activity.ViewParkingActivity;
 import com.xtel.vparking.view.activity.inf.IViewCheckIn;
 import com.xtel.vparking.view.adapter.ViewCheckInAdapter;
 import com.xtel.vparking.view.widget.ProgressView;
@@ -30,7 +31,6 @@ import java.util.ArrayList;
  */
 
 public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
-    public static final int RESULT_CHECK_OUT = 66, REQUEST_CHECKED = 99;
     public static final String CHECKED_OBJECT = "checked_object", CHECKED_ID = "checked_id";
     private ViewCheckInPresenter presenter;
 
@@ -38,6 +38,7 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
     private ViewCheckInAdapter adapter;
     private ArrayList<ParkingCheckIn> arrayList;
     private ProgressView progressView;
+    private int parking_id = -1;
 
     public static ViewCheckInFragment newInstance(int id) {
         Bundle args = new Bundle();
@@ -66,17 +67,15 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
     }
 
     private void initPresenter() {
-        int id = -1;
-
         try {
-            id = getArguments().getInt(Constants.ID_PARKING);
-            Log.e("vp", "fragment get id " + id);
+            parking_id = getArguments().getInt(Constants.ID_PARKING);
+            Log.e("vp", "fragment get id " + parking_id);
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("vp", "error get id " + id);
+            Log.e("vp", "error get id " + parking_id);
         }
 
-        presenter = new ViewCheckInPresenter(this, id);
+        presenter = new ViewCheckInPresenter(this, parking_id);
     }
 
     private void initRecyclerview(View view) {
@@ -178,24 +177,15 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
 
     @Override
     public void onItemClicked(ParkingCheckIn checkIn) {
-        startActivityForResult(CheckOutActivity.class, CHECKED_OBJECT, checkIn, REQUEST_CHECKED);
+        Intent intent = new Intent(getActivity(), TichketActivity.class);
+        intent.putExtra(Constants.ID_PARKING, parking_id);
+        intent.putExtra(CHECKED_OBJECT, checkIn);
+        getActivity().startActivityForResult(intent, ViewParkingActivity.REQUEST_VIEW);
     }
 
     @Override
     public void onDestroy() {
         presenter.destroyView();
         super.onDestroy();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CHECKED) {
-            if (resultCode == RESULT_CHECK_OUT) {
-                if (data != null) {
-                    String transaction = data.getStringExtra(CHECKED_ID);
-                    removeVerhicle(transaction);
-                }
-            }
-        }
     }
 }

@@ -10,14 +10,15 @@ import com.xtel.vparking.model.entity.RESP_Parking_Info;
  * Created by Lê Công Long Vũ on 12/14/2016.
  */
 
-public interface CheckOutView {
+public interface ITichketView {
 
-    void onGetDataSuccess(CheckIn checkIn);
+    void onGetDataSuccess(String name, String time, String plate_number);
     void onGetDataError();
     void onGetParkingInfoSuccess(RESP_Parking_Info obj);
     void onGetParkingInfoError(Error error);
     void onViewParking(int id);
     void onCheckOutSuccess(CheckIn checkIn);
     void onCheckOutError(Error error);
+    void hideButton();
     Activity getActivity();
 }

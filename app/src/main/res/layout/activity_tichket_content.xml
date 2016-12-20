@@ -11,13 +11,13 @@
 
         <include
             android:id="@+id/checkout_layout_A"
-            layout="@layout/activity_check_out_content_a"
+            layout="@layout/activity_tichket_content_a"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <include
             android:id="@+id/checkout_layout_B"
-            layout="@layout/activity_check_out_content_b"
+            layout="@layout/activity_tichket_content_b"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

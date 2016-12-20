@@ -16,7 +16,7 @@ import com.xtel.vparking.model.entity.CheckIn;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.presenter.CheckedPresenter;
 import com.xtel.vparking.utils.JsonParse;
-import com.xtel.vparking.view.activity.CheckOutActivity;
+import com.xtel.vparking.view.activity.TichketActivity;
 import com.xtel.vparking.view.activity.inf.CheckedView;
 import com.xtel.vparking.view.adapter.CheckedAdapter;
 import com.xtel.vparking.view.widget.ProgressView;
@@ -24,7 +24,7 @@ import com.xtel.vparking.view.widget.ProgressView;
 import java.util.ArrayList;
 
 public class CheckedFragment extends BasicFragment implements CheckedView {
-    public static final int RESULT_CHECK_OUT = 66, RESULT_FIND = 88, REQUEST_CHECKED = 99;
+    public static final int RESULT_CHECK_OUT = 66, REQUEST_CHECKED = 99;
     public static final String CHECKED_OBJECT = "checked_object", CHECKED_ID = "checked_id";
     private CheckedPresenter presenter;
 
@@ -140,7 +140,7 @@ public class CheckedFragment extends BasicFragment implements CheckedView {
 
     @Override
     public void onItemClicked(CheckIn checkIn) {
-        startActivityForResult(CheckOutActivity.class, CHECKED_OBJECT, checkIn, REQUEST_CHECKED);
+        startActivityForResult(TichketActivity.class, CHECKED_OBJECT, checkIn, REQUEST_CHECKED);
     }
 
     @Override

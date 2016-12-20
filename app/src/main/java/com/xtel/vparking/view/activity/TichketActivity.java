@@ -16,25 +16,26 @@ import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.CheckIn;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
-import com.xtel.vparking.presenter.CheckOutPresenter;
+import com.xtel.vparking.presenter.TicketPresenter;
 import com.xtel.vparking.utils.JsonParse;
-import com.xtel.vparking.view.activity.inf.CheckOutView;
+import com.xtel.vparking.view.activity.inf.ITichketView;
 import com.xtel.vparking.view.fragment.CheckedFragment;
 
-public class CheckOutActivity extends BasicActivity implements View.OnClickListener, CheckOutView {
-    private CheckOutPresenter presenter;
+public class TichketActivity extends BasicActivity implements View.OnClickListener, ITichketView {
+    private TicketPresenter presenter;
 
     private TextView txt_time, txt_verhicle, txt_parking_name, txt_parking_address, txt_parking_time, txt_parking_price;
+    private Button btn_check_out;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_out);
+        setContentView(R.layout.activity_tichket);
 
         initToolbar(R.id.check_out_toolbar, null);
         initView();
 
-        presenter = new CheckOutPresenter(this);
+        presenter = new TicketPresenter(this);
         presenter.getData();
     }
 
@@ -46,7 +47,7 @@ public class CheckOutActivity extends BasicActivity implements View.OnClickListe
         txt_parking_time = (TextView) findViewById(R.id.check_out_txt_parking_time);
         txt_parking_price = (TextView) findViewById(R.id.check_out_txt_parking_price);
 
-        Button btn_check_out = (Button) findViewById(R.id.check_out_btn);
+        btn_check_out = (Button) findViewById(R.id.check_out_btn);
         FloatingActionButton fab_view = (FloatingActionButton) findViewById(R.id.check_out_fab);
 
         btn_check_out.setOnClickListener(this);
@@ -54,9 +55,9 @@ public class CheckOutActivity extends BasicActivity implements View.OnClickListe
     }
 
     @Override
-    public void onGetDataSuccess(CheckIn checkIn) {
-        txt_time.setText(Constants.convertDate(checkIn.getCheckin_time()));
-        txt_verhicle.setText(checkIn.getVehicle().getName() + ": " + checkIn.getVehicle().getPlate_number());
+    public void onGetDataSuccess(String name, String time, String plate_number) {
+        txt_time.setText(Constants.convertDate(time));
+        txt_verhicle.setText(name + ": " + plate_number);
     }
 
     @Override
@@ -91,7 +92,7 @@ public class CheckOutActivity extends BasicActivity implements View.OnClickListe
     public void onViewParking(int id) {
         Intent intent = new Intent();
         intent.putExtra(Constants.ID_PARKING, id);
-        setResult(CheckedFragment.RESULT_FIND, intent);
+        setResult(88, intent);
         finish();
     }
 
@@ -131,6 +132,11 @@ public class CheckOutActivity extends BasicActivity implements View.OnClickListe
     }
 
     @Override
+    public void hideButton() {
+        btn_check_out.setVisibility(View.GONE);
+    }
+
+    @Override
     public Activity getActivity() {
         return this;
     }
@@ -146,7 +152,7 @@ public class CheckOutActivity extends BasicActivity implements View.OnClickListe
     public void onClick(View v) {
         int id = v.getId();
 
-        if (NetWorkInfo.isOnline(CheckOutActivity.this)) {
+        if (NetWorkInfo.isOnline(TichketActivity.this)) {
             if (id == R.id.check_out_btn) {
                 showProgressBar(false, false, null, getString(R.string.doing));
                 presenter.checkOut();

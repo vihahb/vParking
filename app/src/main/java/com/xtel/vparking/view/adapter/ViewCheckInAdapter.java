@@ -58,8 +58,7 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
 
             view.txt_name.setText(checkIn.getUser().getFullname());
-            view.txt_time.setText(Constants.convertDate(checkIn.getCheckin_time()));
-            view.txt_brand_name.setText(checkIn.getVehicle().getBrandname().getName());
+            view.txt_time.setText(Constants.convertDataTime(checkIn.getCheckin_time()));
             view.txt_plate_number.setText(checkIn.getVehicle().getPlate_number());
 
             if (checkIn.getUser().getPhone() == null)
@@ -101,7 +100,7 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView txt_icon, txt_name, txt_time, txt_phone, txt_brand_name, txt_plate_number;
+        private TextView txt_icon, txt_name, txt_time, txt_phone, txt_plate_number;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -110,7 +109,6 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             txt_time = (TextView) itemView.findViewById(R.id.item_txt_view_check_in_time);
             txt_name = (TextView) itemView.findViewById(R.id.item_txt_view_check_in_name);
             txt_phone = (TextView) itemView.findViewById(R.id.item_txt_view_check_in_phone);
-            txt_brand_name = (TextView) itemView.findViewById(R.id.item_txt_view_check_in_brand_name);
             txt_plate_number = (TextView) itemView.findViewById(R.id.item_view_check_in_txt_number_plate);
         }
     }
