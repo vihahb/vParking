@@ -9,6 +9,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.xtel.vparking.R;
 import com.xtel.vparking.view.MyApplication;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -194,14 +195,16 @@ public class Constants {
     @SuppressLint("SimpleDateFormat")
     public static String convertDataTime(String dateTime) {
         try {
-            SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            Log.e("convert", "firsr time: " + dateTime);
+            DateFormat defaultFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
             Date date = defaultFormat.parse(dateTime);
-            SimpleDateFormat newFormat = new SimpleDateFormat("mm:hh dd-MM-yyyy");
-            Log.e("convert", "time" + newFormat.format(date));
+            Log.e("convert", "second time: " + date);
+            SimpleDateFormat newFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+            Log.e("convert", "final time: " + newFormat.format(date));
             return newFormat.format(date);
         } catch (ParseException e) {
             e.printStackTrace();
-            Log.e("error", "convert " + e.toString());
+            Log.e("convert", "error " + e.toString());
         }
 
         return dateTime;

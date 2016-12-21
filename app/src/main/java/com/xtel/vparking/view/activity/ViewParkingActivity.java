@@ -3,6 +3,8 @@ package com.xtel.vparking.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
@@ -14,8 +16,9 @@ import com.xtel.vparking.view.activity.inf.IParkingView;
 import com.xtel.vparking.view.adapter.ViewParkingAdapter;
 import com.xtel.vparking.view.widget.NoPageTransformer;
 
-public class ViewParkingActivity extends BasicActivity implements IParkingView {
+public class ViewParkingActivity extends BasicActivity implements BottomNavigationView.OnNavigationItemSelectedListener, IParkingView {
     private ViewParkingPresenter presenter;
+    private ViewPager viewPager;
     public static final int REQUEST_VIEW = 99, RESULT_VIEW = 88;
 
     @Override
@@ -29,14 +32,13 @@ public class ViewParkingActivity extends BasicActivity implements IParkingView {
     }
 
     private void initViewpager(int id) {
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.detail_tablayout);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.detail_bottom_navigation_view);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.detail_viewpager);
+        viewPager = (ViewPager) findViewById(R.id.detail_viewpager);
         ViewParkingAdapter adapter = new ViewParkingAdapter(getSupportFragmentManager(), id);
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(false, new NoPageTransformer());
-
-        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -73,5 +75,22 @@ public class ViewParkingActivity extends BasicActivity implements IParkingView {
             setResult(HomeActivity.RESULT_FIND, data);
             finish();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.nav_detail_check_in:
+                viewPager.setCurrentItem(0);
+                break;
+            case R.id.nav_detail_history:
+                viewPager.setCurrentItem(1);
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 }

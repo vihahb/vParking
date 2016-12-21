@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:design="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_parking_detail"
     android:layout_width="match_parent"
@@ -28,13 +29,14 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/detail_tablayout"
-        style="@style/MyTabLayout"
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/detail_bottom_navigation_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_48"
+        android:layout_height="@dimen/size_56"
+        android:layout_gravity="start"
         android:background="@color/colorPrimary"
         android:theme="@style/AppTheme.AppBarOverlay"
-        app:tabGravity="fill"
-        app:tabMode="fixed" />
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@android:color/white"
+        design:menu="@menu/bottom_navigation_view_parking" />
 </LinearLayout>

@@ -59,7 +59,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     private ArrayList<Prices> arrayList_price;
 
     private ViewPager viewPager;
-    private ImageView img_load;
+    private ImageView img_load, img_delete;
 
     private PlaceModel placeModel;
     private ArrayList<Pictures> arrayList_picture;
@@ -84,6 +84,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     private void initWidger() {
         txt_image_number = (TextView) findViewById(R.id.txt_add_parking_image_number);
+        img_delete = (ImageView) findViewById(R.id.img_add_parking_delete);
         img_load = (ImageView) findViewById(R.id.img_add_parking_picture);
 
         edt_parking_name = (EditText) findViewById(R.id.edt_add_parking_name);
@@ -201,8 +202,14 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         viewPager.getAdapter().notifyDataSetChanged();
 
         String img_position = "";
-        if (arrayList_picture.size() > 0)
+        if (arrayList_picture.size() > 0) {
             img_position = (viewPager.getCurrentItem() + 1) + "/" + arrayList_picture.size();
+            img_delete.setVisibility(View.VISIBLE);
+            txt_image_number.setVisibility(View.VISIBLE);
+        } else {
+            img_delete.setVisibility(View.GONE);
+            txt_image_number.setVisibility(View.GONE);
+        }
         txt_image_number.setText(img_position);
 
         btn_action.setText(getString(R.string.update));
@@ -238,12 +245,15 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         arrayList_picture.add(new Pictures(-1, url));
         viewPager.getAdapter().notifyDataSetChanged();
 
-        if (arrayList_picture.size() == 1)
-            txt_image_number.setText("1/1");
-        else {
-            String text = (viewPager.getCurrentItem() + 1) + "/" + arrayList_picture.size();
-            txt_image_number.setText(text);
+        if (arrayList_picture.size() > 0) {
+            if (img_delete.getVisibility() == View.GONE)
+                img_delete.setVisibility(View.VISIBLE);
+            if (txt_image_number.getVisibility() == View.GONE)
+                txt_image_number.setVisibility(View.VISIBLE);
         }
+
+        String text = (viewPager.getCurrentItem() + 1) + "/" + arrayList_picture.size();
+        txt_image_number.setText(text);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -267,12 +277,15 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         arrayList_picture.add(new Pictures(-1, url));
         viewPager.getAdapter().notifyDataSetChanged();
 
-        if (arrayList_picture.size() == 1)
-            txt_image_number.setText("1/1");
-        else {
-            String text = (viewPager.getCurrentItem() + 1) + "/" + arrayList_picture.size();
-            txt_image_number.setText(text);
+        if (arrayList_picture.size() > 0) {
+            if (img_delete.getVisibility() == View.GONE)
+                img_delete.setVisibility(View.VISIBLE);
+            if (txt_image_number.getVisibility() == View.GONE)
+                txt_image_number.setVisibility(View.VISIBLE);
         }
+
+        String text = (viewPager.getCurrentItem() + 1) + "/" + arrayList_picture.size();
+        txt_image_number.setText(text);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -299,7 +312,12 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         String img_position = "";
         if (arrayList_picture.size() > 0)
             img_position = (viewPager.getCurrentItem() + 1) + "/" + arrayList_picture.size();
+        else {
+            img_delete.setVisibility(View.GONE);
+            txt_image_number.setVisibility(View.GONE);
+        }
         txt_image_number.setText(img_position);
+
         viewPager.getAdapter().notifyDataSetChanged();
     }
 
