@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +43,7 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
     private ViewCheckInAdapter adapter;
     private ArrayList<ParkingCheckIn> arrayList;
     private ProgressView progressView;
+    private BottomNavigationView bottomNavigationView;
     private int parking_id = -1;
 
     public static ViewCheckInFragment newInstance(int id) {
@@ -65,6 +67,7 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        bottomNavigationView = (BottomNavigationView) getActivity().findViewById(R.id.detail_bottom_navigation_view);
         initPresenter();
         initRecyclerview(view);
         initRecyclerViewScroll();
@@ -117,11 +120,11 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
     }
 
     private void hideBottomView() {
-        ViewParkingActivity.bottomNavigationView.animate().translationY(ViewParkingActivity.bottomNavigationView.getHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
+        bottomNavigationView.animate().translationY(bottomNavigationView.getHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
     }
 
     private void showBottomView() {
-        ViewParkingActivity.bottomNavigationView.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+        bottomNavigationView.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
     }
 
     private void initProgressView(View view) {
@@ -182,7 +185,6 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
 
     @Override
     public void onGetVerhicleSuccess(ArrayList<ParkingCheckIn> arrayList) {
-        this.arrayList.addAll(arrayList);
         this.arrayList.addAll(arrayList);
         if (arrayList.size() < 10)
             adapter.setLoadMore(false);

@@ -20,7 +20,6 @@ import com.xtel.vparking.view.widget.ViewPagerNoScroll;
 public class ViewParkingActivity extends BasicActivity implements BottomNavigationView.OnNavigationItemSelectedListener, IParkingView {
     private ViewParkingPresenter presenter;
     private ActionBar actionBar;
-    public static BottomNavigationView bottomNavigationView;
     private ViewPagerNoScroll viewPager;
 
     public static final int REQUEST_VIEW = 99, RESULT_VIEW = 88;
@@ -37,7 +36,7 @@ public class ViewParkingActivity extends BasicActivity implements BottomNavigati
     }
 
     private void initViewpager(int id) {
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.detail_bottom_navigation_view);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.detail_bottom_navigation_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         viewPager = (ViewPagerNoScroll) findViewById(R.id.detail_viewpager);
