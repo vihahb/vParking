@@ -11,12 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.ParkingCheckIn;
 import com.xtel.vparking.presenter.ViewCheckInPresenter;
+import com.xtel.vparking.utils.RecyclerOnScrollListener;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.TichketActivity;
 import com.xtel.vparking.view.activity.ViewParkingActivity;
@@ -31,10 +34,11 @@ import java.util.ArrayList;
  */
 
 public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
-    public static final String CHECKED_OBJECT = "checked_object", CHECKED_ID = "checked_id";
+    public static final String CHECKED_OBJECT = "checked_object";
     private ViewCheckInPresenter presenter;
 
     private RecyclerView recyclerView;
+    private LinearLayoutManager layoutManager;
     private ViewCheckInAdapter adapter;
     private ArrayList<ParkingCheckIn> arrayList;
     private ProgressView progressView;
@@ -63,6 +67,7 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
 
         initPresenter();
         initRecyclerview(view);
+        initRecyclerViewScroll();
         initProgressView(view);
     }
 
@@ -82,11 +87,41 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
         recyclerView = (RecyclerView) view.findViewById(R.id.view_check_in_recyclerview);
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
 
         arrayList = new ArrayList<>();
         adapter = new ViewCheckInAdapter(arrayList, this);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void initRecyclerViewScroll() {
+        RecyclerOnScrollListener scrollListener = new RecyclerOnScrollListener(layoutManager) {
+            @Override
+            public void onHide() {
+                hideBottomView();
+            }
+
+            @Override
+            public void onShow() {
+                showBottomView();
+            }
+
+            @Override
+            public void onLoadMore() {
+                presenter.getCheckIn();
+            }
+        };
+
+        recyclerView.addOnScrollListener(scrollListener);
+    }
+
+    private void hideBottomView() {
+        ViewParkingActivity.bottomNavigationView.animate().translationY(ViewParkingActivity.bottomNavigationView.getHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
+    }
+
+    private void showBottomView() {
+        ViewParkingActivity.bottomNavigationView.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
     }
 
     private void initProgressView(View view) {
@@ -133,16 +168,6 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
         }
     }
 
-    private void removeVerhicle(String transaction) {
-        for (int i = (arrayList.size() - 1); i >= 0; i--) {
-            if (arrayList.get(i).getTransaction().equals(transaction)) {
-                adapter.removeItem(i);
-                checkListData();
-                return;
-            }
-        }
-    }
-
     @Override
     public void showShortToast(String message) {
         super.showShortToast(message);
@@ -158,7 +183,8 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
     @Override
     public void onGetVerhicleSuccess(ArrayList<ParkingCheckIn> arrayList) {
         this.arrayList.addAll(arrayList);
-        if (arrayList.size() < 8)
+        this.arrayList.addAll(arrayList);
+        if (arrayList.size() < 10)
             adapter.setLoadMore(false);
         checkListData();
     }
@@ -168,11 +194,6 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
         progressView.setRefreshing(false);
         progressView.updateData(R.mipmap.icon_parking, JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_coloi)), getString(R.string.touch_to_try_again));
         progressView.showData();
-    }
-
-    @Override
-    public void onEndlessScroll() {
-        presenter.getCheckIn();
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -182,6 +183,11 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     public void onGetDataSuccess(ParkingInfo object) {
         if (placeModel == null) {
             placeModel = new PlaceModel(object.getAddress(), object.getLat(), object.getLng());
+        }
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(getString(R.string.title_activity_update_parking));
         }
 
         edt_address.setText(placeModel.getAddress());

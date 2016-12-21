@@ -195,18 +195,13 @@ public class Constants {
     @SuppressLint("SimpleDateFormat")
     public static String convertDataTime(String dateTime) {
         try {
-            Log.e("convert", "firsr time: " + dateTime);
             DateFormat defaultFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
             Date date = defaultFormat.parse(dateTime);
-            Log.e("convert", "second time: " + date);
             SimpleDateFormat newFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-            Log.e("convert", "final time: " + newFormat.format(date));
             return newFormat.format(date);
         } catch (ParseException e) {
             e.printStackTrace();
-            Log.e("convert", "error " + e.toString());
         }
-
         return dateTime;
     }
 

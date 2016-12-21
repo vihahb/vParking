@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:design="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_parking_detail"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.xtel.vparking.view.activity.ViewParkingActivity">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -23,20 +20,26 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/detail_viewpager"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/detail_bottom_navigation_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_56"
-        android:layout_gravity="start"
-        android:background="@color/colorPrimary"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:itemIconTint="@android:color/white"
-        app:itemTextColor="@android:color/white"
-        design:menu="@menu/bottom_navigation_view_parking" />
-</LinearLayout>
+        <com.xtel.vparking.view.widget.ViewPagerNoScroll
+            android:id="@+id/detail_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/detail_bottom_navigation_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_56"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:itemIconTint="@android:color/white"
+            app:itemTextColor="@android:color/white"
+            design:menu="@menu/bottom_navigation_view_parking" />
+    </FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

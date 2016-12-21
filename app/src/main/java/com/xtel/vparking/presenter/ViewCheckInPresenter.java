@@ -22,7 +22,7 @@ import com.xtel.vparking.view.activity.inf.IViewCheckIn;
 public class ViewCheckInPresenter {
     private IViewCheckIn view;
     private boolean isViewing = true;
-    private int id = -1, page = 1, size = 8;
+    private int id = -1, page = 1, size = 10;
 
     public ViewCheckInPresenter(IViewCheckIn view, int id) {
         this.view = view;

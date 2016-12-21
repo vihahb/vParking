@@ -42,9 +42,6 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (isLoadMore && position == arrayList.size())
-            checkedView.onEndlessScroll();
-
         if (holder instanceof ViewHolder) {
             ViewHolder view = (ViewHolder) holder;
             final ParkingCheckIn checkIn = arrayList.get(position);

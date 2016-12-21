@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -14,11 +14,15 @@ import com.xtel.vparking.R;
 import com.xtel.vparking.presenter.ViewParkingPresenter;
 import com.xtel.vparking.view.activity.inf.IParkingView;
 import com.xtel.vparking.view.adapter.ViewParkingAdapter;
-import com.xtel.vparking.view.widget.NoPageTransformer;
+import com.xtel.vparking.utils.PageTransformer;
+import com.xtel.vparking.view.widget.ViewPagerNoScroll;
 
 public class ViewParkingActivity extends BasicActivity implements BottomNavigationView.OnNavigationItemSelectedListener, IParkingView {
     private ViewParkingPresenter presenter;
-    private ViewPager viewPager;
+    private ActionBar actionBar;
+    public static BottomNavigationView bottomNavigationView;
+    private ViewPagerNoScroll viewPager;
+
     public static final int REQUEST_VIEW = 99, RESULT_VIEW = 88;
 
     @Override
@@ -28,17 +32,45 @@ public class ViewParkingActivity extends BasicActivity implements BottomNavigati
 
         presenter = new ViewParkingPresenter(this);
         initToolbar(R.id.detail_toolbar, null);
+        actionBar = getSupportActionBar();
         presenter.getData();
     }
 
     private void initViewpager(int id) {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.detail_bottom_navigation_view);
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.detail_bottom_navigation_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        viewPager = (ViewPager) findViewById(R.id.detail_viewpager);
+        viewPager = (ViewPagerNoScroll) findViewById(R.id.detail_viewpager);
+        viewPager.setPagingEnabled(false);
         ViewParkingAdapter adapter = new ViewParkingAdapter(getSupportFragmentManager(), id);
         viewPager.setAdapter(adapter);
-        viewPager.setPageTransformer(false, new NoPageTransformer());
+
+        viewPager.setPageTransformer(false, new PageTransformer());
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        actionBar.setTitle(getString(R.string.title_activity_view_check_in));
+                        break;
+                    case 1:
+                        actionBar.setTitle(getString(R.string.title_activity_view_history));
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override

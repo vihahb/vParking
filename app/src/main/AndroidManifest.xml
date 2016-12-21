@@ -138,7 +138,7 @@
         <activity
             android:name=".view.activity.ViewParkingActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
-            android:label="@string/title_activity_view_parking" />
+            android:label="@string/title_activity_view_check_in" />
     </application>
 
 </manifest>

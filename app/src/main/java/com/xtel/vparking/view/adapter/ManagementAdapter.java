@@ -53,6 +53,7 @@ public class ManagementAdapter extends RecyclerSwipeAdapter<ManagementAdapter.Vi
                         .load(picture)
                         .error(R.mipmap.ic_parking_background)
                         .fit()
+                        .centerCrop()
                         .into(holder.img_avatar);
             else
                 holder.img_avatar.setImageResource(R.mipmap.ic_parking_background);

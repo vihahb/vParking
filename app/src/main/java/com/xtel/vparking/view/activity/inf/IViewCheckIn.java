@@ -18,7 +18,6 @@ public interface IViewCheckIn {
     void onNetworkDisable();
     void onGetVerhicleSuccess(ArrayList<ParkingCheckIn> arrayList);
     void onGetVerhicleError(Error error);
-    void onEndlessScroll();
     void onItemClicked(ParkingCheckIn checkIn);
     Activity getActivity();
 }
