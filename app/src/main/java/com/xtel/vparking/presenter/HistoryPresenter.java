@@ -37,7 +37,7 @@ public class HistoryPresenter {
         page = 1;
     }
 
-    public void getAllData(final String begin_time, final String end_time) {
+    public void getAllData(final String time) {
         if (!NetWorkInfo.isOnline(viewHistory.getActivity())) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -48,20 +48,21 @@ public class HistoryPresenter {
             return;
         }
 
-        VerhicleModel.getInstance().getDataHistory(id, begin_time, end_time, page, pagesize, new ResponseHandle<RESP_Parking_History>(RESP_Parking_History.class) {
+        VerhicleModel.getInstance().getDataHistory(id, time, time, page, pagesize, new ResponseHandle<RESP_Parking_History>(RESP_Parking_History.class) {
             @Override
             public void onSuccess(RESP_Parking_History obj) {
-                Log.v("Obj", "a " + obj.toString());
                 if (isViewing) {
                     page++;
+                    viewHistory.showShortToast("thanh cong");
                     viewHistory.onGetHistorySuccess(obj.getData());
                 }
             }
 
             @Override
             public void onError(Error error) {
+                viewHistory.showShortToast("loi roi");
                 if (error.getCode() == 2) {
-                    getNewSessionHistory(begin_time, end_time);
+                    getNewSessionHistory(time);
                 } else if (isViewing) {
                     viewHistory.onGetHistoryError(error);
                 }
@@ -69,11 +70,11 @@ public class HistoryPresenter {
         });
     }
 
-    private void getNewSessionHistory(final String begin, final String end) {
+    private void getNewSessionHistory(final String begin) {
         GetNewSession.getNewSession(viewHistory.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
-                getAllData(begin, end);
+                getAllData(begin);
             }
 
             @Override

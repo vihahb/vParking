@@ -43,10 +43,6 @@ public class ViewHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-        if (isLoaded && position == arrayList.size())
-            iViewHistory.onEndlessScroll();
-
         if (holder instanceof ViewHolder) {
             viewHolder = (ViewHolder) holder;
             final CheckInHisObj hisObj = arrayList.get(position);
