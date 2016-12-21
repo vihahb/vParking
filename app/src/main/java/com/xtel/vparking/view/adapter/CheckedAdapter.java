@@ -45,7 +45,7 @@ public class CheckedAdapter extends RecyclerView.Adapter<CheckedAdapter.ViewHold
             holder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_bike_black_24dp, 0, 0, 0);
         }
 
-        holder.txt_name.setText(checkIn.getParking().getAddress());
+        holder.txt_name.setText(checkIn.getParking().getParking_name());
         holder.txt_plate_number.setText(checkIn.getVehicle().getPlate_number());
         holder.txt_time.setText(Constants.convertDate(checkIn.getCheckin_time()));
 
