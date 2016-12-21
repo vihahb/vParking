@@ -129,8 +129,6 @@ public class ManagementAdapter extends RecyclerSwipeAdapter<ManagementAdapter.Vi
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.item_swipe_favorite);
             layout_content = (LinearLayout) itemView.findViewById(R.id.item_management_layout_content);
             img_avatar = (ImageView) itemView.findViewById(R.id.img_item_management_avatar);
-//            img_minus = (ImageButton) itemView.findViewById(R.id.img_item_management_minus);
-//            img_plus = (ImageButton) itemView.findViewById(R.id.img_item_management_plus);
             txt_name = (TextView) itemView.findViewById(R.id.txt_item_management_name);
             txt_address = (TextView) itemView.findViewById(R.id.txt_item_management_address);
             txt_empty = (TextView) itemView.findViewById(R.id.txt_item_management_empty);

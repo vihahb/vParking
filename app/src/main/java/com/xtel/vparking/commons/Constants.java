@@ -1,9 +1,7 @@
 package com.xtel.vparking.commons;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.xtel.vparking.R;
@@ -151,28 +149,14 @@ public class Constants {
     public static final String ID_PARKING = "id_parking";
     public static final String LATLNG_PARKING = "id_parking";
 
-//    Verhicle
+    //    Verhicle
     public static final String VERHICLE_ID = "verhicle_id";
     public static final String VERHICLE_MODEL = "verhicle_model";
 
-//    Check in
+    //    Check in
     public static final String CHECKING_TIME = "checkin_time";
     public static final String VERHICLE_NAME = "verhicle_name";
     public static final String PLATE_NUMBER = "plate_number";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public static String getTime(String begin, String end) {
@@ -208,7 +192,9 @@ public class Constants {
     public static String getPlaceNumber(String number) {
         if (number == null)
             return MyApplication.context.getString(R.string.unlimited);
-        return String.valueOf(number);
+        else if (number.isEmpty())
+            return MyApplication.context.getString(R.string.limited);
+        return String.valueOf(number) + " chỗ trống";
     }
 
     public static String getPlaceNumberAndTotal(Context context, String empty, String total) {
