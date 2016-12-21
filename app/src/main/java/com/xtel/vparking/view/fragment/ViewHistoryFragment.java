@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +27,7 @@ import com.xtel.vparking.model.entity.HistoryModel;
 import com.xtel.vparking.presenter.HistoryPresenter;
 import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.JsonParse;
+import com.xtel.vparking.utils.RecyclerOnScrollListener;
 import com.xtel.vparking.view.activity.inf.IViewHistory;
 import com.xtel.vparking.view.adapter.ViewHistoryAdapter;
 import com.xtel.vparking.view.widget.ProgressView;
@@ -35,12 +39,13 @@ import java.util.Calendar;
  * Created by Mr. M.2 on 12/19/2016.
  */
 
-public class ViewHistoryFragment extends Fragment implements IViewHistory {
+public class ViewHistoryFragment extends BasicFragment implements IViewHistory {
 
     private RecyclerView recyclerViewHistory;
     private ViewHistoryAdapter viewHistoryAdapter;
     private HistoryPresenter presenter;
     private ArrayList<CheckInHisObj> checkInHisArr;
+    private BottomNavigationView bottomNavigationView;
     private ProgressView progressView;
 
     private TextView txt_time;
@@ -77,7 +82,7 @@ public class ViewHistoryFragment extends Fragment implements IViewHistory {
         initRecycleView(view);
         initViewProgress(view);
         initView(view);
-        getData();
+//        getData();
 
     }
 
@@ -110,23 +115,50 @@ public class ViewHistoryFragment extends Fragment implements IViewHistory {
     }
 
     private void initData(String time) {
-        presenter.getAllData(time, time);
+        presenter.getAllData(time);
     }
 
     private void initRecycleView(View view) {
         recyclerViewHistory = (RecyclerView) view.findViewById(R.id.view_history_recyclerview);
         recyclerViewHistory.setHasFixedSize(true);
-        recyclerViewHistory.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerViewHistory.setLayoutManager(layoutManager);
         checkInHisArr = new ArrayList<>();
         viewHistoryAdapter = new ViewHistoryAdapter(checkInHisArr, this);
         recyclerViewHistory.setAdapter(viewHistoryAdapter);
         recyclerViewHistory.getAdapter().notifyDataSetChanged();
+
+        recyclerViewHistory.addOnScrollListener(new RecyclerOnScrollListener(layoutManager) {
+            @Override
+            public void onHide() {
+                hideBottomView();
+            }
+
+            @Override
+            public void onShow() {
+                showBottomView();
+            }
+
+            @Override
+            public void onLoadMore() {
+                getData();
+            }
+        });
+    }
+
+    private void hideBottomView() {
+        bottomNavigationView.animate().translationY(bottomNavigationView.getHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
+    }
+
+    private void showBottomView() {
+        bottomNavigationView.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
     }
 
     private void initView(View view) {
+        bottomNavigationView = (BottomNavigationView) getActivity().findViewById(R.id.detail_bottom_navigation_view);
         txt_time = (TextView) view.findViewById(R.id.txt_time);
         img_cal = (ImageView) view.findViewById(R.id.img_cal);
-        txt_time.setText(time_now);
+        txt_time.setText(getTime());
         img_cal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,7 +226,7 @@ public class ViewHistoryFragment extends Fragment implements IViewHistory {
 
     @Override
     public void showShortToast(String message) {
-
+        super.showShortToast(message);
     }
 
     @Override
@@ -208,17 +240,15 @@ public class ViewHistoryFragment extends Fragment implements IViewHistory {
     public void onGetHistorySuccess(ArrayList<CheckInHisObj> arrayList) {
         showShortToast("1");
         checkInHisArr.addAll(arrayList);
-        checkListData();
-        Log.v("Json arr 1", "null " + JsonHelper.toJson(checkInHisArr.get(1)));
-        if (checkInHisArr.size() < 8)
+        if (arrayList.size() < 8)
             viewHistoryAdapter.setLoadMore(false);
+        checkListData();
         showShortToast("2");
     }
 
     @Override
     public void onGetHistoryError(Error error) {
         progressView.setRefreshing(false);
-        showShortToast("etrhgtc");
         progressView.updateData(R.mipmap.icon_parking, JsonParse.getCodeMessage(error.getCode(), getString(R.string.loi_coloi)), getString(R.string.touch_to_try_again));
         progressView.showData();
     }
