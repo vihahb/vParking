@@ -3,13 +3,12 @@ package com.xtel.vparking.view.activity;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,12 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
@@ -30,7 +25,6 @@ import com.xtel.vparking.model.entity.Find;
 import com.xtel.vparking.presenter.FindAdvancedPresenter;
 import com.xtel.vparking.view.activity.inf.FindAdvancedView;
 
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -42,6 +36,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     private CheckBox chk_oto, chk_xemay, chk_xedap;
     private Button btn_find, btn_clear;
     private Spinner sp_price_type, sp_price;
+    private Menu menu;
     //Spinner Data
     private ArrayAdapter<String> arrayAdapter, priceAdapter;
     private String[] price_type = {"Tất cả", "Giờ", "Lượt", "Qua đêm"};
@@ -89,7 +84,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         chk_xedap = (CheckBox) findViewById(R.id.chk_find_advanced_xedap);
 
         btn_find = (Button) findViewById(R.id.btn_find);
-        btn_clear = (Button) findViewById(R.id.btn_clear_filter);
+//        btn_clear = (Button) findViewById(R.id.btn_clear_filter);
 //        getData();
         initOnClick();
         initSpinner();
@@ -97,11 +92,11 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         initTimeEnd();
     }
 
-    private void initOnClick(){
+    private void initOnClick() {
         btn_find.setOnClickListener(this);
         edt_begin_time.setOnClickListener(this);
         edt_end_time.setOnClickListener(this);
-        btn_clear.setOnClickListener(this);
+//        btn_clear.setOnClickListener(this);
     }
 
     private void initTimeBegin() {
@@ -130,7 +125,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         }
     }
 
-    private void initSpinner(){
+    private void initSpinner() {
         initPrice();
         arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_spinner_item_find, price_type);
         arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_find_ad);
@@ -146,31 +141,31 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     private int initCheckBox() {
         int type;
 
-        if (chk_xemay.isChecked() && chk_oto.isChecked() && chk_xedap.isChecked()){
+        if (chk_xemay.isChecked() && chk_oto.isChecked() && chk_xedap.isChecked()) {
             type = 6;
             String mes = getActivity().getString(R.string.parking_all);
             showShortToast(mes);
-        } else if (chk_xemay.isChecked() && chk_oto.isChecked()){
+        } else if (chk_xemay.isChecked() && chk_oto.isChecked()) {
             type = 5;
             String mes = getActivity().getString(R.string.parking_xeoto_xemay);
             showShortToast(mes);
-        } else  if (chk_xemay.isChecked() && chk_xedap.isChecked()){
+        } else if (chk_xemay.isChecked() && chk_xedap.isChecked()) {
             type = 4;
             String mes = getActivity().getString(R.string.parking_xemay_xedap);
             showShortToast(mes);
-        } else if (chk_xedap.isChecked() && chk_oto.isChecked()){
+        } else if (chk_xedap.isChecked() && chk_oto.isChecked()) {
             type = 6;
             String mes = getActivity().getString(R.string.parking_all);
             showShortToast(mes);
-        } else if (chk_xemay.isChecked()){
+        } else if (chk_xemay.isChecked()) {
             type = 3;
             String mes = getActivity().getString(R.string.parking_xemay);
             showShortToast(mes);
-        } else if (chk_oto.isChecked()){
+        } else if (chk_oto.isChecked()) {
             type = 2;
             String mes = getActivity().getString(R.string.parking_xeoto);
             showShortToast(mes);
-        } else if (chk_xedap.isChecked()){
+        } else if (chk_xedap.isChecked()) {
             type = 1;
             String mes = getActivity().getString(R.string.parking_xedap);
             showShortToast(mes);
@@ -182,7 +177,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         return type;
     }
 
-    private void PickTimeDialogBegin(){
+    private void PickTimeDialogBegin() {
         TimePickerDialog pickerDialog = new TimePickerDialog(FindAdvancedActivity.this, R.style.TimePicker, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -193,7 +188,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         pickerDialog.show();
     }
 
-    private void PickTimeDialogExpired(){
+    private void PickTimeDialogExpired() {
         TimePickerDialog pickerDialog = new TimePickerDialog(FindAdvancedActivity.this, R.style.TimePicker, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -218,7 +213,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         onParkingResult(type_parking, price, type_price, begin_time, end_time);
     }
 
-    private void onParkingResult(int type, int price, int price_type, String begin_time, String end_time){
+    private void onParkingResult(int type, int price, int price_type, String begin_time, String end_time) {
         presenter.getParkingRequest(type, price, price_type, begin_time, end_time);
     }
 
@@ -230,22 +225,23 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home)
+        if (item.getItemId() == android.R.id.home) {
             finish();
+        } else if (item.getItemId() == R.id.filter_parking_clear) {
+            onResetParkingResult();
+        }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.btn_find){
+        if (id == R.id.btn_find) {
             getDataActivity();
-        } else if (id == R.id.edt_begin_time){
+        } else if (id == R.id.edt_begin_time) {
             PickTimeDialogBegin();
-        } else if (id == R.id.edt_expired_time){
+        } else if (id == R.id.edt_expired_time) {
             PickTimeDialogExpired();
-        } else if (id == R.id.btn_clear_filter) {
-            onResetParkingResult();
         }
     }
 
@@ -254,13 +250,13 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         int spinner_id = parent.getId();
         String value_item;
         String price_item;
-        if (spinner_id == R.id.spinner_price_type){
+        if (spinner_id == R.id.spinner_price_type) {
             value_item = arrayAdapter.getItem(position).toString();
-            if (value_item.equals("Giờ")){
+            if (value_item.equals("Giờ")) {
                 price_type_integer = 1;
-            } else if (value_item.equals("Lượt")){
+            } else if (value_item.equals("Lượt")) {
                 price_type_integer = 2;
-            } else if (value_item.equals("Qua đêm")){
+            } else if (value_item.equals("Qua đêm")) {
                 price_type_integer = 3;
             } else {
                 price_type_integer = 0;
@@ -476,6 +472,14 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         }
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.find_advanced, menu);
+        this.menu = menu;
+        return true;
+    }
+
 
     @Override
     protected void onResume() {
