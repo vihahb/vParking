@@ -13,11 +13,13 @@
     android:paddingRight="@dimen/size_16"
     android:paddingTop="@dimen/size_8">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@mipmap/ic_dot_gray"
-        android:drawableStart="@mipmap/ic_dot_gray" />
+    <ImageView
+        android:id="@+id/item.img_verhicle_default"
+        android:layout_width="@dimen/size_18"
+        android:layout_height="@dimen/size_18"
+        android:contentDescription="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_action_green_dot" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -34,14 +36,16 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
-            android:text="Ô tô của mình" />
+            android:text="Ô tô của mình"
+            android:textSize="@dimen/font_13" />
 
         <TextView
             android:id="@+id/item.txt_verhicle_made_by"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_2"
-            android:text="Honda" />
+            android:layout_marginTop="@dimen/size_4"
+            android:text="Honda"
+            android:textSize="@dimen/font_13" />
     </LinearLayout>
 
     <TextView
@@ -50,15 +54,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/size_16"
         android:layout_marginStart="@dimen/size_16"
-        android:text="3025-3260" />
-
-    <TextView
-        android:id="@+id/item.txt_verhicle_default"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/size_16"
-        android:layout_marginStart="@dimen/size_16"
-        android:drawableEnd="@mipmap/ic_done_gray"
-        android:drawableRight="@mipmap/ic_done_gray"
-        android:visibility="invisible" />
+        android:text="3025-3260"
+        android:textSize="@dimen/font_13" />
 </LinearLayout>

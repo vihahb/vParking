@@ -71,7 +71,7 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_36"
-                android:layout_marginTop="@dimen/size_8">
+                android:layout_marginTop="@dimen/size_4">
 
                 <TextView
                     android:id="@+id/item.txt_favorite_time"
@@ -97,7 +97,7 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_36"
-                android:layout_marginTop="@dimen/size_8">
+                android:layout_marginTop="@dimen/size_4">
 
                 <TextView
                     android:id="@+id/item.txt_favorite_address"

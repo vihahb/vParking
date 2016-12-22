@@ -7,4 +7,5 @@
     android:drawableEnd="@drawable/ic_keyboard_arrow_down_white_24dp"
     android:drawablePadding="@dimen/size_8"
     android:drawableRight="@drawable/ic_keyboard_arrow_down_white_24dp"
-    android:textColor="@android:color/white" />
+    android:textColor="@android:color/white"
+    android:textSize="@dimen/font_13" />
