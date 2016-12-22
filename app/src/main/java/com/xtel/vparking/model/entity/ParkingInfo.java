@@ -39,6 +39,8 @@ public class ParkingInfo implements Serializable {
     @Expose
     private String total_place;
     @Expose
+    private String parking_phone;
+    @Expose
     private String empty_number;
     @Expose
     private String qr_code;
@@ -201,5 +203,13 @@ public class ParkingInfo implements Serializable {
 
     public void setFavorite(int favorite) {
         this.favorite = favorite;
+    }
+
+    public String getParking_phone() {
+        return parking_phone;
+    }
+
+    public void setParking_phone(String parking_phone) {
+        this.parking_phone = parking_phone;
     }
 }

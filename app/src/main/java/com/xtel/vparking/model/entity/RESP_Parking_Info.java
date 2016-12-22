@@ -37,6 +37,8 @@ public class RESP_Parking_Info extends RESP_Basic {
     @Expose
     private String total_place;
     @Expose
+    private String parking_phone;
+    @Expose
     private String empty_number;
     @Expose
     private String qr_code;
@@ -212,5 +214,13 @@ public class RESP_Parking_Info extends RESP_Basic {
 
     public void setParking_owner(UserInfo parking_owner) {
         this.parking_owner = parking_owner;
+    }
+
+    public String getParking_phone() {
+        return parking_phone;
+    }
+
+    public void setParking_phone(String parking_phone) {
+        this.parking_phone = parking_phone;
     }
 }

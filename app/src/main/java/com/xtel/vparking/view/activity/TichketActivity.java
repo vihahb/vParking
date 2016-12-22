@@ -54,6 +54,20 @@ public class TichketActivity extends BasicActivity implements View.OnClickListen
         fab_view.setOnClickListener(this);
     }
 
+    private void checkOut() {
+        showAskDialog(false, false, null, "Check out khỏi bãi đỗ", "Đồng ý", "Hủy bỏ", new DialogListener() {
+            @Override
+            public void onClicked(Object object) {
+                showProgressBar(false, false, null, getString(R.string.doing));
+                presenter.checkOut();
+            }
+
+            @Override
+            public void onCancle() {
+            }
+        });
+    }
+
     @Override
     public void onGetDataSuccess(String name, String time, String plate_number) {
         txt_time.setText(Constants.convertDate(time));
@@ -154,8 +168,7 @@ public class TichketActivity extends BasicActivity implements View.OnClickListen
 
         if (NetWorkInfo.isOnline(TichketActivity.this)) {
             if (id == R.id.check_out_btn) {
-                showProgressBar(false, false, null, getString(R.string.doing));
-                presenter.checkOut();
+                checkOut();
             } else if (id == R.id.check_out_fab) {
                 presenter.viewParking();
             }

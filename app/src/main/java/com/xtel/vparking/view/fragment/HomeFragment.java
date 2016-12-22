@@ -273,6 +273,7 @@ public class HomeFragment extends BasicFragment implements
         mMap_bottom.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()), 15));
     }
 
+    @SuppressWarnings("deprecation")
     public void searchPlace(Place place) {
         if (mMap != null) {
             BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.mipmap.ic_marker_my_location);

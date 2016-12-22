@@ -154,7 +154,7 @@ public class BottomSheet {
 
         txt_address.setText(resp_parking_info.getAddress());
         txt_user_name.setText(resp_parking_info.getParking_owner().getFullname());
-        txt_user_phone.setText(Constants.getUserInfo(resp_parking_info.getParking_owner().getPhone()));
+        txt_user_phone.setText(Constants.getUserInfo(resp_parking_info.getParking_phone()));
         txt_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
         txt_parking_name.setText(resp_parking_info.getParking_name());
         txt_cho_trong.setText(Constants.getPlaceNumberNoText(resp_parking_info.getEmpty_number()));
@@ -187,21 +187,6 @@ public class BottomSheet {
                     .load(resp_parking_info.getParking_owner().getAvatar())
                     .noPlaceholder()
                     .into(img_avatar);
-        }
-    }
-
-    private String getAge(String date) {
-        if (date == null || date.isEmpty())
-            return "None";
-
-        try {
-            Calendar calendar = Calendar.getInstance();
-            String[] time = date.split("/");
-            int age = calendar.get(Calendar.YEAR) - Integer.parseInt(time[0]);
-            Log.e(this.getClass().getSimpleName(), "now year " + calendar.get(Calendar.YEAR) + " old year " + time[2] + " age " + age + "   date  " + date);
-            return String.valueOf(age);
-        } catch (Exception e) {
-            return date;
         }
     }
 

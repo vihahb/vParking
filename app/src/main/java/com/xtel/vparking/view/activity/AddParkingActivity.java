@@ -21,11 +21,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
@@ -50,7 +45,6 @@ import java.util.ArrayList;
  */
 
 public class AddParkingActivity extends BasicActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, AddParkingView {
-
     private AddParkingPresenter presenter;
     private TextView txt_image_number;
     private EditText edt_parking_name, edt_place_number, edt_address, edt_begin_time, edt_end_time;
@@ -66,7 +60,8 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     private ArrayList<Pictures> arrayList_picture;
     private Button btn_action;
 
-    private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    public static final String MODEL_FIND = "model_find";
+    public static final int REQUEST_LOCATION = 88, RESULT_LOCATION = 66;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,15 +136,6 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         }
     }
 
-    private void getAddress() {
-        try {
-            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-            startActivityForResult(builder.build(this), PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void addParking(View view) {
         presenter.validateData(view, arrayList_picture, edt_parking_name.getText().toString(), placeModel,
                 sp_transport_type.getSelectedItemPosition(), edt_place_number.getText().toString(),
@@ -161,7 +147,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         int id = v.getId();
 
         if (id == R.id.edt_add_parking_diacho) {
-            getAddress();
+            startActivityForResult(MapsActivity.class, REQUEST_LOCATION);
         } else if (id == R.id.edt_add_parking_begin_time) {
             presenter.getTime(true);
         } else if (id == R.id.edt_add_parking_end_time) {
@@ -449,19 +435,25 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlaceAutocomplete.getPlace(this, data);
-
-                if (placeModel == null)
-                    placeModel = new PlaceModel();
-                placeModel.setAddress(place.getAddress().toString());
-                placeModel.setLatitude(place.getLatLng().latitude);
-                placeModel.setLongtitude(place.getLatLng().longitude);
-
-                edt_address.setText(place.getAddress());
+//        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+//            if (resultCode == RESULT_OK) {
+//                Place place = PlaceAutocomplete.getPlace(this, data);
+//
+//                if (placeModel == null)
+//                    placeModel = new PlaceModel();
+//                placeModel.setAddress(place.getAddress().toString());
+//                placeModel.setLatitude(place.getLatLng().latitude);
+//                placeModel.setLongtitude(place.getLatLng().longitude);
+//
+//                edt_address.setText(place.getAddress());
+//            }
+//        } else
+        if (requestCode == REQUEST_LOCATION && resultCode == RESULT_LOCATION) {
+            if (data != null) {
+                placeModel = (PlaceModel) data.getSerializableExtra(MODEL_FIND);
+                edt_address.setText(placeModel.getAddress());
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
+//        super.onActivityResult(requestCode, resultCode, data);
     }
 }
