@@ -4,4 +4,5 @@
     style="@style/Spinner_Item"
     android:layout_width="match_parent"
     android:layout_height="@dimen/size_38"
-    android:textColor="@color/colorPrimary" />
+    android:textColor="@color/colorPrimary"
+    android:textSize="@dimen/font_13" />

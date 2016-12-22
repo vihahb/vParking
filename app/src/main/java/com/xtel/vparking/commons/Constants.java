@@ -202,7 +202,7 @@ public class Constants {
             return MyApplication.context.getString(R.string.unlimited);
         else if (number.isEmpty())
             return MyApplication.context.getString(R.string.limited);
-        return String.valueOf(number) + " chỗ trống";
+        return String.valueOf(number) + " chỗ";
     }
 
     public static String getPlaceNumberNoText(String number) {

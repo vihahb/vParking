@@ -51,6 +51,7 @@ public class ManagementAdapter extends RecyclerSwipeAdapter<ManagementAdapter.Vi
             if (picture != null && !picture.isEmpty())
                 Picasso.with(activity)
                         .load(picture)
+                        .placeholder(R.mipmap.ic_parking_background)
                         .error(R.mipmap.ic_parking_background)
                         .fit()
                         .centerCrop()
@@ -62,8 +63,7 @@ public class ManagementAdapter extends RecyclerSwipeAdapter<ManagementAdapter.Vi
 
         holder.txt_name.setText(parkingInfo.getParking_name());
         holder.txt_address.setText(parkingInfo.getAddress());
-        holder.txt_number.setText(Constants.getPlaceNumber(parkingInfo.getEmpty_number()));
-        setStatus(holder.txt_empty, parkingInfo.getStatus());
+        setStatus(holder.txt_empty, parkingInfo.getEmpty_number());
 
         holder.img_view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,12 +96,11 @@ public class ManagementAdapter extends RecyclerSwipeAdapter<ManagementAdapter.Vi
         mItemManger.bindView(holder.itemView, position);
     }
 
-    private void setStatus(TextView textView, double status) {
-        if (status == 0) {
-            textView.setText(activity.getString(R.string.controng));
+    private void setStatus(TextView textView, String number) {
+        textView.setText(Constants.getPlaceNumber(number));
+        if (number == null || number.isEmpty()) {
             textView.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_still_empty, 0, 0, 0);
         } else {
-            textView.setText(activity.getString(R.string.hetcho));
             textView.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_still_empty, 0, 0, 0);
         }
     }
@@ -121,7 +120,7 @@ public class ManagementAdapter extends RecyclerSwipeAdapter<ManagementAdapter.Vi
         private LinearLayout layout_content;
         private ImageView img_avatar;
         private ImageButton img_view, img_update;
-        private TextView txt_name, txt_address, txt_empty, txt_number;
+        private TextView txt_name, txt_address, txt_empty;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -132,7 +131,6 @@ public class ManagementAdapter extends RecyclerSwipeAdapter<ManagementAdapter.Vi
             txt_name = (TextView) itemView.findViewById(R.id.txt_item_management_name);
             txt_address = (TextView) itemView.findViewById(R.id.txt_item_management_address);
             txt_empty = (TextView) itemView.findViewById(R.id.txt_item_management_empty);
-            txt_number = (TextView) itemView.findViewById(R.id.txt_item_management_number);
 
             img_view = (ImageButton) itemView.findViewById(R.id.item_management_img_view);
             img_update = (ImageButton) itemView.findViewById(R.id.item_management_img_update);

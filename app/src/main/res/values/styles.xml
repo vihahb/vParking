@@ -65,15 +65,15 @@
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:drawablePadding">@dimen/size_12</item>
+        <item name="android:drawablePadding">@dimen/size_10</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">@dimen/font_13</item>
     </style>
 
     <style name="Quanly_item_title">
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:drawablePadding">@dimen/size_16</item>
+        <item name="android:drawablePadding">@dimen/size_10</item>
         <item name="android:paddingLeft">@dimen/size_8</item>
         <item name="android:paddingRight">@dimen/size_8</item>
     </style>
@@ -108,7 +108,7 @@
         <item name="android:paddingRight">0dp</item>
         <item name="android:paddingTop">@dimen/size_8</item>
         <item name="android:paddingBottom">@dimen/size_16</item>
-        <item name="android:textAppearance">?android:attr/textAppearance</item>
+        <item name="android:textSize">@dimen/font_13</item>
     </style>
 
     <style name="AddParking_Editext_No_Focus">
@@ -123,7 +123,7 @@
         <item name="android:paddingEnd" tools:ignore="NewApi">0dp</item>
         <item name="android:paddingTop">@dimen/size_8</item>
         <item name="android:paddingBottom">@dimen/size_16</item>
-        <item name="android:textAppearance">?android:attr/textAppearance</item>
+        <item name="android:textSize">@dimen/font_13</item>
         <item name="android:focusable">false</item>
     </style>
 
@@ -192,6 +192,7 @@
     <style name="item_view_check_in_textview">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:textSize">@dimen/font_13</item>
     </style>
 
     <style name="Chitiet_TextView">
@@ -205,7 +206,7 @@
     <style name="Chitiet_TextView_Center">
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:textAppearance">?android:attr/textAppearance</item>
+        <item name="android:textSize">@dimen/font_13</item>
         <item name="android:gravity">center</item>
         <item name="android:drawablePadding">@dimen/size_10</item>
     </style>
@@ -263,7 +264,7 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:paddingLeft">@dimen/size_16</item>
         <item name="android:paddingRight">@dimen/size_16</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textSize">@dimen/font_13</item>
     </style>
 
     <style name="Spinner_Item">
@@ -292,7 +293,7 @@
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">@dimen/font_13</item>
-        <item name="android:drawablePadding">@dimen/size_16</item>
-        <item name="android:layout_marginTop">@dimen/size_16</item>
+        <item name="android:drawablePadding">@dimen/size_10</item>
+        <item name="android:layout_marginTop">@dimen/size_10</item>
     </style>
 </resources>

@@ -38,12 +38,13 @@
     <LinearLayout
         android:id="@+id/item_management_layout_content"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_110"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_2"
         android:background="@android:color/white"
         android:baselineAligned="false"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/size_8"
         android:paddingLeft="@dimen/size_16"
@@ -67,22 +68,6 @@
                     android:layout_height="match_parent"
                     android:contentDescription="@null"
                     android:scaleType="centerCrop" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_36"
-                    android:layout_gravity="bottom"
-                    android:alpha="0.3"
-                    android:background="@android:color/black" />
-
-                <TextView
-                    android:id="@+id/txt_item_management_name"
-                    style="@style/Quanly_item_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_36"
-                    android:layout_gravity="bottom"
-                    android:gravity="center"
-                    android:textColor="@android:color/white" />
             </FrameLayout>
         </android.support.v7.widget.CardView>
 
@@ -98,8 +83,6 @@
                 style="@style/Quanly_item_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_4"
-                android:layout_marginStart="@dimen/size_4"
                 android:drawableLeft="@mipmap/ic_my_address"
                 android:drawableStart="@mipmap/ic_my_address" />
 
@@ -108,22 +91,17 @@
                 style="@style/Quanly_item_textview"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginLeft="@dimen/size_4"
-                android:layout_marginStart="@dimen/size_4"
                 android:layout_weight="1"
                 android:drawableLeft="@mipmap/ic_still_empty"
                 android:drawableStart="@mipmap/ic_still_empty" />
 
             <TextView
-                android:id="@+id/txt_item_management_number"
+                android:id="@+id/txt_item_management_name"
+                style="@style/Quanly_item_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_action_parking_empty"
-                android:drawablePadding="@dimen/size_8"
-                android:drawableStart="@drawable/ic_action_parking_empty"
-                android:gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorPrimary" />
+                android:drawableLeft="@mipmap/ic_parking_name"
+                android:drawableStart="@mipmap/ic_parking_name" />
         </LinearLayout>
     </LinearLayout>
 </com.daimajia.swipe.SwipeLayout>

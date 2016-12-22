@@ -49,6 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/size_16"
         android:layout_marginStart="@dimen/size_16"
+        android:textSize="@dimen/font_13"
         android:gravity="end|right"
         android:text="3025-3260" />
 

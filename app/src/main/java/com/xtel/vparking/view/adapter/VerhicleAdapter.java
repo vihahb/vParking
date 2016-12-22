@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,9 +67,10 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             view.txt_plate_number.setText(verhicle.getPlate_number());
 
             if (verhicle.getFlag_default() == 1)
-                view.txt_default.setVisibility(View.VISIBLE);
+                view.img_default.setImageResource(R.drawable.ic_action_green_dot);
             else
-                view.txt_default.setVisibility(View.INVISIBLE);
+                view.img_default.setImageResource(R.mipmap.ic_dot_gray);
+
 
             view.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -109,15 +111,16 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private class ViewItem extends RecyclerView.ViewHolder {
-        private TextView txt_name, txt_plate_number, txt_made_by, txt_default;
+        private TextView txt_name, txt_plate_number, txt_made_by;
+        private ImageView img_default;
 
         private ViewItem(View itemView) {
             super(itemView);
 
+            img_default = (ImageView) itemView.findViewById(R.id.item_img_verhicle_default);
             txt_name = (TextView) itemView.findViewById(R.id.item_txt_verhicle_name);
             txt_plate_number = (TextView) itemView.findViewById(R.id.item_txt_verhicle_car_number_plate);
             txt_made_by = (TextView) itemView.findViewById(R.id.item_txt_verhicle_made_by);
-            txt_default = (TextView) itemView.findViewById(R.id.item_txt_verhicle_default);
         }
     }
 
