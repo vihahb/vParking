@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,11 +38,12 @@ import java.util.ArrayList;
  */
 
 public class AddVerhicleActivity extends BasicActivity implements AdapterView.OnItemSelectedListener, AddVerhicleView {
-    Toolbar toolbar;
+    private Toolbar toolbar;
+    private Menu menu;
     private EditText edt_verhicle_name, edt_verhicle_plate, edt_verhicle_descriptions;
     private Spinner sp_verhicle_brandname;
     private CheckBox chk_verhicle_default;
-    private Button btn_verhicle_add, btn_verhicle_update;
+    private Button btn_verhicle_add;
     private RadioGroup radioGroup;
     private RadioButton rdo_oto, rdo_xemay;
     AddVerhiclePresenter verhiclePresenter;
@@ -82,7 +84,6 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
         sp_verhicle_brandname = (Spinner) findViewById(R.id.spinner_brandname);
         chk_verhicle_default = (CheckBox) findViewById(R.id.chk_verhicle_default);
         btn_verhicle_add = (Button) findViewById(R.id.btn_verhicle_add);
-        btn_verhicle_update = (Button) findViewById(R.id.btn_update_verhicle);
         radioGroup = (RadioGroup) findViewById(R.id.rdo_group);
         rdo_oto = (RadioButton) findViewById(R.id.rdo_oto);
         rdo_xemay = (RadioButton) findViewById(R.id.rdo_xemay);
@@ -110,20 +111,11 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
     private void OnClickButton() {
         if (verhicle != null) {
             btn_verhicle_add.setVisibility(View.GONE);
-        } else
-            btn_verhicle_update.setVisibility(View.GONE);
-
+        }
         btn_verhicle_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkNetWork(AddVerhicleActivity.this, 1);
-            }
-        });
-
-        btn_verhicle_update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkNetWork(AddVerhicleActivity.this, 2);
             }
         });
 
@@ -241,7 +233,6 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
     }
 
     private void fill_DataUpdate(int id, String name, String desc, String plate_number, int type, int flag_default, String code) {
-
         btn_verhicle_add.setText(this.getString(R.string.update_btn));
         edt_verhicle_name.setText(name);
         edt_verhicle_descriptions.setText(desc);
@@ -326,9 +317,24 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home)
+        if (item.getItemId() == android.R.id.home) {
             finish();
+        } else if (item.getItemId() == R.id.nav_update_verhicle) {
+            checkNetWork(AddVerhicleActivity.this, 2);
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.update, menu);
+        this.menu = menu;
+        MenuItem itemUpdate = menu.findItem(R.id.nav_update_verhicle);
+        if (validVerhicleModel()) {
+            itemUpdate.setVisible(true);
+        }
+
+        return true;
     }
 
     private void checkNetWork(final Context context, int type){

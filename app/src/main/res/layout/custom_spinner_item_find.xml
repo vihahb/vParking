@@ -8,5 +8,6 @@
     android:background="@android:color/transparent"
     android:gravity="center_vertical"
     android:singleLine="true"
+    android:textSize="@dimen/font_13"
     android:textAppearance="?android:attr/textAppearanceMedium"
     android:textColor="@android:color/white" />
