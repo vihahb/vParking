@@ -159,6 +159,14 @@ public class Constants {
     public static final String PLATE_NUMBER = "plate_number";
 
 
+
+    public static String getUserInfo(String content) {
+        if (content == null || content.isEmpty())
+            return MyApplication.context.getString(R.string.not_update);
+        else
+            return content;
+    }
+
     public static String getTime(String begin, String end) {
         if (begin == null && end == null)
             return "Cả ngày";
@@ -195,6 +203,14 @@ public class Constants {
         else if (number.isEmpty())
             return MyApplication.context.getString(R.string.limited);
         return String.valueOf(number) + " chỗ trống";
+    }
+
+    public static String getPlaceNumberNoText(String number) {
+        if (number == null)
+            return MyApplication.context.getString(R.string.unlimited);
+        else if (number.isEmpty())
+            return MyApplication.context.getString(R.string.limited);
+        return String.valueOf(number);
     }
 
     public static String getPlaceNumberAndTotal(Context context, String empty, String total) {

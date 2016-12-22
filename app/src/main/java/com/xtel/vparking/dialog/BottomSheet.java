@@ -52,7 +52,7 @@ public class BottomSheet {
     private FragmentManager fragmentManager;
     private ViewPager viewPager;
     private ImageView img_favorite, img_avatar;
-    private TextView txt_address, txt_user_name, txt_user_age, txt_time, txt_parking_name, txt_cho_trong, txt_money, txt_dat_cho, txt_picture_count;
+    private TextView txt_address, txt_user_name, txt_user_phone, txt_time, txt_parking_name, txt_cho_trong, txt_money, txt_dat_cho, txt_picture_count;
     private RatingBar ratingBar;
     private Button btn_danduong;
     private LinearLayout view_header, view_content;
@@ -88,7 +88,7 @@ public class BottomSheet {
         txt_picture_count = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_picture_count);
         txt_address = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_address);
         txt_user_name = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_user_name);
-        txt_user_age = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_age);
+        txt_user_phone = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_phone);
         txt_time = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_time);
         txt_parking_name = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_parking_name);
         txt_cho_trong = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_chotrong);
@@ -154,15 +154,16 @@ public class BottomSheet {
 
         txt_address.setText(resp_parking_info.getAddress());
         txt_user_name.setText(resp_parking_info.getParking_owner().getFullname());
-        txt_user_age.setText(getAge(resp_parking_info.getParking_owner().getBirthday()));
+        txt_user_phone.setText(Constants.getUserInfo(resp_parking_info.getParking_owner().getPhone()));
         txt_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
         txt_parking_name.setText(resp_parking_info.getParking_name());
-        txt_cho_trong.setText(Constants.getPlaceNumber(resp_parking_info.getEmpty_number()));
+        txt_cho_trong.setText(Constants.getPlaceNumberNoText(resp_parking_info.getEmpty_number()));
 
         txt_money.setText((resp_parking_info.getPrices().get(0).getPrice() + "K/h"));
         txt_dat_cho.setText(resp_parking_info.getEmpty_number());
 
         txt_user_name.setSelected(true);
+        txt_user_phone.setSelected(true);
         txt_time.setSelected(true);
         txt_parking_name.setSelected(true);
     }

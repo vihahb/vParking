@@ -46,7 +46,7 @@ public class ViewImageFragment extends Fragment {
         if (url != null)
             Picasso.with(getContext())
                     .load(url)
-                    .noPlaceholder()
+                    .placeholder(R.mipmap.ic_parking_background)
                     .error(R.mipmap.ic_parking_background)
                     .into(imageView);
         else
