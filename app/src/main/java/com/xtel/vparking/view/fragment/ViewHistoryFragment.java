@@ -212,13 +212,10 @@ public class ViewHistoryFragment extends BasicFragment implements IViewHistory {
     private void checkListData() {
         progressView.disableSwipe();
         progressView.setRefreshing(false);
-        showShortToast("3");
         if (checkInHisArr.size() == 0) {
-            showShortToast("4");
             progressView.updateData(R.mipmap.icon_parking, "Không có phương tiện nào", getString(R.string.touch_to_try_again));
             progressView.show();
         } else {
-            showShortToast("5");
             recyclerViewHistory.getAdapter().notifyDataSetChanged();
             progressView.hide();
         }
@@ -238,12 +235,10 @@ public class ViewHistoryFragment extends BasicFragment implements IViewHistory {
 
     @Override
     public void onGetHistorySuccess(ArrayList<CheckInHisObj> arrayList) {
-        showShortToast("1");
         checkInHisArr.addAll(arrayList);
         if (arrayList.size() < 8)
             viewHistoryAdapter.setLoadMore(false);
         checkListData();
-        showShortToast("2");
     }
 
     @Override

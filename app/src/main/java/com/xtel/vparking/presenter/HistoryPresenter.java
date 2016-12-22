@@ -53,14 +53,12 @@ public class HistoryPresenter {
             public void onSuccess(RESP_Parking_History obj) {
                 if (isViewing) {
                     page++;
-                    viewHistory.showShortToast("thanh cong");
                     viewHistory.onGetHistorySuccess(obj.getData());
                 }
             }
 
             @Override
             public void onError(Error error) {
-                viewHistory.showShortToast("loi roi");
                 if (error.getCode() == 2) {
                     getNewSessionHistory(time);
                 } else if (isViewing) {
