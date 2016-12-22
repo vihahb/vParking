@@ -37,7 +37,7 @@ import java.util.ArrayList;
  */
 
 public class AddVerhicleActivity extends BasicActivity implements AdapterView.OnItemSelectedListener, AddVerhicleView {
-
+    Toolbar toolbar;
     private EditText edt_verhicle_name, edt_verhicle_plate, edt_verhicle_descriptions;
     private Spinner sp_verhicle_brandname;
     private CheckBox chk_verhicle_default;
@@ -67,11 +67,12 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
     }
 
     public void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_add_verhicle);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_add_verhicle);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     private void initView() {
@@ -227,6 +228,7 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
 
     private void getDataFromManager() {
         if (validVerhicleModel()) {
+            getSupportActionBar().setTitle(getActivity().getString(R.string.verhicle_update));
             final int id = verhicle.getId();
             final String name = verhicle.getName();
             final String plate_num = verhicle.getPlate_number();

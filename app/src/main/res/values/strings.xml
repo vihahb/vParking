@@ -69,6 +69,7 @@
     <string name="verhicle_default">Phương tiện mặc định</string>
     <string name="verhicle_add">Thêm phương tiện</string>
     <string name="verhicle_add_success">Thêm phương tiện thành công</string>
+    <string name="verhicle_update">Cập nhật phương tiện</string>
 
     <!-- Profile -->
     <string name="email">E-mail</string>
