@@ -136,7 +136,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     public void DeletePicture(View view) {
         if (arrayList_picture.size() > 0) {
-            showProgressBar(false, false, null, "Deleting file...");
+            showProgressBar(false, false, null, "Đang xóa file...");
             presenter.deletePicture((int) arrayList_picture.get(viewPager.getCurrentItem()).getId());
         }
     }
@@ -223,7 +223,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     @Override
     public void onTakePictureSuccess(Uri uri) {
-        showProgressBar(false, false, null, "updating file...");
+        showProgressBar(false, false, null, "Đang tải file...");
 
         Picasso.with(AddParkingActivity.this)
                 .load(uri)

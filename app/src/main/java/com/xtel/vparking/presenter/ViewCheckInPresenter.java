@@ -4,15 +4,11 @@ import android.os.Handler;
 
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
-import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.commons.NetWorkInfo;
-import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.VerhicleModel;
 import com.xtel.vparking.model.entity.Error;
-import com.xtel.vparking.model.entity.RESP_Check_In;
 import com.xtel.vparking.model.entity.RESP_Parking_Check_In;
-import com.xtel.vparking.view.activity.inf.CheckedView;
 import com.xtel.vparking.view.activity.inf.IViewCheckIn;
 
 /**

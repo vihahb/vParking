@@ -73,7 +73,7 @@ public abstract class BasicActivity extends AppCompatActivity {
     }
 
     protected void showProgressBar(boolean isTouchOutside, boolean isCancel, String title, String message) {
-        progressDialog = new ProgressDialog(BasicActivity.this);
+        progressDialog = new ProgressDialog(BasicActivity.this, R.style.AppCompatAlertDialogStyle);
         progressDialog.setCanceledOnTouchOutside(isTouchOutside);
         progressDialog.setCancelable(isCancel);
 

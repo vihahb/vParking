@@ -123,7 +123,6 @@ public class HomeFragment extends BasicFragment implements
 
     private void initWidget(View view) {
         fab_filter = (FloatingActionButton) view.findViewById(R.id.fab_parking_fillter);
-//        fab_thongbao = (FloatingActionButton) view.findViewById(R.id.fab_parking_thongbao);
         fab_location = (FloatingActionButton) view.findViewById(R.id.fab_parking_location);
 
         fab_filter.setOnClickListener(this);
@@ -276,7 +275,16 @@ public class HomeFragment extends BasicFragment implements
 
     public void searchPlace(Place place) {
         if (mMap != null) {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude), 15));
+            BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.mipmap.ic_marker_my_location);
+            Bitmap small_bitmap = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), 60, 60, true);
+            if (pickMarker != null)
+                pickMarker.remove();
+
+            pickMarker = mMap.addMarker(new MarkerOptions()
+                    .position(place.getLatLng())
+                    .icon(BitmapDescriptorFactory.fromBitmap(small_bitmap)));
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
+
             if (!isFindMyLocation)
                 isFindMyLocation = true;
         }
@@ -294,10 +302,9 @@ public class HomeFragment extends BasicFragment implements
     @SuppressWarnings("deprecation")
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.e("pk_map", "map ready");
         mMap = googleMap;
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(21.026529, 105.831361), 15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(HomeActivity.my_location.getLatitude(), HomeActivity.my_location.getLongtitude()), 15));
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMapClickListener(this);
@@ -314,7 +321,7 @@ public class HomeFragment extends BasicFragment implements
     @Override
     public void onMapLongClick(LatLng latLng) {
         BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.mipmap.ic_marker_my_location);
-        Bitmap small_bitmap = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), 40, 40, true);
+        Bitmap small_bitmap = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), 60, 60, true);
         if (pickMarker != null)
             pickMarker.remove();
 
@@ -362,6 +369,11 @@ public class HomeFragment extends BasicFragment implements
 
     @Override
     public void onCameraIdle() {
+        double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
+        double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
+
+        HomeActivity.my_location.setLatitude(latitude);
+        HomeActivity.my_location.setLongtitude(longtitude);
         if (isCanLoadMap) {
             isCanLoadMap = false;
 
@@ -369,9 +381,6 @@ public class HomeFragment extends BasicFragment implements
                 isLoadNewParking++;
             } else if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN)
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-
-            double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
-            double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
             presenter.getParkingAround(latitude, longtitude, HomeActivity.find_option);
         }
     }
@@ -381,17 +390,13 @@ public class HomeFragment extends BasicFragment implements
         int id = v.getId();
 
         if (id == R.id.fab_parking_fillter) {
-//            startActivityForResultWithInteger();
             startActivityForResult(FindAdvancedActivity.class, Constants.FIND_MODEL, HomeActivity.find_option, Constants.FIND_ADVANDCED_RQ);
-//            startActivityForResult(new Intent(getContext(), FindAdvancedActivity.class), Constants.FIND_ADVANDCED_RQ);
         } else if (id == R.id.fab_parking_location) {
-            if (isCanLoadMap) {
-                if (pickMarker != null)
-                    pickMarker.remove();
+            if (pickMarker != null)
+                pickMarker.remove();
 
-                actionType = 1;
-                presenter.getMyLocation();
-            }
+            actionType = 1;
+            presenter.getMyLocation();
         }
     }
 

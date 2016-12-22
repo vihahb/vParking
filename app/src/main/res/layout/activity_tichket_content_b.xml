@@ -14,8 +14,8 @@
         style="@style/TextView_CheckOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_menu_black_24dp"
-        android:drawableStart="@drawable/ic_menu_black_24dp"
+        android:drawableLeft="@mipmap/ic_parking_name"
+        android:drawableStart="@mipmap/ic_parking_name"
         android:text="@string/updating" />
 
     <TextView

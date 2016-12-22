@@ -34,6 +34,7 @@ import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.Find;
+import com.xtel.vparking.model.entity.PlaceModel;
 import com.xtel.vparking.presenter.HomePresenter;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.inf.HomeView;
@@ -64,13 +65,13 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
 
     private final String HOME_FRAGMENT = "home_fragment", MANAGER_FRAGMENT = "manager_fragment", VERHICLE_FRAGMENT = "verhicle_fragment",
             FAVORITE_FRAGMENT = "favorite_fragment", CHECKIN_FRAGMENT = "checkin_fragment";
-    public static final int RESULT_FIND = 88;
-
     private String CURRENT_FRAGMENT = "";
-    public static final int REQUEST_CODE = 99;
-    public static final int RESULT_GUID = 88;
+
+    public static final int RESULT_FIND = 88, REQUEST_CODE = 99, RESULT_GUID = 88;
     public static int PARKING_ID = -1;
+
     public static Find find_option = new Find(-1, -1, -1, "", "");
+    public static PlaceModel my_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,7 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
         initNavigation();
         initListener();
 
+        my_location = new PlaceModel(null, 21.026529, 105.831361);
         replaceHomeFragment();
         homePresenter = new HomePresenter(this);
         view = this;
@@ -191,6 +193,8 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
                     .load(avatar)
                     .noPlaceholder()
                     .error(R.mipmap.icon_account_1)
+                    .fit()
+                    .centerCrop()
                     .into(img_avatar);
         } else {
             img_avatar.setImageResource(R.mipmap.icon_account_1);
@@ -404,7 +408,7 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
                 fragment1.onActivityResult(requestCode, resultCode, data);
             }
         } else if (CURRENT_FRAGMENT.equals(MANAGER_FRAGMENT)) {
-                if (requestCode == CheckedFragment.REQUEST_CHECKED && resultCode == RESULT_FIND) {
+            if (requestCode == CheckedFragment.REQUEST_CHECKED && resultCode == RESULT_FIND) {
                 if (data != null) {
                     PARKING_ID = data.getIntExtra(Constants.ID_PARKING, -1);
                 }

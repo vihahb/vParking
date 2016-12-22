@@ -33,9 +33,9 @@
             style="@style/item_view_check_in_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_menu_black_24dp"
+            android:drawableLeft="@mipmap/ic_parking_name"
             android:drawablePadding="@dimen/size_8"
-            android:drawableStart="@drawable/ic_menu_black_24dp"
+            android:drawableStart="@mipmap/ic_parking_name"
             android:gravity="center_vertical"
             android:text="Ô tô của mình" />
 

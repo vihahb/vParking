@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.DialogListener;
 import com.xtel.vparking.dialog.DialogNotification;
+import com.xtel.vparking.view.MyApplication;
 
 import java.io.Serializable;
 
