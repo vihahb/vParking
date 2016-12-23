@@ -1,6 +1,7 @@
 package com.xtel.vparking.view.activity.inf;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 
@@ -31,5 +32,6 @@ public interface AddParkingView {
     void onAddParkingError(Error error);
     void onUpdateParkingError(Error error);
     void onValidateError(View view, String error);
+    void startActivityForResult(Intent intent);
     Activity getActivity();
 }

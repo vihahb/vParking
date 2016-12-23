@@ -102,6 +102,7 @@
     <string name="add_parking_des">Giới thiệu bãi đỗ</string>
     <string name="add_address">Địa chỉ</string>
     <string name="input_address">Nhập địa chỉ</string>
+    <string name="input_phone">Nhập số điện thoại</string>
     <string name="add_transport">Phương tiện</string>
     <string name="add_empty">Chỗ trống</string>
     <string name="add_mucgia">Mức giá theo giờ</string>
@@ -124,6 +125,8 @@
     <string name="loi_vitri">Vui lòng chọn vị trí</string>
     <string name="loi_nhapten">Vui lòng nhập tên bãi đỗ xe</string>
     <string name="loi_chotrong">Số lượng chứa xe không hợp lệ</string>
+    <string name="loi_phone_empty">Vui lòng nhập số điện thoại</string>
+    <string name="loi_phone">Số điện thoại không hợp lệ</string>
     <string name="loi_chongio_mocua">Vui lòng chọn thời gian mở cửa</string>
     <string name="loi_chongio_dongcua">Vui lòng chọn thời gian đóng của</string>
     <string name="loi_loaibaido">Vui lòng chọn loại bãi đỗ</string>

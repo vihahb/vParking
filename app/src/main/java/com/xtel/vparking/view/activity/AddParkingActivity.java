@@ -47,7 +47,7 @@ import java.util.ArrayList;
 public class AddParkingActivity extends BasicActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, AddParkingView {
     private AddParkingPresenter presenter;
     private TextView txt_image_number;
-    private EditText edt_parking_name, edt_place_number, edt_address, edt_begin_time, edt_end_time;
+    private EditText edt_parking_name, edt_place_number, edt_parking_phone, edt_address, edt_begin_time, edt_end_time;
     private Spinner sp_transport_type;
 
     private PriceAdapter priceAdapter;
@@ -61,7 +61,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     private Button btn_action;
 
     public static final String MODEL_FIND = "model_find";
-    public static final int REQUEST_LOCATION = 88, RESULT_LOCATION = 66;
+    public static final int REQUEST_LOCATION = 88, RESULT_LOCATION = 66, REQUEST_PHONE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +85,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
         edt_parking_name = (EditText) findViewById(R.id.edt_add_parking_name);
         edt_place_number = (EditText) findViewById(R.id.edt_add_parking_empty);
+        edt_parking_phone = (EditText) findViewById(R.id.edt_add_parking_phone);
         edt_address = (EditText) findViewById(R.id.edt_add_parking_diacho);
         edt_begin_time = (EditText) findViewById(R.id.edt_add_parking_begin_time);
         edt_end_time = (EditText) findViewById(R.id.edt_add_parking_end_time);
@@ -114,6 +115,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     private void initListener() {
         edt_address.setOnClickListener(this);
+        edt_parking_phone.setOnClickListener(this);
         edt_begin_time.setOnClickListener(this);
         edt_end_time.setOnClickListener(this);
     }
@@ -138,7 +140,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     public void addParking(View view) {
         presenter.validateData(view, arrayList_picture, edt_parking_name.getText().toString(), placeModel,
-                sp_transport_type.getSelectedItemPosition(), edt_place_number.getText().toString(),
+                sp_transport_type.getSelectedItemPosition(), edt_place_number.getText().toString(), edt_parking_phone.getText().toString(),
                 edt_begin_time.getText().toString(), edt_end_time.getText().toString(), arrayList_price);
     }
 
@@ -182,6 +184,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         edt_place_number.setText(object.getTotal_place());
         edt_begin_time.setText(object.getBegin_time());
         edt_end_time.setText(object.getBegin_time());
+        edt_parking_phone.setText(object.getParking_phone());
 
         arrayList_price.clear();
         arrayList_price.addAll(object.getPrices());
@@ -398,6 +401,11 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     }
 
     @Override
+    public void startActivityForResult(Intent intent) {
+        startActivityForResult(intent, REQUEST_PHONE);
+    }
+
+    @Override
     public Activity getActivity() {
         return this;
     }
@@ -435,25 +443,11 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-//            if (resultCode == RESULT_OK) {
-//                Place place = PlaceAutocomplete.getPlace(this, data);
-//
-//                if (placeModel == null)
-//                    placeModel = new PlaceModel();
-//                placeModel.setAddress(place.getAddress().toString());
-//                placeModel.setLatitude(place.getLatLng().latitude);
-//                placeModel.setLongtitude(place.getLatLng().longitude);
-//
-//                edt_address.setText(place.getAddress());
-//            }
-//        } else
         if (requestCode == REQUEST_LOCATION && resultCode == RESULT_LOCATION) {
             if (data != null) {
                 placeModel = (PlaceModel) data.getSerializableExtra(MODEL_FIND);
                 edt_address.setText(placeModel.getAddress());
             }
         }
-//        super.onActivityResult(requestCode, resultCode, data);
     }
 }

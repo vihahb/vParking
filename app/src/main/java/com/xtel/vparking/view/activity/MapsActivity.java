@@ -1,11 +1,11 @@
 package com.xtel.vparking.view.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,14 +25,15 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.xtel.vparking.R;
 import com.xtel.vparking.model.entity.PlaceModel;
-import com.xtel.vparking.presenter.MapPresenter;
-import com.xtel.vparking.view.activity.inf.IMapView;
 
 import java.util.List;
 import java.util.Locale;
 
-public class MapsActivity extends BasicActivity implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveListener, View.OnClickListener, IMapView {
-    private MapPresenter presenter;
+/**
+ * Created by Lê Công Long Vũ on 12/22/2016.
+ */
+
+public class MapsActivity extends BasicActivity implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveListener, View.OnClickListener {
     private GoogleMap mMap;
     private Marker marker;
     private PlaceModel placeModel;
@@ -43,7 +44,6 @@ public class MapsActivity extends BasicActivity implements OnMapReadyCallback, G
         setContentView(R.layout.activity_maps);
 
         placeModel = new PlaceModel();
-        presenter = new MapPresenter(this);
 
         initToolbar(R.id.map_toolbar, null);
         initGoogle();
@@ -107,11 +107,6 @@ public class MapsActivity extends BasicActivity implements OnMapReadyCallback, G
     }
 
     @Override
-    public Activity getActivity() {
-        return this;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home)
             finish();
@@ -143,10 +138,14 @@ public class MapsActivity extends BasicActivity implements OnMapReadyCallback, G
                 Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
                 List<Address> addresses = geocoder.getFromLocation(latitude, longtitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
-                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                String address = addresses.get(0).getAddressLine(0);
                 String city = addresses.get(0).getLocality();
                 String country = addresses.get(0).getCountryName();
-                String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+                String knownName = addresses.get(0).getFeatureName();
+
+                for (int i = 0; i < addresses.size(); i ++) {
+                    Log.e(this.getClass().getSimpleName(), "address: " + addresses.get(i).toString());
+                }
 
                 String place = "";
                 if (address != null && knownName != null)

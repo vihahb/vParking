@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 
+import com.facebook.accountkit.ui.AccountKitActivity;
+import com.facebook.accountkit.ui.AccountKitConfiguration;
+import com.facebook.accountkit.ui.LoginType;
 import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.ICmd;
@@ -206,7 +209,7 @@ public class AddParkingPresenter extends BasicPresenter {
     }
 
     public void validateData(View _view, ArrayList<Pictures> arrayList_picture, String parking_name, PlaceModel placeModel,
-                             int transport_type, String total_place, String begin_time, String end_time,
+                             int transport_type, String total_place, String phone, String begin_time, String end_time,
                              ArrayList<Prices> arrayList_price) {
 
         if (arrayList_picture.size() == 0) {
@@ -219,7 +222,12 @@ public class AddParkingPresenter extends BasicPresenter {
             view.onValidateError(_view, view.getActivity().getString(R.string.error_choose_transport));
         } else if (checkNumberInput(total_place) <= 0) {
             view.onValidateError(_view, view.getActivity().getString(R.string.loi_chotrong));
-        } else if (!checkListPrice(arrayList_price)) {
+        } else if (phone.isEmpty()) {
+            view.onValidateError(_view, view.getActivity().getString(R.string.loi_phone_empty));
+        } else if (phone.length() < 10 || phone.length() > 11) {
+            view.onValidateError(_view, view.getActivity().getString(R.string.loi_phone));
+        }
+        else if (!checkListPrice(arrayList_price)) {
             view.onValidateError(_view, view.getActivity().getString(R.string.error_choose_money_price));
         } else {
             if (!NetWorkInfo.isOnline(view.getActivity())) {
@@ -236,6 +244,7 @@ public class AddParkingPresenter extends BasicPresenter {
                 object.setType(transport_type);
                 object.setAddress(placeModel.getAddress());
                 object.setParking_name(parking_name);
+                object.setParking_phone(phone);
 
                 if (!begin_time.isEmpty())
                     object.setBegin_time(begin_time);
@@ -256,6 +265,7 @@ public class AddParkingPresenter extends BasicPresenter {
                 object.setType(transport_type);
                 object.setAddress(placeModel.getAddress());
                 object.setParking_name(parking_name);
+                object.setParking_phone(phone);
 
                 if (!begin_time.isEmpty())
                     object.setBegin_time(begin_time);
@@ -492,5 +502,16 @@ public class AddParkingPresenter extends BasicPresenter {
         }
 
         view.getActivity().finish();
+    }
+
+    public void getPhoneNumber() {
+        Intent intent = new Intent(view.getActivity(), AccountKitActivity.class);
+        AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder = new AccountKitConfiguration.AccountKitConfigurationBuilder(LoginType.PHONE, AccountKitActivity.ResponseType.TOKEN);
+        configurationBuilder.setDefaultCountryCode("VN");
+        configurationBuilder.setTitleType(AccountKitActivity.TitleType.APP_NAME);
+        configurationBuilder.setReadPhoneStateEnabled(true);
+        configurationBuilder.setReceiveSMS(true);
+        intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION, configurationBuilder.build());
+        view.startActivityForResult(intent);
     }
 }
