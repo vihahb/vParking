@@ -47,7 +47,6 @@ public class ProfilePresenter {
     }
 
     public void updateAvatar(final String avatar) {
-        view.showProgressBar(false, false, null, view.getActivity().getString(R.string.update_message));
         String url = Constants.SERVER_PARKING + Constants.UPDATE_USER;
         final String session = LoginModel.getInstance().getSession();
         JsonObject avaUpdate = new JsonObject();

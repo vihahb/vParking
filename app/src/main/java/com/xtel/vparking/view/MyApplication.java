@@ -12,9 +12,10 @@ import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.facebook.accountkit.AccountKit;
 
-import io.fabric.sdk.android.Fabric;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by Lê Công Long Vũ on 11/8/2016.
@@ -22,6 +23,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class MyApplication extends Application {
     public static Context context;
+    public static String PACKAGE_NAME;
 
     @Override
     public void onCreate() {
@@ -29,9 +31,15 @@ public class MyApplication extends Application {
         Fabric.with(this, new Crashlytics());
         FacebookSdk.sdkInitialize(getApplicationContext());
         AccountKit.initialize(getApplicationContext());
+        context = this;
+        PACKAGE_NAME = context.getPackageName();
+//        getKeyHash(PACKAGE_NAME);
+        Log.v("Pkg name", PACKAGE_NAME);
+    }
+
+    private void getKeyHash(String pkg_name) {
         try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.xtel.vparking",
+            PackageInfo info = getPackageManager().getPackageInfo(pkg_name,
                     PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
@@ -43,7 +51,5 @@ public class MyApplication extends Application {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-
-        context = this;
     }
 }
