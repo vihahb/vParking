@@ -29,7 +29,6 @@ import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestWithStringListener;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.NetWorkInfo;
-import com.xtel.vparking.model.entity.Profile;
 import com.xtel.vparking.model.entity.UserModel;
 import com.xtel.vparking.presenter.ProfilePresenter;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
@@ -445,6 +444,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
             if (type == 1){
                 profilePresenter.updateUser(full_name_update, email_update, birthday_update, gender_update, phone_update);
             } else if (type == 2){
+                showProgressBar(false, false, null, getActivity().getString(R.string.update_message));
                 Task.TakeBigPicture(context, getSupportFragmentManager(), true, new RequestWithStringListener() {
                     @Override
                     public void onSuccess(String url) {
@@ -454,6 +454,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
                                 .error(R.mipmap.ic_user)
                                 .into(img_avatar);
                         profilePresenter.updateAvatar(avatar);
+
                     }
 
                     @Override
