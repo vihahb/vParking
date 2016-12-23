@@ -1,7 +1,6 @@
 package com.xtel.vparking.view.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import com.xtel.vparking.R;
 import com.xtel.vparking.model.entity.Brandname;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by vivhp on 12/11/2016.
@@ -50,6 +48,7 @@ public class CustomAddVerhicleAdapterSpinner extends ArrayAdapter<Brandname> {
         brandnameModel = arrayList.get(position);
         tv_code.setText(brandnameModel.getCode());
         tv_name.setText(brandnameModel.getName());
+        tv_name.setTextColor(row.getResources().getColor(R.color.colorPrimary));
         tv_made.setText(brandnameModel.getMadeby());
 
         return row;
@@ -73,6 +72,7 @@ public class CustomAddVerhicleAdapterSpinner extends ArrayAdapter<Brandname> {
         brandnameModel = arrayList.get(position);
         tv_code.setText(brandnameModel.getCode());
         tv_name.setText(brandnameModel.getName());
+        tv_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_keyboard_arrow_down_black_24dp, 0);
         tv_made.setText(brandnameModel.getMadeby());
 
         return row;

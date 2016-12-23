@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/size_6"
-                android:paddingLeft="@dimen/size_16"
+
                 android:text="@string/verhicle_name"
                 android:textColor="@color/gray_tv"
                 android:textSize="@dimen/font_13" />
@@ -71,6 +71,15 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent">
 
+                <Button
+                    android:id="@+id/btn_clear_email"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginRight="@dimen/size_12"
+                    android:background="@mipmap/ic_close_black_24dp"
+                    android:visibility="gone" />
+
                 <EditText
                     android:id="@+id/edt_verhicle_name"
                     android:layout_width="match_parent"
@@ -80,21 +89,12 @@
                     android:paddingBottom="@dimen/size_8"
                     android:paddingEnd="0dp"
                     android:theme="@style/EditTextTheme"
-                    android:paddingLeft="@dimen/size_16"
                     android:paddingRight="0dp"
-                    android:paddingStart="@dimen/size_16"
+                    android:paddingLeft="@dimen/size_8"
+                    android:paddingStart="@dimen/size_8"
                     android:paddingTop="@dimen/size_8"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="@dimen/font_13" />
-
-                <Button
-                    android:id="@+id/btn_clear_email"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginRight="@dimen/size_12"
-                    android:background="@mipmap/ic_close_black_24dp"
-                    android:visibility="gone" />
             </FrameLayout>
         </LinearLayout>
 
@@ -118,7 +118,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/size_6"
-                    android:paddingLeft="@dimen/size_16"
                     android:text="@string/verhicle_brandname"
                     android:textColor="@color/gray_tv"
                     android:textSize="@dimen/font_13" />
@@ -142,7 +141,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/size_6"
-                    android:paddingLeft="@dimen/size_16"
                     android:text="@string/verhicle_platenumber"
                     android:textColor="@color/gray_tv"
                     android:textSize="@dimen/font_13" />
@@ -155,9 +153,9 @@
                     android:hint="@string/verhicle_platenumber"
                     android:inputType="textEmailAddress"
                     android:paddingBottom="@dimen/size_8"
-                    android:paddingLeft="@dimen/size_16"
                     android:paddingRight="@dimen/size_10"
-                    android:paddingStart="@dimen/size_16"
+                    android:paddingLeft="@dimen/size_8"
+                    android:paddingStart="@dimen/size_8"
                     android:paddingTop="@dimen/size_8"
                     android:theme="@style/EditTextTheme"
                     android:textAppearance="?android:attr/textAppearanceLarge"
@@ -178,7 +176,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/size_6"
-                android:paddingLeft="@dimen/size_16"
                 android:text="@string/verhicle_description"
                 android:textColor="@color/gray_tv"
                 android:textSize="@dimen/font_13" />
@@ -200,9 +197,9 @@
                     android:lines="3"
                     android:paddingBottom="@dimen/size_8"
                     android:paddingEnd="0dp"
-                    android:paddingLeft="@dimen/size_16"
                     android:paddingRight="0dp"
-                    android:paddingStart="@dimen/size_16"
+                    android:paddingLeft="@dimen/size_8"
+                    android:paddingStart="@dimen/size_8"
                     android:paddingTop="@dimen/size_8"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="@dimen/font_13" />

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     android:baselineAligned="false"
     android:orientation="vertical"
     tools:context=".view.activity.FindAdvancedActivity">
@@ -48,10 +47,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:buttonTint="@android:color/white"
+                android:button="@drawable/custom_checkbox_done"
                 android:gravity="left|center"
                 android:text="@string/oto"
-                android:textColor="@drawable/custom_checkbox_text"
+                android:paddingLeft="@dimen/size_10"
+                android:textColor="@drawable/custom_checkbox_add_text"
                 android:theme="@style/WhiteCheck" />
 
             <LinearLayout
@@ -64,10 +64,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:buttonTint="@android:color/white"
+                android:button="@drawable/custom_checkbox_done"
                 android:gravity="left|center"
                 android:text="@string/xemay"
-                android:textColor="@drawable/custom_checkbox_text"
+                android:paddingLeft="@dimen/size_10"
+                android:textColor="@drawable/custom_checkbox_add_text"
                 android:theme="@style/WhiteCheck" />
 
             <LinearLayout
@@ -80,10 +81,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:buttonTint="@android:color/white"
+                android:button="@drawable/custom_checkbox_done"
                 android:gravity="left|center"
                 android:text="@string/xedap"
-                android:textColor="@drawable/custom_checkbox_text"
+                android:paddingLeft="@dimen/size_10"
+                android:textColor="@drawable/custom_checkbox_add_text"
                 android:theme="@style/WhiteCheck" />
         </LinearLayout>
 
@@ -95,12 +97,11 @@
 
             <TextView
                 android:id="@+id/tv_price"
-                style="@style/AddParking_Textview"
+                android:textColor="@color/gray_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/size_10"
                 android:layout_weight="1"
-                android:paddingLeft="@dimen/size_12"
                 android:text="@string/price"
                 android:textSize="@dimen/font_13" />
 
@@ -111,12 +112,11 @@
 
             <TextView
                 android:id="@+id/tv_price_type"
-                style="@style/AddParking_Textview"
+                android:textColor="@color/gray_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/size_10"
                 android:layout_weight="1"
-                android:paddingLeft="@dimen/size_12"
                 android:text="@string/price_type"
                 android:textSize="@dimen/font_13" />
         </LinearLayout>
@@ -131,7 +131,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/size_40"
                 android:layout_weight="1"
-                android:background="@drawable/custom_edittext_findadvance"
+                android:background="@drawable/custom_edittext_profile"
                 android:paddingLeft="@dimen/size_12"
                 android:paddingRight="@dimen/size_10" />
 
@@ -145,7 +145,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/size_40"
                 android:layout_weight="1"
-                android:background="@drawable/custom_edittext_findadvance"
+                android:background="@drawable/custom_edittext_profile"
                 android:paddingLeft="@dimen/size_12"
                 android:paddingRight="@dimen/size_10" />
         </LinearLayout>
@@ -159,12 +159,11 @@
 
             <TextView
                 android:id="@+id/tv_begin_time"
-                style="@style/AddParking_Textview"
+                android:textColor="@color/gray_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/size_10"
                 android:layout_weight="1"
-                android:paddingLeft="@dimen/size_12"
                 android:text="@string/find_begin_time"
                 android:textSize="@dimen/font_13" />
 
@@ -175,12 +174,11 @@
 
             <TextView
                 android:id="@+id/tv_expired_time"
-                style="@style/AddParking_Textview"
+                android:textColor="@color/gray_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/size_10"
                 android:layout_weight="1"
-                android:paddingLeft="@dimen/size_12"
                 android:text="@string/find_end_time"
                 android:textSize="@dimen/font_13" />
         </LinearLayout>
@@ -195,8 +193,8 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/size_40"
                 android:layout_weight="1"
-                android:background="@drawable/custom_edittext_findadvance"
-                android:drawableRight="@mipmap/ic_timer_white_24dp"
+                android:background="@drawable/custom_edittext_profile"
+                android:drawableRight="@drawable/ic_timer_black_24dp"
                 android:focusable="false"
                 android:gravity="center_vertical"
                 android:hint="@string/find_begin_time"
@@ -204,8 +202,7 @@
                 android:paddingRight="@dimen/size_10"
                 android:textSize="@dimen/font_13"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white" />
+                android:textColorHint="@color/gray_tv" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -217,8 +214,8 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/size_40"
                 android:layout_weight="1"
-                android:background="@drawable/custom_edittext_findadvance"
-                android:drawableRight="@mipmap/ic_timer_off_white_24dp"
+                android:background="@drawable/custom_edittext_profile"
+                android:drawableRight="@drawable/ic_timer_off_black_24dp"
                 android:focusable="false"
                 android:gravity="center_vertical"
                 android:hint="@string/find_end_time"
@@ -226,8 +223,7 @@
                 android:paddingRight="@dimen/size_10"
                 android:textSize="@dimen/font_13"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white" />
+                android:textColorHint="@color/gray_tv" />
         </LinearLayout>
 
     </LinearLayout>
@@ -235,11 +231,10 @@
     <Button
         android:id="@+id/btn_find"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_60"
+        android:layout_height="@dimen/size_48"
         android:background="@drawable/btn_purple_no_radius"
         android:foreground="?android:attr/selectableItemBackground"
         android:onClick="TimKiem"
-        android:padding="@dimen/size_10"
         android:text="@string/filter"
         android:textColor="@android:color/white" />
 </LinearLayout>

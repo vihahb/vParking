@@ -279,7 +279,8 @@
     </style>
 
     <style name="WhiteCheck" parent="Theme.AppCompat">
-        <item name="colorAccent">#fff</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorSecondary">@color/btn_fb_plus</item>
     </style>
 
     <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">

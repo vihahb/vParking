@@ -5,6 +5,9 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
@@ -24,21 +27,23 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.facebook.accountkit.ui.AccountKitActivity;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
-import com.xtel.vparking.callback.RequestWithStringListener;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.UserModel;
 import com.xtel.vparking.presenter.ProfilePresenter;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
-import com.xtel.vparking.utils.Task;
 import com.xtel.vparking.view.activity.inf.ProfileView;
+import com.xtel.vparking.view.widget.BitmapTransform;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+
+import gun0912.tedbottompicker.TedBottomPicker;
 
 /**
  * Created by vivhp on 12/8/2016.
@@ -117,7 +122,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
 
     private void initSpinner() {
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item, gender_spinner);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        arrayAdapter.setDropDownViewResource(R.layout.simple_dropdown_item);
         spinner_gender.setAdapter(arrayAdapter);
         spinner_gender.setOnItemSelectedListener(this);
     }
@@ -322,7 +327,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         return true;
     }
 
-    private void updateMyPhone(Context context){
+    private void updateMyPhone(Context context) {
         checkNetwork(context, 3);
     }
 
@@ -400,6 +405,29 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
     }
 
     @Override
+    public void startActivityToLogin(Class clazz) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onPostPictureSuccess(String url) {
+        Picasso.with(this)
+                .load(url)
+                .placeholder(R.mipmap.icon_account)
+                .error(R.mipmap.icon_account)
+                .into(img_avatar);
+        profilePresenter.updateAvatar(url);
+        SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_AVATAR, url);
+    }
+
+    @Override
+    public void onPostPictureError(String error) {
+        showShortToast(error);
+    }
+
+
+    @Override
     public void updatePhone(String phone) {
         edt_phone.setText(phone);
     }
@@ -417,8 +445,8 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         profilePresenter.initResultAccountKit(requestCode, resultCode, data);
     }
 
-    private void checkNetwork(final Context context, int type){
-        if (!NetWorkInfo.isOnline(context)){
+    private void checkNetwork(final Context context, int type) {
+        if (!NetWorkInfo.isOnline(context)) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(context, R.style.TimePicker);
             dialog.setTitle("Kết nối không thành công");
             dialog.setMessage("Rất tiếc, không thể kết nối internet. Vui lòng kiểm tra kết nối Internet.");
@@ -441,29 +469,60 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
             });
             dialog.show();
         } else {
-            if (type == 1){
+            if (type == 1) {
                 profilePresenter.updateUser(full_name_update, email_update, birthday_update, gender_update, phone_update);
-            } else if (type == 2){
-                showProgressBar(false, false, null, getActivity().getString(R.string.update_message));
-                Task.TakeBigPicture(context, getSupportFragmentManager(), true, new RequestWithStringListener() {
-                    @Override
-                    public void onSuccess(String url) {
-                        avatar = url;
-                        Picasso.with(context)
-                                .load(avatar)
-                                .error(R.mipmap.ic_user)
-                                .into(img_avatar);
-                        profilePresenter.updateAvatar(avatar);
+            } else if (type == 2) {
+                TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(ProfileActivitys.this)
+                        .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+                            @Override
+                            public void onImageSelected(final Uri uri) {
+                                showProgressBar(false, false, null, getActivity().getString(R.string.update_message));
+                                Log.e("tb_uri", "uri: " + uri);
+                                Log.e("tb_path", "uri.geta: " + uri.getPath());
 
-                    }
+                                Picasso.with(ProfileActivitys.this)
+                                        .load(uri)
+                                        .placeholder(R.mipmap.ic_parking_background)
+                                        .error(R.mipmap.ic_parking_background)
+                                        .transform(new BitmapTransform(1200, 1200))
+                                        .fit()
+                                        .centerCrop()
+                                        .into(img_avatar, new Callback() {
+                                            @Override
+                                            public void onSuccess() {
+                                                Bitmap bitmap = ((BitmapDrawable) img_avatar.getDrawable()).getBitmap();
+                                                profilePresenter.postImage(bitmap);
+                                            }
 
-                    @Override
-                    public void onError() {
+                                            @Override
+                                            public void onError() {
 
-                    }
-                });
-                SharedPreferencesUtils.getInstance().putStringValue(Constants.USER_AVATAR, avatar);
-            } else if (type == 3){
+                                            }
+                                        });
+                            }
+                        })
+                        .setPeekHeight(getResources().getDisplayMetrics().heightPixels / 2)
+                        .create();
+                bottomSheetDialogFragment.show(getSupportFragmentManager());
+//                Task.TakeBigPicture(context, getSupportFragmentManager(), true, new RequestWithStringListener() {
+//                    @Override
+//                    public void onSuccess(String url) {
+//                        avatar = url;
+//                        Picasso.with(context)
+//                                .load(avatar)
+//                                .error(R.mipmap.ic_user)
+//                                .into(img_avatar);
+//                        profilePresenter.updateAvatar(avatar);
+//
+//                    }
+//
+//                    @Override
+//                    public void onError() {
+//                        closeProgressBar();
+//                    }
+//                });
+
+            } else if (type == 3) {
                 profilePresenter.onUpdatePhone(getApplicationContext(), AccountKitActivity.class);
             }
         }

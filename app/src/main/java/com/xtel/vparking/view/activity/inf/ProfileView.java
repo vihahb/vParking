@@ -26,6 +26,12 @@ public interface ProfileView extends IView {
 
     void startActivityForResult(Intent intent, int requestCode);
 
+    void startActivityToLogin(Class clazz);
+
+    void onPostPictureSuccess(String url);
+
+    void onPostPictureError(String error);
+
     void updatePhone(String phone);
 
     Activity getActivity();

@@ -3,7 +3,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="@dimen/size_40"
-    android:paddingLeft="@dimen/size_16">
+    android:paddingLeft="@dimen/size_8">
 
     <TextView
         android:id="@+id/tv_brand_name"

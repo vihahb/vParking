@@ -128,12 +128,12 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
     private void initSpinner() {
         initPrice();
         arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_spinner_item_find, price_type);
-        arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_find_ad);
+        arrayAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_item);
         sp_price_type.setAdapter(arrayAdapter);
         sp_price_type.setOnItemSelectedListener(this);
 
         priceAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_spinner_item_find, arrPrice);
-        priceAdapter.setDropDownViewResource(R.layout.custom_spinner_find_ad);
+        priceAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_item);
         sp_price.setAdapter(priceAdapter);
         sp_price.setOnItemSelectedListener(this);
     }

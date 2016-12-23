@@ -2,6 +2,7 @@ package com.xtel.vparking.presenter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.facebook.accountkit.Account;
@@ -15,6 +16,7 @@ import com.facebook.accountkit.ui.LoginType;
 import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestNoResultListener;
+import com.xtel.vparking.callback.RequestWithStringListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
@@ -25,6 +27,8 @@ import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.model.entity.RESP_User;
 import com.xtel.vparking.model.entity.UserModel;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
+import com.xtel.vparking.utils.Task;
+import com.xtel.vparking.view.activity.LoginActivity;
 import com.xtel.vparking.view.activity.inf.ProfileView;
 
 /**
@@ -70,7 +74,7 @@ public class ProfilePresenter {
                 if (error.getCode() == 2) {
                     getNewSessionAvatar(avatar);
                 } else
-                Log.e("Update code: ", String.valueOf(error.getCode()));
+                    Log.e("Update code: ", String.valueOf(error.getCode()));
                 Log.e("Update message: ", error.getMessage());
             }
         });
@@ -107,7 +111,7 @@ public class ProfilePresenter {
                 if (error.getCode() == 2) {
                     getNewSessionUser(name, email, birthday, gender, phone);
                 } else
-                Log.e("Update code: ", String.valueOf(error.getCode()));
+                    Log.e("Update code: ", String.valueOf(error.getCode()));
                 Log.e("Update message: ", error.getMessage());
             }
         });
@@ -118,12 +122,14 @@ public class ProfilePresenter {
             @Override
             public void onSuccess() {
                 view.showShortToast(view.getActivity().getString(R.string.get_session_success));
-                    updateAvatar(avatar);
+                updateAvatar(avatar);
             }
 
             @Override
             public void onError() {
                 view.showShortToast(view.getActivity().getString(R.string.error_session_invalid));
+                view.startActivityToLogin(LoginActivity.class);
+
             }
         });
     }
@@ -139,6 +145,7 @@ public class ProfilePresenter {
             @Override
             public void onError() {
                 view.showShortToast(view.getActivity().getString(R.string.error_session_invalid));
+                view.startActivityToLogin(LoginActivity.class);
             }
         });
     }
@@ -170,7 +177,7 @@ public class ProfilePresenter {
         });
     }
 
-    public void onUpdatePhone(Context context, Class clazz){
+    public void onUpdatePhone(Context context, Class clazz) {
         Intent intent = new Intent(context, clazz);
         AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder =
                 new AccountKitConfiguration.AccountKitConfigurationBuilder(
@@ -184,7 +191,21 @@ public class ProfilePresenter {
         view.startActivityForResult(intent, ACC_REQUEST_CODE);
     }
 
-    public void initResultAccountKit(int requestCode, int resultCode, Intent data){
+    public void postImage(Bitmap bitmap) {
+        new Task.ConvertImage(view.getActivity(), true, new RequestWithStringListener() {
+            @Override
+            public void onSuccess(String url) {
+                view.onPostPictureSuccess(url);
+            }
+
+            @Override
+            public void onError() {
+                view.onPostPictureError("Xảy ra lỗi. Vui lòng thử lại");
+            }
+        }).execute(bitmap);
+    }
+
+    public void initResultAccountKit(int requestCode, int resultCode, Intent data) {
         if (requestCode == ACC_REQUEST_CODE) { // confirm that this response matches your request
             AccountKitLoginResult loginResult = data.getParcelableExtra(AccountKitLoginResult.RESULT_KEY);
             String toastMessage = "";

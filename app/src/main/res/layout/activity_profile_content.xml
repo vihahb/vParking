@@ -110,7 +110,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/size_6"
-                    android:paddingLeft="@dimen/size_16"
                     android:text="@string/email"
                     android:textColor="@color/gray_tv"
                     android:textSize="@dimen/font_13" />
@@ -129,10 +128,10 @@
                         android:hint="@string/email"
                         android:paddingBottom="@dimen/size_8"
                         android:paddingEnd="0dp"
-                        android:paddingLeft="@dimen/size_16"
                         android:paddingRight="0dp"
-                        android:paddingStart="@dimen/size_16"
                         android:paddingTop="@dimen/size_8"
+                        android:paddingLeft="@dimen/size_8"
+                        android:paddingStart="@dimen/size_8"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textSize="@dimen/font_13"
                         android:theme="@style/EditTextTheme" />
@@ -173,7 +172,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/size_6"
                         android:layout_marginRight="@dimen/size_36"
-                        android:paddingLeft="@dimen/size_16"
                         android:text="@string/birth_day_info"
                         android:textColor="@color/gray_tv"
                         android:textSize="@dimen/font_13" />
@@ -188,10 +186,10 @@
                         android:hint="@string/birth_day_info"
                         android:inputType="textEmailAddress"
                         android:paddingBottom="@dimen/size_8"
-                        android:paddingLeft="@dimen/size_16"
                         android:paddingRight="@dimen/size_10"
-                        android:paddingStart="@dimen/size_16"
                         android:paddingTop="@dimen/size_8"
+                        android:paddingLeft="@dimen/size_8"
+                        android:paddingStart="@dimen/size_8"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textSize="@dimen/font_13"
                         android:theme="@style/EditTextTheme" />
@@ -208,7 +206,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/size_6"
-                        android:paddingLeft="@dimen/size_12"
                         android:text="@string/gender"
                         android:textColor="@color/gray_tv"
                         android:textSize="@dimen/font_13" />
@@ -218,7 +215,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_40"
                         android:background="@drawable/custom_edittext_profile"
-                        android:paddingLeft="@dimen/size_12"
+                        android:paddingLeft="@dimen/size_8"
+                        android:paddingStart="@dimen/size_8"
                         android:paddingRight="@dimen/size_10" />
 
                 </LinearLayout>
@@ -241,7 +239,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/size_6"
-                    android:paddingLeft="@dimen/size_16"
                     android:text="@string/phone"
                     android:textColor="@color/gray_tv"
                     android:textSize="@dimen/font_13" />
@@ -264,9 +261,9 @@
                         android:inputType="phone"
                         android:paddingBottom="@dimen/size_8"
                         android:paddingEnd="0dp"
-                        android:paddingLeft="@dimen/size_16"
                         android:paddingRight="0dp"
-                        android:paddingStart="@dimen/size_16"
+                        android:paddingLeft="@dimen/size_8"
+                        android:paddingStart="@dimen/size_8"
                         android:paddingTop="@dimen/size_8"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textSize="@dimen/font_13"
