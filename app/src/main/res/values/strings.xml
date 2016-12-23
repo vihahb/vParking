@@ -33,6 +33,7 @@
 
     <!-- Home -->
     <string name="update_user_profile">Cập nhật thông tin</string>
+    <string name="now_location">Vị trí hiện tại</string>
 
     <!-- Parking -->
     <string name="parking_checkin">Check in</string>

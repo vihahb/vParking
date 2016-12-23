@@ -50,7 +50,7 @@
             android:textColor="@android:color/white" />
 
         <EditText
-            android:id="@+id/edt_add_parking_diacho"
+            android:id="@+id/edt_add_parking_diachi"
             style="@style/AddParking_Editext_Border_No_Focus"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_40"

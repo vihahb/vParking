@@ -90,7 +90,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activity.MapsActivity"
+            android:name=".view.activity.ChooseMapsActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
             android:label="@string/title_activity_maps" />
         <activity

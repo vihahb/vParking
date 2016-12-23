@@ -86,7 +86,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         edt_parking_name = (EditText) findViewById(R.id.edt_add_parking_name);
         edt_place_number = (EditText) findViewById(R.id.edt_add_parking_empty);
         edt_parking_phone = (EditText) findViewById(R.id.edt_add_parking_phone);
-        edt_address = (EditText) findViewById(R.id.edt_add_parking_diacho);
+        edt_address = (EditText) findViewById(R.id.edt_add_parking_diachi);
         edt_begin_time = (EditText) findViewById(R.id.edt_add_parking_begin_time);
         edt_end_time = (EditText) findViewById(R.id.edt_add_parking_end_time);
 
@@ -148,8 +148,8 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     public void onClick(View v) {
         int id = v.getId();
 
-        if (id == R.id.edt_add_parking_diacho) {
-            startActivityForResult(MapsActivity.class, REQUEST_LOCATION);
+        if (id == R.id.edt_add_parking_diachi) {
+            startActivityForResult(ChooseMapsActivity.class, MODEL_FIND, placeModel, REQUEST_LOCATION);
         } else if (id == R.id.edt_add_parking_begin_time) {
             presenter.getTime(true);
         } else if (id == R.id.edt_add_parking_end_time) {
