@@ -148,7 +148,16 @@ public class ChooseMapsActivity extends BasicActivity implements OnMapReadyCallb
         if (marker != null)
             marker.remove();
 
-        new LoadPlace().execute();
+        double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
+        double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
+
+        presenter.getAddress(latitude, longtitude);
+
+        marker = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(latitude, longtitude))
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red))
+                .title("Đang lấy địa chỉ"));
+        marker.showInfoWindow();
     }
 
     @Override
@@ -169,6 +178,43 @@ public class ChooseMapsActivity extends BasicActivity implements OnMapReadyCallb
     }
 
     @Override
+    public void onGetAddressSucces(double lat, double lng, String address) {
+        double new_latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
+        double new_longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
+
+        if (new_latitude == lat && new_longtitude == lng) {
+            if (address != null && marker != null) {
+                Log.e("choose", "get success " + address);
+
+                marker.remove();
+                marker = mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(lat, lng))
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red))
+                        .title(address));
+                marker.showInfoWindow();
+
+                placeModel = new PlaceModel();
+                placeModel.setAddress(address);
+                placeModel.setLatitude(lat);
+                placeModel.setLongtitude(lng);
+            }
+        }
+    }
+
+    @Override
+    public void onGetAddressError(double lat, double lng) {
+        double new_latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
+        double new_longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
+
+        if (new_latitude == lat && new_longtitude == lng) {
+            if (marker != null) {
+                Log.e("choose", "get error");
+                marker.setTitle("Không lấy được địa chỉ");
+            }
+        }
+    }
+
+    @Override
     public void onGetMyLocation(LatLng latLng) {
         if (mMap != null)
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -184,7 +230,14 @@ public class ChooseMapsActivity extends BasicActivity implements OnMapReadyCallb
         double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
 
         @Override
+        protected void onPreExecute() {
+//            super.onPreExecute();
+        }
+
+        @Override
         protected String doInBackground(Void... params) {
+            Log.e("choose", "lat " + latitude + "      " + "    lng    " + longtitude);
+
             try {
                 Geocoder geocoder = new Geocoder(ChooseMapsActivity.this, Locale.getDefault());
                 List<Address> addresses = geocoder.getFromLocation(latitude, longtitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5

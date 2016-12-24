@@ -62,6 +62,9 @@ public class Constants {
     public static final String AUTHEN_AUTHENTICATE = "v1.0/m/user/authenticate";
     public static final String AUTHEN_ACCOUNT_KIT = "v1.0/m/user/accountkit/login";
 
+//    Google
+    public static final String GET_ADDRESS_URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+    public static final String GET_ADDRESS_KEY = "&key=";
 
     //Server home
     public static final String GET_BRANDNAME = "v1.0/verhicle/";

@@ -12,7 +12,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.xtel.vparking.callback.ResponseHandle;
+import com.xtel.vparking.model.ParkingModel;
+import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.PlaceModel;
+import com.xtel.vparking.model.entity.RESP_Address;
 import com.xtel.vparking.view.activity.AddParkingActivity;
 import com.xtel.vparking.view.activity.inf.IChooseMapsView;
 
@@ -67,6 +71,24 @@ public class ChooseMapsPresenter implements GoogleApiClient.ConnectionCallbacks,
         } else
             mGoogleApiClient.connect();
     }
+
+    public void getAddress(final double lat, final double lng) {
+        ParkingModel.getInstanse().getAddressByLatLng(lat, lng, new ResponseHandle<RESP_Address>(RESP_Address.class) {
+            @Override
+            public void onSuccess(RESP_Address obj) {
+                if (obj.getStatus().equals("OK"))
+                    view.onGetAddressSucces(lat, lng, obj.getResults().get(0).getFormatted_address());
+                else
+                    view.onGetAddressError(lat, lng);
+            }
+
+            @Override
+            public void onError(Error error) {
+                view.onGetAddressError(lat, lng);
+            }
+        });
+    }
+
 
     public void onStart() {
         try {
