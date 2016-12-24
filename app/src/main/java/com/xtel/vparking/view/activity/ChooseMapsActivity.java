@@ -2,11 +2,7 @@ package com.xtel.vparking.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,9 +25,6 @@ import com.xtel.vparking.R;
 import com.xtel.vparking.model.entity.PlaceModel;
 import com.xtel.vparking.presenter.ChooseMapsPresenter;
 import com.xtel.vparking.view.activity.inf.IChooseMapsView;
-
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Lê Công Long Vũ on 12/22/2016.
@@ -184,7 +177,6 @@ public class ChooseMapsActivity extends BasicActivity implements OnMapReadyCallb
 
         if (new_latitude == lat && new_longtitude == lng) {
             if (address != null && marker != null) {
-                Log.e("choose", "get success " + address);
 
                 marker.remove();
                 marker = mMap.addMarker(new MarkerOptions()
@@ -208,7 +200,6 @@ public class ChooseMapsActivity extends BasicActivity implements OnMapReadyCallb
 
         if (new_latitude == lat && new_longtitude == lng) {
             if (marker != null) {
-                Log.e("choose", "get error");
                 marker.setTitle("Không lấy được địa chỉ");
             }
         }
@@ -225,77 +216,72 @@ public class ChooseMapsActivity extends BasicActivity implements OnMapReadyCallb
         return this;
     }
 
-    private class LoadPlace extends AsyncTask<Void, Void, String> {
-        double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
-        double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
-
-        @Override
-        protected void onPreExecute() {
-//            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            Log.e("choose", "lat " + latitude + "      " + "    lng    " + longtitude);
-
-            try {
-                Geocoder geocoder = new Geocoder(ChooseMapsActivity.this, Locale.getDefault());
-                List<Address> addresses = geocoder.getFromLocation(latitude, longtitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-
-                String address = addresses.get(0).getAddressLine(0);
-                String city = addresses.get(0).getLocality();
-                String country = addresses.get(0).getCountryName();
-                String knownName = addresses.get(0).getFeatureName();
-
-                for (int i = 0; i < addresses.size(); i++) {
-                    Log.e(this.getClass().getSimpleName(), "address: " + addresses.get(i).toString());
-                }
-
-                String place = "";
-                if (address != null && knownName != null)
-                    if (!address.contains(knownName))
-                        place += knownName;
-
-                if (address != null) {
-                    if (place.isEmpty())
-                        place += address;
-                    else
-                        place += ", " + address;
-                }
-                if (city != null)
-                    place += ", " + city;
-                if (country != null)
-                    place += ", " + country;
-
-                return place;
-            } catch (Exception e) {
-                debug("error: " + e.toString());
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String aVoid) {
-            super.onPostExecute(aVoid);
-
-            double new_latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
-            double new_longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
-
-            if (new_latitude == latitude && new_longtitude == longtitude) {
-                if (aVoid != null) {
-                    marker = mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(latitude, longtitude))
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red))
-                            .title(aVoid));
-                    marker.showInfoWindow();
-
-                    placeModel = new PlaceModel();
-                    placeModel.setAddress(aVoid);
-                    placeModel.setLatitude(latitude);
-                    placeModel.setLongtitude(longtitude);
-                }
-            }
-        }
-    }
+//    private class LoadPlace extends AsyncTask<Void, Void, String> {
+//        double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
+//        double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
+//
+//        @Override
+//        protected void onPreExecute() {
+////            super.onPreExecute();
+//        }
+//
+//        @Override
+//        protected String doInBackground(Void... params) {
+//
+//            try {
+//                Geocoder geocoder = new Geocoder(ChooseMapsActivity.this, Locale.getDefault());
+//                List<Address> addresses = geocoder.getFromLocation(latitude, longtitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+//
+//                String address = addresses.get(0).getAddressLine(0);
+//                String city = addresses.get(0).getLocality();
+//                String country = addresses.get(0).getCountryName();
+//                String knownName = addresses.get(0).getFeatureName();
+//
+//                String place = "";
+//                if (address != null && knownName != null)
+//                    if (!address.contains(knownName))
+//                        place += knownName;
+//
+//                if (address != null) {
+//                    if (place.isEmpty())
+//                        place += address;
+//                    else
+//                        place += ", " + address;
+//                }
+//                if (city != null)
+//                    place += ", " + city;
+//                if (country != null)
+//                    place += ", " + country;
+//
+//                return place;
+//            } catch (Exception e) {
+//                debug("error: " + e.toString());
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String aVoid) {
+//            super.onPostExecute(aVoid);
+//
+//            double new_latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
+//            double new_longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
+//
+//            if (new_latitude == latitude && new_longtitude == longtitude) {
+//                if (aVoid != null) {
+//                    marker = mMap.addMarker(new MarkerOptions()
+//                            .position(new LatLng(latitude, longtitude))
+//                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red))
+//                            .title(aVoid));
+//                    marker.showInfoWindow();
+//
+//                    placeModel = new PlaceModel();
+//                    placeModel.setAddress(aVoid);
+//                    placeModel.setLatitude(latitude);
+//                    placeModel.setLongtitude(longtitude);
+//                }
+//            }
+//        }
+//    }
 }
