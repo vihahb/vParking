@@ -1,7 +1,6 @@
 package com.xtel.vparking.model.entity;
 
 import com.google.gson.annotations.Expose;
-import com.xtel.vparking.view.activity.inf.UserInfo;
 
 import java.util.ArrayList;
 
