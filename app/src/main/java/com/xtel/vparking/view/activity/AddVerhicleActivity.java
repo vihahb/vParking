@@ -43,7 +43,7 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
     private EditText edt_verhicle_name, edt_verhicle_plate, edt_verhicle_descriptions;
     private Spinner sp_verhicle_brandname;
     private CheckBox chk_verhicle_default;
-    private Button btn_verhicle_add;
+    private Button btn_verhicle_add, btn_vehicle_update;
     private RadioGroup radioGroup;
     private RadioButton rdo_oto, rdo_xemay;
     AddVerhiclePresenter verhiclePresenter;
@@ -84,6 +84,7 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
         sp_verhicle_brandname = (Spinner) findViewById(R.id.spinner_brandname);
         chk_verhicle_default = (CheckBox) findViewById(R.id.chk_verhicle_default);
         btn_verhicle_add = (Button) findViewById(R.id.btn_verhicle_add);
+        btn_vehicle_update = (Button) findViewById(R.id.btn_verhicle_update);
         radioGroup = (RadioGroup) findViewById(R.id.rdo_group);
         rdo_oto = (RadioButton) findViewById(R.id.rdo_oto);
         rdo_xemay = (RadioButton) findViewById(R.id.rdo_xemay);
@@ -111,11 +112,19 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
     private void OnClickButton() {
         if (verhicle != null) {
             btn_verhicle_add.setVisibility(View.GONE);
+            btn_vehicle_update.setVisibility(View.VISIBLE);
         }
         btn_verhicle_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkNetWork(AddVerhicleActivity.this, 1);
+            }
+        });
+
+        btn_vehicle_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkNetWork(AddVerhicleActivity.this, 2);
             }
         });
 
@@ -331,7 +340,7 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
         this.menu = menu;
         MenuItem itemUpdate = menu.findItem(R.id.nav_update_verhicle);
         if (validVerhicleModel()) {
-            itemUpdate.setVisible(true);
+            itemUpdate.setVisible(false);
         }
 
         return true;

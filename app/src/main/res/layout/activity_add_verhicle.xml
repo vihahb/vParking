@@ -45,4 +45,14 @@
         android:text="@string/verhicle_add"
         android:layout_alignParentBottom="true"
         android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/btn_verhicle_update"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_48"
+        android:background="@color/btn_fb_plus"
+        android:text="@string/update"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:textColor="@android:color/white" />
 </LinearLayout>
