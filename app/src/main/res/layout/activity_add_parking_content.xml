@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
@@ -14,7 +14,7 @@
     <include
         layout="@layout/activity_add_parking_header"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_220"
+        android:layout_height="@dimen/size_190"
         android:background="@android:color/transparent" />
 
     <LinearLayout
@@ -29,9 +29,7 @@
             style="@style/AddParking_Textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_16"
-            android:text="@string/add_parking_name"
-            android:textColor="@android:color/white" />
+            android:text="@string/add_parking_name" />
 
         <EditText
             android:id="@+id/edt_add_parking_name"
@@ -45,29 +43,26 @@
             style="@style/AddParking_Textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_16"
-            android:text="@string/add_address"
-            android:textColor="@android:color/white" />
+            android:text="@string/add_address" />
 
-        <EditText
+        <TextView
             android:id="@+id/edt_add_parking_diachi"
             style="@style/AddParking_Editext_Border_No_Focus"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_40"
             android:layout_marginTop="@dimen/size_8"
-            android:drawableEnd="@drawable/ic_keyboard_arrow_right_white_24dp"
+            android:drawableEnd="@drawable/ic_action_arrow_right"
             android:drawablePadding="@dimen/size_16"
-            android:drawableRight="@drawable/ic_keyboard_arrow_right_white_24dp"
+            android:drawableRight="@drawable/ic_action_arrow_right"
             android:hint="@string/input_address"
+            android:textColor="@android:color/black"
             app:theme="@style/AddParking_Editext.ButtumLine" />
 
         <TextView
             style="@style/AddParking_Textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_16"
-            android:text="@string/phone"
-            android:textColor="@android:color/white" />
+            android:text="@string/phone" />
 
         <EditText
             android:id="@+id/edt_add_parking_phone"
@@ -92,22 +87,20 @@
                 android:layout_weight="3">
 
                 <TextView
-                    style="@style/AddParking_Textview"
+                    style="@style/AddParking_Textview_No_Margin"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="@string/add_transport"
-                    android:textColor="@android:color/white" />
+                    android:text="@string/add_transport" />
 
                 <TextView
-                    style="@style/AddParking_Textview"
+                    style="@style/AddParking_Textview_No_Margin"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_8"
                     android:layout_marginStart="@dimen/size_8"
                     android:layout_weight="1"
-                    android:text="@string/add_empty"
-                    android:textColor="@android:color/white" />
+                    android:text="@string/add_empty" />
             </TableRow>
 
             <TableRow
@@ -144,20 +137,18 @@
                 android:layout_marginTop="@dimen/size_16">
 
                 <TextView
-                    style="@style/AddParking_Textview"
+                    style="@style/AddParking_Textview_No_Margin"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/add_time_open"
-                    android:textColor="@android:color/white" />
+                    android:text="@string/add_time_open" />
 
                 <TextView
-                    style="@style/AddParking_Textview"
+                    style="@style/AddParking_Textview_No_Margin"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_8"
                     android:layout_marginStart="@dimen/size_8"
-                    android:text="@string/add_time_close"
-                    android:textColor="@android:color/white" />
+                    android:text="@string/add_time_close" />
             </TableRow>
 
             <TableRow
@@ -172,8 +163,8 @@
                     android:layout_height="@dimen/size_40"
                     android:layout_marginEnd="@dimen/size_6"
                     android:layout_marginRight="@dimen/size_6"
-                    android:drawableEnd="@drawable/ic_access_time_white_24dp"
-                    android:drawableRight="@drawable/ic_access_time_white_24dp"
+                    android:drawableEnd="@drawable/ic_action_begin_time"
+                    android:drawableRight="@drawable/ic_action_begin_time"
                     android:hint="@string/add_time_zero"
                     android:text="@string/add_time_zero"
                     app:theme="@style/AddParking_Editext.ButtumLine" />
@@ -185,8 +176,8 @@
                     android:layout_height="@dimen/size_40"
                     android:layout_marginLeft="@dimen/size_6"
                     android:layout_marginStart="@dimen/size_6"
-                    android:drawableEnd="@drawable/ic_access_time_white_24dp"
-                    android:drawableRight="@drawable/ic_access_time_white_24dp"
+                    android:drawableEnd="@drawable/ic_action_end_time"
+                    android:drawableRight="@drawable/ic_action_end_time"
                     android:hint="@string/add_time_end"
                     android:text="@string/add_time_end"
                     app:theme="@style/AddParking_Editext.ButtumLine" />
@@ -196,7 +187,6 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_16"
             android:stretchColumns="*">
 
             <TableRow
@@ -210,8 +200,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/size_8"
                     android:layout_marginRight="@dimen/size_8"
-                    android:text="@string/add_price"
-                    android:textColor="@android:color/white" />
+                    android:text="@string/add_price" />
 
                 <TextView
                     style="@style/AddParking_Textview"
@@ -219,8 +208,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/size_8"
                     android:layout_marginRight="@dimen/size_8"
-                    android:text="@string/add_follow_name"
-                    android:textColor="@android:color/white" />
+                    android:text="@string/add_follow_name" />
 
                 <TextView
                     style="@style/AddParking_Textview"
@@ -228,8 +216,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/size_44"
                     android:layout_marginRight="@dimen/size_44"
-                    android:text="@string/add_follow_price"
-                    android:textColor="@android:color/white" />
+                    android:text="@string/add_follow_price" />
             </TableRow>
 
             <TableRow
@@ -246,15 +233,4 @@
             </TableRow>
         </TableLayout>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_add_parking"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_48"
-        android:background="@color/btn_fb_plus"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:onClick="addParking"
-        android:text="@string/add_dangtin"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white" />
 </LinearLayout>

@@ -16,7 +16,8 @@
         android:layout_weight="1"
         android:hint="0"
         android:inputType="number"
-        android:maxLength="3" />
+        android:maxLength="3"
+        android:textColor="@android:color/black" />
 
     <Spinner
         android:id="@+id/item_sp_add_parking_transport_type"
@@ -38,11 +39,14 @@
 
     <ImageButton
         android:id="@+id/item_img_add_parking_add"
-        android:layout_width="@dimen/size_36"
-        android:layout_height="@dimen/size_36"
-        android:background="@android:color/transparent"
+        android:layout_width="@dimen/size_40"
+        android:layout_height="@dimen/size_40"
+        android:background="@drawable/edittext_add_parking"
         android:contentDescription="@null"
         android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:padding="@dimen/size_6"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_add_box_white_36dp" />
+        android:src="@drawable/ic_action_remove"
+        android:textSize="23sp" />
 </LinearLayout>

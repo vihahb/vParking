@@ -35,6 +35,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.0'
     //noinspection GradleCompatible,GradleDependency
     compile 'com.android.support:design:25.0.0'
+    compile 'com.android.support:recyclerview-v7:25.0.0'
     //noinspection GradleDependency
     compile 'com.google.android.gms:play-services-places:9.8.0'
     //noinspection GradleDependency

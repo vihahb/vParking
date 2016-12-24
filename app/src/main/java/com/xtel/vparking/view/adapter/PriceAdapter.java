@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -32,9 +33,9 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
 
     @SuppressWarnings("unchecked")
     public PriceAdapter(Context context, ArrayList<Prices> arrayList, AddParkingPresenter presenter) {
-        adapter_transport = new ArrayAdapter(context, R.layout.item_spinner_narmal, context.getResources().getStringArray(R.array.add_transport_type));
+        adapter_transport = new ArrayAdapter(context, R.layout.item_spinner_normal, context.getResources().getStringArray(R.array.add_transport_type));
         adapter_transport.setDropDownViewResource(R.layout.item_spinner_dropdown_item);
-        adapter_price = new ArrayAdapter(context, R.layout.item_spinner_narmal, context.getResources().getStringArray(R.array.add_price_type));
+        adapter_price = new ArrayAdapter(context, R.layout.item_spinner_normal, context.getResources().getStringArray(R.array.add_price_type));
         adapter_price.setDropDownViewResource(R.layout.item_spinner_dropdown_item);
         this.arrayList = arrayList;
         this.presenter = presenter;
@@ -74,9 +75,9 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
             holder.edt_price.setText("");
 
         if (position == (arrayList.size() - 1))
-            holder.img_add.setImageResource(R.drawable.ic_add_box_white_36dp);
+            holder.img_add.setImageResource(R.drawable.ic_action_add);
         else
-            holder.img_add.setImageResource(R.mipmap.ic_close_box);
+            holder.img_add.setImageResource(R.drawable.ic_action_remove);
 
         try {
             holder.edt_price.removeTextChangedListener(holder.textWatcher);
@@ -85,8 +86,12 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
         }
 
         holder.edt_price.addTextChangedListener(holder.textWatcher);
-        if (prices.getId() != -1)
+
+        if (prices.getId() != -1) {
             holder.edt_price.setEnabled(false);
+            holder.sp_for.setEnabled(false);
+            holder.sp_type.setEnabled(false);
+        }
 
         holder.sp_for.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -122,7 +127,7 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 if (position == (arrayList.size() - 1)) {
-                    holder.img_add.setImageResource(R.mipmap.ic_close_box);
+                    holder.img_add.setImageResource(R.drawable.ic_action_remove);
 
                     arrayList.add(new Prices(-1, 0, 1, 3));
                     notifyItemInserted((arrayList.size() - 1));
@@ -149,7 +154,7 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
     class ViewHolder extends RecyclerView.ViewHolder {
         private Spinner sp_type, sp_for;
         private EditText edt_price;
-        private ImageView img_add;
+        private ImageButton img_add;
         private TextWatcher textWatcher;
 
         ViewHolder(final View itemView) {
@@ -157,7 +162,7 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
             edt_price = (EditText) itemView.findViewById(R.id.item_edt_add_parking_money);
             sp_type = (Spinner) itemView.findViewById(R.id.item_sp_add_parking_time_type);
             sp_for = (Spinner) itemView.findViewById(R.id.item_sp_add_parking_transport_type);
-            img_add = (ImageView) itemView.findViewById(R.id.item_img_add_parking_add);
+            img_add = (ImageButton) itemView.findViewById(R.id.item_img_add_parking_add);
 
             textWatcher = new TextWatcher() {
                 @Override

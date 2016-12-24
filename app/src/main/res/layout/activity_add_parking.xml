@@ -8,6 +8,7 @@
     tools:context=".view.activity.AddParkingActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_add_parking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
@@ -17,20 +18,21 @@
             android:id="@+id/toolbar_add_parking"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextAppearance="@style/Toolbar.TitleText" />
     </android.support.design.widget.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@android:color/white"
             android:orientation="vertical">
 
             <include
@@ -40,4 +42,15 @@
                 android:background="@android:color/transparent" />
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/btn_add_parking"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_48"
+        android:background="@color/btn_fb_plus"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="addParking"
+        android:text="@string/add_dangtin"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white" />
 </LinearLayout>

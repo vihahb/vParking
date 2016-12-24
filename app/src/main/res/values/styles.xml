@@ -127,12 +127,18 @@
         <item name="android:focusable">false</item>
     </style>
 
-    <style name="AddParking_Textview" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:inputType">text</item>
+    <style name="AddParking_Textview">
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textSize">@dimen/font_13</item>
+        <item name="android:layout_marginTop">@dimen/size_16</item>
+    </style>
+
+    <style name="AddParking_Textview_No_Margin">
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">@dimen/font_13</item>
+        <item name="android:layout_marginTop">@dimen/size_16</item>
     </style>
 
     <style name="AddParking_ImageButton">
@@ -161,24 +167,20 @@
         <item name="android:singleLine">true</item>
     </style>
 
-
     <style name="AddParking_Editext_Border">
         <item name="android:paddingRight">@dimen/size_8</item>
         <item name="android:paddingLeft">@dimen/size_8</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textColorHint">@android:color/white</item>
         <item name="android:background">@drawable/edittext_add_parking</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textSize">@dimen/font_13</item>
+        <item name="android:theme">@style/EditTextTheme</item>
     </style>
 
     <style name="AddParking_Editext_Border_No_Focus">
         <item name="android:paddingRight">@dimen/size_8</item>
         <item name="android:paddingLeft">@dimen/size_8</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textColorHint">@android:color/white</item>
         <item name="android:background">@drawable/edittext_add_parking</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:singleLine">true</item>

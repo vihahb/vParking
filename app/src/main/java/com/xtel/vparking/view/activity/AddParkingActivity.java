@@ -46,8 +46,8 @@ import java.util.ArrayList;
 
 public class AddParkingActivity extends BasicActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, AddParkingView {
     private AddParkingPresenter presenter;
-    private TextView txt_image_number;
-    private EditText edt_parking_name, edt_place_number, edt_parking_phone, edt_address, edt_begin_time, edt_end_time;
+    private TextView txt_image_number, edt_address;
+    private EditText edt_parking_name, edt_place_number, edt_parking_phone, edt_begin_time, edt_end_time;
     private Spinner sp_transport_type;
 
     private PriceAdapter priceAdapter;
@@ -86,7 +86,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
         edt_parking_name = (EditText) findViewById(R.id.edt_add_parking_name);
         edt_place_number = (EditText) findViewById(R.id.edt_add_parking_empty);
         edt_parking_phone = (EditText) findViewById(R.id.edt_add_parking_phone);
-        edt_address = (EditText) findViewById(R.id.edt_add_parking_diachi);
+        edt_address = (TextView) findViewById(R.id.edt_add_parking_diachi);
         edt_begin_time = (EditText) findViewById(R.id.edt_add_parking_begin_time);
         edt_end_time = (EditText) findViewById(R.id.edt_add_parking_end_time);
 
@@ -96,7 +96,7 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     private void initSpinner() {
         sp_transport_type = (Spinner) findViewById(R.id.sp_add_parking_type);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.item_spinner_narmal,
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.item_spinner_normal,
                 getResources().getStringArray(R.array.add_transport));
         arrayAdapter.setDropDownViewResource(R.layout.item_spinner_dropdown_item);
         sp_transport_type.setAdapter(arrayAdapter);
@@ -104,7 +104,6 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     private void initRecyclerview() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview_add_parking);
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         arrayList_price = new ArrayList<>();
