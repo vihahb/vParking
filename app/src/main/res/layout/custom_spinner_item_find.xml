@@ -3,7 +3,7 @@
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="40dp"
-    android:drawableRight="@mipmap/ic_keyboard_arrow_down_black_24dp"
+    android:drawableRight="@drawable/ic_action_arrow_down"
     android:ellipsize="marquee"
     android:background="@android:color/transparent"
     android:gravity="center_vertical"

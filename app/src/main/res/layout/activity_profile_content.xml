@@ -181,7 +181,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_40"
                         android:background="@drawable/custom_edittext_profile"
-                        android:drawableRight="@mipmap/ic_keyboard_arrow_down_black_24dp"
+                        android:drawableRight="@drawable/ic_action_arrow_down"
                         android:focusable="false"
                         android:hint="@string/birth_day_info"
                         android:inputType="textEmailAddress"
