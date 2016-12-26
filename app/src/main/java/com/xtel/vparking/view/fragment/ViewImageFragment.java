@@ -1,5 +1,6 @@
 package com.xtel.vparking.view.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
@@ -18,6 +21,7 @@ import com.xtel.vparking.commons.Constants;
 
 public class ViewImageFragment extends Fragment {
     private ImageView imageView;
+    private ProgressBar progressBar;
     private String url;
 
     public static ViewImageFragment newInstance(String url) {
@@ -40,17 +44,31 @@ public class ViewImageFragment extends Fragment {
 
         if (imageView == null)
             imageView = (ImageView) view.findViewById(R.id.item_imageview);
+        if (progressBar == null)
+            progressBar = (ProgressBar) view.findViewById(R.id.item_progress);
 
         url = getArguments().getString(Constants.PK_IMAGE);
+
+        if (progressBar != null)
+            progressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#5c5ca7"), android.graphics.PorterDuff.Mode.MULTIPLY);
 
         if (url != null)
             Picasso.with(getContext())
                     .load(url)
-                    .placeholder(R.mipmap.ic_parking_background)
+                    .noPlaceholder()
                     .error(R.mipmap.ic_parking_background)
-                    .into(imageView);
+                    .into(imageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            progressBar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
         else
             imageView.setImageResource(R.mipmap.ic_parking_background);
-
     }
 }
