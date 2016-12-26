@@ -68,7 +68,7 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (verhicle.getFlag_default() == 1)
                 view.img_default.setImageResource(R.drawable.ic_action_green_dot);
             else
-                view.img_default.setImageResource(R.mipmap.ic_dot_gray);
+                view.img_default.setImageResource(R.drawable.ic_action_gray_dot);
 
 
             view.itemView.setOnClickListener(new View.OnClickListener() {
