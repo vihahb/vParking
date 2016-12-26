@@ -72,7 +72,7 @@ public class CustomAddVerhicleAdapterSpinner extends ArrayAdapter<Brandname> {
         brandnameModel = arrayList.get(position);
         tv_code.setText(brandnameModel.getCode());
         tv_name.setText(brandnameModel.getName());
-        tv_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_keyboard_arrow_down_black_24dp, 0);
+        tv_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_action_arrow_down, 0);
         tv_made.setText(brandnameModel.getMadeby());
 
         return row;
