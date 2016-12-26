@@ -234,6 +234,8 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
         layout_search.setVisibility(View.VISIBLE);
         CURRENT_FRAGMENT = HOME_FRAGMENT;
 
+        navigationView.getMenu().findItem(R.id.nav_parking_home).setChecked(true);
+
         actionBar.setTitle(getString(R.string.title_activity_home));
         if (menu != null) {
             menu.findItem(R.id.nav_parking_add).setVisible(false);

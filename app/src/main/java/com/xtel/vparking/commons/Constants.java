@@ -3,6 +3,7 @@ package com.xtel.vparking.commons;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.xtel.vparking.R;
@@ -14,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Lê Công Long Vũ on 11/4/2016.
@@ -202,19 +204,20 @@ public class Constants {
     }
 
     public static String getPlaceNumber(String number) {
-        if (number == null)
+        if (number == null || number.isEmpty())
             return MyApplication.context.getString(R.string.unlimited);
-        else if (number.isEmpty())
-            return MyApplication.context.getString(R.string.limited);
         return String.valueOf(number) + " chỗ";
     }
 
     public static String getPlaceNumberNoText(String number) {
-        if (number == null)
+        if (number == null || number.isEmpty())
             return MyApplication.context.getString(R.string.unlimited);
-        else if (number.isEmpty())
-            return MyApplication.context.getString(R.string.limited);
-        return String.valueOf(number);
+
+        int total = Integer.parseInt(number);
+        Random r = new Random();
+        int rand = r.nextInt(50 - 30) + 30;
+        total = (int) ((total * rand) / 100);
+        return String.valueOf(total);
     }
 
     public static String getPlaceNumberAndTotal(Activity activity, String empty, String total) {

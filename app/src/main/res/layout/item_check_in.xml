@@ -14,11 +14,12 @@
     android:paddingTop="@dimen/size_8">
 
     <ImageView
+        android:id="@+id/item_img_check_in_default"
         android:layout_width="@dimen/size_18"
         android:layout_height="@dimen/size_18"
         android:contentDescription="@null"
-        android:src="@drawable/ic_action_gray_dot"
-        android:scaleType="fitCenter" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_action_gray_dot" />
 
     <LinearLayout
         android:layout_width="0dp"

@@ -29,6 +29,8 @@ public class Parking implements Serializable {
     private String end_time;
     @Expose
     private String address;
+    @Expose
+    private int owner;
 
     public int getId() {
         return id;
@@ -108,5 +110,13 @@ public class Parking implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public int getOwner() {
+        return owner;
+    }
+
+    public void setOwner(int owner) {
+        this.owner = owner;
     }
 }

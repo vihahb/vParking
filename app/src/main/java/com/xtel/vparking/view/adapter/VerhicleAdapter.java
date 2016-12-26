@@ -130,20 +130,21 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 arrayList.add(pos, verhicle);
                 notifyItemInserted(pos);
                 notifyItemChanged(pos, getItemCount());
+
+                if (arrayList.get(pos).getFlag_default() == 1)
+                    clearDefault(verhicle);
                 return;
             }
         }
 
-        if (arrayList.size() == 0) {
+        if (arrayList.size() > 0) {
             if (verhicle.getType() == 1) {
                 arrayList.add(0, new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
                 arrayList.add(1, verhicle);
             } else {
-                arrayList.add(0, new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
-                arrayList.add(1, verhicle);
+                arrayList.add(new Verhicle(0, null, 2222, "Xe máy", null, 0, null));
+                arrayList.add(verhicle);
             }
-
-            notifyItemChanged(0, getItemCount());
         } else {
             if (verhicle.getType() == 1) {
                 arrayList.add(new Verhicle(0, null, 1111, "Ô tô", null, 0, null));
@@ -163,7 +164,7 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             notifyItemChanged(position, getItemCount());
 
             if (verhicle.getFlag_default() == 1)
-                clearDefault(position);
+                clearDefault(verhicle);
         } else {
             arrayList.remove(position);
             notifyItemRemoved(position);
@@ -185,25 +186,24 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     notifyItemInserted((i + 1));
                     notifyItemChanged((i + 1), getItemCount());
 
-                    if (verhicle.getFlag_default() == 1)
-                        clearDefault((i + 1));
-
+                    clearDefault(verhicle);
                     return;
                 }
             }
 
             arrayList.add(verhicle);
+            clearDefault(verhicle);
             sortVerhicle();
         }
     }
 
-    private void clearDefault(int position) {
+    private void clearDefault(Verhicle verhicle) {
         for (int i = (arrayList.size() - 1); i >= 0; i--) {
-            if (i != position)
+            if (arrayList.get(i).getId() != verhicle.getId())
                 arrayList.get(i).setFlag_default(0);
         }
 
-        notifyItemChanged(0, getItemCount());
+        notifyDataSetChanged();
     }
 
     private void sortVerhicle() {
@@ -216,9 +216,6 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     if (arrayList.get(i).getType() > 1000)
                         arrayList.remove(i);
                 }
-
-                if (arrayList.get((arrayList.size() - 1)).getFlag_default() == 1)
-                    clearDefault((arrayList.size() - 1));
 
                 Collections.sort(arrayList, new Comparator<Verhicle>() {
                     @Override

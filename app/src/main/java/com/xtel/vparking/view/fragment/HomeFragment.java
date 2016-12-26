@@ -683,8 +683,8 @@ public class HomeFragment extends BasicFragment implements
             polyline.remove();
 
         polyline = mMap.addPolyline(polylineOptions);
-        polyline.setWidth(10);
-        polyline.setColor(Color.BLUE);
+        polyline.setWidth(16);
+        polyline.setColor(Color.parseColor("#62B1F6"));
     }
 
     @Override

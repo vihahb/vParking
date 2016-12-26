@@ -29,7 +29,8 @@ public class ParkingModel extends BasicModel {
     }
 
     public void getParkingAround(String url, ResponseHandle responseHandle) {
-        requestServer.getApi(url, null, responseHandle);
+        String session = LoginModel.getInstance().getSession();
+        requestServer.getApi(url, session, responseHandle);
     }
 
     public void addParking(String url, String json, String session, ResponseHandle responseHandle) {

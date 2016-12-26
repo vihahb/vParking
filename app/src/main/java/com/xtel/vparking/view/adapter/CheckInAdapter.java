@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xtel.vparking.R;
@@ -55,6 +56,11 @@ public class CheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         } else {
             ViewItem view = (ViewItem) holder;
 
+            if (verhicle.getFlag_default() == 1)
+                view.img_default.setImageResource(R.drawable.ic_action_green_dot);
+            else
+                view.img_default.setImageResource(R.drawable.ic_action_gray_dot);
+
             view.txt_name.setText(verhicle.getName());
             view.txt_made_by.setText(verhicle.getBrandname().getName());
             view.txt_plate_number.setText(verhicle.getPlate_number());
@@ -100,7 +106,8 @@ public class CheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     private class ViewItem extends RecyclerView.ViewHolder {
-        private TextView txt_name, txt_plate_number, txt_made_by, txt_default;
+        private TextView txt_name, txt_plate_number, txt_made_by;
+        private ImageView img_default;
 
         private ViewItem(View itemView) {
             super(itemView);
@@ -108,7 +115,7 @@ public class CheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             txt_name = (TextView) itemView.findViewById(R.id.item_txt_check_in_name);
             txt_plate_number = (TextView) itemView.findViewById(R.id.item_txt_check_in_car_number_plate);
             txt_made_by = (TextView) itemView.findViewById(R.id.item_txt_check_in_made_by);
-            txt_default = (TextView) itemView.findViewById(R.id.item_txt_check_in_default);
+            img_default = (ImageView) itemView.findViewById(R.id.item_img_check_in_default);
         }
     }
 }
