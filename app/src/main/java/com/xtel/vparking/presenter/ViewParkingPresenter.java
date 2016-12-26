@@ -1,7 +1,5 @@
 package com.xtel.vparking.presenter;
 
-import android.util.Log;
-
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.view.activity.inf.IParkingView;
 
@@ -24,8 +22,6 @@ public class ViewParkingPresenter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        Log.e("vp", "id activity " + id);
 
         if (id == -1)
             view.onGetDataError();

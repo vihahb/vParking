@@ -2,7 +2,6 @@ package com.xtel.vparking.presenter;
 
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.util.Log;
 
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
@@ -62,17 +61,14 @@ public class CheckInPresenter {
     }
 
     private void getNewSessionVerhicle() {
-        Log.e("verhicle", "get new session");
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
-                Log.e("verhicle", "get new session success");
                 getAllVerhicle();
             }
 
             @Override
             public void onError() {
-                Log.e("verhicle", "get new session error");
                 view.onGetVerhicleError(new Error(2, "ERROR", "Bạn đã hết phiên làm việc"));
             }
         });
@@ -141,7 +137,5 @@ public class CheckInPresenter {
                 view.onGetVerhicleSuccess(arrayList);
             }
         }.execute();
-
-        Log.e("verhicle", "total array " + arrayList.size());
     }
 }

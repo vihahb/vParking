@@ -1,14 +1,11 @@
 package com.xtel.vparking.presenter;
 
-import android.util.Log;
-
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.commons.NetWorkInfo;
-import com.xtel.vparking.dialog.QrCodeBottomSheet;
 import com.xtel.vparking.model.HomeModel;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.model.entity.Error;
@@ -16,7 +13,6 @@ import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.MyApplication;
-import com.xtel.vparking.view.activity.HomeActivity;
 import com.xtel.vparking.view.activity.inf.HomeView;
 
 import java.io.UnsupportedEncodingException;
@@ -39,8 +35,8 @@ public class HomePresenter {
     }
 
     private void checkParkingMaster() {
-        if (SharedPreferencesUtils.getInstance().getIntValue(Constants.USER_FLAG) == 1)
-            homeView.isParkingMaster();
+//        if (SharedPreferencesUtils.getInstance().getIntValue(Constants.USER_FLAG) == 1)
+//            homeView.isParkingMaster();
     }
 
     public void updateUserData() {
@@ -61,7 +57,6 @@ public class HomePresenter {
             HomeModel.getInstance().activeParkingMaster(url, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
                 @Override
                 public void onSuccess(RESP_Parking_Info obj) {
-                    Log.e(homeView.getActivity().getClass().getSimpleName(), "null k: " + obj.toString());
                     SharedPreferencesUtils.getInstance().putIntValue(Constants.USER_FLAG, 1);
                     homeView.onActiveMasterSuccess();
                 }
@@ -80,7 +75,7 @@ public class HomePresenter {
     }
 
     private void getNewSessionActive() {
-        GetNewSession.getNewSession(MyApplication.context, new RequestNoResultListener() {
+        GetNewSession.getNewSession(homeView.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
                 activeParkingMaster();

@@ -92,6 +92,7 @@
             android:paddingRight="@dimen/size_24"
             android:paddingStart="@dimen/size_16"
             android:text="@string/isMaster"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 
@@ -62,7 +61,7 @@ public class AddParkingPresenter extends BasicPresenter {
                 @Override
                 public void onError(Error error) {
                     if (error.getCode() == 2)
-                        getNewSession(cmd);
+                        getNewSession(view.getActivity(), cmd);
                     else
                         view.onDeletePictureError(error);
                 }
@@ -97,9 +96,6 @@ public class AddParkingPresenter extends BasicPresenter {
                 .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
                     @Override
                     public void onImageSelected(final Uri uri) {
-                        Log.e("tb_uri", "uri: " + uri);
-                        Log.e("tb_path", "uri.geta: " + uri.getPath());
-
                         view.onTakePictureSuccess(uri);
                     }
                 })
@@ -155,7 +151,7 @@ public class AddParkingPresenter extends BasicPresenter {
     }
 
     private void getNewSessionAddPicture() {
-        GetNewSession.getNewSession(MyApplication.context, new RequestNoResultListener() {
+        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
                 addPicture();
@@ -169,7 +165,6 @@ public class AddParkingPresenter extends BasicPresenter {
     }
 
     public void deletePrice(final int position, final int id) {
-        Log.e("price", "presenter " + position + "     " + id);
         view.showProgressBar(false, false, null, "Deleting price...");
         ParkingModel.getInstanse().deleteParkingPrice(id, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
@@ -279,14 +274,12 @@ public class AddParkingPresenter extends BasicPresenter {
                 object.setPrices(arrayList_price);
 
                 deleteAllPrice(all_price);
-                Log.e("parking", "update");
             }
         }
     }
 
     private boolean checkListPrice(ArrayList<Prices> arrayList_price) {
         for (int i = (arrayList_price.size() - 1); i >= 0; i--) {
-            Log.e("tb_list", "item " + i + ":  " + arrayList_price.get(i).getPrice());
             if (arrayList_price.get(i).getPrice() == 0)
                 return false;
         }
@@ -365,7 +358,7 @@ public class AddParkingPresenter extends BasicPresenter {
     }
 
     private void getNewSessionDeleteAllPrice(final ArrayList<Prices> arrayList) {
-        GetNewSession.getNewSession(MyApplication.context, new RequestNoResultListener() {
+        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
                 deleteAllPrice(arrayList);
@@ -382,9 +375,6 @@ public class AddParkingPresenter extends BasicPresenter {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id", object.getId());
         jsonObject.addProperty("prices", JsonHelper.toJson(object.getPrices()));
-
-        Log.e("add_price", jsonObject.toString());
-        Log.e("add_price_2", JsonHelper.toJson(object));
 
         ParkingModel.getInstanse().addPPrices(JsonHelper.toJson(object), new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
@@ -403,7 +393,7 @@ public class AddParkingPresenter extends BasicPresenter {
     }
 
     private void getNewSessionAddPrice() {
-        GetNewSession.getNewSession(MyApplication.context, new RequestNoResultListener() {
+        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
                 addAllPrice();
@@ -420,10 +410,6 @@ public class AddParkingPresenter extends BasicPresenter {
         String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
         String jsonObject = JsonHelper.toJson(object);
         String session = LoginModel.getInstance().getSession();
-
-        Log.e("ud_session", session);
-        Log.e("ud_url", url);
-        Log.e("ud_json", jsonObject);
 
         ParkingModel.getInstanse().updateParking(url, jsonObject, session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
@@ -497,8 +483,6 @@ public class AddParkingPresenter extends BasicPresenter {
             Intent intent = new Intent();
             intent.putExtra(ManagementFragment.PARKING_MODEL, object);
             view.getActivity().setResult(ManagementFragment.RESULT_UPDATE, intent);
-
-            Log.e("add", "set ok");
         }
 
         view.getActivity().finish();

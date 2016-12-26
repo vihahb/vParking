@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.xtel.vparking.R;
@@ -138,7 +136,6 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, arrayList.size());
                     } else {
-                        Log.e("price", "data  " + position + "     " + prices.getId());
                         presenter.deletePrice(position, prices.getId());
                     }
                 }
@@ -172,8 +169,6 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.ViewHolder> 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (edt_price.isFocused()) {
-                        Log.e("price", "add text " + getAdapterPosition());
-
                         int money;
                         if (s != null && !s.toString().isEmpty())
                             money = Integer.parseInt(s.toString());

@@ -1,6 +1,8 @@
 package com.xtel.vparking.commons;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -16,6 +18,8 @@ import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Login;
 import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
+import com.xtel.vparking.view.MyApplication;
+import com.xtel.vparking.view.activity.LoginActivity;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -30,7 +34,7 @@ import static android.content.Context.TELEPHONY_SERVICE;
 
 public class GetNewSession {
 
-    public static void getNewSession(final Context context, final RequestNoResultListener requestNoResultListener) {
+    public static void getNewSession(final Activity activity, final RequestNoResultListener requestNoResultListener) {
         String device_id;
         String device_os_name;
         String device_os_ver;
@@ -42,7 +46,7 @@ public class GetNewSession {
         String service_code;
 
         //Get Device Info
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(TELEPHONY_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager) MyApplication.context.getSystemService(TELEPHONY_SERVICE);
         //Getting device ID
         //get Inf
         device_id = telephonyManager.getDeviceId();
@@ -91,7 +95,10 @@ public class GetNewSession {
             public void onError(Error error) {
                 Log.e("Ma loi get session: ", String.valueOf(error.getCode()));
                 Log.e("Message get session: ", error.getMessage());
-                requestNoResultListener.onError();
+//                requestNoResultListener.onError();
+                activity.finishAffinity();
+                Intent intent = new Intent(activity, LoginActivity.class);
+                activity.startActivity(intent);
             }
         });
     }

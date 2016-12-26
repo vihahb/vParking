@@ -13,7 +13,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -187,7 +186,6 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
 
     @Override
     public void onUserDataUpdate(String avatar, String name) {
-        Log.e(this.getClass().getSimpleName(), avatar + "        " + name);
         if (avatar != null && !avatar.isEmpty()) {
             Picasso.with(HomeActivity.this)
                     .load(avatar)
@@ -362,7 +360,7 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
             startActivity(ProfileActivitys.class);
             drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.home_btn_active) {
-            homePresenter.activeParkingMaster();
+//            homePresenter.activeParkingMaster();
         } else if (id == R.id.header_img_qr) {
             homePresenter.showQrCode();
         }
@@ -382,7 +380,6 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
 
     @Override
     public void onBackPressed() {
-        debug("clicked");
         if (HomeFragment.bottomSheetBehavior != null && HomeFragment.bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
             HomeFragment.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         } else if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -394,12 +391,9 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e(this.getClass().getSimpleName(), "request " + requestCode + " result " + resultCode);
         if (CURRENT_FRAGMENT.equals(HOME_FRAGMENT)) {
-            Log.e(this.getClass().getSimpleName(), "request " + requestCode + " result " + resultCode);
             Fragment fragment0 = getSupportFragmentManager().findFragmentByTag(HOME_FRAGMENT);
             if (fragment0 != null) {
-                Log.e(this.getClass().getSimpleName(), "request " + requestCode + " result " + resultCode);
                 fragment0.onActivityResult(requestCode, resultCode, data);
             }
         } else if (CURRENT_FRAGMENT.equals(VERHICLE_FRAGMENT)) {

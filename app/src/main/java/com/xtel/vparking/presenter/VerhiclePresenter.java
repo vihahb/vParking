@@ -2,7 +2,6 @@ package com.xtel.vparking.presenter;
 
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.util.Log;
 
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
@@ -15,7 +14,6 @@ import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Verhicle;
 import com.xtel.vparking.model.entity.RESP_Verhicle_List;
 import com.xtel.vparking.model.entity.Verhicle;
-import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.view.activity.inf.VerhicleView;
 
 import java.util.ArrayList;
@@ -67,7 +65,6 @@ public class VerhiclePresenter {
     }
 
     private void getNewSessionVerhicle() {
-        Log.e("verhicle", "get new session");
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
@@ -127,8 +124,6 @@ public class VerhiclePresenter {
                     view.onGetVerhicleSuccess(arrayList);
             }
         }.execute();
-
-        Log.e("verhicle", "total array " + arrayList.size());
     }
 
     public void getVerhicleById(final int id) {

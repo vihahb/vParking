@@ -210,7 +210,7 @@ public class HomeFragment extends BasicFragment implements
     }
 
     private void initBottomSheetView(View view) {
-        dialogBottomSheet = new BottomSheet(getContext(), view, getChildFragmentManager());
+        dialogBottomSheet = new BottomSheet(getActivity(), view, getChildFragmentManager());
 
         dialogBottomSheet.onContentCliecked(new View.OnClickListener() {
             @Override

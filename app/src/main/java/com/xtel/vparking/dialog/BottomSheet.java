@@ -1,6 +1,6 @@
 package com.xtel.vparking.dialog;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
@@ -34,7 +34,6 @@ import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.adapter.ViewImageAdapter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -47,7 +46,7 @@ import okhttp3.Response;
  */
 
 public class BottomSheet {
-    private Context context;
+    private Activity activity;
     private RESP_Parking_Info resp_parking_info;
     private FragmentManager fragmentManager;
     private ViewPager viewPager;
@@ -64,8 +63,8 @@ public class BottomSheet {
 
     private int header_height;
 
-    public BottomSheet(Context context, View view, FragmentManager fragmentManager) {
-        this.context = context;
+    public BottomSheet(Activity activity, View view, FragmentManager fragmentManager) {
+        this.activity = activity;
         this.fragmentManager = fragmentManager;
 
         initView(view);
@@ -183,7 +182,7 @@ public class BottomSheet {
 
     private void loadImage() {
         if (resp_parking_info.getParking_owner().getAvatar() != null && !resp_parking_info.getParking_owner().getAvatar().isEmpty()) {
-            Picasso.with(context)
+            Picasso.with(activity)
                     .load(resp_parking_info.getParking_owner().getAvatar())
                     .noPlaceholder()
                     .into(img_avatar);
@@ -194,7 +193,7 @@ public class BottomSheet {
         txt_header_name.setText(resp_parking_info.getParking_name());
         txt_header_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
         txt_header_address.setText(resp_parking_info.getAddress());
-        txt_header_empty.setText(Constants.getPlaceNumberAndTotal(context, resp_parking_info.getEmpty_number(), resp_parking_info.getTotal_place()));
+        txt_header_empty.setText(Constants.getPlaceNumberAndTotal(activity, resp_parking_info.getEmpty_number(), resp_parking_info.getTotal_place()));
         txt_header_money.setText((resp_parking_info.getPrices().get(0).getPrice() + " K"));
         header_height = view_header.getHeight();
     }
@@ -261,7 +260,7 @@ public class BottomSheet {
         AddToFavorite(View view) {
             addingToFavorite = true;
             if (dialogProgressBar == null)
-                dialogProgressBar = new DialogProgressBar(context, false, false, null, context.getString(R.string.doing));
+                dialogProgressBar = new DialogProgressBar(activity, false, false, null, activity.getString(R.string.doing));
             if (!dialogProgressBar.isShowing())
                 dialogProgressBar.showProgressBar();
             this.view = view;
@@ -307,10 +306,10 @@ public class BottomSheet {
             if (s == null || s.isEmpty()) {
                 if (resp_parking_info.getFavorite() == 1) {
                     resp_parking_info.setFavorite(0);
-                    Toast.makeText(context, "Đã xóa bãi đỗ khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Đã xóa bãi đỗ khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
                 } else {
                     resp_parking_info.setFavorite(1);
-                    Toast.makeText(context, "Đã thêm bãi đỗ vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Đã thêm bãi đỗ vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
                 }
 
                 setUpFavorite();
@@ -330,14 +329,14 @@ public class BottomSheet {
                     else {
                         addingToFavorite = false;
                         dialogProgressBar.closeProgressBar();
-                        JsonParse.getCodeError(context, view, error.getCode(), "Không thể thêm vào danh sách yêu thích");
+                        JsonParse.getCodeError(activity, view, error.getCode(), "Không thể thêm vào danh sách yêu thích");
                     }
             }
         }
     }
 
     private void getNewSessionAddToFavorite(final View view, final int id) {
-        GetNewSession.getNewSession(context, new RequestNoResultListener() {
+        GetNewSession.getNewSession(activity, new RequestNoResultListener() {
             @Override
             public void onSuccess() {
                 new AddToFavorite(view).execute(id);
@@ -346,7 +345,7 @@ public class BottomSheet {
             @Override
             public void onError() {
                 dialogProgressBar.closeProgressBar();
-                Toast.makeText(context, "Không thể thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Không thể thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
             }
         });
     }

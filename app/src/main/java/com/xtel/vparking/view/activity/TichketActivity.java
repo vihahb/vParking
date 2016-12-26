@@ -21,6 +21,10 @@ import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.inf.ITichketView;
 import com.xtel.vparking.view.fragment.CheckedFragment;
 
+/**
+ * Created by Lê Công Long Vũ on 12/2/2016.
+ */
+
 public class TichketActivity extends BasicActivity implements View.OnClickListener, ITichketView {
     private TicketPresenter presenter;
 

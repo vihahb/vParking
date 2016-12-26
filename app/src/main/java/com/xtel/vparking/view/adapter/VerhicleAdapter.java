@@ -3,7 +3,6 @@ package com.xtel.vparking.view.adapter;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -160,14 +159,12 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private void updateItem(int position, Verhicle verhicle) {
         if (verhicle.getType() == arrayList.get(position).getType()) {
-            Log.e(this.getClass().getSimpleName(), "the same");
             arrayList.set(position, verhicle);
             notifyItemChanged(position, getItemCount());
 
             if (verhicle.getFlag_default() == 1)
                 clearDefault(position);
         } else {
-            Log.e(this.getClass().getSimpleName(), "not the same");
             arrayList.remove(position);
             notifyItemRemoved(position);
             notifyItemChanged(position, getItemCount());
@@ -191,7 +188,6 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     if (verhicle.getFlag_default() == 1)
                         clearDefault((i + 1));
 
-                    Log.e(this.getClass().getSimpleName(), "set again");
                     return;
                 }
             }
@@ -263,16 +259,12 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 notifyDataSetChanged();
             }
         }.execute();
-
-        Log.e(this.getClass().getSimpleName(), "total array " + arrayList.size());
     }
 
     public void insertNewItem(int position, Verhicle verhicle) {
         if (position == -1) {
-            Log.e(this.getClass().getSimpleName(), "insert");
             insertItem(verhicle);
         } else {
-            Log.e(this.getClass().getSimpleName(), "update");
             updateItem(position, verhicle);
         }
     }

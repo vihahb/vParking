@@ -127,7 +127,7 @@ public class AddVerhiclePresenter {
     }
 
     private void getNewSessionAddVerhicle(final String name, final String plate, final String des, final int type, final int flag, final String brand_code) {
-        GetNewSession.getNewSession(view.getActivity().getApplicationContext(), new RequestNoResultListener() {
+        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
                 addVerhicle(name, plate, des, type, flag, brand_code);
@@ -141,7 +141,7 @@ public class AddVerhiclePresenter {
     }
 
     private void getNewSessionUpdateVerhicle(final int id, final String name, final String plate, final String des, final int type, final int flag, final String brand_code) {
-        GetNewSession.getNewSession(view.getActivity().getApplicationContext(), new RequestNoResultListener() {
+        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
                 updateVerhicle(id, name, plate, des, type, flag, brand_code);

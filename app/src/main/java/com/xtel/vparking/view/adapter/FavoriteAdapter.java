@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -171,7 +170,6 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
                 Response response = client.newCall(request).execute();
                 return response.body().string();
             } catch (Exception e) {
-                Log.e("pk_fa_loi_request", e.toString());
                 e.printStackTrace();
             }
             return null;

@@ -22,6 +22,10 @@ import com.xtel.vparking.view.widget.ProgressView;
 
 import java.util.ArrayList;
 
+/**
+ * Created by Lê Công Long Vũ on 12/2/2016.
+ */
+
 public class CheckInActivity extends BasicActivity implements CheckInView {
     private CheckInPresenter presenter;
     public static final int RESULT_CHECK_IN = 66, REQUEST_CHECK_IN = 99;

@@ -9,7 +9,6 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -104,7 +103,6 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
         for (int i = 0; i < brandNames_arr.size(); i++) {
             if (brand_code.equals(brandNames_arr.get(i).getCode())) {
                 sp_verhicle_brandname.setSelection(i);
-                Log.v("Spinner item pós", String.valueOf(i));
             }
         }
     }
@@ -164,10 +162,8 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
         ArrayList<Brandname> brandnames = new ArrayList<Brandname>();
         if (arrayList != null) {
             int total = arrayList.size();
-            Log.v("Total brand name: ", String.valueOf(total));
             for (int i = 0; i < total; i++) {
                 brandnames.add(i, arrayList.get(i));
-                Log.v("Info brand name", brandnames.get(i).toString());
             }
         }
 
@@ -268,14 +264,12 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
     }
 
     private void putData2Server(int id, String name, String plate_number, String desc, int type, int flag_default, String code) {
-        Log.v("verhicle update id", String.valueOf(verhicle.getId()));
         verhiclePresenter.updateVerhicle(id, name, plate_number, desc, type, flag_default, code);
     }
 
     private boolean validVerhicleModel() {
         try {
             verhicle = (Verhicle) getIntent().getSerializableExtra(Constants.VERHICLE_MODEL);
-            Log.v("verhicle id", String.valueOf(verhicle.getId()));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -17,6 +17,10 @@ import com.xtel.vparking.view.adapter.ViewParkingAdapter;
 import com.xtel.vparking.utils.PageTransformer;
 import com.xtel.vparking.view.widget.ViewPagerNoScroll;
 
+/**
+ * Created by Lê Công Long Vũ on 12/2/2016.
+ */
+
 public class ViewParkingActivity extends BasicActivity implements BottomNavigationView.OnNavigationItemSelectedListener, IParkingView {
     private ViewParkingPresenter presenter;
     private ActionBar actionBar;

@@ -118,7 +118,7 @@ public class ProfilePresenter {
     }
 
     public void getNewSessionAvatar(final String avatar) {
-        GetNewSession.getNewSession(view.getActivity().getApplicationContext(), new RequestNoResultListener() {
+        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
                 view.showShortToast(view.getActivity().getString(R.string.get_session_success));

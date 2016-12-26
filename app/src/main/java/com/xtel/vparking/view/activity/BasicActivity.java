@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -54,10 +53,6 @@ public abstract class BasicActivity extends AppCompatActivity {
 
     protected void showShortToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    protected void debug(String debuh) {
-        Log.d(this.getClass().getSimpleName(), debuh);
     }
 
     protected void showDialogNotification(String title, String content, final DialogListener dialogListener) {

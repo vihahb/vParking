@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
@@ -96,7 +95,6 @@ public class HomeFragmentPresenter {
     }
 
     private void getNewSessionParkingInfo(final int id) {
-        Log.e("home", "old: " + LoginModel.getInstance().getSession());
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
@@ -123,8 +121,6 @@ public class HomeFragmentPresenter {
             url += Constants.PARKING_BEGIN_TIME + find.getBegin_time();
         if (!find.getEnd_time().isEmpty())
             url += Constants.PARKING_END_TIME + find.getEnd_time();
-
-        Log.e("home", "url search " + url);
 
         ParkingModel.getInstanse().getParkingAround(url, new ResponseHandle<RESP_Parking>(RESP_Parking.class) {
             @Override

@@ -1,7 +1,6 @@
 package com.xtel.vparking.callback;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.xtel.vparking.commons.Constants;
 
@@ -63,14 +62,11 @@ public class RequestServer {
                     builder.header(Constants.JSON_SESSION, params[2]);
 
                 Request request = builder.build();
-                Log.e(this.getClass().getSimpleName(), "Request: " + request.toString());
 
                 Response response = client.newCall(request).execute();
                 return response.body().string();
             } catch (IOException e) {
                 e.printStackTrace();
-//                responseHandle.onError(e);
-                Log.e(this.getClass().getSimpleName(), "Error: " + e.toString());
                 return null;
             }
         }
@@ -78,7 +74,6 @@ public class RequestServer {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.e(this.getClass().getSimpleName(), "Success: " + s);
             responseHandle.onSuccess(s);
         }
     }
@@ -102,13 +97,10 @@ public class RequestServer {
                     builder.header(Constants.JSON_SESSION, params[1]);
 
                 Request request = builder.build();
-                Log.e(this.getClass().getSimpleName(), "Request: " + request.toString());
 
                 Response response = client.newCall(request).execute();
                 return response.body().string();
             } catch (IOException e) {
-//                responseHandle.onError(e);
-                Log.e(this.getClass().getSimpleName(), "Error: " + e.toString());
                 return null;
             }
         }
@@ -116,7 +108,6 @@ public class RequestServer {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.e(this.getClass().getSimpleName(), "Success: " + s);
             responseHandle.onSuccess(s);
         }
     }
@@ -146,13 +137,11 @@ public class RequestServer {
                     builder.header(Constants.JSON_SESSION, params[2]);
 
                 Request request = builder.build();
-                Log.e(this.getClass().getSimpleName(), "Request: " + request.toString());
 
                 Response response = client.newCall(request).execute();
                 return response.body().string();
             } catch (IOException e) {
                 e.printStackTrace();
-                Log.e(this.getClass().getSimpleName(), "Error: " + e.toString());
                 return null;
             }
         }
@@ -160,7 +149,6 @@ public class RequestServer {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.e(this.getClass().getSimpleName(), "Success: " + s);
             responseHandle.onSuccess(s);
         }
     }
@@ -190,12 +178,10 @@ public class RequestServer {
                     builder.header(Constants.JSON_SESSION, params[2]);
 
                 Request request = builder.build();
-                Log.e(this.getClass().getSimpleName(), "Request: " + request.toString());
 
                 Response response = client.newCall(request).execute();
                 return response.body().string();
             } catch (IOException e) {
-                Log.e(this.getClass().getSimpleName(), "Error: " + e.toString());
                 return null;
             }
         }
@@ -203,7 +189,6 @@ public class RequestServer {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.e(this.getClass().getSimpleName(), "Success: " + s);
             responseHandle.onSuccess(s);
         }
     }

@@ -1,6 +1,7 @@
 package com.xtel.vparking.commons;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -216,11 +217,11 @@ public class Constants {
         return String.valueOf(number);
     }
 
-    public static String getPlaceNumberAndTotal(Context context, String empty, String total) {
+    public static String getPlaceNumberAndTotal(Activity activity, String empty, String total) {
         if (empty == null)
-            return context.getString(R.string.unlimited);
+            return activity.getString(R.string.unlimited);
         else if (Integer.parseInt(empty) == Integer.parseInt(total)) {
-            return context.getString(R.string.limited);
+            return activity.getString(R.string.limited);
         } else
             return empty + " / " + total;
     }

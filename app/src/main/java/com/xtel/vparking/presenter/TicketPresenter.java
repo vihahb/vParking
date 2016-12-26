@@ -1,7 +1,5 @@
 package com.xtel.vparking.presenter;
 
-import android.util.Log;
-
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
@@ -64,7 +62,6 @@ public class TicketPresenter {
         ParkingModel.getInstanse().getParkingInfo(url, session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
             public void onSuccess(RESP_Parking_Info obj) {
-                Log.e(this.getClass().getSimpleName(), "parking info " + JsonHelper.toJson(obj));
                 view.onGetParkingInfoSuccess(obj);
             }
 
@@ -79,7 +76,6 @@ public class TicketPresenter {
     }
 
     private void getNewSessionParkingInfo(final int id) {
-        Log.e("home", "old: " + LoginModel.getInstance().getSession());
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
@@ -121,7 +117,6 @@ public class TicketPresenter {
     }
 
     private void getNewSessionCheckOut() {
-        Log.e("home", "old: " + LoginModel.getInstance().getSession());
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {

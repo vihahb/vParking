@@ -1,5 +1,7 @@
 package com.xtel.vparking.presenter;
 
+import android.app.Activity;
+
 import com.xtel.vparking.callback.ICmd;
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.commons.GetNewSession;
@@ -11,8 +13,8 @@ import com.xtel.vparking.view.MyApplication;
 
 public abstract class BasicPresenter {
 
-    protected void getNewSession(final ICmd cmd) {
-        GetNewSession.getNewSession(MyApplication.context, new RequestNoResultListener() {
+    protected void getNewSession(Activity activity, final ICmd cmd) {
+        GetNewSession.getNewSession(activity, new RequestNoResultListener() {
             @Override
             public void onSuccess() {
                cmd.execute();

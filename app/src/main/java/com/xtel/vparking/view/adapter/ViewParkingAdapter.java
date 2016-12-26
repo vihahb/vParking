@@ -3,7 +3,6 @@ package com.xtel.vparking.view.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.view.MyApplication;
@@ -22,7 +21,6 @@ public class ViewParkingAdapter extends FragmentStatePagerAdapter {
         super(fm);
         list_title = MyApplication.context.getResources().getStringArray(R.array.view_parking_title);
         this.id = id;
-        Log.e("vp", "id adapter " + id);
     }
 
     @Override

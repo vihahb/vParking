@@ -1,7 +1,5 @@
 package com.xtel.vparking.presenter;
 
-import android.util.Log;
-
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.CheckInModel;
@@ -61,9 +59,6 @@ public class ScanQrPresenter {
         String url = Constants.SERVER_PARKING + Constants.PARKING_CHECK_IN;
         String session = LoginModel.getInstance().getSession();
         checkInVerhicle.setParking_code(content);
-
-        Log.e(this.getClass().getSimpleName(), "json " + JsonHelper.toJson(checkInVerhicle) + "  " + checkInVerhicle.getCheckin_type() + "   "
-                + checkInVerhicle.getParking_code() + "  " + checkInVerhicle.getVerhicle_id());
 
         CheckInModel.getInstance().checkInVerhicle(url, JsonHelper.toJson(checkInVerhicle), session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
