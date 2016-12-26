@@ -36,8 +36,7 @@
             android:drawableLeft="@mipmap/ic_parking_name"
             android:drawablePadding="@dimen/size_8"
             android:drawableStart="@mipmap/ic_parking_name"
-            android:gravity="center_vertical"
-            android:text="Ô tô của mình" />
+            android:gravity="center_vertical" />
 
         <TextView
             android:id="@+id/item_txt_checked_time"
@@ -48,8 +47,7 @@
             android:drawableLeft="@mipmap/ic_time"
             android:drawablePadding="@dimen/size_8"
             android:drawableStart="@mipmap/ic_time"
-            android:gravity="center_vertical"
-            android:text="Honda" />
+            android:gravity="center_vertical" />
     </LinearLayout>
 
     <TextView
@@ -58,6 +56,5 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/font_13"
         android:layout_marginLeft="@dimen/size_8"
-        android:layout_marginStart="@dimen/size_8"
-        android:text="3025-3260" />
+        android:layout_marginStart="@dimen/size_8" />
 </LinearLayout>

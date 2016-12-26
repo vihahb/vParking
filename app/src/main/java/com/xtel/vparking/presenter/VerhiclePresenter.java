@@ -46,7 +46,7 @@ public class VerhiclePresenter {
 
         String url = Constants.SERVER_PARKING + Constants.PARKING_VERHICLE;
         String session = LoginModel.getInstance().getSession();
-        VerhicleModel.getInstance().getAllVerhicle(url, session, new ResponseHandle<RESP_Verhicle_List>(RESP_Verhicle_List.class) {
+        VerhicleModel.getInstance().getAllVerhicle(new ResponseHandle<RESP_Verhicle_List>(RESP_Verhicle_List.class) {
             @Override
             public void onSuccess(RESP_Verhicle_List obj) {
                 if (isViewing)

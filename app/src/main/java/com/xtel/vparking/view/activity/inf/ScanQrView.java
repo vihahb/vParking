@@ -3,6 +3,9 @@ package com.xtel.vparking.view.activity.inf;
 import android.app.Activity;
 
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.Verhicle;
+
+import java.util.ArrayList;
 
 /**
  * Created by Mr. M.2 on 12/3/2016.
@@ -10,8 +13,8 @@ import com.xtel.vparking.model.entity.Error;
 
 public interface ScanQrView {
 
-    void onSetupToolbar(String title);
-    void onGetDataError();
+    void onGetVerhicleSuccess(ArrayList<Verhicle> arrayList);
+    void onGetVerhicleError(Error error);
     void onStartChecking();
     void onCheckingSuccess();
     void onCheckingError(Error error);

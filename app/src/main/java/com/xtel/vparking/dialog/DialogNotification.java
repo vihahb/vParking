@@ -52,7 +52,8 @@ public class DialogNotification {
         else
             btn_ok.setText(button);
 
-        dialog.show();
+        if (dialog != null)
+            dialog.show();
     }
 
     public void setOnButtonClicked(View.OnClickListener onClickListener) {

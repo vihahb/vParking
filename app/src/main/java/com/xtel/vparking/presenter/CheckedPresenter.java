@@ -37,9 +37,7 @@ public class CheckedPresenter {
             return;
         }
 
-        String url = Constants.SERVER_PARKING + Constants.PARKING_GET_CHECK_IN_BY_USER;
-        String session = LoginModel.getInstance().getSession();
-        VerhicleModel.getInstance().getAllVerhicle(url, session, new ResponseHandle<RESP_Check_In>(RESP_Check_In.class) {
+        VerhicleModel.getInstance().getAllVerhicleByUser(new ResponseHandle<RESP_Check_In>(RESP_Check_In.class) {
             @Override
             public void onSuccess(RESP_Check_In obj) {
                 if (isViewing)

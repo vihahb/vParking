@@ -10,6 +10,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/scanqr_txt_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_36"
             android:gravity="center"
@@ -33,10 +34,17 @@
         android:orientation="vertical"
         android:padding="@dimen/size_24">
 
+        <Spinner
+            android:id="@+id/scanqr_sp_verhicle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_40"
+            android:background="@drawable/edittext_add_parking" />
+
         <EditText
             android:id="@+id/scanqr.edt_gift_code"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_36"
+            android:layout_marginTop="@dimen/size_16"
             android:background="@drawable/custom_textview_add_parking"
             android:hint="@string/input_gift_code"
             android:inputType="number"

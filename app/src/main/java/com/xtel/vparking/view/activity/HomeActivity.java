@@ -336,7 +336,7 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.nav_parking_checkin) {
-            startActivity(CheckInActivity.class);
+            startActivity(ScanQrActivity.class);
         } else if (id == R.id.nav_parking_add) {
             if (CURRENT_FRAGMENT.equals(MANAGER_FRAGMENT))
                 startActivityForResult(AddParkingActivity.class, Constants.ADD_PARKING_REQUEST);

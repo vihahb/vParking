@@ -215,7 +215,7 @@
     <string name="check_in">CHECK IN</string>
     <string name="check_out">CHECK OUT</string>
     <string name="input_gift_code">Nhập Gift Code</string>
-    <string name="checking" tools:ignore="TypographyEllipsis">Đang check...</string>
+    <string name="checking" tools:ignore="TypographyEllipsis">Đang kiểm tra...</string>
     <string name="put_qr_code_into_the_frame">Đưa QR Code vào đúng khung hình</string>
 
     <!-- Check out -->

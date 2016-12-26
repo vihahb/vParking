@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.zxing.Result;
@@ -15,10 +16,14 @@ import com.xtel.vparking.R;
 import com.xtel.vparking.callback.DialogListener;
 import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.Verhicle;
 import com.xtel.vparking.presenter.ScanQrPresenter;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.view.activity.inf.ScanQrView;
 import com.xtel.vparking.view.adapter.CustomViewFinderView;
+import com.xtel.vparking.view.adapter.ScanQrAdapter;
+
+import java.util.ArrayList;
 
 import me.dm7.barcodescanner.core.IViewFinder;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -32,9 +37,10 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
     private ZXingScannerView mScannerView;
     private ViewGroup contentFrame;
 
+    private Spinner spinner;
     private LinearLayout layout_gift_code;
     private EditText edt_gift_code;
-    private TextView txt_gift_code;
+    private TextView txt_gift_code, txt_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +48,20 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
         setContentView(R.layout.activity_scan_qr);
 
         presenter = new ScanQrPresenter(this);
-        presenter.getData();
-
+        initToolbar(R.id.scanqr_toolbar, null);
         initView();
         initScannerView();
+        showLoadingData();
+        presenter.getVerhicle();
     }
 
     private void initView() {
+        spinner = (Spinner) findViewById(R.id.scanqr_sp_verhicle);
         contentFrame = (ViewGroup) findViewById(R.id.scanqr_content);
         layout_gift_code = (LinearLayout) findViewById(R.id.scanqr_layout_gift_code);
         edt_gift_code = (EditText) findViewById(R.id.scanqr_edt_gift_code);
         txt_gift_code = (TextView) findViewById(R.id.scanqr_txt_gift_code);
+        txt_title = (TextView) findViewById(R.id.scanqr_txt_title);
     }
 
     private void initScannerView() {
@@ -65,13 +74,30 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
         contentFrame.addView(mScannerView);
     }
 
-    @Override
-    public void onSetupToolbar(String title) {
-        initToolbar(R.id.scanqr_toolbar, title);
+    private void showLoadingData() {
+        layout_gift_code.setVisibility(View.GONE);
+        txt_title.setVisibility(View.GONE);
+        txt_gift_code.setText("Đang tải dữ liệu");
     }
 
     @Override
-    public void onGetDataError() {
+    public void onGetVerhicleSuccess(ArrayList<Verhicle> arrayList) {
+        layout_gift_code.setVisibility(View.VISIBLE);
+        txt_title.setVisibility(View.VISIBLE);
+
+        ScanQrAdapter adapter = new ScanQrAdapter(ScanQrActivity.this, arrayList);
+        spinner.setAdapter(adapter);
+
+        for (int i = (arrayList.size() - 1); i >= 0; i--) {
+            if (arrayList.get(i).getFlag_default() == 1) {
+                spinner.setSelection(i);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void onGetVerhicleError(Error error) {
         showDialogNotification("Thông báo", "Có lỗi xảy ra, vui lòng thử lại", new DialogListener() {
             @Override
             public void onClicked(Object object) {
@@ -88,10 +114,8 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
     @Override
     public void onStartChecking() {
         layout_gift_code.setVisibility(View.GONE);
-        if (!edt_gift_code.getText().toString().isEmpty()) {
-            txt_gift_code.setText(edt_gift_code.getText().toString());
-            edt_gift_code.setText("");
-        }
+        txt_gift_code.setText(edt_gift_code.getText().toString());
+        edt_gift_code.setText("");
     }
 
     @Override
@@ -146,12 +170,13 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
 
     @Override
     public void handleResult(Result result) {
-        if (NetWorkInfo.isOnline(ScanQrActivity.this))
-            presenter.startCheckIn(edt_gift_code.getText().toString(), result.getText());
-        else {
-            showShortToast(getString(R.string.no_internet));
-            mScannerView.resumeCameraPreview(this);
-        }
+        if (spinner != null)
+            if (NetWorkInfo.isOnline(ScanQrActivity.this))
+                presenter.startCheckIn(spinner.getSelectedItemPosition(), edt_gift_code.getText().toString(), result.getText());
+            else {
+                showShortToast(getString(R.string.no_internet));
+                mScannerView.resumeCameraPreview(this);
+            }
     }
 
     @Override

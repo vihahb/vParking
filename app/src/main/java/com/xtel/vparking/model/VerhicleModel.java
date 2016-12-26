@@ -18,7 +18,15 @@ public class VerhicleModel extends BasicModel {
         return instance;
     }
 
-    public void getAllVerhicle(String url, String session, ResponseHandle responseHandle) {
+    public void getAllVerhicle(ResponseHandle responseHandle) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_VERHICLE;
+        String session = LoginModel.getInstance().getSession();
+        requestServer.getApi(url, session, responseHandle);
+    }
+
+    public void getAllVerhicleByUser(ResponseHandle responseHandle) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_GET_CHECK_IN_BY_USER;
+        String session = LoginModel.getInstance().getSession();
         requestServer.getApi(url, session, responseHandle);
     }
 
