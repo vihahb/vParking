@@ -22,69 +22,47 @@ public class PermissionHelper {
         }
 
         if (!isAllow) {
-
+            boolean isShould = true;
+            for (int i = (permission.length - 1); i >= 0; i--) {
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, permission[i])) {
+                    isShould = false;
+                    break;
+                }
+            }
             // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)
-                    && ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.CAMERA)
-                    && ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_PHONE_STATE)
-                    && ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    && ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_SMS)
-                    && ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.RECEIVE_SMS)) {
-
+            if (isShould) {
                 // Show an expanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.CAMERA,
-                                Manifest.permission.READ_PHONE_STATE,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.READ_SMS,
-                                Manifest.permission.RECEIVE_SMS},
-                        REQUEST_CODE);
+                ActivityCompat.requestPermissions(activity, permission, REQUEST_CODE);
             } else {
                 // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.CAMERA,
-                                Manifest.permission.READ_PHONE_STATE,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.READ_SMS,
-                                Manifest.permission.RECEIVE_SMS},
-                        REQUEST_CODE);
-
+                ActivityCompat.requestPermissions(activity, permission, REQUEST_CODE);
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
                 // result of the request.
             }
-
             return false;
         }
+
         return true;
     }
 
     public static boolean checkOnlyPermission(String permission, Activity activity, int REQUEST_CODE) {
         if (ActivityCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
-
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
                 // Show an expanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-
                 ActivityCompat.requestPermissions(activity, new String[]{permission}, REQUEST_CODE);
             } else {
                 // No explanation needed, we can request the permission.
-
                 ActivityCompat.requestPermissions(activity, new String[]{permission}, REQUEST_CODE);
-
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
                 // result of the request.
             }
-
             return false;
         }
         return true;
