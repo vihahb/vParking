@@ -48,11 +48,11 @@ public class ViewHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             final CheckInHisObj hisObj = arrayList.get(position);
 
             if (hisObj.getCheckin_type() == 1) {
-                viewHolder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_car_black_24dp, 0, 0, 0);
+                viewHolder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_car_black, 0, 0, 0);
             } else if (hisObj.getCheckin_type() == 2) {
-                viewHolder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_motobike, 0, 0, 0);
+                viewHolder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_moto_black, 0, 0, 0);
             } else {
-                viewHolder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_bike_black_24dp, 0, 0, 0);
+                viewHolder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_bike_black, 0, 0, 0);
             }
 
             String name_phone = hisObj.getUser().getFullname() + " (" + hisObj.getUser().getPhone() + ")";

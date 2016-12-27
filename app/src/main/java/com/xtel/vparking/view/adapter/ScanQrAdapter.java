@@ -1,6 +1,5 @@
 package com.xtel.vparking.view.adapter;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -8,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xtel.vparking.R;
@@ -25,7 +25,7 @@ public class ScanQrAdapter extends BaseAdapter {
 
     public ScanQrAdapter(Activity activity, ArrayList<Verhicle> arrayList) {
         this.arrayList = arrayList;
-        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -45,19 +45,33 @@ public class ScanQrAdapter extends BaseAdapter {
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        ViewHolderDropdown viewHolder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_spinner_dropdown_item, parent, false);
-            viewHolder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.item_scanqr_spinner_dropdown_item, parent, false);
+            viewHolder = new ViewHolderDropdown();
 
             viewHolder.textView = (TextView) convertView.findViewById(R.id.text2);
+            viewHolder.txt_icon = (TextView) convertView.findViewById(R.id.item_scanqr_icon);
+            viewHolder.img_default = (ImageView) convertView.findViewById(R.id.item_scanqr_default);
 
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (ViewHolderDropdown) convertView.getTag();
         }
 
+        if (arrayList.get(position).getType() == 1)
+            viewHolder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_car, 0, 0, 0);
+        else if (arrayList.get(position).getType() == 2)
+            viewHolder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_moto, 0, 0, 0);
+        else
+            viewHolder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_bike, 0, 0, 0);
+
         viewHolder.textView.setText(arrayList.get(position).getName());
+
+        if (arrayList.get(position).getFlag_default() == 1)
+            viewHolder.img_default.setVisibility(View.VISIBLE);
+        else
+            viewHolder.img_default.setVisibility(View.GONE);
 
         return convertView;
     }
@@ -85,5 +99,10 @@ public class ScanQrAdapter extends BaseAdapter {
 
     public class ViewHolder {
         private TextView textView;
+    }
+
+    public class ViewHolderDropdown {
+        private TextView textView, txt_icon;
+        private ImageView img_default;
     }
 }

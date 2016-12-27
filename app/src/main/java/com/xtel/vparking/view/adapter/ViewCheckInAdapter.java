@@ -47,11 +47,11 @@ public class ViewCheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             final ParkingCheckIn checkIn = arrayList.get(position);
 
             if (checkIn.getCheckin_type() == 1) {
-                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_car_black_24dp, 0, 0, 0);
+                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_car_black, 0, 0, 0);
             } else if (checkIn.getCheckin_type() == 2) {
-                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_motobike, 0, 0, 0);
+                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_moto_black, 0, 0, 0);
             } else {
-                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_bike_black_24dp, 0, 0, 0);
+                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_bike_black, 0, 0, 0);
             }
 
             view.txt_name.setText(checkIn.getUser().getFullname());

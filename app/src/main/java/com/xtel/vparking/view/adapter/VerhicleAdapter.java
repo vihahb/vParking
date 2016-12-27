@@ -51,11 +51,11 @@ public class VerhicleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ViewTitle view = (ViewTitle) holder;
 
             if (verhicle.getType() == type_car)
-                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_car_black_24dp, 0, 0, 0);
+                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_car_black, 0, 0, 0);
             else if (verhicle.getType() == type_bike)
-                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_motobike, 0, 0, 0);
+                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_moto_black, 0, 0, 0);
             else
-                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_bike_black_24dp, 0, 0, 0);
+                view.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_bike_black, 0, 0, 0);
 
             view.txt_title.setText(verhicle.getName());
         } else {

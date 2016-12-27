@@ -38,11 +38,11 @@ public class CheckedAdapter extends RecyclerView.Adapter<CheckedAdapter.ViewHold
         final CheckIn checkIn = arrayList.get(position);
 
         if (checkIn.getCheckin_type() == 1) {
-            holder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_car_black_24dp, 0, 0, 0);
+            holder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_car, 0, 0, 0);
         } else if (checkIn.getCheckin_type() == 2) {
-            holder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_motobike, 0, 0, 0);
+            holder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_moto, 0, 0, 0);
         } else {
-            holder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_directions_bike_black_24dp, 0, 0, 0);
+            holder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_bike, 0, 0, 0);
         }
 
         holder.txt_name.setText(checkIn.getParking().getParking_name());
