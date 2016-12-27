@@ -6,10 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.View;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -23,8 +21,6 @@ import com.facebook.accountkit.ui.LoginType;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
@@ -36,6 +32,7 @@ import com.xtel.vparking.model.entity.RESP_FLAG;
 import com.xtel.vparking.model.entity.RESP_Login;
 import com.xtel.vparking.model.entity.RESP_User;
 import com.xtel.vparking.utils.JsonHelper;
+import com.xtel.vparking.utils.PermissionHelper;
 import com.xtel.vparking.view.activity.HomeActivity;
 import com.xtel.vparking.view.activity.inf.LoginView;
 
@@ -52,17 +49,18 @@ import static android.content.Context.TELEPHONY_SERVICE;
  */
 
 public class LoginPresenter {
-    public LoginView view;
-
-    private final int MY_REQUEST_CODE = 1001;
     public static int ACC_REQUEST_CODE = 99;
+    private final int MY_REQUEST_CODE = 1001;
+    public LoginView view;
     CallbackManager callbackManager;
     AccessTokenTracker tokenTracker;
     AccessToken accessToken;
     String user_token;
     String authorization_code;
 
-    /**Device Data**/
+    /**
+     * Device Data
+     **/
     String device_id, device_os_name, device_os_ver, device_vendor;
     String other = "Not Yet";
     int device_type;
@@ -73,27 +71,27 @@ public class LoginPresenter {
         this.view = view;
     }
 
-    public void initOnLoginFacebook(Activity activity){
+    public void initOnLoginFacebook(Activity activity) {
         //Login
         LoginManager.getInstance().logInWithReadPermissions(activity,
                 Arrays.asList("public_profile", "email", "user_birthday"));
     }
 
-    public void initOnLoginAccountKit(Context context, Class clazz, View v){
-            Intent intent = new Intent(context, clazz);
-            AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder =
-                    new AccountKitConfiguration.AccountKitConfigurationBuilder(
-                            LoginType.PHONE, AccountKitActivity.ResponseType.CODE);
-            configurationBuilder.setDefaultCountryCode("VN");
+    public void initOnLoginAccountKit(Context context, Class clazz) {
+        Intent intent = new Intent(context, clazz);
+        AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder =
+                new AccountKitConfiguration.AccountKitConfigurationBuilder(
+                        LoginType.PHONE, AccountKitActivity.ResponseType.CODE);
+        configurationBuilder.setDefaultCountryCode("VN");
         configurationBuilder.setTitleType(AccountKitActivity.TitleType.LOGIN);
-            configurationBuilder.setReadPhoneStateEnabled(true);
-            configurationBuilder.setReceiveSMS(true);
-            intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
-                    configurationBuilder.build());
-            view.startActivityForResult(intent, ACC_REQUEST_CODE);
+        configurationBuilder.setReadPhoneStateEnabled(true);
+        configurationBuilder.setReceiveSMS(true);
+        intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
+                configurationBuilder.build());
+        view.startActivityForResult(intent, ACC_REQUEST_CODE);
     }
 
-    public void createCallBackManager(final Context context){
+    public void createCallBackManager(final Context context) {
         AppEventsLogger.activateApp(context);
         callbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -117,107 +115,68 @@ public class LoginPresenter {
         });
     }
 
-    public void initPermission(Context context, Activity activity) {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(context, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)
-                    && ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.CAMERA)
-                    && ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_PHONE_STATE)
-                    && ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    && ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_SMS)
-                    && ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.RECEIVE_SMS)){
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.CAMERA,
-                                Manifest.permission.READ_PHONE_STATE,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.READ_SMS,
-                                Manifest.permission.RECEIVE_SMS},
-                        MY_REQUEST_CODE);
-            } else {
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.CAMERA,
-                                Manifest.permission.READ_PHONE_STATE,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.READ_SMS,
-                                Manifest.permission.RECEIVE_SMS},
-                        MY_REQUEST_CODE);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        } else {
-            getDeviceData(context);
+    public void initAccKitPermission() {
+        String[] PermissionList = {Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.READ_PHONE_STATE};
+        if (PermissionHelper.checkListPermission(PermissionList, view.getActivity(), MY_REQUEST_CODE)) {
+            initOnLoginAccountKit(view.getActivity(), AccountKitActivity.class);
         }
     }
 
-    public void requestPermission(Context context, int requestCode, String permissions[], int[] grantResults){
+    public void initFacebookPermission() {
+        String[] PermissionList = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE};
+        if (PermissionHelper.checkListPermission(PermissionList, view.getActivity(), MY_REQUEST_CODE)) {
+            initOnLoginFacebook(view.getActivity());
+        }
+    }
+
+    public void requestPermission(Context context, int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_REQUEST_CODE: {
-                // If request is cancelled, the result arrays are empty.
                 Log.e("size permission:", String.valueOf(grantResults.length));
-                if (grantResults.length == 6
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[2] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[3] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[4] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[5] == PackageManager.PERMISSION_GRANTED) {
 
-                    getDeviceData(context);
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-                    view.showShortToast(view.getActivity().getString(R.string.permission_not_check));
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                boolean chk = true;
+                for (int grantResult : grantResults) {
+                    if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                        chk = false;
+                        break;
+                    }
                 }
-                return;
+
+                if (chk) {
+                    getDeviceData(context);
+                    view.showShortToast(view.getActivity().getString(R.string.permission_checked));
+                } else
+                    view.showShortToast(view.getActivity().getString(R.string.permission_not_check));
             }
 
+            default:
+                break;
             // other 'case' lines to check for other
             // permissions this app might request
         }
     }
 
-    public void requestCallbackManager(int requestCode, int resultCode, Intent data){
+    public void requestCallbackManager(int requestCode, int resultCode, Intent data) {
         if (callbackManager.onActivityResult(requestCode, resultCode, data)) {
             return;
         }
     }
 
-    public void requestAccountKitResult(int requestCode, int resultCode, Intent data, Context context){
-        if (requestCode == ACC_REQUEST_CODE){
+    public void requestAccountKitResult(int requestCode, int resultCode, Intent data, Context context) {
+        if (requestCode == ACC_REQUEST_CODE) {
             AccountKitLoginResult loginResult = data.getParcelableExtra(AccountKitLoginResult.RESULT_KEY);
             String toas_mes;
-            if (loginResult.getError() != null){
+            if (loginResult.getError() != null) {
                 toas_mes = loginResult.getError().getErrorType().getMessage();
                 Log.e("Loi acc kit: ", loginResult.getError().toString());
-            } else if (loginResult.wasCancelled()){
+            } else if (loginResult.wasCancelled()) {
                 toas_mes = "Login Cancelled";
             } else {
-                if (loginResult.getAccessToken() != null){
+                if (loginResult.getAccessToken() != null) {
                     toas_mes = "Success: " + loginResult.getAccessToken().getAccountId();
                     view.startActivityAndFinish(HomeActivity.class);
                 } else {
-                    toas_mes = String.format("Success:%s...", loginResult.getAuthorizationCode().substring(0, 10));
+                    toas_mes = "Success";
                     Log.e("Authorization Id: ", loginResult.getAuthorizationCode().toString());
                     authorization_code = loginResult.getAuthorizationCode().toString();
                     initAccountKit(context);
@@ -227,7 +186,7 @@ public class LoginPresenter {
         }
     }
 
-    public void initAccountFacebook(Context Activity){
+    public void initAccountFacebook(Context Activity) {
         view.showProgressBar(false, false, null, view.getActivity().getString(R.string.parking_get_data));
         DeviceObject device = getDeviceData(Activity);
         String url = Constants.SERVER_AUTHEN + Constants.AUTHEN_FB_LOGIN;
@@ -265,7 +224,7 @@ public class LoginPresenter {
         }
     }
 
-    public void initAccountKit(Context context){
+    public void initAccountKit(Context context) {
         view.showProgressBar(false, false, null, view.getActivity().getString(R.string.parking_get_data));
         DeviceObject device = getDeviceData(context);
         String url = Constants.SERVER_AUTHEN + Constants.AUTHEN_ACCOUNT_KIT;
@@ -330,7 +289,7 @@ public class LoginPresenter {
         return false;
     }
 
-    public void gettingFlagData(final String sesion){
+    public void gettingFlagData(final String sesion) {
         String url_flag = Constants.SERVER_PARKING + Constants.GET_FLAG;
         LoginModel.getInstance().gettingFlag(url_flag, sesion, new ResponseHandle<RESP_FLAG>(RESP_FLAG.class) {
             @Override
@@ -350,7 +309,7 @@ public class LoginPresenter {
         });
     }
 
-    public void gettingDataUser(String session){
+    public void gettingDataUser(String session) {
         String url_user = Constants.SERVER_PARKING + Constants.GET_USER;
         LoginModel.getInstance().gettingUser(url_user, session, new ResponseHandle<RESP_User>(RESP_User.class) {
             @Override
@@ -378,7 +337,7 @@ public class LoginPresenter {
         });
     }
 
-    public void checkAccessToken(){
+    public void checkAccessToken() {
         tokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
@@ -399,15 +358,15 @@ public class LoginPresenter {
         return formatTime;
     }
 
-    private void checkTime(long login_time, long expired_time){
+    private void checkTime(long login_time, long expired_time) {
         String time = "login: " + convertLong2Time(login_time) + ", Expired: " + convertLong2Time(expired_time);
         Log.v("Time login 2 SV: ", time);
     }
 
-    public void stopTracking(){
+    public void stopTracking() {
         try {
             tokenTracker.stopTracking();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

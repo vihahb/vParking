@@ -1,7 +1,9 @@
 package com.xtel.vparking.presenter;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.util.Log;
 
@@ -26,6 +28,7 @@ import com.xtel.vparking.model.entity.Profile;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.model.entity.RESP_User;
 import com.xtel.vparking.model.entity.UserModel;
+import com.xtel.vparking.utils.PermissionHelper;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.utils.Task;
 import com.xtel.vparking.view.activity.LoginActivity;
@@ -38,12 +41,20 @@ import com.xtel.vparking.view.activity.inf.ProfileView;
 public class ProfilePresenter {
 
     public static int ACC_REQUEST_CODE = 100;
-    private String phone_result;
-
+    private final int MY_REQUEST_CODE = 1002;
     public ProfileView view;
+    private String phone_result;
 
     public ProfilePresenter(ProfileView view) {
         this.view = view;
+    }
+
+    public boolean initCameraStorePermission() {
+        String[] permission = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (PermissionHelper.checkListPermission(permission, view.getActivity(), MY_REQUEST_CODE)) {
+            return true;
+        } else
+            return false;
     }
 
     public UserModel initData() {
@@ -215,7 +226,6 @@ public class ProfilePresenter {
                 toastMessage = "Verify Cancelled";
             } else {
                 if (loginResult.getAccessToken() != null) {
-//                    toastMessage = "Success:" + loginResult.getAccessToken().getAccountId();
                     AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
                         @Override
                         public void onSuccess(Account account) {
@@ -235,6 +245,32 @@ public class ProfilePresenter {
                 }
             }
             // Surface the result to your user in an appropriate way.
+        }
+    }
+
+    public void requestPermission(Context context, int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_REQUEST_CODE: {
+                Log.e("size permission:", String.valueOf(grantResults.length));
+
+                boolean chk = true;
+                for (int grantResult : grantResults) {
+                    if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                        chk = false;
+                        break;
+                    }
+                }
+
+                if (chk) {
+                    view.showShortToast("Permission Granted!");
+                } else
+                    view.showShortToast(view.getActivity().getString(R.string.permission_not_check));
+            }
+
+            default:
+                break;
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
 }

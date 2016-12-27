@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -50,22 +51,15 @@ import gun0912.tedbottompicker.TedBottomPicker;
  */
 
 public class ProfileActivitys extends BasicActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, ProfileView {
-    private EditText edt_fname, edt_email, edt_ngaysinh, edt_phone;
-    private Spinner spinner_gender;
-    private Button btnUpdate, btn_clear, btn_clear_email;
-    ImageView img_avatar, img_change_avatar, img_update_phone;
-
     //Spinner Properties
     public static String[] gender_spinner = {"Nam", "Nữ", "Khác"};
+    ImageView img_avatar, img_change_avatar, img_update_phone;
     ArrayAdapter<String> arrayAdapter;
-
     ProfilePresenter profilePresenter;
-
     int year_fill, month_fill, dayOfMonthfill;
     Calendar calendar;
     Date date;
     DatePickerDialog pickerDialog;
-
     //Uer Infomation
     String avatar;
     String full_name;
@@ -77,12 +71,14 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
     String birthday;
     String qr_code;
     String bar_code;
-
     //update info
     String full_name_update;
     String email_update;
     String birthday_update;
     String phone_update;
+    private EditText edt_fname, edt_email, edt_ngaysinh, edt_phone;
+    private Spinner spinner_gender;
+    private Button btnUpdate, btn_clear, btn_clear_email;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -472,6 +468,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
             if (type == 1) {
                 profilePresenter.updateUser(full_name_update, email_update, birthday_update, gender_update, phone_update);
             } else if (type == 2) {
+                if (profilePresenter.initCameraStorePermission()) {
                 TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(ProfileActivitys.this)
                         .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
                             @Override
@@ -504,27 +501,16 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
                         .setPeekHeight(getResources().getDisplayMetrics().heightPixels / 2)
                         .create();
                 bottomSheetDialogFragment.show(getSupportFragmentManager());
-//                Task.TakeBigPicture(context, getSupportFragmentManager(), true, new RequestWithStringListener() {
-//                    @Override
-//                    public void onSuccess(String url) {
-//                        avatar = url;
-//                        Picasso.with(context)
-//                                .load(avatar)
-//                                .error(R.mipmap.ic_user)
-//                                .into(img_avatar);
-//                        profilePresenter.updateAvatar(avatar);
-//
-//                    }
-//
-//                    @Override
-//                    public void onError() {
-//                        closeProgressBar();
-//                    }
-//                });
-
+                }
             } else if (type == 3) {
                 profilePresenter.onUpdatePhone(getApplicationContext(), AccountKitActivity.class);
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        profilePresenter.requestPermission(getApplicationContext(), requestCode, permissions, grantResults);
     }
 }

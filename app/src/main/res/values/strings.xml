@@ -27,7 +27,8 @@
     <string name="singin_facebook">ĐĂNG NHẬP BẰNG FACEBOOK</string>
     <string name="user_demo">User name</string>
     <string name="signin_canceled">Login cancel</string>
-    <string name="permission_not_check">Lỗi kiểm tra quyền truy cập</string>
+    <string name="permission_not_check">Lỗi kiểm tra quyền truy cập. Vui lòng thử lại!</string>
+    <string name="permission_checked">Quyền đã được chấp thuận!</string>
 
     <string name="doing" tools:ignore="TypographyEllipsis">Đang thực hiện...</string>
     <string name="adding" tools:ignore="TypographyEllipsis">Đang tạo bãi đỗ...</string>
