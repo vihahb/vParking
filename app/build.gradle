@@ -23,6 +23,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors {
+        dev {
+            applicationId "com.xtel.vparking"
+        }
+
+        prod {
+            applicationId "com.xtel.vparking.vip"
+        }
+    }
 }
 
 dependencies {
