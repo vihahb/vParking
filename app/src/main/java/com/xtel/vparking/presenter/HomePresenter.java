@@ -1,7 +1,12 @@
 package com.xtel.vparking.presenter;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+
 import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.LoginModel;
+import com.xtel.vparking.utils.PermissionHelper;
 import com.xtel.vparking.view.activity.inf.HomeView;
 
 /**
@@ -10,15 +15,32 @@ import com.xtel.vparking.view.activity.inf.HomeView;
 
 public class HomePresenter {
     private HomeView homeView;
+    private final int REQUEST_PERMISSION = 1001;
 
     public HomePresenter(HomeView homeView) {
         this.homeView = homeView;
-        checkGps();
+        checkPermission();
 //        checkParkingMaster();
     }
 
-    private void checkGps() {
-        NetWorkInfo.checkGPS(homeView.getActivity());
+    private void checkPermission() {
+        if (PermissionHelper.checkOnlyPermission(Manifest.permission.ACCESS_FINE_LOCATION, homeView.getActivity(), REQUEST_PERMISSION))
+            NetWorkInfo.checkGPS(homeView.getActivity());
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_PERMISSION) {
+            boolean check = true;
+            for (int grantresults : grantResults) {
+                if (grantresults == PackageManager.PERMISSION_DENIED) {
+                    check = false;
+                    break;
+                }
+            }
+
+            if (check)
+                NetWorkInfo.checkGPS(homeView.getActivity());
+        }
     }
 
 //    private void checkParkingMaster() {
