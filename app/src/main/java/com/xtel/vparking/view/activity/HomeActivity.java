@@ -47,7 +47,7 @@ import com.xtel.vparking.view.fragment.ManagementFragment;
 import com.xtel.vparking.view.fragment.VerhicleFragment;
 
 /**
- * Created by Lê Công Long Vũ on 12/2/2016.
+ * Created by Lê Công Long Vũ on 12/2/2016
  */
 
 public class HomeActivity extends IActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
