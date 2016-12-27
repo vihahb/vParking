@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xtel.vparking.R;
@@ -38,11 +39,11 @@ public class CheckedAdapter extends RecyclerView.Adapter<CheckedAdapter.ViewHold
         final CheckIn checkIn = arrayList.get(position);
 
         if (checkIn.getCheckin_type() == 1) {
-            holder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_car, 0, 0, 0);
+            holder.img_icon.setImageResource(R.drawable.ic_action_car);
         } else if (checkIn.getCheckin_type() == 2) {
-            holder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_moto, 0, 0, 0);
+            holder.img_icon.setImageResource(R.drawable.ic_action_moto);
         } else {
-            holder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_bike, 0, 0, 0);
+            holder.img_icon.setImageResource(R.drawable.ic_action_bike);
         }
 
         holder.txt_name.setText(checkIn.getParking().getParking_name());
@@ -68,12 +69,13 @@ public class CheckedAdapter extends RecyclerView.Adapter<CheckedAdapter.ViewHold
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView txt_icon, txt_name, txt_plate_number, txt_time;
+        private TextView txt_name, txt_plate_number, txt_time;
+        private ImageView img_icon;
 
         ViewHolder(View itemView) {
             super(itemView);
 
-            txt_icon = (TextView) itemView.findViewById(R.id.item_txt_checked_icon);
+            img_icon = (ImageView) itemView.findViewById(R.id.item_img_checked_icon);
             txt_time = (TextView) itemView.findViewById(R.id.item_txt_checked_time);
             txt_name = (TextView) itemView.findViewById(R.id.item_txt_checked_name);
             txt_plate_number = (TextView) itemView.findViewById(R.id.item_txt_checked_car_number_plate);

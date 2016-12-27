@@ -51,7 +51,7 @@ public class ScanQrAdapter extends BaseAdapter {
             viewHolder = new ViewHolderDropdown();
 
             viewHolder.textView = (TextView) convertView.findViewById(R.id.text2);
-            viewHolder.txt_icon = (TextView) convertView.findViewById(R.id.item_scanqr_icon);
+            viewHolder.img_icon = (ImageView) convertView.findViewById(R.id.item_scanqr_icon);
             viewHolder.img_default = (ImageView) convertView.findViewById(R.id.item_scanqr_default);
 
             convertView.setTag(viewHolder);
@@ -60,11 +60,11 @@ public class ScanQrAdapter extends BaseAdapter {
         }
 
         if (arrayList.get(position).getType() == 1)
-            viewHolder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_car, 0, 0, 0);
+            viewHolder.img_icon.setImageResource(R.drawable.ic_action_car);
         else if (arrayList.get(position).getType() == 2)
-            viewHolder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_moto, 0, 0, 0);
+            viewHolder.img_icon.setImageResource(R.drawable.ic_action_moto);
         else
-            viewHolder.txt_icon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_bike, 0, 0, 0);
+            viewHolder.img_icon.setImageResource(R.drawable.ic_action_bike);
 
         viewHolder.textView.setText(arrayList.get(position).getName());
 
@@ -97,12 +97,12 @@ public class ScanQrAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public class ViewHolder {
+    private class ViewHolder {
         private TextView textView;
     }
 
-    public class ViewHolderDropdown {
-        private TextView textView, txt_icon;
-        private ImageView img_default;
+    private class ViewHolderDropdown {
+        private TextView textView;
+        private ImageView img_default, img_icon;
     }
 }
