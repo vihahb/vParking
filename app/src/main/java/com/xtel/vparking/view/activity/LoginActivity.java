@@ -12,7 +12,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 
-import com.facebook.accountkit.ui.AccountKitActivity;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.Error;
@@ -34,7 +33,6 @@ public class LoginActivity extends BasicActivity implements LoginView, View.OnCl
         setContentView(R.layout.activity_main);
         presenter = new LoginPresenter(this);
         presenter.createCallBackManager(this);
-        presenter.initPermission(getApplicationContext(), this);
         initView();
     }
 
@@ -152,9 +150,9 @@ public class LoginActivity extends BasicActivity implements LoginView, View.OnCl
             dialog.show();
         } else {
             if (type == 1) {
-                presenter.initOnLoginFacebook(this);
+                presenter.initFacebookPermission();
             } else if (type == 2){
-                presenter.initOnLoginAccountKit(this, AccountKitActivity.class, view);
+                presenter.initAccKitPermission();
             }
         }
     }
