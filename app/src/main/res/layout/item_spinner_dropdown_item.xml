@@ -3,6 +3,6 @@
     android:id="@+id/text2"
     style="@style/Spinner_Item"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/size_38"
+    android:layout_height="@dimen/size_40"
     android:textColor="@color/colorPrimary"
     android:textSize="@dimen/font_13" />
