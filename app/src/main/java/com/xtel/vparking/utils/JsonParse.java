@@ -117,8 +117,9 @@ public class JsonParse {
             return "Ảnh không tồn tại";
         } else if (code == 3007) {
             return "Giá không tồn tại";
-        } else {
+        } else if (code == 5555) {
+            return "Bạn không có xe nào";
+        } else
             return content;
-        }
     }
 }

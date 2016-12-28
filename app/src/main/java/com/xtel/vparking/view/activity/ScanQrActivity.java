@@ -98,7 +98,7 @@ public class ScanQrActivity extends BasicActivity implements ZXingScannerView.Re
 
     @Override
     public void onGetVerhicleError(Error error) {
-        showDialogNotification("Thông báo", "Có lỗi xảy ra, vui lòng thử lại", new DialogListener() {
+        showDialogNotification("Thông báo", JsonParse.getCodeMessage(error.getCode(), "Bạn không có xe nào"), new DialogListener() {
             @Override
             public void onClicked(Object object) {
                 finish();
