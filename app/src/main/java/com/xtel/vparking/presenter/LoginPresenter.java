@@ -1,10 +1,8 @@
 package com.xtel.vparking.presenter;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -32,7 +30,6 @@ import com.xtel.vparking.model.entity.RESP_FLAG;
 import com.xtel.vparking.model.entity.RESP_Login;
 import com.xtel.vparking.model.entity.RESP_User;
 import com.xtel.vparking.utils.JsonHelper;
-import com.xtel.vparking.utils.PermissionHelper;
 import com.xtel.vparking.view.activity.HomeActivity;
 import com.xtel.vparking.view.activity.inf.LoginView;
 
@@ -50,7 +47,6 @@ import static android.content.Context.TELEPHONY_SERVICE;
 
 public class LoginPresenter {
     public static int ACC_REQUEST_CODE = 99;
-    private final int MY_REQUEST_CODE = 1001;
     public LoginView view;
     CallbackManager callbackManager;
     AccessTokenTracker tokenTracker;
@@ -113,47 +109,6 @@ public class LoginPresenter {
                 view.showShortToast("Facebook Exception: " + error);
             }
         });
-    }
-
-    public void initAccKitPermission() {
-        String[] PermissionList = {Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.READ_PHONE_STATE};
-        if (PermissionHelper.checkListPermission(PermissionList, view.getActivity(), MY_REQUEST_CODE)) {
-            initOnLoginAccountKit(view.getActivity(), AccountKitActivity.class);
-        }
-    }
-
-    public void initFacebookPermission() {
-        String[] PermissionList = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE};
-        if (PermissionHelper.checkListPermission(PermissionList, view.getActivity(), MY_REQUEST_CODE)) {
-            initOnLoginFacebook(view.getActivity());
-        }
-    }
-
-    public void requestPermission(Context context, int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_REQUEST_CODE: {
-                Log.e("size permission:", String.valueOf(grantResults.length));
-
-                boolean chk = true;
-                for (int grantResult : grantResults) {
-                    if (grantResult != PackageManager.PERMISSION_GRANTED) {
-                        chk = false;
-                        break;
-                    }
-                }
-
-                if (chk) {
-                    getDeviceData(context);
-                    view.showShortToast(view.getActivity().getString(R.string.permission_checked));
-                } else
-                    view.showShortToast(view.getActivity().getString(R.string.permission_not_check));
-            }
-
-            default:
-                break;
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
     }
 
     public void requestCallbackManager(int requestCode, int resultCode, Intent data) {

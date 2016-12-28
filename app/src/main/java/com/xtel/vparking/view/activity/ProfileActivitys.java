@@ -1,10 +1,12 @@
 package com.xtel.vparking.view.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -35,6 +37,7 @@ import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.UserModel;
 import com.xtel.vparking.presenter.ProfilePresenter;
+import com.xtel.vparking.utils.PermissionHelper;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.inf.ProfileView;
 import com.xtel.vparking.view.widget.BitmapTransform;
@@ -53,6 +56,7 @@ import gun0912.tedbottompicker.TedBottomPicker;
 public class ProfileActivitys extends BasicActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, ProfileView {
     //Spinner Properties
     public static String[] gender_spinner = {"Nam", "Nữ", "Khác"};
+    private final int CAMERA_REQUEST_CODE = 1002;
     ImageView img_avatar, img_change_avatar, img_update_phone;
     ArrayAdapter<String> arrayAdapter;
     ProfilePresenter profilePresenter;
@@ -76,6 +80,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
     String email_update;
     String birthday_update;
     String phone_update;
+    String[] permission = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private EditText edt_fname, edt_email, edt_ngaysinh, edt_phone;
     private Spinner spinner_gender;
     private Button btnUpdate, btn_clear, btn_clear_email;
@@ -468,39 +473,8 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
             if (type == 1) {
                 profilePresenter.updateUser(full_name_update, email_update, birthday_update, gender_update, phone_update);
             } else if (type == 2) {
-                if (profilePresenter.initCameraStorePermission()) {
-                TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(ProfileActivitys.this)
-                        .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
-                            @Override
-                            public void onImageSelected(final Uri uri) {
-                                showProgressBar(false, false, null, getActivity().getString(R.string.update_message));
-                                Log.e("tb_uri", "uri: " + uri);
-                                Log.e("tb_path", "uri.geta: " + uri.getPath());
-
-                                Picasso.with(ProfileActivitys.this)
-                                        .load(uri)
-                                        .placeholder(R.mipmap.ic_parking_background)
-                                        .error(R.mipmap.ic_parking_background)
-                                        .transform(new BitmapTransform(1200, 1200))
-                                        .fit()
-                                        .centerCrop()
-                                        .into(img_avatar, new Callback() {
-                                            @Override
-                                            public void onSuccess() {
-                                                Bitmap bitmap = ((BitmapDrawable) img_avatar.getDrawable()).getBitmap();
-                                                profilePresenter.postImage(bitmap);
-                                            }
-
-                                            @Override
-                                            public void onError() {
-
-                                            }
-                                        });
-                            }
-                        })
-                        .setPeekHeight(getResources().getDisplayMetrics().heightPixels / 2)
-                        .create();
-                bottomSheetDialogFragment.show(getSupportFragmentManager());
+                if (PermissionHelper.checkListPermission(permission, this, CAMERA_REQUEST_CODE)) {
+                    initCamera();
                 }
             } else if (type == 3) {
                 profilePresenter.onUpdatePhone(getApplicationContext(), AccountKitActivity.class);
@@ -508,9 +482,60 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         }
     }
 
+    private void initCamera() {
+        TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(ProfileActivitys.this)
+                .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+                    @Override
+                    public void onImageSelected(final Uri uri) {
+                        showProgressBar(false, false, null, getActivity().getString(R.string.update_message));
+                        Log.e("tb_uri", "uri: " + uri);
+                        Log.e("tb_path", "uri.geta: " + uri.getPath());
+
+                        Picasso.with(ProfileActivitys.this)
+                                .load(uri)
+                                .placeholder(R.mipmap.ic_parking_background)
+                                .error(R.mipmap.ic_parking_background)
+                                .transform(new BitmapTransform(1200, 1200))
+                                .fit()
+                                .centerCrop()
+                                .into(img_avatar, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Bitmap bitmap = ((BitmapDrawable) img_avatar.getDrawable()).getBitmap();
+                                        profilePresenter.postImage(bitmap);
+                                    }
+
+                                    @Override
+                                    public void onError() {
+
+                                    }
+                                });
+                    }
+                })
+                .setPeekHeight(getResources().getDisplayMetrics().heightPixels / 2)
+                .create();
+        bottomSheetDialogFragment.show(getSupportFragmentManager());
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        profilePresenter.requestPermission(getApplicationContext(), requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            Log.e("size permission:", String.valueOf(grantResults.length));
+
+            boolean chk_camera = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    chk_camera = false;
+                    break;
+                }
+            }
+
+            if (chk_camera) {
+                showShortToast(getActivity().getString(R.string.permission_checked));
+                initCamera();
+            } else
+                showShortToast(getActivity().getString(R.string.permission_not_check));
+        }
     }
 }
