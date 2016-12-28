@@ -33,7 +33,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/round_background_white"
+                    android:background="@android:color/transparent"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/icon_account" />
 
@@ -128,10 +128,10 @@
                         android:hint="@string/email"
                         android:paddingBottom="@dimen/size_8"
                         android:paddingEnd="0dp"
-                        android:paddingRight="0dp"
-                        android:paddingTop="@dimen/size_8"
                         android:paddingLeft="@dimen/size_8"
+                        android:paddingRight="0dp"
                         android:paddingStart="@dimen/size_8"
+                        android:paddingTop="@dimen/size_8"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textSize="@dimen/font_13"
                         android:theme="@style/EditTextTheme" />
@@ -186,10 +186,10 @@
                         android:hint="@string/birth_day_info"
                         android:inputType="textEmailAddress"
                         android:paddingBottom="@dimen/size_8"
-                        android:paddingRight="@dimen/size_10"
-                        android:paddingTop="@dimen/size_8"
                         android:paddingLeft="@dimen/size_8"
+                        android:paddingRight="@dimen/size_10"
                         android:paddingStart="@dimen/size_8"
+                        android:paddingTop="@dimen/size_8"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textSize="@dimen/font_13"
                         android:theme="@style/EditTextTheme" />
@@ -216,8 +216,8 @@
                         android:layout_height="@dimen/size_40"
                         android:background="@drawable/custom_edittext_profile"
                         android:paddingLeft="@dimen/size_8"
-                        android:paddingStart="@dimen/size_8"
-                        android:paddingRight="@dimen/size_10" />
+                        android:paddingRight="@dimen/size_10"
+                        android:paddingStart="@dimen/size_8" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -261,8 +261,8 @@
                         android:inputType="phone"
                         android:paddingBottom="@dimen/size_8"
                         android:paddingEnd="0dp"
-                        android:paddingRight="0dp"
                         android:paddingLeft="@dimen/size_8"
+                        android:paddingRight="0dp"
                         android:paddingStart="@dimen/size_8"
                         android:paddingTop="@dimen/size_8"
                         android:textAppearance="?android:attr/textAppearanceLarge"
