@@ -58,7 +58,7 @@ public class BottomSheet {
     private ArrayList<String> arrayList_bottom_sheet;
     private boolean addingToFavorite;
 
-    private ImageButton img_header_favorite, img_header_close;
+    private ImageButton img_header_favorite, img_header_close, img_show_qr;
     private TextView txt_header_name, txt_header_time, txt_header_address, txt_header_empty, txt_header_money;
 
     private int header_height;
@@ -76,6 +76,7 @@ public class BottomSheet {
         view_content = (LinearLayout) view.findViewById(R.id.layout_dialog_bottom_sheet_content);
         img_header_favorite = (ImageButton) view.findViewById(R.id.img_dialog_bottom_sheet_header_favorite);
         img_header_close = (ImageButton) view.findViewById(R.id.img_dialog_bottom_sheet_header_close);
+        img_show_qr = (ImageButton) view.findViewById(R.id.img_dialog_bottom_sheet_qr);
         img_avatar = (ImageView) view.findViewById(R.id.img_dialog_bottom_sheet_avatar);
         txt_header_name = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_header_name);
         txt_header_time = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_header_time);
@@ -99,6 +100,8 @@ public class BottomSheet {
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         stars.getDrawable(1).setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP);
         stars.getDrawable(2).setColorFilter(Color.parseColor("#f7941e"), PorterDuff.Mode.SRC_ATOP);
+
+        ratingBar.setEnabled(false);
 
         img_header_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,6 +242,10 @@ public class BottomSheet {
                 dialogListener.onClicked(resp_parking_info);
             }
         });
+    }
+
+    public void onShowQrClicked(View.OnClickListener onClickListener) {
+        img_show_qr.setOnClickListener(onClickListener);
     }
 
     public void onCloseClicked(View.OnClickListener onClickListener) {

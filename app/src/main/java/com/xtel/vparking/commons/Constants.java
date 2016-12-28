@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.xtel.vparking.R;
+import com.xtel.vparking.model.entity.PlaceModel;
 import com.xtel.vparking.view.MyApplication;
 
 import java.text.DateFormat;
@@ -150,6 +151,7 @@ public class Constants {
     //    Chi tiết home
     public static final String PK_MODEL = "parking_model";
     public static final String PK_IMAGE = "parking_image";
+    public static PlaceModel my_location = new PlaceModel(null, 21.026529, 105.831361);
 
     //    Favorite
     public static final String ID_PARKING = "id_parking";
