@@ -21,7 +21,7 @@
         <item
             android:id="@+id/nav_parking_checkin"
             android:icon="@mipmap/ic_check_in"
-            android:title="@string/parking_checkin" />
+            android:title="@string/parking_checkedin" />
         <item
             android:id="@+id/nav_parking_logout"
             android:icon="@mipmap/ic_logout"

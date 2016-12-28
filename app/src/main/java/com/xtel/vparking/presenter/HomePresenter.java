@@ -39,10 +39,10 @@ public class HomePresenter {
                 }
             }
 
-            if (check)
+            if (check) {
+                homeView.onSetMapSetting();
                 NetWorkInfo.checkGPS(homeView.getActivity());
-            else
-                homeView.showShortToast(homeView.getActivity().getString(R.string.error_permission));
+            }
         }
     }
 

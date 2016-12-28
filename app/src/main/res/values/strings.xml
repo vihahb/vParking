@@ -39,6 +39,7 @@
     <string name="now_location">Vị trí hiện tại</string>
 
     <!-- Parking -->
+    <string name="parking_checkedin">Xe đang đỗ</string>
     <string name="parking_checkin">Check in</string>
     <string name="parking_home">Trang chủ</string>
     <string name="parking_management">Bãi đỗ</string>

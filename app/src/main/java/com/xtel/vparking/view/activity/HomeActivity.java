@@ -228,6 +228,13 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
     }
 
     @Override
+    public void onSetMapSetting() {
+        HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HOME_FRAGMENT);
+        if (fragment != null)
+            fragment.setMapSetting();
+    }
+
+    @Override
     public Activity getActivity() {
         return this;
     }
@@ -287,7 +294,7 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
         replaceFragment(R.id.home_layout_content, new CheckedFragment(), CHECKIN_FRAGMENT);
         CURRENT_FRAGMENT = CHECKIN_FRAGMENT;
 
-        actionBar.setTitle(getString(R.string.title_activity_check_in));
+        actionBar.setTitle(getString(R.string.parking_checkedin));
         if (menu != null) {
             menu.findItem(R.id.nav_parking_add).setVisible(false);
             menu.findItem(R.id.nav_parking_checkin).setVisible(false);

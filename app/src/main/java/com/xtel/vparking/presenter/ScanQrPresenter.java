@@ -47,6 +47,7 @@ public class ScanQrPresenter extends BasicPresenter {
                                 }
                             }
                         });
+                        Collections.reverse(arrayList);
                     } else {
                         arrayList = new ArrayList<>();
                         arrayList.add(new Verhicle(-1, "", 4, "Bạn không có xe nào", "", 2, null));

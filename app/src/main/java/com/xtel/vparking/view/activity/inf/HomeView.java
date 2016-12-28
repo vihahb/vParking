@@ -14,5 +14,6 @@ public interface HomeView extends IView {
     void onUserDataUpdate(String avatar, String name);
     void onShowQrCode(String url);
     void onViewParkingSelected(int id);
+    void onSetMapSetting();
     Activity getActivity();
 }

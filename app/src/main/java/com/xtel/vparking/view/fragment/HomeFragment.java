@@ -58,7 +58,7 @@ import com.xtel.vparking.view.activity.inf.HomeFragmentView;
 import java.util.ArrayList;
 
 /**
- * Created by Lê Công Long Vũ on 11/15/2013.
+ * Created by Lê Công Long Vũ on 11/15/2013
  */
 
 public class HomeFragment extends BasicFragment implements
@@ -311,11 +311,16 @@ public class HomeFragment extends BasicFragment implements
         mMap.setOnMapClickListener(this);
         mMap.setOnCameraIdleListener(this);
 
-        if (checkPermission()) {
-            mMap.getUiSettings().setMapToolbarEnabled(false);
-            mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        }
+        setMapSetting();
+    }
+
+    public void setMapSetting() {
+        if (mMap != null)
+            if (checkPermission()) {
+                mMap.getUiSettings().setMapToolbarEnabled(false);
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            }
     }
 
     @SuppressWarnings("deprecation")
@@ -417,7 +422,6 @@ public class HomeFragment extends BasicFragment implements
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (!isFindMyLocation) {
-            isFindMyLocation = true;
 
             actionType = 1;
             presenter.getMyLocation();
