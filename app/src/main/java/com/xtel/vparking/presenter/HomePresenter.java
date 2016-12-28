@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 
+import com.xtel.vparking.R;
 import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.utils.PermissionHelper;
@@ -40,6 +41,8 @@ public class HomePresenter {
 
             if (check)
                 NetWorkInfo.checkGPS(homeView.getActivity());
+            else
+                homeView.showShortToast(homeView.getActivity().getString(R.string.error_permission));
         }
     }
 

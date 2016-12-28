@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">vParking</string>
 
-    <string name="google_server_key">AIzaSyBdr8x_dz3vXz8YVYZElrY9zbSngXOpB9w</string>
+    <string name="google_server_key">AIzaSyAl6eVc3niATyPKG2XeHYKbWGJfrvUaj3A</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -143,6 +143,7 @@
     <string name="error_choose_transport_price">Vui lòng chọn phương tiện</string>
     <string name="error_choose_money_price">Vui lòng chọn giá</string>
     <string name="error_updating">Cập nhật thất bại</string>
+    <string name="error_permission">Không thể thực hiện chức năng do bạn chưa cấp quyền</string>
 
     <string name="parking_xedap">Loại bãi đỗ: Xe đạp</string>
     <string name="parking_xemay">Loại bãi đỗ: Xe máy</string>

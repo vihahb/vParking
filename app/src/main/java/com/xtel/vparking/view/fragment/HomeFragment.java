@@ -337,6 +337,9 @@ public class HomeFragment extends BasicFragment implements
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
+        if (!isFindMyLocation)
+            isFindMyLocation = true;
+
         if (isCanLoadMap) {
             if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -414,6 +417,8 @@ public class HomeFragment extends BasicFragment implements
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (!isFindMyLocation) {
+            isFindMyLocation = true;
+
             actionType = 1;
             presenter.getMyLocation();
         }

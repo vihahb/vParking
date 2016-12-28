@@ -299,6 +299,8 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
         if (requestCode == REQUEST_SCAN) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 startActivity(ScanQrActivity.class);
+            else
+                showShortToast(getString(R.string.error_permission));
         } else
             homePresenter.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
