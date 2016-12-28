@@ -63,8 +63,10 @@ public class ScanQrAdapter extends BaseAdapter {
             viewHolder.img_icon.setImageResource(R.drawable.ic_action_car);
         else if (arrayList.get(position).getType() == 2)
             viewHolder.img_icon.setImageResource(R.drawable.ic_action_moto);
-        else
+        else if (arrayList.get(position).getType() == 3)
             viewHolder.img_icon.setImageResource(R.drawable.ic_action_bike);
+        else
+            viewHolder.img_icon.setVisibility(View.GONE);
 
         viewHolder.textView.setText(arrayList.get(position).getName());
 
