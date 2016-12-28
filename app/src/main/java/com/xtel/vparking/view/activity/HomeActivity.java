@@ -73,7 +73,6 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
     public static int PARKING_ID = -1;
     private final int REQUEST_SCAN = 1111;
     public static Find find_option = new Find(-1, -1, -1, "", "");
-    public static PlaceModel my_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +84,6 @@ public class HomeActivity extends IActivity implements NavigationView.OnNavigati
         initNavigation();
         initListener();
 
-        my_location = new PlaceModel(null, 21.026529, 105.831361);
         replaceHomeFragment();
         homePresenter = new HomePresenter(this);
         view = this;

@@ -148,6 +148,19 @@
                 android:text="1/1"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/img_dialog_bottom_sheet_qr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:background="@android:color/transparent"
+                android:contentDescription="@null"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:paddingBottom="@dimen/size_6"
+                android:paddingLeft="@dimen/size_12"
+                android:paddingStart="@dimen/size_12"
+                android:src="@mipmap/ic_check_in" />
         </FrameLayout>
 
         <LinearLayout
