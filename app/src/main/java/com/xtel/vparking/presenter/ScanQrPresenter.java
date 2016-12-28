@@ -77,7 +77,6 @@ public class ScanQrPresenter extends BasicPresenter {
 
     public void startCheckIn(int position, String gift_code, String content) {
         if (arrayList.get(position).getId() == -1) {
-
             return;
         }
 
