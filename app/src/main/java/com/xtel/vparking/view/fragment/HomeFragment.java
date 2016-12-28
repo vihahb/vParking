@@ -60,7 +60,7 @@ import com.xtel.vparking.view.activity.inf.HomeFragmentView;
 import java.util.ArrayList;
 
 /**
- * Created by Lê Công Long Vũ on 11/15/2013
+ * Created by Lê Công Long Vũ on 11/15/2013.
  */
 
 public class HomeFragment extends IFragment implements
