@@ -119,6 +119,8 @@ public class JsonParse {
             return "Giá không tồn tại";
         } else if (code == 5555) {
             return "Bạn không có xe nào";
+        } else if (code == 0) {
+            return "Vui lòng chọn phương tiện";
         } else
             return content;
     }

@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * Created by Lê Công Long Vũ on 12/3/2016.
+ * Created by Lê Công Long Vũ on 12/3/2016
  */
 
 public class ScanQrPresenter extends BasicPresenter {
@@ -49,11 +49,10 @@ public class ScanQrPresenter extends BasicPresenter {
                         });
                         Collections.reverse(arrayList);
                     } else {
-                        arrayList = new ArrayList<>();
                         arrayList.add(new Verhicle(-1, "", 4, "Bạn không có xe nào", "", 2, null));
                     }
 
-                    view.onGetVerhicleSuccess(obj.getData());
+                    view.onGetVerhicleSuccess(arrayList);
                 }
 
                 @Override
@@ -78,6 +77,7 @@ public class ScanQrPresenter extends BasicPresenter {
 
     public void startCheckIn(int position, String gift_code, String content) {
         if (arrayList.get(position).getId() == -1) {
+            view.onCheckingError(new Error(0, "ERROR", view.getActivity().getString(R.string.error)));
             return;
         }
 
