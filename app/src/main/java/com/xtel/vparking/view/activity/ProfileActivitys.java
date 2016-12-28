@@ -173,24 +173,21 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         if (full_name != null && full_name != "") {
             edt_fname.setText(full_name);
         } else {
-            full_name = "Chưa có tên";
-            edt_fname.setHint(full_name);
+            edt_fname.setHint("Chưa có tên");
         }
 
         //Email
         if (email != null && email != "") {
             edt_email.setText(email);
         } else {
-            email = "Chưa có email";
-            edt_email.setHint(email);
+            edt_email.setHint("Chưa có email");
         }
 
         //phone
         if (phone != null && phone != "") {
             edt_phone.setText(phone);
         } else {
-            phone = "Chưa có số điện thoại";
-            edt_phone.setHint(phone);
+            edt_phone.setHint("Chưa có số điện thoại");
         }
 
         //birthady
@@ -212,8 +209,7 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
             Log.e("month:", String.valueOf(month_fill));
             Log.e("day:", String.valueOf(dayOfMonthfill));
         } else {
-            birthday = "Chưa có ngày sinh";
-            edt_ngaysinh.setHint(birthday);
+            edt_ngaysinh.setHint("Chưa có ngày sinh");
             calendar.getTime();
             year_fill = calendar.get(Calendar.YEAR);
             month_fill = calendar.get(Calendar.MONTH);
