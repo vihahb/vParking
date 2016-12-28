@@ -1,22 +1,17 @@
 package com.xtel.vparking.commons;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.model.LoginModel;
-import com.xtel.vparking.model.entity.DeviceObject;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Login;
-import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.MyApplication;
 import com.xtel.vparking.view.activity.LoginActivity;
@@ -99,6 +94,7 @@ public class GetNewSession {
                 activity.finishAffinity();
                 Intent intent = new Intent(activity, LoginActivity.class);
                 activity.startActivity(intent);
+                Toast.makeText(activity, "Lấy phiên mới thất bại. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
             }
         });
     }
