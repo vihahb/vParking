@@ -109,7 +109,7 @@ public class HomeFragmentPresenter {
         });
     }
 
-    public void getParkingAround(double lat, double lng, Find find) {
+    public void getParkingAround(final double lat, final double lng, final Find find) {
         String url = Constants.SERVER_PARKING + Constants.PARKING_FIND + Constants.PARKING_LAT + lat + Constants.PARKING_LNG + lng;
         if (find.getPrice() != -1)
             url += Constants.PARKING_PRICE + find.getPrice();
@@ -132,7 +132,24 @@ public class HomeFragmentPresenter {
             @Override
             public void onError(Error error) {
                 if (isViewing)
-                    view.onGetParkingAroundError(error);
+                    if (error.getCode() == 2)
+                        getNewSessionParkingAroung(lat, lng, find);
+                    else
+                        view.onGetParkingAroundError(error);
+            }
+        });
+    }
+
+    private void getNewSessionParkingAroung(final double lat, final double lng, final Find find) {
+        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
+            @Override
+            public void onSuccess() {
+                getParkingAround(lat, lng, find);
+            }
+
+            @Override
+            public void onError() {
+
             }
         });
     }

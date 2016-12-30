@@ -271,15 +271,15 @@ public class HomeFragment extends IFragment implements
         if (actionType == 3)
             dialogBottomSheet.changeFavoriteToClose();
 
-        if (resp_parking_info.getStatus() == 0) {
+//        if (resp_parking_info.getStatus() == 0) {
             mMap_bottom.addMarker(new MarkerOptions()
                     .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
-        } else {
-            mMap_bottom.addMarker(new MarkerOptions()
-                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
-        }
+//        } else {
+//            mMap_bottom.addMarker(new MarkerOptions()
+//                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
+//                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
+//        }
         mMap_bottom.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()), 15));
     }
 
@@ -611,19 +611,19 @@ public class HomeFragment extends IFragment implements
 
         mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng())));
 
-        if (resp_parking_info.getStatus() == 0) {
+//        if (resp_parking_info.getStatus() == 0) {
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
 
             markerList.add(new MarkerModel(marker, resp_parking_info.getId()));
-        } else {
-            Marker marker = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
-
-            markerList.add(new MarkerModel(marker, resp_parking_info.getId()));
-        }
+//        } else {
+//            Marker marker = mMap.addMarker(new MarkerOptions()
+//                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
+//                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
+//
+//            markerList.add(new MarkerModel(marker, resp_parking_info.getId()));
+//        }
 
         isLoadNewParking = 0;
         this.resp_parking_info = resp_parking_info;
@@ -647,17 +647,17 @@ public class HomeFragment extends IFragment implements
                 for (int i = (arrayList.size() - 1); i >= 0; i--) {
                     Log.e(this.getClass().getSimpleName(), "item " + i);
 
-                    if (arrayList.get(i).getStatus() == 0) {
+//                    if (arrayList.get(i).getStatus() == 0) {
                         Marker marker = mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
                                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
                         markerList.add(new MarkerModel(marker, arrayList.get(i).getId()));
-                    } else {
-                        Marker marker = mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
-                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
-                        markerList.add(new MarkerModel(marker, arrayList.get(i).getId()));
-                    }
+//                    } else {
+//                        Marker marker = mMap.addMarker(new MarkerOptions()
+//                                .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
+//                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
+//                        markerList.add(new MarkerModel(marker, arrayList.get(i).getId()));
+//                    }
                 }
 
                 for (int i = total; i >= 0; i--) {
@@ -692,15 +692,15 @@ public class HomeFragment extends IFragment implements
         dialogBottomSheet.changeFavoriteToClose();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-        if (resp_parking_info.getStatus() == 0) {
+//        if (resp_parking_info.getStatus() == 0) {
             mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
-        } else {
-            mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
-        }
+//        } else {
+//            mMap.addMarker(new MarkerOptions()
+//                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
+//                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
+//        }
 
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
