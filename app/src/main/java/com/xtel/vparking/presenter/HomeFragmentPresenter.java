@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Lê Công Long Vũ on 12/4/2016.
+ * Created by Lê Công Long Vũ on 12/4/2016
  */
 
 public class HomeFragmentPresenter {
