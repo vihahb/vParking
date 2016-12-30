@@ -72,8 +72,7 @@
             android:layout_marginTop="@dimen/size_8"
             android:drawablePadding="@dimen/size_16"
             android:hint="@string/input_phone"
-            android:inputType="phone"
-            app:theme="@style/AddParking_Editext.ButtumLine" />
+            android:inputType="phone" />
 
         <TableLayout
             android:layout_width="match_parent"
