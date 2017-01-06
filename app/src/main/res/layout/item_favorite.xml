@@ -21,10 +21,10 @@
             android:id="@+id/item.img_favorite_view"
             android:layout_width="@dimen/size_30"
             android:layout_height="@dimen/size_30"
+            android:layout_marginTop="@dimen/size_8"
             android:background="@drawable/view_qr_button_circle"
             android:clickable="true"
             android:contentDescription="@null"
-            android:layout_marginTop="@dimen/size_8"
             android:foreground="?android:attr/selectableItemBackground"
             android:padding="@dimen/size_6"
             android:scaleType="fitCenter"
@@ -34,16 +34,17 @@
             android:id="@+id/item.img_favorite_delete"
             android:layout_width="@dimen/size_30"
             android:layout_height="@dimen/size_30"
+            android:layout_marginTop="@dimen/size_6"
             android:background="@drawable/update_button_circle"
             android:clickable="true"
             android:contentDescription="@null"
             android:foreground="?android:attr/selectableItemBackground"
-            android:layout_marginTop="@dimen/size_8"
             android:padding="@dimen/size_6"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_delete_forever_white_36dp" />
     </LinearLayout>
--
+    -
+
     <LinearLayout
         android:id="@+id/item.layout_favorite_content"
         android:layout_width="match_parent"
