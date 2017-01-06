@@ -606,6 +606,11 @@ public class HomeFragment extends IFragment implements
     }
 
     @Override
+    public void onGetMyLocationError(String error) {
+        showShortToast(error);
+    }
+
+    @Override
     public void onGetParkingInfoSuccess(RESP_Parking_Info resp_parking_info) {
         closeProgressBar();
 

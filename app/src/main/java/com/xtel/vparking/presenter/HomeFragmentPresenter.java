@@ -21,6 +21,7 @@ import com.xtel.vparking.model.entity.RESP_Parking;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.model.entity.RESP_Router;
 import com.xtel.vparking.model.entity.Steps;
+import com.xtel.vparking.utils.PermissionHelper;
 import com.xtel.vparking.view.activity.HomeActivity;
 import com.xtel.vparking.view.activity.inf.HomeFragmentView;
 import com.xtel.vparking.view.fragment.HomeFragment;
@@ -35,6 +36,7 @@ import java.util.List;
 public class HomeFragmentPresenter {
     private HomeFragmentView view;
     private boolean isViewing = true;
+    private String permission[] = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
     public HomeFragmentPresenter(HomeFragmentView view) {
         this.view = view;
@@ -62,12 +64,13 @@ public class HomeFragmentPresenter {
 
     public void getMyLocation() {
         if (HomeFragment.mGoogleApiClient.isConnected()) {
-            if (checkPermission()) {
+            if (PermissionHelper.checkListPermission(permission, view.getActivity(), 2002)) {
                 Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(HomeFragment.mGoogleApiClient);
                 if (mLastLocation != null) {
                     if (isViewing)
                         view.onGetMyLocationSuccess(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
-                }
+                } else
+                    view.onGetMyLocationError(view.getActivity().getString(R.string.can_not_find_location));
             }
         } else
             HomeFragment.mGoogleApiClient.connect();

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public interface HomeFragmentView extends IView {
 
     void onGetMyLocationSuccess(LatLng latLng);
+    void onGetMyLocationError(String error);
     void onGetParkingInfoSuccess(RESP_Parking_Info resp_parking_info);
     void onGetParkingInfoError(Error error);
     void onSearchParking(int id);
