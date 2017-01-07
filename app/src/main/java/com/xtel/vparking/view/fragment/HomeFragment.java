@@ -68,24 +68,20 @@ public class HomeFragment extends IFragment implements
         GoogleMap.OnMarkerClickListener, GoogleMap.OnMapLongClickListener, LocationListener, View.OnClickListener,
         GoogleMap.OnCameraIdleListener, GoogleMap.OnMapClickListener, HomeFragmentView {
 
-    private HomeFragmentPresenter presenter;
-
-    private GoogleMap mMap, mMap_bottom;
+    private static final Interpolator INTERPOLATOR = new FastOutSlowInInterpolator();
     public static GoogleApiClient mGoogleApiClient;
+    public static BottomSheetBehavior bottomSheetBehavior;
+    public BottomSheet dialogBottomSheet;
+    private HomeFragmentPresenter presenter;
+    private GoogleMap mMap, mMap_bottom;
     private LocationRequest mLocationRequest;
     private ArrayList<MarkerModel> markerList;
     private FloatingActionButton fab_filter, fab_location;
-
-    public static BottomSheetBehavior bottomSheetBehavior;
     private boolean isFindMyLocation, isCanLoadMap = true;
     private int isLoadNewParking = 0;
-
     private Marker pickMarker;
     private Polyline polyline;
-
-    public BottomSheet dialogBottomSheet;
     private RESP_Parking_Info resp_parking_info;
-
     private int actionType = -1;
 
     @Nullable
@@ -172,8 +168,6 @@ public class HomeFragment extends IFragment implements
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
-
-    private static final Interpolator INTERPOLATOR = new FastOutSlowInInterpolator();
 
     private void hideFloatingActionButton(View view) {
         ViewCompat.animate(view).scaleX(0.0F).scaleY(0.0F).alpha(0.0F).setInterpolator(INTERPOLATOR).withLayer()
@@ -726,4 +720,5 @@ public class HomeFragment extends IFragment implements
     public void onCheckFindOptionSuccess(int image) {
         fab_filter.setImageResource(image);
     }
+
 }

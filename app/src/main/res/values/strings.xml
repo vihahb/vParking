@@ -228,9 +228,14 @@
     <string name="no_internet">Không có kết nối internet</string>
 
     <!-- Facebook API ID -->
-    <string name="facebook_app_id">1623661414599437</string>
-    <string name="ak_login_protocol_scheme">ak1623661414599437</string>
-    <string name="account_kit_client_token">48e3188e71531cff2966c8fdf0f5ed91</string>
+    <!--<string name="facebook_app_id">1623661414599437</string>-->
+    <!--<string name="ak_login_protocol_scheme">ak1623661414599437</string>-->
+    <!--<string name="account_kit_client_token">48e3188e71531cff2966c8fdf0f5ed91</string>-->
+
+    <!-- Facebook API ID -->
+    <string name="facebook_app_id">1828372520751876</string>
+    <string name="ak_login_protocol_scheme">ak1828372520751876</string>
+    <string name="account_kit_client_token">d974e9a5107da65ba2263cc5857a49f1</string>
 
     <string name="add_verhicle">Thêm Phương tiên</string>
     <string name="check_verhicle_name">Vui lòng nhập tên phương tiện</string>
