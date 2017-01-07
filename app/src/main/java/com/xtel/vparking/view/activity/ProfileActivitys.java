@@ -8,9 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,7 +30,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.facebook.accountkit.ui.AccountKitActivity;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
@@ -40,14 +39,12 @@ import com.xtel.vparking.presenter.ProfilePresenter;
 import com.xtel.vparking.utils.PermissionHelper;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.activity.inf.ProfileView;
-import com.xtel.vparking.view.widget.BitmapTransform;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-
-import gun0912.tedbottompicker.TedBottomPicker;
 
 /**
  * Created by vivhp on 12/8/2016.
@@ -439,8 +436,13 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        profilePresenter.initResultAccountKit(requestCode, resultCode, data);
+        if (requestCode == 101 && resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+            onTakePictureSuccess(uri);
+        } else
+            profilePresenter.initResultAccountKit(requestCode, resultCode, data);
     }
+
 
     private void checkNetwork(final Context context, int type) {
         if (!NetWorkInfo.isOnline(context)) {
@@ -478,39 +480,71 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         }
     }
 
+    private void onTakePictureSuccess(Uri uri) {
+
+
+        Bitmap bitmap = null;
+
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (bitmap != null)
+            profilePresenter.postImage(bitmap);
+
+
+
+    }
+
     private void initCamera() {
-        TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(ProfileActivitys.this)
-                .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
-                    @Override
-                    public void onImageSelected(final Uri uri) {
-                        showProgressBar(false, false, null, getActivity().getString(R.string.update_message));
-                        Log.e("tb_uri", "uri: " + uri);
-                        Log.e("tb_path", "uri.geta: " + uri.getPath());
+//        TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(ProfileActivitys.this)
+//                .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+//                    @Override
+//                    public void onImageSelected(final Uri uri) {
+//                        showProgressBar(false, false, null, getActivity().getString(R.string.update_message));
+//                        Log.e("tb_uri", "uri: " + uri);
+//                        Log.e("tb_path", "uri.geta: " + uri.getPath());
+//
+//                        Picasso.with(ProfileActivitys.this)
+//                                .load(uri)
+//                                .placeholder(R.mipmap.ic_parking_background)
+//                                .error(R.mipmap.ic_parking_background)
+//                                .transform(new BitmapTransform(1200, 1200))
+//                                .fit()
+//                                .centerCrop()
+//                                .into(img_avatar, new Callback() {
+//                                    @Override
+//                                    public void onSuccess() {
+//                                        Bitmap bitmap = ((BitmapDrawable) img_avatar.getDrawable()).getBitmap();
+//                                        profilePresenter.postImage(bitmap);
+//                                    }
+//
+//                                    @Override
+//                                    public void onError() {
+//
+//                                    }
+//                                });
+//                    }
+//                })
+//                .setPeekHeight(getResources().getDisplayMetrics().heightPixels / 2)
+//                .create();
+//        bottomSheetDialogFragment.show(getSupportFragmentManager());
 
-                        Picasso.with(ProfileActivitys.this)
-                                .load(uri)
-                                .placeholder(R.mipmap.ic_parking_background)
-                                .error(R.mipmap.ic_parking_background)
-                                .transform(new BitmapTransform(1200, 1200))
-                                .fit()
-                                .centerCrop()
-                                .into(img_avatar, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                        Bitmap bitmap = ((BitmapDrawable) img_avatar.getDrawable()).getBitmap();
-                                        profilePresenter.postImage(bitmap);
-                                    }
+        final Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        galleryIntent.setType("image/*");
 
-                                    @Override
-                                    public void onError() {
+        //Create any other intents you want
+        final Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                                    }
-                                });
-                    }
-                })
-                .setPeekHeight(getResources().getDisplayMetrics().heightPixels / 2)
-                .create();
-        bottomSheetDialogFragment.show(getSupportFragmentManager());
+        //Add them to an intent array
+        Intent[] intents = new Intent[]{cameraIntent};
+
+        //Create a choose from your first intent then pass in the intent array
+        final Intent chooserIntent = Intent.createChooser(galleryIntent, "Chọn ảnh");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents);
+        startActivityForResult(chooserIntent, 101);
     }
 
     @Override
