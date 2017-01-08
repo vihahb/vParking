@@ -36,10 +36,16 @@ import java.util.List;
 public class HomeFragmentPresenter {
     private HomeFragmentView view;
     private boolean isViewing = true;
-    private String permission[] = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+    private String[] permission;
 
     public HomeFragmentPresenter(HomeFragmentView view) {
         this.view = view;
+        initPermission();
+    }
+
+    private void initPermission() {
+        if (permission == null)
+            permission = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     }
 
     public void checkResultSearch() {
@@ -64,7 +70,10 @@ public class HomeFragmentPresenter {
 
     public void getMyLocation() {
         if (HomeFragment.mGoogleApiClient.isConnected()) {
-            if (PermissionHelper.checkListPermission(permission, view.getActivity(), 2002)) {
+            if (permission == null || permission.length == 0 || view.getActivity() == null)
+                return;
+
+            if (PermissionHelper.checkListPermission(permission, view.getActivity(), 1001)) {
                 Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(HomeFragment.mGoogleApiClient);
                 if (mLastLocation != null) {
                     if (isViewing)
@@ -155,15 +164,6 @@ public class HomeFragmentPresenter {
 
             }
         });
-    }
-
-    private boolean checkPermission() {
-        try {
-            return !(ActivityCompat.checkSelfPermission(view.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(view.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     public void getPolyLine(final double from_lat, final double from_lng, double to_lat, double to_lng) {
