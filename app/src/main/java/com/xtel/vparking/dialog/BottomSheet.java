@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -285,10 +284,6 @@ public class BottomSheet {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty(Constants.JSON_PARKING_ID, params[0]);
 
-                Log.e("pk_fa_url", url);
-                Log.e("pk_fa_session", session);
-                Log.e("pk_fa_json", jsonObject.toString());
-
                 RequestBody body = RequestBody.create(JSON, jsonObject.toString());
                 Request request = new Request.Builder()
                         .url(url)
@@ -298,7 +293,6 @@ public class BottomSheet {
                 Response response = client.newCall(request).execute();
                 return response.body().string();
             } catch (Exception e) {
-                Log.e("pk_fa_loi_request", e.toString());
                 e.printStackTrace();
             }
             return null;
@@ -307,8 +301,6 @@ public class BottomSheet {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
-            Log.e("pk_fa_result", "null k: " + s);
 
             if (s == null || s.isEmpty()) {
                 if (resp_parking_info.getFavorite() == 1) {

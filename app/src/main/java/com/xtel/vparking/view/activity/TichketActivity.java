@@ -59,7 +59,7 @@ public class TichketActivity extends BasicActivity implements View.OnClickListen
     }
 
     private void checkOut() {
-        showAskDialog(false, false, null, "Check out khỏi bãi đỗ", "Đồng ý", "Hủy bỏ", new DialogListener() {
+        showAskDialog(false, false, null, "Check out khỏi bãi đỗ", "Hủy bỏ", "Đồng ý", new DialogListener() {
             @Override
             public void onClicked(Object object) {
                 showProgressBar(false, false, null, getString(R.string.doing));

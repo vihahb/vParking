@@ -1,6 +1,7 @@
 package com.xtel.vparking.view.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,11 +20,14 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestNoResultListener;
+import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.commons.NetWorkInfo;
+import com.xtel.vparking.model.ParkingModel;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.Favotire;
+import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
@@ -86,7 +91,7 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
                 }
 
                 mItemManger.closeItem(position);
-                new RemoveFromFavorite().execute(favotire.getId(), position);
+                askDelete(position);
             }
         });
 
@@ -132,99 +137,91 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
         }
     }
 
-    private class RemoveFromFavorite extends AsyncTask<Integer, Void, String> {
-        private final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        private int position, id;
-
-        @Override
-        protected void onPreExecute() {
-            if (progressDialog == null) {
-                progressDialog = new ProgressDialog(view.getActivity());
-                progressDialog.setCancelable(false);
-                progressDialog.setMessage(view.getActivity().getString(R.string.doing));
-            }
-            if (!progressDialog.isShowing()) {
-                progressDialog.show();
-            }
-        }
-
-        @Override
-        protected String doInBackground(Integer... params) {
-            this.id = params[0];
-            this.position = params[1];
-            try {
-                OkHttpClient client = new OkHttpClient();
-
-                String session = SharedPreferencesUtils.getInstance().getStringValue(Constants.USER_SESSION);
-                String url = Constants.SERVER_PARKING + Constants.PARKING_FAVORITE;
-
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty(Constants.JSON_PARKING_ID, params[0]);
-
-                RequestBody body = RequestBody.create(JSON, jsonObject.toString());
-                Request request = new Request.Builder()
-                        .url(url)
-                        .post(body)
-                        .header(Constants.JSON_SESSION, session)
-                        .build();
-                Response response = client.newCall(request).execute();
-                return response.body().string();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    progressDialog.dismiss();
-                }
-            }, 500);
-
-            if (s == null || s.isEmpty()) {
-                arrayList.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, getItemCount());
-
-            } else {
-                Error error = JsonHelper.getObjectNoException(s, Error.class);
-
-                if (error != null)
-                    if (error.getCode() == 2)
-                        getNewSessionAddToFavorite(id);
-                    else {
-                        progressDialog.dismiss();
-                        JsonParse.getCodeError(view.getActivity(), null, error.getCode(), "Không thể xóa khỏi danh sách yêu thích");
-                    }
-                else {
-                    progressDialog.dismiss();
-
-                    arrayList.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, getItemCount());
-                }
-            }
-
-            view.onRemoveItemSuccess();
+    private void showProgressBar() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(view.getActivity());
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage(view.getActivity().getString(R.string.doing));
+            progressDialog.show();
+        } else if (!progressDialog.isShowing()) {
+            progressDialog.show();
         }
     }
 
-    private void getNewSessionAddToFavorite(final int id) {
+    private void closeProgressBar() {
+        if (progressDialog != null)
+            progressDialog.dismiss();
+    }
+
+    private void askDelete(final int position) {
+        final Dialog dialog = new Dialog(view.getActivity(), R.style.Theme_Transparent);
+        dialog.setContentView(R.layout.dialog);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(true);
+
+        dialog.findViewById(R.id.dialog_txt_title).setVisibility(View.GONE);
+        TextView txt_message = (TextView) dialog.findViewById(R.id.dialog_txt_message);
+        Button btn_negative = (Button) dialog.findViewById(R.id.dialog_btn_negative);
+        Button btn_positive = (Button) dialog.findViewById(R.id.dialog_btn_positive);
+
+        txt_message.setText("Xóa bãi đỗ khỏi danh sách yêu thích?");
+        btn_negative.setText("Hủy bỏ");
+        btn_positive.setText("Đồng ý");
+
+        btn_negative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btn_positive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                showProgressBar();
+                deleteFavorite(position);
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void deleteFavorite(final int position) {
+        ParkingModel.getInstanse().addToFavorite(arrayList.get(position).getId(), new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+            @Override
+            public void onSuccess(RESP_Parking_Info obj) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        closeProgressBar();
+                        arrayList.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, getItemCount());
+                    }
+                }, 500);
+            }
+
+            @Override
+            public void onError(Error error) {
+                if (error.getCode() == 2)
+                    getNewSessionAddToFavorite(position);
+                else
+                    JsonParse.getCodeError(view.getActivity(), null, error.getCode(), "Không thể xóa khỏi danh sách yêu thích");
+            }
+        });
+    }
+
+    private void getNewSessionAddToFavorite(final int position) {
         GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
             @Override
             public void onSuccess() {
-                new RemoveFromFavorite().execute(id);
+                deleteFavorite(position);
             }
 
             @Override
             public void onError() {
-                progressDialog.dismiss();
-                Toast.makeText(view.getActivity(), "Không thể xóa khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
+                closeProgressBar();
             }
         });
     }

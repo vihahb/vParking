@@ -33,7 +33,7 @@ public class MyApplication extends Application {
         AccountKit.initialize(getApplicationContext());
         context = this;
         PACKAGE_NAME = context.getPackageName();
-//        getKeyHash(PACKAGE_NAME);
+        getKeyHash(PACKAGE_NAME);
         Log.v("Pkg name", PACKAGE_NAME);
     }
 

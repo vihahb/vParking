@@ -1,5 +1,6 @@
 package com.xtel.vparking.model;
 
+import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
@@ -72,5 +73,14 @@ public class ParkingModel extends BasicModel {
     public void getAddressByLatLng(double lat, double lng, ResponseHandle responseHandle) {
         String url = Constants.GET_ADDRESS_URL + lat + "," + lng + Constants.GET_ADDRESS_KEY + MyApplication.context.getResources().getString(R.string.google_server_key);
         requestServer.getApi(url, null , responseHandle);
+    }
+
+    public void addToFavorite(int id, ResponseHandle responseHandle) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_FAVORITE;
+        String session = LoginModel.getInstance().getSession();
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(Constants.JSON_PARKING_ID, id);
+        requestServer.postApi(url, jsonObject.toString(), session, responseHandle);
     }
 }
