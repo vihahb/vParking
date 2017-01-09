@@ -5,6 +5,6 @@ package com.xtel.vparking.callback;
  */
 
 public interface RequestNoResultListener {
-    public void onSuccess();
-    public void onError();
+    void onSuccess();
+    void onError();
 }
