@@ -150,6 +150,8 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         if (avatar != null) {
             Picasso.with(context)
                     .load(avatar)
+                    .fit()
+                    .centerCrop()
                     .placeholder(R.mipmap.icon_account)
                     .error(R.mipmap.icon_account)
                     .into(img_avatar);
@@ -408,6 +410,8 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
     public void onPostPictureSuccess(String url) {
         Picasso.with(this)
                 .load(url)
+                .fit()
+                .centerCrop()
                 .placeholder(R.mipmap.icon_account)
                 .error(R.mipmap.icon_account)
                 .into(img_avatar);
@@ -433,12 +437,53 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
+    private void onTakePictureGallary(Uri uri) {
+        if (!NetWorkInfo.isOnline(getActivity())) {
+            showShortToast(getString(R.string.no_internet));
+            return;
+        } else if (uri == null) {
+            showShortToast("Không thể lấy ảnh");
+            return;
+        }
+
+        showProgressBar(false, false, null, "Đang tải file...");
+
+        Bitmap bitmap = null;
+
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        profilePresenter.postImage(bitmap);
+    }
+
+    private void onTakePictureCamera(Bitmap bitmap) {
+        if (!NetWorkInfo.isOnline(getActivity())) {
+            showShortToast(getString(R.string.no_internet));
+            return;
+        } else if (bitmap == null) {
+            showShortToast("Không thể lấy ảnh");
+            return;
+        }
+
+        showProgressBar(false, false, null, "Đang tải file...");
+
+        profilePresenter.postImage(bitmap);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 101 && resultCode == RESULT_OK) {
             Uri uri = data.getData();
-            onTakePictureSuccess(uri);
+            if (uri != null) {
+                onTakePictureGallary(uri);
+            } else {
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                onTakePictureCamera(bitmap);
+            }
         } else
             profilePresenter.initResultAccountKit(requestCode, resultCode, data);
     }
@@ -481,7 +526,8 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
     }
 
     private void onTakePictureSuccess(Uri uri) {
-
+        if (uri == null)
+            return;
 
         Bitmap bitmap = null;
 
