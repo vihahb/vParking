@@ -6,6 +6,6 @@ package com.xtel.vparking.callback;
 
 public interface DialogListener {
 
-    public void onClicked(Object object);
-    public void onCancle();
+    void onClicked(Object object);
+    void onCancle();
 }
