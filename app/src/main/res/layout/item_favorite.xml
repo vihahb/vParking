@@ -53,8 +53,8 @@
         android:foreground="?android:attr/selectableItemBackground"
         android:orientation="vertical"
         android:paddingBottom="@dimen/size_8"
-        android:paddingLeft="@dimen/size_10"
-        android:paddingRight="@dimen/size_10"
+        android:paddingLeft="@dimen/size_16"
+        android:paddingRight="@dimen/size_16"
         android:paddingTop="@dimen/size_8">
 
         <TableLayout
