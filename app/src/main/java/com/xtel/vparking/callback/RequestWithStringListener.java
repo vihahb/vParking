@@ -5,6 +5,6 @@ package com.xtel.vparking.callback;
  */
 
 public interface RequestWithStringListener {
-    public void onSuccess(String url);
-    public void onError();
+    void onSuccess(String url);
+    void onError();
 }
