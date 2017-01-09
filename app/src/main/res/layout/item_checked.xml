@@ -24,9 +24,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/size_16"
-        android:layout_marginLeft="@dimen/size_16"
+        android:layout_marginLeft="@dimen/size_13"
         android:layout_marginRight="@dimen/size_16"
-        android:layout_marginStart="@dimen/size_16"
+        android:layout_marginStart="@dimen/size_13"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -35,21 +35,22 @@
             style="@style/item_view_check_in_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/ic_parking_name"
+            android:drawableLeft="@drawable/ic_action_parking_name"
             android:drawablePadding="@dimen/size_8"
-            android:drawableStart="@mipmap/ic_parking_name"
-            android:gravity="center_vertical" />
+            android:drawableStart="@drawable/ic_action_parking_name"
+            android:gravity="center_vertical"
+            android:text="Ô tô của mình" />
 
         <TextView
             android:id="@+id/item_txt_checked_time"
             style="@style/item_view_check_in_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_4"
-            android:drawableLeft="@mipmap/ic_time"
+            android:drawableLeft="@drawable/ic_action_time"
             android:drawablePadding="@dimen/size_8"
-            android:drawableStart="@mipmap/ic_time"
-            android:gravity="center_vertical" />
+            android:drawableStart="@drawable/ic_action_time"
+            android:gravity="center_vertical"
+            android:text="Honda" />
     </LinearLayout>
 
     <TextView
@@ -58,5 +59,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/size_8"
         android:layout_marginStart="@dimen/size_8"
+        android:text="3025-3260"
         android:textSize="@dimen/font_13" />
 </LinearLayout>
