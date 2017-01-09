@@ -147,6 +147,7 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
         dialog.setContentView(R.layout.dialog);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
 
         dialog.findViewById(R.id.dialog_txt_title).setVisibility(View.GONE);
         TextView txt_message = (TextView) dialog.findViewById(R.id.dialog_txt_message);
