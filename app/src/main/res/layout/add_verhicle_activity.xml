@@ -9,9 +9,9 @@
         android:id="@+id/rdo_group"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_36"
+        android:layout_margin="@dimen/size_16"
         android:background="@drawable/custom_radio_group"
         android:orientation="horizontal"
-        android:layout_margin="@dimen/size_16"
         android:padding="@dimen/size_2">
 
         <RadioButton
@@ -24,8 +24,8 @@
             android:checked="true"
             android:gravity="center"
             android:text="@string/oto"
-            android:textSize="@dimen/font_13"
-            android:textColor="@drawable/custom_radio_button_text" />
+            android:textColor="@drawable/custom_radio_button_text"
+            android:textSize="@dimen/font_13" />
 
         <RadioButton
             android:id="@+id/rdo_xemay"
@@ -36,18 +36,18 @@
             android:button="@android:color/transparent"
             android:gravity="center"
             android:text="@string/xemay"
-            android:textSize="@dimen/font_13"
-            android:textColor="@drawable/custom_radio_button_text" />
+            android:textColor="@drawable/custom_radio_button_text"
+            android:textSize="@dimen/font_13" />
     </RadioGroup>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/rdo_group"
         android:background="@android:color/white"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -88,13 +88,13 @@
                     android:hint="@string/verhicle_name"
                     android:paddingBottom="@dimen/size_8"
                     android:paddingEnd="0dp"
-                    android:theme="@style/EditTextTheme"
-                    android:paddingRight="0dp"
                     android:paddingLeft="@dimen/size_8"
+                    android:paddingRight="0dp"
                     android:paddingStart="@dimen/size_8"
                     android:paddingTop="@dimen/size_8"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="@dimen/font_13" />
+                    android:textSize="@dimen/font_13"
+                    android:theme="@style/EditTextTheme" />
             </FrameLayout>
         </LinearLayout>
 
@@ -114,7 +114,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/size_6"
@@ -137,7 +136,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/size_6"
@@ -153,13 +151,13 @@
                     android:hint="@string/verhicle_platenumber"
                     android:inputType="textEmailAddress"
                     android:paddingBottom="@dimen/size_8"
-                    android:paddingRight="@dimen/size_10"
                     android:paddingLeft="@dimen/size_8"
+                    android:paddingRight="@dimen/size_10"
                     android:paddingStart="@dimen/size_8"
                     android:paddingTop="@dimen/size_8"
-                    android:theme="@style/EditTextTheme"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="@dimen/font_13" />
+                    android:textSize="@dimen/font_13"
+                    android:theme="@style/EditTextTheme" />
 
             </LinearLayout>
         </LinearLayout>
@@ -193,19 +191,18 @@
                     android:background="@drawable/custom_edittext_profile"
                     android:gravity="top"
                     android:hint="@string/verhicle_description"
-                    android:theme="@style/EditTextTheme"
                     android:lines="3"
                     android:paddingBottom="@dimen/size_8"
                     android:paddingEnd="0dp"
-                    android:paddingRight="0dp"
                     android:paddingLeft="@dimen/size_8"
+                    android:paddingRight="0dp"
                     android:paddingStart="@dimen/size_8"
                     android:paddingTop="@dimen/size_8"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="@dimen/font_13" />
+                    android:textSize="@dimen/font_13"
+                    android:theme="@style/EditTextTheme" />
 
                 <Button
-                    android:id="@+id/btn_clear_des"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="end|center_vertical"
@@ -228,8 +225,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:button="@drawable/custom_checkbox_done"
-                android:text="@string/verhicle_default"
                 android:paddingLeft="@dimen/size_10"
+                android:text="@string/verhicle_default"
                 android:textColor="@drawable/custom_checkbox_add_text"
                 android:textSize="@dimen/font_13" />
         </LinearLayout>

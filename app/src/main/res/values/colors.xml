@@ -7,7 +7,6 @@
     <color name="btn_fb_plus">#b385bf</color>
     <color name="btn_facebook">#4267B2</color>
     <color name="btn_fb_plus_clicked">#C6A4CF</color>
-    <color name="btn_fb_plus_blur">#DFCCE4</color>
 
     <color name="colorPrimaryClicked">#7676BB</color>
 
@@ -17,7 +16,6 @@
     <color name="gray_tv">#9c9a9a</color>
 
     <color name="material_background">#e6e7e8</color>
-    <color name="material_icon">#737373</color>
     <color name="backgroun_round_red">#ef1976</color>
 
     <color name="check_in">#05a32a</color>

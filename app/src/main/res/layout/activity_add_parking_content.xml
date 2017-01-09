@@ -193,7 +193,6 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/textView4"
                     style="@style/AddParking_Textview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

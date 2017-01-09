@@ -8,9 +8,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_48"
+        android:background="@color/colorLine"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:background="@color/colorLine"
         android:paddingLeft="@dimen/size_16"
         android:paddingRight="@dimen/size_16">
 
@@ -32,7 +32,6 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray_tv" />

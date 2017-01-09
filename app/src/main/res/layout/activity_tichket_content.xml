@@ -16,7 +16,6 @@
             android:layout_height="wrap_content" />
 
         <include
-            android:id="@+id/checkout_layout_B"
             layout="@layout/activity_tichket_content_b"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

@@ -107,28 +107,9 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
         return R.id.item_swipe_favorite;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-        private SwipeLayout swipeLayout;
-        private LinearLayout layout_content;
-        private ImageButton img_view, img_delete;
-        private TextView txt_name, txt_time, txt_address, txt_money;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            layout_content = (LinearLayout) itemView.findViewById(R.id.item_layout_favorite_content);
-            swipeLayout = (SwipeLayout) itemView.findViewById(R.id.item_swipe_favorite);
-            img_view = (ImageButton) itemView.findViewById(R.id.item_img_favorite_view);
-            img_delete = (ImageButton) itemView.findViewById(R.id.item_img_favorite_delete);
-            txt_name = (TextView) itemView.findViewById(R.id.item_txt_favorite_name);
-            txt_time = (TextView) itemView.findViewById(R.id.item_txt_favorite_time);
-            txt_address = (TextView) itemView.findViewById(R.id.item_txt_favorite_address);
-            txt_money = (TextView) itemView.findViewById(R.id.item_txt_favorite_money);
-        }
-    }
-
     private void showProgressBar() {
         if (progressDialog == null) {
-            progressDialog = new ProgressDialog(view.getActivity());
+            progressDialog = new ProgressDialog(view.getActivity(), R.style.AppCompatAlertDialogStyle);
             progressDialog.setCancelable(false);
             progressDialog.setMessage(view.getActivity().getString(R.string.doing));
             progressDialog.show();
@@ -215,5 +196,24 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
                 closeProgressBar();
             }
         });
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private SwipeLayout swipeLayout;
+        private LinearLayout layout_content;
+        private ImageButton img_view, img_delete;
+        private TextView txt_name, txt_time, txt_address, txt_money;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            layout_content = (LinearLayout) itemView.findViewById(R.id.item_layout_favorite_content);
+            swipeLayout = (SwipeLayout) itemView.findViewById(R.id.item_swipe_favorite);
+            img_view = (ImageButton) itemView.findViewById(R.id.item_img_favorite_view);
+            img_delete = (ImageButton) itemView.findViewById(R.id.item_img_favorite_delete);
+            txt_name = (TextView) itemView.findViewById(R.id.item_txt_favorite_name);
+            txt_time = (TextView) itemView.findViewById(R.id.item_txt_favorite_time);
+            txt_address = (TextView) itemView.findViewById(R.id.item_txt_favorite_address);
+            txt_money = (TextView) itemView.findViewById(R.id.item_txt_favorite_money);
+        }
     }
 }

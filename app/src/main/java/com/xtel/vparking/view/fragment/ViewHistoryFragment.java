@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,9 +22,7 @@ import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.CheckInHisObj;
 import com.xtel.vparking.model.entity.Error;
-import com.xtel.vparking.model.entity.HistoryModel;
 import com.xtel.vparking.presenter.HistoryPresenter;
-import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.utils.RecyclerOnScrollListener;
 import com.xtel.vparking.view.activity.inf.IViewHistory;
@@ -41,22 +38,18 @@ import java.util.Calendar;
 
 public class ViewHistoryFragment extends BasicFragment implements IViewHistory {
 
+    //Varialbe for Fragment
+    int year, month, day;
+    //Variable for Request
+    String time_now;
     private RecyclerView recyclerViewHistory;
     private ViewHistoryAdapter viewHistoryAdapter;
     private HistoryPresenter presenter;
     private ArrayList<CheckInHisObj> checkInHisArr;
     private BottomNavigationView bottomNavigationView;
     private ProgressView progressView;
-
     private TextView txt_time;
     private ImageView img_cal;
-
-    //Varialbe for Fragment
-    int year, month, day;
-
-    //Variable for Request
-    String time_now;
-
 
     public static ViewHistoryFragment newInstance(int id) {
         Bundle args = new Bundle();

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 
-import com.xtel.vparking.R;
 import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.LoginModel;
 import com.xtel.vparking.utils.PermissionHelper;
@@ -15,8 +14,8 @@ import com.xtel.vparking.view.activity.inf.HomeView;
  */
 
 public class HomePresenter {
-    private HomeView homeView;
     private final int REQUEST_PERMISSION = 1001;
+    private HomeView homeView;
 
     public HomePresenter(HomeView homeView) {
         this.homeView = homeView;
@@ -66,7 +65,7 @@ public class HomePresenter {
 //
 //        try {
 //            String url = Constants.SERVER_PARKING + Constants.PARKING_ACTIVE;
-//            HomeModel.getInstance().activeParkingMaster(url, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+//            omeModel.getInstance().activeParkingMaster(url, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
 //                @Override
 //                public void onSuccess(RESP_Parking_Info obj) {
 //                    SharedPreferencesUtils.getInstance().putIntValue(Constants.USER_FLAG, 1);

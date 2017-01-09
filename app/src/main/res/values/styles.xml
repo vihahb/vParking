@@ -79,14 +79,6 @@
         <item name="android:paddingRight">@dimen/size_8</item>
     </style>
 
-    <style name="Profile_editext">
-        <item name="android:singleLine">true</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:paddingLeft">@dimen/size_24</item>
-        <item name="android:paddingRight">@dimen/size_24</item>
-        <item name="android:textAppearance">?android:attr/textAppearance</item>
-    </style>
-
     <style name="Profile_editext.ButtumLine" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorControlNormal">@color/colorPrimaryDark</item>
         <item name="colorControlActivated">@color/colorPrimaryDark</item>
@@ -239,24 +231,6 @@
         <item name="com_accountkit_button_border_color">#ffffff</item>
         <item name="com_accountkit_header_background_color">#5c5ca7</item>
         <item name="com_accountkit_background">@mipmap/ic_bgr</item>
-    </style>
-
-    <style name="CheckIn_TextView_Title">
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingLeft">@dimen/size_16</item>
-        <item name="android:paddingRight">@dimen/size_16</item>
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
-    <style name="CheckIn_TextView_Item">
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingLeft">@dimen/size_16</item>
-        <item name="android:paddingRight">@dimen/size_8</item>
-        <item name="android:background">@drawable/button_check_in</item>
-        <item name="android:drawableRight">@drawable/ic_keyboard_arrow_right_black_36dp</item>
-        <item name="android:textColor">@drawable/textview_scan_qr</item>
     </style>
 
     <style name="Scanner_TextView">
