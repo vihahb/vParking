@@ -10,11 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
+import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.callback.ResponseHandle;
@@ -58,6 +61,17 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
         holder.txt_address.setText(favotire.getAddress());
         holder.txt_money.setText((favotire.getPrice() + " K"));
         holder.txt_time.setText(Constants.getTime(favotire.getBegin(), favotire.getEnd()));
+
+        if (favotire.getImage() != null || !favotire.getImage().isEmpty())
+            Picasso.with(view.getActivity())
+                    .load(favotire.getImage())
+                    .placeholder(R.mipmap.ic_parking_background)
+                    .error(R.mipmap.ic_parking_background)
+                    .fit()
+                    .centerCrop()
+                    .into(holder.img_avatar);
+        else
+            holder.img_avatar.setImageResource(R.mipmap.ic_parking_background);
 
         holder.img_view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,9 +217,11 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
         private LinearLayout layout_content;
         private ImageButton img_view, img_delete;
         private TextView txt_name, txt_time, txt_address, txt_money;
+        private ImageView img_avatar;
 
         ViewHolder(View itemView) {
             super(itemView);
+            img_avatar = (ImageView) itemView.findViewById(R.id.item_layout_favorite_image);
             layout_content = (LinearLayout) itemView.findViewById(R.id.item_layout_favorite_content);
             swipeLayout = (SwipeLayout) itemView.findViewById(R.id.item_swipe_favorite);
             img_view = (ImageButton) itemView.findViewById(R.id.item_img_favorite_view);
