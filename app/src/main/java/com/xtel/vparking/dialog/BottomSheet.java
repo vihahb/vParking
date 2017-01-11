@@ -145,7 +145,9 @@ public class BottomSheet {
 
     public void initData(RESP_Parking_Info resp_parking_info) {
         this.resp_parking_info = resp_parking_info;
-        initHeader();
+        String total_place = Constants.getPlaceNumberNoText(resp_parking_info.getEmpty_number());
+
+        initHeader(total_place);
         setUpViewpager();
         loadImage();
         setUpFavorite();
@@ -154,11 +156,11 @@ public class BottomSheet {
         txt_picture_count.setText(picture_count);
 
         txt_address.setText(resp_parking_info.getAddress());
-        txt_user_name.setText(resp_parking_info.getParking_owner().getFullname());
-        txt_user_phone.setText(Constants.getUserInfo(resp_parking_info.getParking_phone()));
+        txt_user_name.setText(Constants.getUserName(null));
+        txt_user_phone.setText(Constants.getUserPhone(null));
         txt_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
         txt_parking_name.setText(resp_parking_info.getParking_name());
-        txt_cho_trong.setText(Constants.getPlaceNumberNoText(resp_parking_info.getEmpty_number()));
+        txt_cho_trong.setText(total_place);
 
         txt_money.setText((resp_parking_info.getPrices().get(0).getPrice() + "K/h"));
         txt_dat_cho.setText(resp_parking_info.getEmpty_number());
@@ -187,17 +189,23 @@ public class BottomSheet {
             Picasso.with(activity)
                     .load(resp_parking_info.getParking_owner().getAvatar())
                     .noPlaceholder()
+                    .fit().centerCrop()
                     .into(img_avatar);
         }
     }
 
-    private void initHeader() {
+    private void initHeader(String total_place) {
         txt_header_name.setText(resp_parking_info.getParking_name());
         txt_header_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
         txt_header_address.setText(resp_parking_info.getAddress());
-        txt_header_empty.setText(Constants.getPlaceNumberAndTotal(activity, resp_parking_info.getEmpty_number(), resp_parking_info.getTotal_place()));
+        txt_header_empty.setText(total_place);
         txt_header_money.setText((resp_parking_info.getPrices().get(0).getPrice() + " K"));
         header_height = view_header.getHeight();
+
+        if (total_place.equals(activity.getString(R.string.limited)))
+            txt_header_empty.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_not_empty, 0, 0, 0);
+        else
+            txt_header_empty.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_still_empty, 0, 0, 0);
     }
 
     public void setMarginHeader(float view) {

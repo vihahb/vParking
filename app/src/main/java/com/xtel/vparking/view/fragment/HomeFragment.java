@@ -1,6 +1,7 @@
 package com.xtel.vparking.view.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -47,7 +48,6 @@ import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.dialog.BottomSheet;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.Find;
-import com.xtel.vparking.model.entity.MarkerModel;
 import com.xtel.vparking.model.entity.Parking;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.presenter.HomeFragmentPresenter;
@@ -57,6 +57,7 @@ import com.xtel.vparking.view.activity.HomeActivity;
 import com.xtel.vparking.view.activity.inf.HomeFragmentView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Lê Công Long Vũ on 11/15/2013.
@@ -74,7 +75,11 @@ public class HomeFragment extends IFragment implements
     private HomeFragmentPresenter presenter;
     private GoogleMap mMap, mMap_bottom;
     private LocationRequest mLocationRequest;
-    private ArrayList<MarkerModel> markerList;
+
+    //    private ArrayList<MarkerModel> markerList;
+    private HashMap<Marker, Parking> hashMap_Marker;
+    private HashMap<Integer, Boolean> hashMap_Check;
+
     private FloatingActionButton fab_filter, fab_location;
     private static boolean isFindMyLocation;
     private boolean isCanLoadMap = true;
@@ -105,6 +110,7 @@ public class HomeFragment extends IFragment implements
         initBottomSheetView(view);
     }
 
+    @SuppressLint("UseSparseArrays")
     private void initGoogleMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_parking);
         mapFragment.getMapAsync(this);
@@ -117,7 +123,9 @@ public class HomeFragment extends IFragment implements
                     .build();
         }
 
-        markerList = new ArrayList<>();
+//        markerList = new ArrayList<>();
+        hashMap_Marker = new HashMap<>();
+        hashMap_Check = new HashMap<>();
     }
 
     private void initWidget(View view) {
@@ -247,6 +255,7 @@ public class HomeFragment extends IFragment implements
 
     private void closeGuid() {
         mMap.clear();
+        clearMarker();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
@@ -267,9 +276,9 @@ public class HomeFragment extends IFragment implements
             dialogBottomSheet.changeFavoriteToClose();
 
 //        if (resp_parking_info.getStatus() == 0) {
-            mMap_bottom.addMarker(new MarkerOptions()
-                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
+        mMap_bottom.addMarker(new MarkerOptions()
+                .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
 //        } else {
 //            mMap_bottom.addMarker(new MarkerOptions()
 //                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
@@ -282,7 +291,7 @@ public class HomeFragment extends IFragment implements
     public void searchPlace(Place place) {
         if (mMap != null) {
             BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.mipmap.ic_current_location_big);
-            Bitmap small_bitmap = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), ((int) convertDpToPixel(15)),  ((int) convertDpToPixel(15)), true);
+            Bitmap small_bitmap = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), ((int) convertDpToPixel(15)), ((int) convertDpToPixel(15)), true);
             if (pickMarker != null)
                 pickMarker.remove();
 
@@ -334,7 +343,7 @@ public class HomeFragment extends IFragment implements
     @Override
     public void onMapLongClick(LatLng latLng) {
         BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.mipmap.ic_current_location_big);
-        Bitmap small_bitmap = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), ((int) convertDpToPixel(15)),  ((int) convertDpToPixel(15)), true);
+        Bitmap small_bitmap = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), ((int) convertDpToPixel(15)), ((int) convertDpToPixel(15)), true);
         if (pickMarker != null)
             pickMarker.remove();
 
@@ -365,19 +374,29 @@ public class HomeFragment extends IFragment implements
                 dialogBottomSheet.clearData();
             }
 
-            for (int i = 0; i < markerList.size(); i++) {
-                if (markerList.get(i).getMarker().getId().equals(marker.getId())) {
-                    final int finalI = i;
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            showProgressBar(false, false, null, getString(R.string.parking_get_data));
-                            presenter.getParkingInfo(markerList.get(finalI).getId());
-                        }
-                    }, 200);
-                    break;
-                }
+            if (hashMap_Marker.get(marker) != null) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar(false, false, null, getString(R.string.parking_get_data));
+                        presenter.getParkingInfo(hashMap_Marker.get(marker).getId());
+                    }
+                }, 200);
             }
+
+//            for (int i = 0; i < markerList.size(); i++) {
+//                if (markerList.get(i).getMarker().getId().equals(marker.getId())) {
+//                    final int finalI = i;
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            showProgressBar(false, false, null, getString(R.string.parking_get_data));
+//                            presenter.getParkingInfo(markerList.get(finalI).getId());
+//                        }
+//                    }, 200);
+//                    break;
+//                }
+//            }
         }
         return false;
     }
@@ -542,11 +561,13 @@ public class HomeFragment extends IFragment implements
     }
 
     private void clearMarker() {
-        if (markerList.size() > 0)
-            for (int i = (markerList.size() - 1); i >= 0; i--) {
-                markerList.get(i).getMarker().remove();
-                markerList.remove(i);
-            }
+        hashMap_Marker.clear();
+        hashMap_Check.clear();
+//        if (markerList.size() > 0)
+//            for (int i = (markerList.size() - 1); i >= 0; i--) {
+//                markerList.get(i).getMarker().remove();
+//                markerList.remove(i);
+//            }
     }
 
     @Override
@@ -571,8 +592,8 @@ public class HomeFragment extends IFragment implements
 
     @Override
     public void onSearchParking(int id) {
-        if (markerList != null)
-            clearMarker();
+//        if (markerList != null)
+//            clearMarker();
         if (!isFindMyLocation)
             isFindMyLocation = true;
 
@@ -612,11 +633,11 @@ public class HomeFragment extends IFragment implements
         mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng())));
 
 //        if (resp_parking_info.getStatus() == 0) {
-            Marker marker = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
 
-            markerList.add(new MarkerModel(marker, resp_parking_info.getId()));
+//            markerList.add(new MarkerModel(marker, resp_parking_info.getId()));
 //        } else {
 //            Marker marker = mMap.addMarker(new MarkerOptions()
 //                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
@@ -638,38 +659,66 @@ public class HomeFragment extends IFragment implements
 
     @Override
     public void onGetParkingAroundSuccess(ArrayList<Parking> arrayList) {
-        if (arrayList != null) {
-            if (arrayList.size() > 0) {
 
-                int total = markerList.size() - 1;
+        if (arrayList != null && arrayList.size() > 0) {
+            for (int i = arrayList.size() - 1; i >= 0; i--) {
+                Parking parking = arrayList.get(i);
 
-                for (int i = (arrayList.size() - 1); i >= 0; i--) {
+                if (hashMap_Check.get(parking.getId()) == null) {
+                    hashMap_Check.put(parking.getId(), true);
 
-//                    if (arrayList.get(i).getStatus() == 0) {
-                        Marker marker = mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
-                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
-                        markerList.add(new MarkerModel(marker, arrayList.get(i).getId()));
+//                    Marker marker;
+//                    if (arrayList.get(i).getOwner() == 0) {
+                    Marker marker = mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
 //                    } else {
-//                        Marker marker = mMap.addMarker(new MarkerOptions()
+//                        marker = mMap.addMarker(new MarkerOptions()
 //                                .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
 //                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
-//                        markerList.add(new MarkerModel(marker, arrayList.get(i).getId()));
 //                    }
-                }
 
-                for (int i = total; i >= 0; i--) {
-                    markerList.get(i).getMarker().remove();
-                    markerList.remove(i);
+                    try {
+                        hashMap_Marker.put(marker, parking);
+                    } catch (Exception e) {
+                        hashMap_Check.remove(parking.getId());
+                    }
                 }
-
-                arrayList.clear();
-            } else {
-                clearMarker();
             }
-        } else {
-            clearMarker();
         }
+
+//        if (arrayList != null) {
+//            if (arrayList.size() > 0) {
+//
+//                int total = markerList.size() - 1;
+//
+//                for (int i = (arrayList.size() - 1); i >= 0; i--) {
+//
+////                    if (arrayList.get(i).getStatus() == 0) {
+//                        Marker marker = mMap.addMarker(new MarkerOptions()
+//                                .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
+//                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
+//                        markerList.add(new MarkerModel(marker, arrayList.get(i).getId()));
+////                    } else {
+////                        Marker marker = mMap.addMarker(new MarkerOptions()
+////                                .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
+////                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
+////                        markerList.add(new MarkerModel(marker, arrayList.get(i).getId()));
+////                    }
+//                }
+//
+//                for (int i = total; i >= 0; i--) {
+//                    markerList.get(i).getMarker().remove();
+//                    markerList.remove(i);
+//                }
+//
+//                arrayList.clear();
+//            } else {
+//                clearMarker();
+//            }
+//        } else {
+//            clearMarker();
+//        }
 
         isCanLoadMap = true;
     }
@@ -686,13 +735,14 @@ public class HomeFragment extends IFragment implements
         isCanLoadMap = false;
 
         mMap.clear();
+        clearMarker();
         dialogBottomSheet.changeFavoriteToClose();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
 //        if (resp_parking_info.getStatus() == 0) {
-            mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
 //        } else {
 //            mMap.addMarker(new MarkerOptions()
 //                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))

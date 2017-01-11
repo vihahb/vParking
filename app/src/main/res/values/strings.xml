@@ -51,7 +51,8 @@
     <string name="loi_coloi">Có lỗi xảy ra</string>
     <string name="get_session_success">Lấy phiên mới thành công</string>
     <string name="not_update">Chưa cập nhật</string>
-
+    <string name="not_update_phone">Chưa cập nhật số điện thoại</string>
+    <string name="not_update_name">Chưa cập nhật tên</string>
 
     <!-- Verhicle -->
     <string name="verhicle_name">Tên phương tiện</string>
