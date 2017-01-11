@@ -156,8 +156,8 @@ public class BottomSheet {
         txt_picture_count.setText(picture_count);
 
         txt_address.setText(resp_parking_info.getAddress());
-        txt_user_name.setText(Constants.getUserName(null));
-        txt_user_phone.setText(Constants.getUserPhone(null));
+        txt_user_name.setText(Constants.getUserName(resp_parking_info.getParking_owner().getFullname()));
+        txt_user_phone.setText(Constants.getUserPhone(resp_parking_info.getParking_owner().getPhone()));
         txt_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
         txt_parking_name.setText(resp_parking_info.getParking_name());
         txt_cho_trong.setText(total_place);
