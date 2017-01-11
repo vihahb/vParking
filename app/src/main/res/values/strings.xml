@@ -151,7 +151,7 @@
     <string name="dan_duong">Dẫn đường</string>
     <string name="vi_tri_trong">Vị trí trống</string>
     <string name="bottom_sheet_price">Giá</string>
-    <string name="so_dat_cho">Số đặt chỗ</string>
+    <string name="so_dat_cho">Số chỗ trống</string>
 
     <string name="phone">Số điện thoại</string>
     <string name="title_activity_find_parking">Tìm bãi đỗ xe</string>
