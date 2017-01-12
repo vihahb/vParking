@@ -230,10 +230,14 @@ public class Constants {
             return MyApplication.context.getString(R.string.unlimited);
 
         int total = Integer.parseInt(number);
-        Random r = new Random();
-        int rand = r.nextInt(50 - 30) + 30;
-        total = (int) ((total * rand) / 100);
-        return String.valueOf(total);
+//        Random r = new Random();
+//        int rand = r.nextInt(50 - 30) + 30;
+//        total = (int) ((total * rand) / 100);
+
+        if (total <= 0)
+            return MyApplication.context.getString(R.string.limited);
+
+        return MyApplication.context.getString(R.string.unlimited);
     }
 
     public static String getPlaceNumberAndTotal(Activity activity, String empty, String total) {
