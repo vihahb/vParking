@@ -155,8 +155,8 @@
 
     <string name="phone">Số điện thoại</string>
     <string name="title_activity_find_parking">Tìm bãi đỗ xe</string>
-    <string name="unlimited">Unlimited</string>
-    <string name="limited">Limited</string>
+    <string name="unlimited">Còn chỗ</string>
+    <string name="limited">Hết chỗ</string>
 
     <string name="error">Có lỗi xảy ra</string>
     <string name="error_server_request">Không thể kết nối tới Server</string>
