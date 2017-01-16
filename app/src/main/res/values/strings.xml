@@ -60,7 +60,7 @@
     <string name="verhicle_platenumber">Biển số</string>
     <string name="verhicle_description">Mô tả</string>
     <string name="verhicle_default">Phương tiện mặc định</string>
-    <string name="verhicle_add">Thêm phương tiện</string>
+    <string name="verhicle_add">THÊM PHƯƠNG TIỆN</string>
     <string name="verhicle_add_success">Thêm phương tiện thành công</string>
     <string name="verhicle_update">Cập nhật phương tiện</string>
 
@@ -70,7 +70,7 @@
     <string name="full_name">Họ tên</string>
     <string name="clear_name">Họ tên has cleaned</string>
     <string name="clear_email">E-mail has cleaned</string>
-    <string name="update_btn">Cập nhật</string>
+    <string name="update_btn">CẬP NHẬT THÔNG TIN</string>
     <string name="update_message">Đang cập nhật thông tin...</string>
     <string name="update_message_success">Cập nhật thông tin thành công</string>
     <string name="update_message_failed_name">Vui lòng diền Họ và Tên</string>
@@ -99,7 +99,7 @@
     <string name="add_follow_price">Loại</string>
     <string name="price">Mức giá (K)</string>
     <string name="price_type">Kiểu giá</string>
-    <string name="filter">Lọc</string>
+    <string name="filter">LỌC</string>
     <string name="loi_chonanh">Vui lòng chọn ảnh đại diện</string>
     <string name="loi_vitri">Vui lòng chọn vị trí</string>
     <string name="loi_nhapten">Vui lòng nhập tên bãi đỗ xe</string>
@@ -120,7 +120,7 @@
     <string name="parking_xemay_xedap">Loại bãi đỗ: Xe máy - Xe đạp</string>
     <string name="parking_xeoto_xemay">Loại bãi đỗ: Xe máy - Xe ô tô</string>
     <string name="parking_all">Loại bãi đỗ: Tất cả</string>
-    <string name="update">Cập nhật</string>
+    <string name="update">CẬP NHẬT</string>
 
     <string-array name="add_transport">
         <item>Loại bãi đỗ</item>

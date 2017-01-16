@@ -1,6 +1,5 @@
 package com.xtel.vparking.presenter;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.xtel.vparking.R;
@@ -15,11 +14,8 @@ import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.RESP_Brandname;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.model.entity.RESP_Verhicle;
-import com.xtel.vparking.model.entity.Verhicle;
 import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.view.activity.inf.AddVerhicleView;
-
-import java.util.ArrayList;
 
 /**
  * Created by vivhp on 12/9/2016.
@@ -71,8 +67,8 @@ public class AddVerhiclePresenter {
         VerhicleModel.getInstance().addVerhicle2Nip(url, JsonHelper.toJson(resp_verhicle), session, new ResponseHandle<RESP_Verhicle>(RESP_Verhicle.class) {
             @Override
             public void onSuccess(RESP_Verhicle obj) {
+                view.closeProgressBar();
                 Log.v("Verhicle ", "i1 " + obj.getId());
-                view.showProgressBar(false, false, null, view.getActivity().getString(R.string.parking_get_data));
                 putId(obj.getId());
                 view.showShortToast(view.getActivity().getString(R.string.verhicle_add_success));
             }
@@ -82,6 +78,7 @@ public class AddVerhiclePresenter {
                 if (error.getCode() == 2) {
                     getNewSessionAddVerhicle(name, plate, des, type, flag, brand_code);
                 } else
+                    view.closeProgressBar();
 //                    view.showShortToast(error.getMessage());
                 Log.e("Err add v", String.valueOf(error.getCode()));
                 Log.e("Err add v type", error.getMessage());
@@ -109,7 +106,7 @@ public class AddVerhiclePresenter {
         VerhicleModel.getInstance().putVerhicle2Server(url, JsonHelper.toJson(resp_verhicle), session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
             @Override
             public void onSuccess(RESP_Parking_Info obj) {
-                view.showProgressBar(false, false, null, view.getActivity().getString(R.string.parking_get_data));
+                view.closeProgressBar();
                 putId(id_put);
                 view.showShortToast(view.getActivity().getString(R.string.update_message_success));
             }
@@ -120,6 +117,7 @@ public class AddVerhiclePresenter {
                     getNewSessionUpdateVerhicle(id, name, plate, des, type, flag, brand_code);
                 } else
                     view.showShortToast(error.getMessage());
+                view.closeProgressBar();
                 Log.e("Err add v2", String.valueOf(error.getCode()));
                 Log.e("Err add v2 type", error.getMessage());
             }

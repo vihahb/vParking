@@ -37,6 +37,14 @@ import java.util.ArrayList;
  */
 
 public class AddVerhicleActivity extends BasicActivity implements AdapterView.OnItemSelectedListener, AddVerhicleView {
+    AddVerhiclePresenter verhiclePresenter;
+    String mess;
+    int getId;
+    String brand_code;
+    Verhicle verhicle;
+    //Update
+    String v_name, v_plate, v_des;
+    int v_type, v_flag;
     private Toolbar toolbar;
     private Menu menu;
     private EditText edt_verhicle_name, edt_verhicle_plate, edt_verhicle_descriptions;
@@ -45,16 +53,6 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
     private Button btn_verhicle_add, btn_vehicle_update;
     private RadioGroup radioGroup;
     private RadioButton rdo_oto, rdo_xemay;
-    AddVerhiclePresenter verhiclePresenter;
-    String mess;
-    int getId;
-    String brand_code;
-    Verhicle verhicle;
-
-    //Update
-    String v_name, v_plate, v_des;
-    int v_type, v_flag;
-
     private ArrayList<Brandname> brandNames_arr;
     private CustomAddVerhicleAdapterSpinner adapter_spinner_brand;
 
@@ -133,7 +131,7 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
         int id_spinner = parent.getId();
         if (id_spinner == R.id.spinner_brandname) {
             brand_code = adapter_spinner_brand.getItem(position).getCode().toString();
-            showShortToast(brand_code);
+//            showShortToast(brand_code);
         }
     }
 
@@ -208,6 +206,7 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
 
     private void addVerhicle() {
         if (valid()) {
+            showProgressBar(false, false, null, getActivity().getString(R.string.parking_get_data));
             v_name = edt_verhicle_name.getText().toString();
             v_plate = edt_verhicle_plate.getText().toString();
             if (edt_verhicle_descriptions.getText().toString().isEmpty() || edt_verhicle_descriptions.getText().toString() == "") {
@@ -254,6 +253,7 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
     }
 
     private void updateVerhicle() {
+
         String update_name = edt_verhicle_name.getText().toString();
         String update_desc = edt_verhicle_descriptions.getText().toString();
         String update_plate = edt_verhicle_plate.getText().toString();
@@ -264,6 +264,7 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
     }
 
     private void putData2Server(int id, String name, String plate_number, String desc, int type, int flag_default, String code) {
+        showProgressBar(false, false, null, getActivity().getString(R.string.parking_get_data));
         verhiclePresenter.updateVerhicle(id, name, plate_number, desc, type, flag_default, code);
     }
 
@@ -274,10 +275,7 @@ public class AddVerhicleActivity extends BasicActivity implements AdapterView.On
             e.printStackTrace();
         }
 
-        if (verhicle != null) {
-            return true;
-        }
-        return false;
+        return verhicle != null;
     }
 
     @Override
