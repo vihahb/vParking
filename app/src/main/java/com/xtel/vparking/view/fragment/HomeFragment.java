@@ -254,7 +254,6 @@ public class HomeFragment extends IFragment implements
     }
 
     private void closeGuid() {
-        mMap.clear();
         clearMarker();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
@@ -537,6 +536,8 @@ public class HomeFragment extends IFragment implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.FIND_ADVANDCED_RQ && resultCode == Constants.FIND_ADVANDCED_RS) {
+            clearMarker();
+
             Find findModel = (Find) data.getExtras().getSerializable(Constants.FIND_MODEL);
             if (isCanLoadMap) {
 
@@ -561,6 +562,7 @@ public class HomeFragment extends IFragment implements
     }
 
     private void clearMarker() {
+        mMap.clear();
         hashMap_Marker.clear();
         hashMap_Check.clear();
 //        if (markerList.size() > 0)
@@ -734,7 +736,6 @@ public class HomeFragment extends IFragment implements
         closeProgressBar();
         isCanLoadMap = false;
 
-        mMap.clear();
         clearMarker();
         dialogBottomSheet.changeFavoriteToClose();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
