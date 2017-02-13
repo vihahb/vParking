@@ -95,6 +95,7 @@ public class GetNewSession {
                 Intent intent = new Intent(activity, LoginActivity.class);
                 activity.startActivity(intent);
                 Toast.makeText(activity, "Lấy phiên mới thất bại. Vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
+                SharedPreferencesUtils.getInstance().clearData();
             }
         });
     }
