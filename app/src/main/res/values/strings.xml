@@ -53,6 +53,8 @@
     <string name="not_update">Chưa cập nhật</string>
     <string name="not_update_phone">Chưa cập nhật số điện thoại</string>
     <string name="not_update_name">Chưa cập nhật tên</string>
+    <string name="share_by">Chia sẻ bởi:</string>
+    <string name="close">Đóng</string>
 
     <!-- Verhicle -->
     <string name="verhicle_name">Tên phương tiện</string>
@@ -151,7 +153,7 @@
     <string name="dan_duong">Dẫn đường</string>
     <string name="vi_tri_trong">Vị trí trống</string>
     <string name="bottom_sheet_price">Giá</string>
-    <string name="so_dat_cho">Số chỗ trống</string>
+    <string name="so_dat_cho">Số chỗ</string>
 
     <string name="phone">Số điện thoại</string>
     <string name="title_activity_find_parking">Tìm bãi đỗ xe</string>
@@ -159,6 +161,7 @@
     <string name="limited">Hết chỗ</string>
 
     <string name="error">Có lỗi xảy ra</string>
+    <string name="error_try_again">Có lỗi xảy ra, vui lòng thử lại</string>
     <string name="error_server_request">Không thể kết nối tới Server</string>
     <string name="error_session_invalid">Bạn đã hết phiên làm việc</string>
     <string name="error_no_permission">Bạn không có quyền hạn này</string>

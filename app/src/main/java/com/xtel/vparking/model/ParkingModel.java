@@ -1,5 +1,7 @@
 package com.xtel.vparking.model;
 
+import android.util.Log;
+
 import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.ResponseHandle;
@@ -22,6 +24,7 @@ public class ParkingModel extends BasicModel {
     }
 
     public void getParkingInfo(String url, String session, ResponseHandle responseHandle) {
+        Log.e("getparkinginfo", url + "     " + session);
         requestServer.getApi(url, session, responseHandle);
     }
 

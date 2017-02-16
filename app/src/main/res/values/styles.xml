@@ -30,6 +30,7 @@
     </style>
 
     <style name="MaterialDialogSheet" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowAnimationStyle">@style/MaterialDialogSheetAnimation</item>
@@ -198,6 +199,19 @@
         <item name="android:drawablePadding">@dimen/size_10</item>
     </style>
 
+    <style name="TextView_title_store_info">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">@dimen/size_16</item>
+        <item name="android:paddingLeft">@dimen/size_13</item>
+        <item name="android:paddingRight">@dimen/size_13</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:textSize">@dimen/font_13</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
     <style name="Chitiet_TextView_Center">
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
@@ -273,5 +287,26 @@
         <item name="android:textSize">@dimen/font_13</item>
         <item name="android:drawablePadding">@dimen/size_10</item>
         <item name="android:layout_marginTop">@dimen/size_10</item>
+    </style>
+
+    <style name="textview_normal_center">
+        <item name="android:maxLines">4</item>
+        <item name="android:textSize">@dimen/font_13</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="textview_small">
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/font_10</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="textview_normal">
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/font_13</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:ellipsize">end</item>
     </style>
 </resources>

@@ -8,6 +8,9 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -19,18 +22,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
-import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.DialogListener;
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.model.entity.Error;
+import com.xtel.vparking.model.entity.Prices;
 import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
-import com.xtel.vparking.view.adapter.ViewImageAdapter;
+import com.xtel.vparking.view.adapter.VerhicleInParkingAdapter;
+import com.xtel.vparking.view.adapter.ViewImageStoreAdapter;
+import com.xtel.vparking.view.widget.WidgetHelper;
 
 import java.util.ArrayList;
 
@@ -41,7 +46,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Created by Lê Công Long Vũ on 11/24/2016.
+ * Created by Lê Công Long Vũ on 11/24/2016
  */
 
 public class BottomSheet {
@@ -49,13 +54,17 @@ public class BottomSheet {
     private RESP_Parking_Info resp_parking_info;
     private FragmentManager fragmentManager;
     private ViewPager viewPager;
-    private ImageView img_favorite, img_avatar;
-    private TextView txt_address, txt_user_name, txt_user_phone, txt_time, txt_parking_name, txt_cho_trong, txt_money, txt_dat_cho, txt_picture_count;
+    private ImageView img_favorite;
+    private TextView txt_address, txt_user_name, txt_user_phone, txt_time, txt_parking_name, txt_dat_cho, txt_picture_count;
+    private ImageView img_verhicle_car, img_verhicle_moto, img_verhicle_bike;
     private RatingBar ratingBar;
     private Button btn_danduong;
     private LinearLayout view_header, view_content;
     private ArrayList<String> arrayList_bottom_sheet;
     private boolean addingToFavorite;
+
+    private VerhicleInParkingAdapter verhicleInParkingAdapter;
+    private ArrayList<Prices> list_price;
 
     private ImageButton img_header_favorite, img_header_close, img_show_qr;
     private TextView txt_header_name, txt_header_time, txt_header_address, txt_header_empty, txt_header_money;
@@ -67,6 +76,9 @@ public class BottomSheet {
         this.fragmentManager = fragmentManager;
 
         initView(view);
+        initRatingBar(view);
+        initListener();
+        initRecycerView(view);
         initViewPager(view);
     }
 
@@ -76,7 +88,6 @@ public class BottomSheet {
         img_header_favorite = (ImageButton) view.findViewById(R.id.img_dialog_bottom_sheet_header_favorite);
         img_header_close = (ImageButton) view.findViewById(R.id.img_dialog_bottom_sheet_header_close);
         img_show_qr = (ImageButton) view.findViewById(R.id.img_dialog_bottom_sheet_qr);
-        img_avatar = (ImageView) view.findViewById(R.id.img_dialog_bottom_sheet_avatar);
         txt_header_name = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_header_name);
         txt_header_time = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_header_time);
         txt_header_address = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_header_address);
@@ -90,18 +101,24 @@ public class BottomSheet {
         txt_user_phone = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_phone);
         txt_time = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_time);
         txt_parking_name = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_parking_name);
-        txt_cho_trong = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_chotrong);
-        txt_money = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_money);
         txt_dat_cho = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_datcho);
-        ratingBar = (RatingBar) view.findViewById(R.id.ratingbar_dialog_bottom_sheet);
-        btn_danduong = (Button) view.findViewById(R.id.btn_dialog_bottom_sheet_chiduong);
 
+        img_verhicle_car = (ImageView) view.findViewById(R.id.img_dialog_bottom_sheet_parking_car);
+        img_verhicle_moto = (ImageView) view.findViewById(R.id.img_dialog_bottom_sheet_parking_moto);
+        img_verhicle_bike = (ImageView) view.findViewById(R.id.img_dialog_bottom_sheet_parking_bike);
+
+        btn_danduong = (Button) view.findViewById(R.id.btn_dialog_bottom_sheet_chiduong);
+    }
+
+    private void initRatingBar(View view) {
+        ratingBar = (RatingBar) view.findViewById(R.id.ratingbar_dialog_bottom_sheet);
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         stars.getDrawable(1).setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP);
         stars.getDrawable(2).setColorFilter(Color.parseColor("#f7941e"), PorterDuff.Mode.SRC_ATOP);
-
         ratingBar.setEnabled(false);
+    }
 
+    private void initListener() {
         img_header_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,10 +136,19 @@ public class BottomSheet {
         });
     }
 
+    private void initRecycerView(View view) {
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_dialog_bottom_sheet);
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+
+        list_price = new ArrayList<>();
+        verhicleInParkingAdapter = new VerhicleInParkingAdapter(activity, list_price);
+        recyclerView.setAdapter(verhicleInParkingAdapter);
+    }
+
     private void initViewPager(View view) {
         arrayList_bottom_sheet = new ArrayList<>();
         viewPager = (ViewPager) view.findViewById(R.id.viewpager_dialog_bottom_sheet);
-        ViewImageAdapter parkingDetailAdapter = new ViewImageAdapter(fragmentManager, arrayList_bottom_sheet);
+        ViewImageStoreAdapter parkingDetailAdapter = new ViewImageStoreAdapter(fragmentManager, arrayList_bottom_sheet);
         viewPager.setAdapter(parkingDetailAdapter);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -145,26 +171,40 @@ public class BottomSheet {
 
     public void initData(RESP_Parking_Info resp_parking_info) {
         this.resp_parking_info = resp_parking_info;
-        String total_place = Constants.getPlaceNumberNoText(resp_parking_info.getEmpty_number());
+        Log.e("result", JsonHelper.toJson(resp_parking_info));
 
-        initHeader(total_place);
+        setUpHeader();
+        setUpContent();
         setUpViewpager();
-        loadImage();
+        setUpRecyclerView();
         setUpFavorite();
+        setUpShowVerhicle();
+    }
 
-        String picture_count = "1/" + arrayList_bottom_sheet.size();
-        txt_picture_count.setText(picture_count);
+    private void setUpHeader() {
+        String total_place = Constants.getPlaceNumberNoText(resp_parking_info.getEmpty_number());
+        txt_header_name.setText(resp_parking_info.getParking_name());
+        txt_header_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
+        txt_header_address.setText(resp_parking_info.getAddress());
+        txt_header_empty.setText(total_place);
+        txt_header_money.setText((resp_parking_info.getPrices().get(0).getPrice() + " K"));
+        header_height = view_header.getHeight();
 
+        if (total_place.equals(activity.getString(R.string.limited)))
+            txt_header_empty.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_not_empty, 0, 0, 0);
+        else
+            txt_header_empty.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_still_empty, 0, 0, 0);
+    }
+
+    private void setUpContent() {
         txt_address.setText(resp_parking_info.getAddress());
         txt_user_name.setText(Constants.getUserName(resp_parking_info.getParking_owner().getFullname()));
         txt_user_phone.setText(Constants.getUserPhone(resp_parking_info.getParking_owner().getPhone()));
         txt_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
         txt_parking_name.setText(resp_parking_info.getParking_name());
-        txt_cho_trong.setText(total_place);
-
-        txt_money.setText((resp_parking_info.getPrices().get(0).getPrice() + "K/h"));
         txt_dat_cho.setText(resp_parking_info.getEmpty_number());
 
+        txt_address.setSelected(true);
         txt_user_name.setSelected(true);
         txt_user_phone.setSelected(true);
         txt_time.setSelected(true);
@@ -181,31 +221,41 @@ public class BottomSheet {
         else
             arrayList_bottom_sheet.add(null);
 
+        String picture_count = "1/" + arrayList_bottom_sheet.size();
+        txt_picture_count.setText(picture_count);
         viewPager.getAdapter().notifyDataSetChanged();
     }
 
-    private void loadImage() {
-        if (resp_parking_info.getParking_owner().getAvatar() != null && !resp_parking_info.getParking_owner().getAvatar().isEmpty()) {
-            Picasso.with(activity)
-                    .load(resp_parking_info.getParking_owner().getAvatar())
-                    .noPlaceholder()
-                    .fit().centerCrop()
-                    .into(img_avatar);
+    private void setUpRecyclerView() {
+        list_price.addAll(resp_parking_info.getPrices());
+        verhicleInParkingAdapter.notifyDataSetChanged();
+    }
+
+    private void setUpFavorite() {
+        if (this.resp_parking_info.getFavorite() == 1) {
+            img_header_favorite.setImageResource(R.drawable.ic_action_favorite_selected);
+            img_favorite.setImageResource(R.drawable.ic_action_favorite_selected);
+        } else {
+            img_header_favorite.setImageResource(R.drawable.ic_action_favorite_normal);
+            img_favorite.setImageResource(R.drawable.ic_action_favorite_normal);
         }
     }
 
-    private void initHeader(String total_place) {
-        txt_header_name.setText(resp_parking_info.getParking_name());
-        txt_header_time.setText(Constants.getTime(resp_parking_info.getBegin_time(), resp_parking_info.getEnd_time()));
-        txt_header_address.setText(resp_parking_info.getAddress());
-        txt_header_empty.setText(total_place);
-        txt_header_money.setText((resp_parking_info.getPrices().get(0).getPrice() + " K"));
-        header_height = view_header.getHeight();
+    private void setUpShowVerhicle() {
+        for (int i = list_price.size() - 1; i >= 0; i--) {
+            showVerhicle(list_price.get(i).getPrice_for());
+        }
+    }
 
-        if (total_place.equals(activity.getString(R.string.limited)))
-            txt_header_empty.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_not_empty, 0, 0, 0);
-        else
-            txt_header_empty.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_still_empty, 0, 0, 0);
+    private void showVerhicle(int type) {
+        switch (type) {
+            case 1:
+                img_verhicle_bike.setImageResource(R.mipmap.ic_bike_black_48);
+            case 2:
+                img_verhicle_moto.setImageResource(R.mipmap.ic_moto_black_48);
+            case 3:
+                img_verhicle_car.setImageResource(R.mipmap.ic_car_black_48);
+        }
     }
 
     public void setMarginHeader(float view) {
@@ -216,19 +266,16 @@ public class BottomSheet {
         view_content.setLayoutParams(params);
     }
 
-    private void setUpFavorite() {
-        if (this.resp_parking_info.getFavorite() == 1) {
-            img_header_favorite.setImageResource(R.mipmap.ic_favorite_red);
-            img_favorite.setImageResource(R.mipmap.ic_favorite_red);
-        } else {
-            img_header_favorite.setImageResource(R.mipmap.ic_favorite_gray);
-            img_favorite.setImageResource(R.mipmap.ic_favorite_gray);
-        }
-    }
-
     public void clearData() {
         img_header_close.setVisibility(View.GONE);
         img_header_favorite.setVisibility(View.VISIBLE);
+
+        list_price.clear();
+        verhicleInParkingAdapter.notifyDataSetChanged();
+
+        img_verhicle_bike.setImageResource(R.mipmap.ic_bike_gray);
+        img_verhicle_moto.setImageResource(R.mipmap.ic_moto_gray);
+        img_verhicle_car.setImageResource(R.mipmap.ic_car_gray);
 
         arrayList_bottom_sheet.clear();
         try {

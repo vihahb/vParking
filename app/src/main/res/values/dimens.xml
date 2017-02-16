@@ -38,8 +38,11 @@
     <dimen name="size_120">120dp</dimen>
     <dimen name="size_150">150dp</dimen>
     <dimen name="size_190">190dp</dimen>
+    <dimen name="size_210">210dp</dimen>
     <dimen name="size_250">250dp</dimen>
 
+    <dimen name="font_10">10sp</dimen>
+    <dimen name="font_11">11sp</dimen>
     <dimen name="font_13">13sp</dimen>
     <dimen name="font_14">14sp</dimen>
 

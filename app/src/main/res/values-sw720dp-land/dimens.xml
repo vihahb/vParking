@@ -39,6 +39,7 @@
     <dimen name="size_120">120dp</dimen>
     <dimen name="size_150">150dp</dimen>
     <dimen name="size_190">450dp</dimen>
+    <dimen name="size_210">470dp</dimen>
     <dimen name="size_250">620dp</dimen>
 
     <dimen name="font_13">13sp</dimen>

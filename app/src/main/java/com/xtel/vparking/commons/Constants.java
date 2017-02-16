@@ -150,6 +150,7 @@ public class Constants {
 
     //    Chi tiết home
     public static final String PK_MODEL = "parking_model";
+    public static final String PK_POSITION = "parking_position";
     public static final String PK_IMAGE = "parking_image";
     public static PlaceModel my_location = new PlaceModel(null, 21.026529, 105.831361);
 
@@ -186,7 +187,7 @@ public class Constants {
         if (name == null || name.isEmpty())
             return MyApplication.context.getString(R.string.not_update_name);
         else
-            return name;
+            return " " + name;
     }
 
     public static String getTime(String begin, String end) {
