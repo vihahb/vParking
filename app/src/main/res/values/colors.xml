@@ -17,6 +17,7 @@
 
     <color name="material_background">#e6e7e8</color>
     <color name="backgroun_round_red">#ef1976</color>
+    <color name="background_vehicle">#E6E6E7</color>
 
     <color name="check_in">#05a32a</color>
     <color name="check_out">#be1351</color>

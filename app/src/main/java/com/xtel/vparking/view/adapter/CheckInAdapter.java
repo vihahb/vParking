@@ -1,6 +1,5 @@
 package com.xtel.vparking.view.adapter;
 
-import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +20,9 @@ import java.util.ArrayList;
  */
 
 public class CheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final int view_title = 1, view_item = 0, type_car = 1111, type_bike = 2222;
     private ArrayList<Verhicle> arrayList;
     private CheckInView checkInView;
-    private final int view_title = 1, view_item = 0, type_car = 1111, type_bike = 2222;
 
     public CheckInAdapter(ArrayList<Verhicle> arrayList, CheckInView checkInView) {
         this.arrayList = arrayList;
@@ -96,11 +95,13 @@ public class CheckInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private class ViewTitle extends RecyclerView.ViewHolder {
         private TextView txt_icon, txt_title;
+        private ImageView img_icon;
 
         private ViewTitle(View itemView) {
             super(itemView);
 
-            txt_icon = (TextView) itemView.findViewById(R.id.item_txt_verhicle_icon);
+            img_icon = (ImageView) itemView.findViewById(R.id.img_icon_vehicle);
+//            txt_icon = (TextView) itemView.findViewById(R.id.item_txt_verhicle_icon);
             txt_title = (TextView) itemView.findViewById(R.id.item_txt_verhicle_title);
         }
     }

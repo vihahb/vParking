@@ -8,26 +8,45 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/size_8"
     android:paddingLeft="@dimen/size_16"
-    android:paddingRight="@dimen/size_16"
-    android:paddingTop="@dimen/size_8">
+    android:paddingRight="@dimen/size_16">
 
-    <ImageView
-        android:id="@+id/item.img_verhicle_default"
-        android:layout_width="@dimen/size_18"
-        android:layout_height="@dimen/size_18"
-        android:contentDescription="@null"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_action_green_dot" />
+    <LinearLayout
+        android:layout_width="@dimen/size_40"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_horizontal">
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_default"
+            android:layout_width="@dimen/size_10"
+            android:layout_height="@dimen/size_10"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_action_green_dot" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/size_16"
-        android:layout_marginStart="@dimen/size_16"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/size_8"
+        android:paddingEnd="@dimen/size_16"
+        android:paddingRight="@dimen/size_16"
+        android:paddingTop="@dimen/size_8">
 
         <TextView
             android:id="@+id/item.txt_verhicle_name"
@@ -37,7 +56,8 @@
             android:maxLines="1"
             android:singleLine="true"
             android:text="Ô tô của mình"
-            android:textSize="@dimen/font_13" />
+            android:textSize="@dimen/font_13"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/item.txt_verhicle_made_by"
@@ -48,6 +68,12 @@
             android:textSize="@dimen/font_13" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/item.txt_verhicle_car_number_plate"
         android:layout_width="wrap_content"
@@ -56,4 +82,5 @@
         android:layout_marginStart="@dimen/size_16"
         android:text="3025-3260"
         android:textSize="@dimen/font_13" />
+
 </LinearLayout>
