@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -35,7 +34,6 @@ import com.xtel.vparking.utils.JsonParse;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.adapter.VerhicleInParkingAdapter;
 import com.xtel.vparking.view.adapter.ViewImageStoreAdapter;
-import com.xtel.vparking.view.widget.WidgetHelper;
 
 import java.util.ArrayList;
 
@@ -171,7 +169,6 @@ public class BottomSheet {
 
     public void initData(RESP_Parking_Info resp_parking_info) {
         this.resp_parking_info = resp_parking_info;
-        Log.e("result", JsonHelper.toJson(resp_parking_info));
 
         setUpHeader();
         setUpContent();
@@ -277,6 +274,7 @@ public class BottomSheet {
         img_verhicle_moto.setImageResource(R.mipmap.ic_moto_gray);
         img_verhicle_car.setImageResource(R.mipmap.ic_car_gray);
 
+        viewPager.setCurrentItem(0);
         arrayList_bottom_sheet.clear();
         try {
             viewPager.getAdapter().notifyDataSetChanged();

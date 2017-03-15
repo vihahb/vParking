@@ -227,7 +227,7 @@ public class HomeFragment extends IFragment implements
         dialogBottomSheet.onGuidClicked(new DialogListener() {
             @Override
             public void onClicked(Object object) {
-                actionType = 2;
+                actionType = 2 ;
                 presenter.getMyLocation();
             }
 
@@ -679,7 +679,7 @@ public class HomeFragment extends IFragment implements
 //                                .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
 //                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
 //                    }
-
+ 
                     try {
                         hashMap_Marker.put(marker, parking);
                     } catch (Exception e) {
