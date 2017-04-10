@@ -17,7 +17,7 @@ import com.xtel.vparking.view.activity.inf.ITichketView;
 import com.xtel.vparking.view.fragment.CheckedFragment;
 
 /**
- * Created by Lê Công Long Vũ on 12/14/2016.
+ * Created by Lê Công Long Vũ on 12/14/2016
  */
 
 public class TicketPresenter {
@@ -45,11 +45,11 @@ public class TicketPresenter {
         }
 
         if (checkIn != null) {
-            view.onGetDataSuccess(checkIn.getVehicle().getName(), checkIn.getCheckin_time(), checkIn.getVehicle().getPlate_number());
+            view.onGetDataSuccess(checkIn.getVehicle().getName(), checkIn.getCheckin_time(), checkIn.getVehicle().getPlate_number(), checkIn.getTicket_code());
             getParkingInfo(checkIn.getParking().getId());
         } else if (parkingCheckIn != null && parking_id != -1) {
             view.hideButton();
-            view.onGetDataSuccess(parkingCheckIn.getVehicle().getName(), parkingCheckIn.getCheckin_time(), parkingCheckIn.getVehicle().getPlate_number());
+            view.onGetDataSuccess(parkingCheckIn.getVehicle().getName(), parkingCheckIn.getCheckin_time(), parkingCheckIn.getVehicle().getPlate_number(), parkingCheckIn.getTicket_code());
             getParkingInfo(parking_id);
         } else
             view.onGetDataError();

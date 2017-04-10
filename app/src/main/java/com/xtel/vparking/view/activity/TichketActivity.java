@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -73,9 +74,12 @@ public class TichketActivity extends BasicActivity implements View.OnClickListen
     }
 
     @Override
-    public void onGetDataSuccess(String name, String time, String plate_number) {
+    public void onGetDataSuccess(String name, String time, String plate_number, String ticket_code) {
         txt_time.setText(Constants.convertDate(time));
-        txt_verhicle.setText(name + ": " + plate_number);
+        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(plate_number))
+            txt_verhicle.setText(name + " - " + plate_number);
+        else
+            txt_verhicle.setText(getString(R.string.car_number_plate) + ": " + ticket_code);
     }
 
     @Override
