@@ -7,18 +7,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
-import com.xtel.vparking.view.adapter.ViewImageBottomSheetdapter;
+import com.xtel.vparking.view.adapter.ViewImageBottomSheetAdapter;
 
 import java.util.ArrayList;
 
@@ -76,7 +74,7 @@ public class ViewImageDialog extends DialogFragment {
 
     private void initViewPager(View view, ArrayList<String> arrayList) {
         ViewPager mViewPager = (ViewPager) view.findViewById(R.id.dialog_view_image_viewpager);
-        ViewImageBottomSheetdapter parkingDetailAdapter = new ViewImageBottomSheetdapter(getChildFragmentManager(), arrayList);
+        ViewImageBottomSheetAdapter parkingDetailAdapter = new ViewImageBottomSheetAdapter(getChildFragmentManager(), arrayList);
         mViewPager.setAdapter(parkingDetailAdapter);
     }
 

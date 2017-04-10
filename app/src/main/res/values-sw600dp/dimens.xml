@@ -42,6 +42,8 @@
     <dimen name="size_210">305dp</dimen>
     <dimen name="size_250">375dp</dimen>
 
+    <dimen name="font_10">10sp</dimen>
+    <dimen name="font_11">11sp</dimen>
     <dimen name="font_13">13sp</dimen>
     <dimen name="font_14">14sp</dimen>
 
