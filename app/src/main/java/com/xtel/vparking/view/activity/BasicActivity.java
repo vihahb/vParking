@@ -3,12 +3,14 @@ package com.xtel.vparking.view.activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -17,17 +19,22 @@ import android.widget.Toast;
 
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.DialogListener;
+import com.xtel.vparking.callback.NewDialogListener;
 import com.xtel.vparking.dialog.DialogNotification;
+import com.xtel.vparking.view.activity.inf.BasicView;
 
 import java.io.Serializable;
 
 /**
- * Created by Lê Công Long Vũ on 12/2/2016.
+ * Created by Lê Công Long Vũ on 12/2/2016
  */
 
-public abstract class BasicActivity extends AppCompatActivity {
+public abstract class BasicActivity extends AppCompatActivity implements BasicView {
     private ProgressDialog progressDialog;
     private Dialog dialog;
+
+    protected final String GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.xtel.vparking";
+    protected final String MARKET = "market://details?id=com.xtel.vparking";
     boolean isWaitingForExit = false;
 
     public BasicActivity() {
@@ -116,6 +123,84 @@ public abstract class BasicActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    protected void showDialogUpdate() {
+        showMaterialDialog(false, false, null, getString(R.string.message_update_version), getString(R.string.cancel), getString(R.string.update_now), new NewDialogListener() {
+            @Override
+            public void negativeClicked() {
+                closeDialog();
+                finishAffinity();
+            }
+
+            @Override
+            public void positiveClicked() {
+                closeDialog();
+                finishAffinity();
+
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(GOOGLE_PLAY_URL)));
+                }
+            }
+        });
+    }
+
+    /*
+    * Hiển thị thông báo (chuẩn material)
+    * */
+    @SuppressWarnings("ConstantConditions")
+    protected void showMaterialDialog(boolean isTouchOutside, boolean isCancelable, String title, String message, String negative, String positive, final NewDialogListener dialogListener) {
+        dialog = new Dialog(BasicActivity.this, R.style.Theme_Transparent);
+        dialog.setContentView(R.layout.dialog_material);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(isTouchOutside);
+        dialog.setCanceledOnTouchOutside(isCancelable);
+
+        TextView txt_title = (TextView) dialog.findViewById(R.id.dialog_txt_title);
+        TextView txt_message = (TextView) dialog.findViewById(R.id.dialog_txt_message);
+        Button btn_negative = (Button) dialog.findViewById(R.id.dialog_btn_negative);
+        Button btn_positive = (Button) dialog.findViewById(R.id.dialog_btn_positive);
+
+        if (title == null)
+            txt_title.setVisibility(View.GONE);
+        else
+            txt_title.setText(title);
+
+        if (message == null)
+            txt_message.setVisibility(View.GONE);
+        else
+            txt_message.setText(message);
+
+        if (negative == null)
+            btn_negative.setVisibility(View.GONE);
+        else
+            btn_negative.setText(negative);
+
+        if (positive == null)
+            btn_positive.setVisibility(View.GONE);
+        else
+            btn_positive.setText(positive);
+
+        btn_negative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                dialogListener.negativeClicked();
+            }
+        });
+
+        btn_positive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                dialogListener.positiveClicked();
+            }
+        });
+
+        if (dialog != null)
+            dialog.show();
+    }
+
     @SuppressWarnings("ConstantConditions")
     protected void showAskDialog(boolean isTouchOutside, boolean isCancelable, String title, String message,
                                  String negative, String positive, final DialogListener dialogListener) {
@@ -171,7 +256,8 @@ public abstract class BasicActivity extends AppCompatActivity {
     }
 
     public void closeDialog() {
-        dialog.dismiss();
+        if (dialog != null)
+            dialog.dismiss();
     }
 
     //    Khởi chạy fragment giao diện và add vào stack
@@ -244,5 +330,10 @@ public abstract class BasicActivity extends AppCompatActivity {
                 }
             }.execute();
         }
+    }
+
+    @Override
+    public void onUpdateVersion() {
+        showDialogUpdate();
     }
 }

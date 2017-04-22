@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by Lê Công Long Vũ on 12/2/2016.
  */
 
-public interface CheckInView {
+public interface CheckInView extends BasicView {
 
     void showShortToast(String message);
     void onNetworkDisable();

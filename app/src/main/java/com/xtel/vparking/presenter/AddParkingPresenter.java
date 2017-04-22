@@ -31,6 +31,7 @@ import com.xtel.vparking.model.entity.RESP_Parking_Info;
 import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.Task;
 import com.xtel.vparking.view.MyApplication;
+import com.xtel.vparking.view.activity.LoginActivity;
 import com.xtel.vparking.view.activity.inf.AddParkingView;
 import com.xtel.vparking.view.fragment.ManagementFragment;
 
@@ -40,32 +41,163 @@ import java.util.Calendar;
 import gun0912.tedbottompicker.TedBottomPicker;
 
 /**
- * Created by Lê Công Long Vũ on 12/2/2016.
+ * Created by Lê Công Long Vũ on 12/2/2016
  */
 
 public class AddParkingPresenter extends BasicPresenter {
     private AddParkingView view;
     private ParkingInfo object;
-    private int picture_id = -1;
+//    private int picture_id = -1;
     private boolean isUpdate = false;
 
-    private ICmd cmd = new ICmd() {
+    private ICmd iCmd = new ICmd() {
         @Override
-        public void execute(Object... params) {
-            ParkingModel.getInstanse().deleteParkingPicrute(picture_id, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
-                @Override
-                public void onSuccess(RESP_Parking_Info obj) {
-                    view.onDeletePictureSuccess();
-                }
+        public void execute(final Object... params) {
+            if (params.length > 0) {
+                switch ((int) params[0]) {
+                    case 1:
+                        ParkingModel.getInstanse().deleteParkingPicrute((int) params[1], new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+                            @Override
+                            public void onSuccess(RESP_Parking_Info obj) {
+                                view.onDeletePictureSuccess();
+                            }
 
-                @Override
-                public void onError(Error error) {
-                    if (error.getCode() == 2)
-                        getNewSession(view.getActivity(), cmd);
-                    else
-                        view.onDeletePictureError(error);
+                            @Override
+                            public void onError(Error error) {
+                                if (error.getCode() == 2)
+                                    getNewSession(view.getActivity(), iCmd, object);
+                                else
+                                    view.onRequestError(error);
+                            }
+
+                            @Override
+                            public void onUpdate() {
+                                view.onUpdateVersion();
+                            }
+                        });
+                        break;
+                    case 2:
+                        ParkingModel.getInstanse().addPicture(JsonHelper.toJson(object), new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+                            @Override
+                            public void onSuccess(RESP_Parking_Info obj) {
+                                view.onAddPictureSuccess(object.getPictures().get((object.getPictures().size() - 1)).getUrl());
+                            }
+
+                            @Override
+                            public void onError(Error error) {
+                                if (error.getCode() == 2)
+                                    getNewSession(view.getActivity(), iCmd, object);
+                                else
+                                    view.onRequestError(error);
+                            }
+
+                            @Override
+                            public void onUpdate() {
+                                view.onUpdateVersion();
+                            }
+                        });
+                        break;
+                    case 3:
+                        final int id = (int) params[1];
+                        final int position = (Integer) params[2];
+
+                        ParkingModel.getInstanse().deleteParkingPrice(id, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+                            @Override
+                            public void onSuccess(RESP_Parking_Info obj) {
+                                view.onDeletePriceSuccess(position);
+
+                                for (int i = object.getPrices().size() - 1; i >= 0; i--) {
+                                    if (object.getPrices().get(i).getId() == id) {
+                                        object.getPrices().remove(i);
+                                        return;
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onError(Error error) {
+                                if (error.getCode() == 2)
+                                    getNewSession(view.getActivity(), iCmd, object);
+                                else
+                                    view.onRequestError(error);
+                            }
+
+                            @Override
+                            public void onUpdate() {
+                                view.onUpdateVersion();
+                            }
+                        });
+                        break;
+                    case 4:
+                        ParkingModel.getInstanse().addParking(object, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+                            @Override
+                            public void onSuccess(RESP_Parking_Info obj) {
+                                view.onAddParkingSuccess(obj.getId());
+                            }
+
+                            @Override
+                            public void onError(Error error) {
+                                if (error.getCode() == 2)
+                                    getNewSession(view.getActivity(), iCmd, object);
+                                else {
+                                    if (!isUpdate)
+                                        object = null;
+                                    view.onRequestError(error);
+                                }
+                            }
+
+                            @Override
+                            public void onUpdate() {
+                                view.onUpdateVersion();
+                            }
+                        });
+                        break;
+                    case 5:
+                        ParkingModel.getInstanse().updateParking(object, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+                            @Override
+                            public void onSuccess(RESP_Parking_Info obj) {
+                                view.onUpdateParkingSuccess(object);
+                            }
+
+                            @Override
+                            public void onError(Error error) {
+                                if (error.getCode() == 2)
+                                    getNewSession(view.getActivity(), iCmd, object);
+                                else
+                                    view.onRequestError(error);
+                            }
+
+                            @Override
+                            public void onUpdate() {
+                                view.onUpdateVersion();
+                            }
+                        });
+                        break;
+                    case 6:
+                        ParkingModel.getInstanse().addPPrices(object, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+                            @Override
+                            public void onSuccess(RESP_Parking_Info obj) {
+                                iCmd.execute(5);
+                            }
+
+                            @Override
+                            public void onError(Error error) {
+                                if (error.getCode() == 2)
+                                    getNewSession(view.getActivity(), iCmd, object);
+                                else
+                                    view.onRequestError(error);
+                            }
+
+                            @Override
+                            public void onUpdate() {
+                                view.onUpdateVersion();
+                            }
+                        });
+                        break;
+                    default:
+                        break;
                 }
-            });
+            }
         }
     };
 
@@ -126,82 +258,70 @@ public class AddParkingPresenter extends BasicPresenter {
 
     public void deletePicture(int id) {
         if (id != -1) {
-            picture_id = id;
-            cmd.execute();
+            iCmd.execute(1, id);
         } else {
             view.onDeletePictureSuccess();
         }
     }
 
     private void addPicture() {
-        ParkingModel.getInstanse().addPicture(JsonHelper.toJson(object), new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
-            @Override
-            public void onSuccess(RESP_Parking_Info obj) {
-                view.onAddPictureSuccess(object.getPictures().get((object.getPictures().size() - 1)).getUrl());
-            }
-
-            @Override
-            public void onError(Error error) {
-                if (error.getCode() == 2)
-                    getNewSessionAddPicture();
-                else
-                    view.onAddPictureError(error);
-            }
-        });
+        iCmd.execute(2);
     }
 
-    private void getNewSessionAddPicture() {
-        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
-            @Override
-            public void onSuccess() {
-                addPicture();
-            }
-
-            @Override
-            public void onError() {
-                view.onAddPictureError(new Error(2, "", view.getActivity().getString(R.string.error)));
-            }
-        });
-    }
-
+//    private void getNewSessionAddPicture() {
+//        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
+//            @Override
+//            public void onSuccess() {
+//                addPicture();
+//            }
+//
+//            @Override
+//            public void onError() {
+//                view.onAddPictureError(new Error(2, "", view.getActivity().getString(R.string.error)));
+//            }
+//        });
+//    }
     public void deletePrice(final int position, final int id) {
         view.showProgressBar(false, false, null, "Deleting price...");
-        ParkingModel.getInstanse().deleteParkingPrice(id, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
-            @Override
-            public void onSuccess(RESP_Parking_Info obj) {
-                view.onDeletePriceSuccess(position);
 
-                for (int i = object.getPrices().size() - 1; i >= 0; i--) {
-                    if (object.getPrices().get(i).getId() == id) {
-                        object.getPrices().remove(i);
-                        return;
-                    }
-                }
-            }
+        iCmd.execute(3, id, position);
 
-            @Override
-            public void onError(Error error) {
-                if (error.getCode() == 2)
-                    getNewSessionDeleteParkingPrices(position, id);
-                else
-                    view.onDeletePriceError(error);
-            }
-        });
+//        ParkingModel.getInstanse().deleteParkingPrice(id, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+//            @Override
+//            public void onSuccess(RESP_Parking_Info obj) {
+//                view.onDeletePriceSuccess(position);
+//
+//                for (int i = object.getPrices().size() - 1; i >= 0; i--) {
+//                    if (object.getPrices().get(i).getId() == id) {
+//                        object.getPrices().remove(i);
+//                        return;
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Error error) {
+//                if (error.getCode() == 2)
+//                    getNewSessionDeleteParkingPrices(position, id);
+//                else
+//                    view.onDeletePriceError(error);
+//            }
+//        });
     }
 
-    private void getNewSessionDeleteParkingPrices(final int position, final int id) {
-        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
-            @Override
-            public void onSuccess() {
-                deletePrice(position, id);
-            }
-
-            @Override
-            public void onError() {
-                view.onDeletePriceError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
-            }
-        });
-    }
+//    private void getNewSessionDeleteParkingPrices(final int position, final int id) {
+//        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
+//            @Override
+//            public void onSuccess() {
+//                deletePrice(position, id);
+//            }
+//
+//            @Override
+//            public void onError() {
+//                view.onDeletePriceError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
+//            }
+//        });
+//    }
 
     public void validateData(View _view, ArrayList<Pictures> arrayList_picture, String parking_name, PlaceModel placeModel,
                              int transport_type, String total_place, String phone, String begin_time, String end_time,
@@ -251,7 +371,7 @@ public class AddParkingPresenter extends BasicPresenter {
                 object.setPrices(arrayList_price);
                 object.setPictures(arrayList_picture);
 
-                addParking();
+                iCmd.execute(4);
             } else {
                 view.showProgressBar(false, false, null, view.getActivity().getString(R.string.updating));
 
@@ -296,45 +416,42 @@ public class AddParkingPresenter extends BasicPresenter {
         return -1;
     }
 
-    private void addParking() {
-        String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
-        String jsonObject = JsonHelper.toJson(object);
-        String session = LoginModel.getInstance().getSession();
+//    private void addParking() {
+//        iCmd.execute(4);
+//        ParkingModel.getInstanse().addParking(object, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+//            @Override
+//            public void onSuccess(RESP_Parking_Info obj) {
+//                view.onAddParkingSuccess(obj.getId());
+//            }
+//
+//            @Override
+//            public void onError(Error error) {
+//                if (error.getCode() == 2)
+//                    getNewSessionAddParking();
+//                else {
+//                    if (!isUpdate)
+//                        object = null;
+//                    view.onAddParkingError(error);
+//                }
+//            }
+//        });
+//    }
 
-        ParkingModel.getInstanse().addParking(url, jsonObject, session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
-            @Override
-            public void onSuccess(RESP_Parking_Info obj) {
-                view.onAddParkingSuccess(obj.getId());
-            }
-
-            @Override
-            public void onError(Error error) {
-                if (error.getCode() == 2)
-                    getNewSessionAddParking();
-                else {
-                    if (!isUpdate)
-                        object = null;
-                    view.onAddParkingError(error);
-                }
-            }
-        });
-    }
-
-    private void getNewSessionAddParking() {
-        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
-            @Override
-            public void onSuccess() {
-                addParking();
-            }
-
-            @Override
-            public void onError() {
-                if (!isUpdate)
-                    object = null;
-                view.onAddParkingError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
-            }
-        });
-    }
+//    private void getNewSessionAddParking() {
+//        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
+//            @Override
+//            public void onSuccess() {
+//                addParking();
+//            }
+//
+//            @Override
+//            public void onError() {
+//                if (!isUpdate)
+//                    object = null;
+//                view.onAddParkingError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
+//            }
+//        });
+//    }
 
     private void deleteAllPrice(final ArrayList<Prices> arrayList) {
         if (arrayList.size() > 0) {
@@ -352,9 +469,14 @@ public class AddParkingPresenter extends BasicPresenter {
                     else
                         view.onUpdateParkingError(error);
                 }
+
+                @Override
+                public void onUpdate() {
+                    view.onUpdateVersion();
+                }
             });
         } else
-            addAllPrice();
+            iCmd.execute(6);
     }
 
     private void getNewSessionDeleteAllPrice(final ArrayList<Prices> arrayList) {
@@ -371,75 +493,76 @@ public class AddParkingPresenter extends BasicPresenter {
         });
     }
 
-    private void addAllPrice() {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id", object.getId());
-        jsonObject.addProperty("prices", JsonHelper.toJson(object.getPrices()));
+//    private void addAllPrice() {
+//        JsonObject jsonObject = new JsonObject();
+//        jsonObject.addProperty("id", object.getId());
+//        jsonObject.addProperty("prices", JsonHelper.toJson(object.getPrices()));
 
-        ParkingModel.getInstanse().addPPrices(JsonHelper.toJson(object), new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
-            @Override
-            public void onSuccess(RESP_Parking_Info obj) {
-                updateParking();
-            }
 
-            @Override
-            public void onError(Error error) {
-                if (error.getCode() == 2)
-                    getNewSessionAddPrice();
-                else
-                    view.onUpdateParkingError(error);
-            }
-        });
-    }
+//        ParkingModel.getInstanse().addPPrices(object, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+//            @Override
+//            public void onSuccess(RESP_Parking_Info obj) {
+//                iCmd.execute(5);
+//            }
+//
+//            @Override
+//            public void onError(Error error) {
+//                if (error.getCode() == 2)
+//                    getNewSessionAddPrice();
+//                else
+//                    view.onUpdateParkingError(error);
+//            }
+//        });
+//    }
 
-    private void getNewSessionAddPrice() {
-        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
-            @Override
-            public void onSuccess() {
-                addAllPrice();
-            }
+//    private void getNewSessionAddPrice() {
+//        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
+//            @Override
+//            public void onSuccess() {
+//                addAllPrice();
+//            }
+//
+//            @Override
+//            public void onError() {
+//                view.onUpdateParkingError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
+//            }
+//        });
+//    }
 
-            @Override
-            public void onError() {
-                view.onUpdateParkingError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
-            }
-        });
-    }
+//    private void updateParking() {
+//        String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
+//        String jsonObject = JsonHelper.toJson(object);
+//        String session = LoginModel.getInstance().getSession();
 
-    private void updateParking() {
-        String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
-        String jsonObject = JsonHelper.toJson(object);
-        String session = LoginModel.getInstance().getSession();
+//        ParkingModel.getInstanse().updateParking(url, jsonObject, session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
+//            @Override
+//            public void onSuccess(RESP_Parking_Info obj) {
+//                view.onUpdateParkingSuccess(object);
+//            }
+//
+//            @Override
+//            public void onError(Error error) {
+//                if (error.getCode() == 2)
+//                    getNewSessionUpdateParking();
+//                else
+//                    view.onAddParkingError(error);
+//            }
+//        });
+//    }
 
-        ParkingModel.getInstanse().updateParking(url, jsonObject, session, new ResponseHandle<RESP_Parking_Info>(RESP_Parking_Info.class) {
-            @Override
-            public void onSuccess(RESP_Parking_Info obj) {
-                view.onUpdateParkingSuccess(object);
-            }
-
-            @Override
-            public void onError(Error error) {
-                if (error.getCode() == 2)
-                    getNewSessionUpdateParking();
-                else
-                    view.onAddParkingError(error);
-            }
-        });
-    }
-
-    private void getNewSessionUpdateParking() {
-        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
-            @Override
-            public void onSuccess() {
-                addParking();
-            }
-
-            @Override
-            public void onError() {
-                view.onAddParkingError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
-            }
-        });
-    }
+//    private void getNewSessionUpdateParking() {
+//        GetNewSession.getNewSession(view.getActivity(), new RequestNoResultListener() {
+//            @Override
+//            public void onSuccess() {
+//                addParking();
+//            }
+//
+//            @Override
+//            public void onError() {
+//                view.onAddParkingError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
+//            }
+//        });
+//    }
 
     @SuppressWarnings("ConstantConditions")
     public void getTime(final boolean isBegin) {
@@ -472,7 +595,7 @@ public class AddParkingPresenter extends BasicPresenter {
 
     @Override
     public void getSessionError() {
-        view.onDeletePictureError(new Error(2, "", view.getActivity().getString(R.string.error_session_invalid)));
+
     }
 
     public void backToManagement(ArrayList<Pictures> picturesArrayList, ArrayList<Prices> pricesArrayList) {

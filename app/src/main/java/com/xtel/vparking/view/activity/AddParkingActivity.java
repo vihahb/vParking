@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
+import com.xtel.vparking.callback.NewDialogListener;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.ParkingInfo;
@@ -317,8 +318,12 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
 
     @Override
     public void onDeletePictureError(Error error) {
-        closeProgressBar();
-        showShortToast(JsonParse.getCodeMessage(error.getCode(), getString(R.string.error)));
+        if (error.getCode() == 5) {
+            showDialogUpdate();
+        } else {
+            closeProgressBar();
+            showShortToast(JsonParse.getCodeMessage(error.getCode(), getString(R.string.error)));
+        }
     }
 
     @Override
@@ -391,6 +396,12 @@ public class AddParkingActivity extends BasicActivity implements View.OnClickLis
     public void onUpdateParkingError(Error error) {
         closeProgressBar();
         showShortToast(JsonParse.getCodeMessage(error.getCode(), getString(R.string.error_updating)));
+    }
+
+    @Override
+    public void onRequestError(Error error) {
+        closeProgressBar();
+        showShortToast(JsonParse.getCodeMessage(error.getCode(), getString(R.string.error)));
     }
 
     @Override

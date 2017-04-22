@@ -53,6 +53,11 @@ public class FavoritePresenter {
                 else if (isViewing)
                     view.onGetParkingFavoriteError(error);
             }
+
+            @Override
+            public void onUpdate() {
+                view.onUpdateVersion();
+            }
         });
     }
 

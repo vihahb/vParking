@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Created by Lê Công Long Vũ on 12/5/2016.
  */
 
-public interface FavoriteView {
+public interface FavoriteView extends BasicView {
 
     void onNetworkDisable();
     void onRemoveItemSuccess();

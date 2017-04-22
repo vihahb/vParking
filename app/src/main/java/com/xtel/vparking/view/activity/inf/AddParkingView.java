@@ -12,7 +12,7 @@ import com.xtel.vparking.model.entity.ParkingInfo;
  * Created by Lê Công Long Vũ on 12/2/2016.
  */
 
-public interface AddParkingView {
+public interface AddParkingView extends BasicView {
 
     void showShortToast(String message);
     void showProgressBar(boolean isTouchOutside, boolean isCancel, String title, String message);
@@ -31,6 +31,9 @@ public interface AddParkingView {
     void onUpdateParkingSuccess(ParkingInfo parkingInfo);
     void onAddParkingError(Error error);
     void onUpdateParkingError(Error error);
+
+    void onRequestError(Error error);
+
     void onValidateError(View view, String error);
     void startActivityForResult(Intent intent);
     Activity getActivity();

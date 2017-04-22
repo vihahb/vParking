@@ -195,6 +195,11 @@ public class FavoriteAdapter extends RecyclerSwipeAdapter<FavoriteAdapter.ViewHo
                 else
                     JsonParse.getCodeError(view.getActivity(), null, error.getCode(), "Không thể xóa khỏi danh sách yêu thích");
             }
+
+            @Override
+            public void onUpdate() {
+                view.onUpdateVersion();
+            }
         });
     }
 

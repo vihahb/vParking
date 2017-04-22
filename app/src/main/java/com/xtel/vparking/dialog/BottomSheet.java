@@ -57,14 +57,15 @@ public class BottomSheet {
     private ImageView img_verhicle_car, img_verhicle_moto, img_verhicle_bike;
     private RatingBar ratingBar;
     private Button btn_danduong;
-    private LinearLayout view_header, view_content;
+    private View view_header;
+    private LinearLayout layout_content, layout_header;
     private ArrayList<String> arrayList_bottom_sheet;
     private boolean addingToFavorite;
 
     private VerhicleInParkingAdapter verhicleInParkingAdapter;
     private ArrayList<Prices> list_price;
-
-    private ImageButton img_header_favorite, img_header_close, img_show_qr;
+//    img_header_favorite,
+    private ImageButton  img_header_close, img_show_qr, img_direction;
     private TextView txt_header_name, txt_header_time, txt_header_address, txt_header_empty, txt_header_money;
 
     private int header_height;
@@ -81,9 +82,11 @@ public class BottomSheet {
     }
 
     private void initView(View view) {
-        view_header = (LinearLayout) view.findViewById(R.id.layout_dialog_bottom_sheet_header);
-        view_content = (LinearLayout) view.findViewById(R.id.layout_dialog_bottom_sheet_content);
-        img_header_favorite = (ImageButton) view.findViewById(R.id.img_dialog_bottom_sheet_header_favorite);
+        view_header = view.findViewById(R.id.view_dialog_bottom_sheet_header);
+
+        layout_header = (LinearLayout) view.findViewById(R.id.layout_dialog_bottom_sheet_header);
+        layout_content = (LinearLayout) view.findViewById(R.id.layout_dialog_bottom_sheet_content);
+//        img_header_favorite = (ImageButton) view.findViewById(R.id.img_dialog_bottom_sheet_header_favorite);
         img_header_close = (ImageButton) view.findViewById(R.id.img_dialog_bottom_sheet_header_close);
         img_show_qr = (ImageButton) view.findViewById(R.id.img_dialog_bottom_sheet_qr);
         txt_header_name = (TextView) view.findViewById(R.id.txt_dialog_bottom_sheet_header_name);
@@ -106,6 +109,7 @@ public class BottomSheet {
         img_verhicle_bike = (ImageView) view.findViewById(R.id.img_dialog_bottom_sheet_parking_bike);
 
         btn_danduong = (Button) view.findViewById(R.id.btn_dialog_bottom_sheet_chiduong);
+        img_direction = (ImageButton) view.findViewById(R.id.btn_dialog_bottom_sheet_direction);
     }
 
     private void initRatingBar(View view) {
@@ -117,13 +121,13 @@ public class BottomSheet {
     }
 
     private void initListener() {
-        img_header_favorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!addingToFavorite)
-                    new AddToFavorite(v).execute(resp_parking_info.getId());
-            }
-        });
+//        img_header_favorite.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!addingToFavorite)
+//                    new AddToFavorite(v).execute(resp_parking_info.getId());
+//            }
+//        });
 
         img_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,10 +234,10 @@ public class BottomSheet {
 
     private void setUpFavorite() {
         if (this.resp_parking_info.getFavorite() == 1) {
-            img_header_favorite.setImageResource(R.drawable.ic_action_favorite_selected);
+//            img_header_favorite.setImageResource(R.drawable.ic_action_favorite_selected);
             img_favorite.setImageResource(R.drawable.ic_action_favorite_selected);
         } else {
-            img_header_favorite.setImageResource(R.drawable.ic_action_favorite_normal);
+//            img_header_favorite.setImageResource(R.drawable.ic_action_favorite_normal);
             img_favorite.setImageResource(R.drawable.ic_action_favorite_normal);
         }
     }
@@ -258,14 +262,15 @@ public class BottomSheet {
     public void setMarginHeader(float view) {
         int _view = header_height - ((int) (header_height * view));
 
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view_content.getLayoutParams();
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) layout_content.getLayoutParams();
         params.setMargins(0, _view, 0, 0);
-        view_content.setLayoutParams(params);
+        layout_content.setLayoutParams(params);
     }
 
     public void clearData() {
         img_header_close.setVisibility(View.GONE);
-        img_header_favorite.setVisibility(View.VISIBLE);
+        img_direction.setVisibility(View.VISIBLE);
+//        img_header_favorite.setVisibility(View.VISIBLE);
 
         list_price.clear();
         verhicleInParkingAdapter.notifyDataSetChanged();
@@ -284,16 +289,15 @@ public class BottomSheet {
     }
 
     public void onContentCliecked(View.OnClickListener onClickListener) {
-        view_header.setOnClickListener(onClickListener);
+        layout_header.setOnClickListener(onClickListener);
     }
 
-    public void onGuidClicked(final DialogListener dialogListener) {
-        btn_danduong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogListener.onClicked(resp_parking_info);
-            }
-        });
+    public void onGuidClicked(View.OnClickListener onClickListener) {
+        btn_danduong.setOnClickListener(onClickListener);
+    }
+
+    public void onDirectionClicked(View.OnClickListener onClickListener) {
+        img_direction.setOnClickListener(onClickListener);
     }
 
     public void onShowQrClicked(View.OnClickListener onClickListener) {
@@ -306,7 +310,8 @@ public class BottomSheet {
 
     public void changeFavoriteToClose() {
         img_header_close.setVisibility(View.VISIBLE);
-        img_header_favorite.setVisibility(View.GONE);
+        img_direction.setVisibility(View.GONE);
+//        img_header_favorite.setVisibility(View.GONE);
     }
 
     private DialogProgressBar dialogProgressBar;

@@ -6,6 +6,8 @@ import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
+import com.xtel.vparking.model.entity.ParkingInfo;
+import com.xtel.vparking.utils.JsonHelper;
 import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.MyApplication;
 
@@ -37,8 +39,12 @@ public class ParkingModel extends BasicModel {
         requestServer.getApi(url, session, responseHandle);
     }
 
-    public void addParking(String url, String json, String session, ResponseHandle responseHandle) {
-        requestServer.postApi(url, json, session, responseHandle);
+    public void addParking(ParkingInfo object, ResponseHandle responseHandle) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
+        String jsonObject = JsonHelper.toJson(object);
+        String session = LoginModel.getInstance().getSession();
+
+        requestServer.postApi(url, jsonObject, session, responseHandle);
     }
 
     public void getPolyLine(String url, ResponseHandle responseHandle) {
@@ -51,9 +57,11 @@ public class ParkingModel extends BasicModel {
         requestServer.postApi(url, jsonObject, session, responseHandle);
     }
 
-    public void addPPrices(String jsonObject, ResponseHandle responseHandle) {
+    public void addPPrices(ParkingInfo parkingInfo, ResponseHandle responseHandle) {
         String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PRICES;
+        String jsonObject = JsonHelper.toJson(parkingInfo);
         String session = LoginModel.getInstance().getSession();
+
         requestServer.postApi(url, jsonObject, session, responseHandle);
     }
 
@@ -69,8 +77,12 @@ public class ParkingModel extends BasicModel {
         requestServer.deleteApi(url, "", session, responseHandle);
     }
 
-    public void updateParking(String url, String json, String session, ResponseHandle responseHandle) {
-        requestServer.putApi(url, json, session, responseHandle);
+    public void updateParking(ParkingInfo object, ResponseHandle responseHandle) {
+        String url = Constants.SERVER_PARKING + Constants.PARKING_ADD_PARKING;
+        String jsonObject = JsonHelper.toJson(object);
+        String session = LoginModel.getInstance().getSession();
+
+        requestServer.putApi(url, jsonObject, session, responseHandle);
     }
 
     public void getAddressByLatLng(double lat, double lng, ResponseHandle responseHandle) {

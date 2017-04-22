@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Created by Mr. M.2 on 12/3/2016.
  */
 
-public interface ScanQrView {
+public interface ScanQrView extends BasicView {
 
     void onGetVerhicleSuccess(ArrayList<Verhicle> arrayList);
     void onGetVerhicleError(Error error);

@@ -55,6 +55,11 @@ public class ManagementPresenter {
                 else if (isViewing)
                     view.onGetParkingByUserError(error);
             }
+
+            @Override
+            public void onUpdate() {
+                view.onUpdateVersion();
+            }
         });
     }
 
@@ -112,6 +117,11 @@ public class ManagementPresenter {
                 if (error.getCode() == 2)
                     if (isViewing)
                         getNewSessionParkingInfo(id);
+            }
+
+            @Override
+            public void onUpdate() {
+                view.onUpdateVersion();
             }
         });
     }

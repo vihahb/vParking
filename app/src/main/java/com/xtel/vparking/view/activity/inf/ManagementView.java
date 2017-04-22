@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by Mr. M.2 on 12/5/2016.
  */
 
-public interface ManagementView {
+public interface ManagementView extends BasicView {
 
     void onNetworkDisable();
     void onGetParkingByUserSuccess(ArrayList<ParkingInfo> arrayList);

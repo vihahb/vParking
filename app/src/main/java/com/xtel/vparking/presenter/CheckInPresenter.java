@@ -55,6 +55,11 @@ public class CheckInPresenter {
                 else
                     view.onGetVerhicleError(error);
             }
+
+            @Override
+            public void onUpdate() {
+                view.onUpdateVersion();
+            }
         });
     }
 

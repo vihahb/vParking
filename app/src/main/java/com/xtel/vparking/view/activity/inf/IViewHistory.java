@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Created by vivhp on 12/19/2016.
  */
 
-public interface IViewHistory {
+public interface IViewHistory extends BasicView {
     void showShortToast(String message);
 
     void onNetworkDisable();

@@ -8,10 +8,10 @@ import com.xtel.vparking.model.entity.Verhicle;
 import java.util.ArrayList;
 
 /**
- * Created by Lê Công Long Vũ on 12/10/2016.
+ * Created by Lê Công Long Vũ on 12/10/2016
  */
 
-public interface VerhicleView {
+public interface VerhicleView extends BasicView {
 
     void showShortToast(String message);
     void onNetworkDisable();

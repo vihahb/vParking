@@ -13,10 +13,16 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Created by Lê Công Long Vũ on 12/2/2016.
+ * Created by Lê Công Long Vũ on 12/2/2016
  */
 
 public class RequestServer {
+
+    protected final String DEVICE_TYPE = "device-type";
+    protected final String VERSION_NUMBER = "version-number";
+
+    protected final String DV_TYPE = "1";
+    protected final String VR_NUMBER = "1";
 
     public RequestServer() {
     }
@@ -61,6 +67,9 @@ public class RequestServer {
                 if (params[2] != null)
                     builder.header(Constants.JSON_SESSION, params[2]);
 
+                builder.header(DEVICE_TYPE, DV_TYPE);
+                builder.header(VERSION_NUMBER, VR_NUMBER);
+
                 Request request = builder.build();
 
                 Response response = client.newCall(request).execute();
@@ -95,6 +104,9 @@ public class RequestServer {
 
                 if (params[1] != null)
                     builder.header(Constants.JSON_SESSION, params[1]);
+
+                builder.header(DEVICE_TYPE, DV_TYPE);
+                builder.header(VERSION_NUMBER, VR_NUMBER);
 
                 Request request = builder.build();
 
@@ -136,6 +148,9 @@ public class RequestServer {
                 if (params[2] != null)
                     builder.header(Constants.JSON_SESSION, params[2]);
 
+                builder.header(DEVICE_TYPE, DV_TYPE);
+                builder.header(VERSION_NUMBER, VR_NUMBER);
+
                 Request request = builder.build();
 
                 Response response = client.newCall(request).execute();
@@ -176,6 +191,9 @@ public class RequestServer {
 
                 if (params[2] != null)
                     builder.header(Constants.JSON_SESSION, params[2]);
+
+                builder.header(DEVICE_TYPE, DV_TYPE);
+                builder.header(VERSION_NUMBER, VR_NUMBER);
 
                 Request request = builder.build();
 

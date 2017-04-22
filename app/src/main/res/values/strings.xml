@@ -127,6 +127,10 @@
     <string name="parking_all">Loại bãi đỗ: Tất cả</string>
     <string name="update">CẬP NHẬT</string>
 
+    <string name="message_update_version">Có version mới vui lòng cập nhập ứng dụng để sử dụng</string>
+    <string name="cancel">Hủy bỏ</string>
+    <string name="update_now">Cập nhật</string>
+
     <string-array name="add_transport">
         <item>Loại bãi đỗ</item>
         <item>Xe đạp</item>

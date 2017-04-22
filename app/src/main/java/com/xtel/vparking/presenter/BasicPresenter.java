@@ -8,16 +8,16 @@ import com.xtel.vparking.commons.GetNewSession;
 import com.xtel.vparking.view.MyApplication;
 
 /**
- * Created by Mr. M.2 on 12/19/2016.
+ * Created by Mr. Vulcl on 12/19/2016
  */
 
 public abstract class BasicPresenter {
 
-    protected void getNewSession(Activity activity, final ICmd cmd) {
+    protected void getNewSession(Activity activity, final ICmd cmd, final Object... objects) {
         GetNewSession.getNewSession(activity, new RequestNoResultListener() {
             @Override
             public void onSuccess() {
-               cmd.execute();
+               cmd.execute(objects);
             }
 
             @Override

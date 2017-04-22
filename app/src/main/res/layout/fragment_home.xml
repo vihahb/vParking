@@ -45,7 +45,7 @@
         android:layout_height="match_parent"
         android:clickable="true"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="@dimen/size_120"
+        app:behavior_peekHeight="@dimen/size_144"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <include

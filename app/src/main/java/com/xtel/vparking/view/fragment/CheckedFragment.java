@@ -144,6 +144,11 @@ public class CheckedFragment extends BasicFragment implements CheckedView {
     }
 
     @Override
+    public void onUpdateVersion() {
+        showDialogUpdate();
+    }
+
+    @Override
     public void onDestroy() {
         presenter.destroyView();
         super.onDestroy();

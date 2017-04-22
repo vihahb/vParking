@@ -103,6 +103,11 @@ public class HomeFragmentPresenter {
                 else if (isViewing)
                     view.onGetParkingInfoError(error);
             }
+
+            @Override
+            public void onUpdate() {
+                view.onUpdateVersion();
+            }
         });
     }
 
@@ -149,6 +154,11 @@ public class HomeFragmentPresenter {
                     else
                         view.onGetParkingAroundError(error);
             }
+
+            @Override
+            public void onUpdate() {
+                view.onUpdateVersion();
+            }
         });
     }
 
@@ -187,6 +197,11 @@ public class HomeFragmentPresenter {
             public void onError(Error error) {
                 if (isViewing)
                     view.onGetPolylineError("Không thể đẫn đường");
+            }
+
+            @Override
+            public void onUpdate() {
+                view.onUpdateVersion();
             }
         });
     }

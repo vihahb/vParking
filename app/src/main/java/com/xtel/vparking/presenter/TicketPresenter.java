@@ -72,6 +72,11 @@ public class TicketPresenter {
                 else
                     view.onGetParkingInfoError(error);
             }
+
+            @Override
+            public void onUpdate() {
+                view.onUpdateVersion();
+            }
         });
     }
 
@@ -112,6 +117,11 @@ public class TicketPresenter {
                     getNewSessionCheckOut();
                 else
                     view.onCheckOutError(error);
+            }
+
+            @Override
+            public void onUpdate() {
+                view.onUpdateVersion();
             }
         });
     }

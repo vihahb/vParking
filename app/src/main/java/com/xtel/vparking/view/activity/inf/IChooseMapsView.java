@@ -9,7 +9,7 @@ import com.xtel.vparking.model.entity.PlaceModel;
  * Created by Lê Công Long Vũ on 12/23/2016.
  */
 
-public interface IChooseMapsView {
+public interface IChooseMapsView extends BasicView {
 
     void onGetData(PlaceModel placeModel);
     void onGetAddressSucces(double lat, double lng, String address);

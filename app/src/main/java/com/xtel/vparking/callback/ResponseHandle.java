@@ -28,7 +28,10 @@ public abstract class ResponseHandle<T extends RESP_Basic> {
             } else {
                 T t = JsonHelper.getObjectNoException(result, clazz);
                 if (t.getError() != null) {
-                    onError(t.getError());
+                    if (t.getError().getCode() == 5)
+                        onUpdate();
+                    else
+                        onError(t.getError());
                 } else {
                     onSuccess(t);
                 }
@@ -45,4 +48,6 @@ public abstract class ResponseHandle<T extends RESP_Basic> {
     public abstract void onSuccess(T obj);
 
     public abstract void onError(Error error);
+
+    public abstract void onUpdate();
 }

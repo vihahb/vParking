@@ -65,6 +65,11 @@ public class HistoryPresenter {
                     viewHistory.onGetHistoryError(error);
                 }
             }
+
+            @Override
+            public void onUpdate() {
+                viewHistory.onUpdateVersion();
+            }
         });
     }
 

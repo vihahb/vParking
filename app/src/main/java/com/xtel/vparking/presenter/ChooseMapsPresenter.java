@@ -86,6 +86,11 @@ public class ChooseMapsPresenter implements GoogleApiClient.ConnectionCallbacks,
             public void onError(Error error) {
                 view.onGetAddressError(lat, lng);
             }
+
+            @Override
+            public void onUpdate() {
+                view.onUpdateVersion();
+            }
         });
     }
 

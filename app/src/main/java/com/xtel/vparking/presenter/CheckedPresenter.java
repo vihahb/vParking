@@ -14,7 +14,7 @@ import com.xtel.vparking.view.activity.inf.CheckedView;
 import com.xtel.vparking.model.entity.RESP_Check_In;
 
 /**
- * Created by Lê Công Long Vũ on 12/2/2016.
+ * Created by Lê Công Long Vũ on 12/2/2016
  */
 
 public class CheckedPresenter {
@@ -50,6 +50,11 @@ public class CheckedPresenter {
                     getNewSessionVerhicle();
                 else if (isViewing)
                     view.onGetVerhicleError(error);
+            }
+
+            @Override
+            public void onUpdate() {
+                view.onUpdateVersion();
             }
         });
     }

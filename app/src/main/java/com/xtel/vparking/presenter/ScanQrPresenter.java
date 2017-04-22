@@ -30,7 +30,7 @@ public class ScanQrPresenter extends BasicPresenter {
 
     private ICmd iCmd = new ICmd() {
         @Override
-        public void execute(Object... params) {
+        public void execute(final Object... params) {
             VerhicleModel.getInstance().getAllVerhicle(new ResponseHandle<RESP_Verhicle_List>(RESP_Verhicle_List.class) {
                 @Override
                 public void onSuccess(RESP_Verhicle_List obj) {
@@ -58,9 +58,14 @@ public class ScanQrPresenter extends BasicPresenter {
                 @Override
                 public void onError(Error error) {
                     if (error.getCode() == 2)
-                        getNewSession(view.getActivity(), iCmd);
+                        getNewSession(view.getActivity(), iCmd, params);
                     else
                         view.onGetVerhicleError(error);
+                }
+
+                @Override
+                public void onUpdate() {
+                    view.onUpdateVersion();
                 }
             });
         }
@@ -98,6 +103,11 @@ public class ScanQrPresenter extends BasicPresenter {
             @Override
             public void onError(Error error) {
                 view.onCheckingError(error);
+            }
+
+            @Override
+            public void onUpdate() {
+                view.onUpdateVersion();
             }
         });
     }
