@@ -1,6 +1,7 @@
 package com.xtel.vparking.view.fragment;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -23,7 +25,10 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
+import android.widget.Button;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -76,6 +81,7 @@ public class HomeFragment extends IFragment implements
 
     private HashMap<Integer, Boolean> hashMap_Check;
 
+    private Button btn_direction;
     private FloatingActionButton fab_filter, fab_location;
     private static boolean isFindMyLocation;
     private boolean isCanLoadMap = true;
@@ -123,9 +129,11 @@ public class HomeFragment extends IFragment implements
     }
 
     private void initWidget(View view) {
+        btn_direction = (Button) view.findViewById(R.id.btn_dialog_bottom_sheet_chiduong);
         fab_filter = (FloatingActionButton) view.findViewById(R.id.fab_parking_fillter);
         fab_location = (FloatingActionButton) view.findViewById(R.id.fab_parking_location);
 
+        btn_direction.setOnClickListener(this);
         fab_filter.setOnClickListener(this);
         fab_location.setOnClickListener(this);
     }
@@ -149,6 +157,7 @@ public class HomeFragment extends IFragment implements
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     showFloatingActionButton(fab_filter);
                     showFloatingActionButton(fab_location);
+                    hideBottomView(btn_direction);
 
                     dialogBottomSheet.clearData();
                     nestedScrollView.scrollTo(0, 0);
@@ -158,9 +167,12 @@ public class HomeFragment extends IFragment implements
 
                     if (!isCanLoadMap)
                         closeGuid();
-                }
-                if (newState == BottomSheetBehavior.STATE_COLLAPSED)
+                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     nestedScrollView.scrollTo(0, 0);
+                    hideBottomView(btn_direction);
+                } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    showBottomView(btn_direction);
+                }
             }
 
             @Override
@@ -208,6 +220,56 @@ public class HomeFragment extends IFragment implements
         });
     }
 
+    private void hideBottomView(final View view) {
+        view.animate().translationY(view.getHeight()).setInterpolator(new AccelerateInterpolator(2)).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (view.getVisibility() == View.INVISIBLE)
+                    view.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).start();
+    }
+
+    private void showBottomView(final View view) {
+        view.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (view.getVisibility() == View.INVISIBLE)
+                    view.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).start();
+    }
+
     private void initBottomSheetView(View view) {
         dialogBottomSheet = new BottomSheet(getActivity(), view, getChildFragmentManager());
 
@@ -218,18 +280,18 @@ public class HomeFragment extends IFragment implements
             }
         });
 
-        dialogBottomSheet.onGuidClicked(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actionType = 2 ;
-                presenter.getMyLocation();
-            }
-        });
+//        dialogBottomSheet.onGuidClicked(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                actionType = 2 ;
+//                presenter.getMyLocation();
+//            }
+//        });
 
         dialogBottomSheet.onDirectionClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                actionType = 2 ;
+                actionType = 2;
                 presenter.getMyLocation();
             }
         });
@@ -352,7 +414,7 @@ public class HomeFragment extends IFragment implements
     }
 
     @Override
-    public boolean onMarkerClick(final Marker marker) {
+    public boolean onMarkerClick(Marker marker) {
         if (!isFindMyLocation)
             isFindMyLocation = true;
 
@@ -363,10 +425,15 @@ public class HomeFragment extends IFragment implements
                 dialogBottomSheet.clearData();
             }
 
-            Parking parking = (Parking) marker.getTag();
+            final Parking parking = (Parking) marker.getTag();
             if (parking != null) {
-                showProgressBar(false, false, null, getString(R.string.parking_get_data));
-                presenter.getParkingInfo(parking.getId());
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar(false, false, null, getString(R.string.parking_get_data));
+                        presenter.getParkingInfo(parking.getId());
+                    }
+                }, 300);
             }
         }
         return false;
@@ -387,7 +454,7 @@ public class HomeFragment extends IFragment implements
         Constants.my_location.setLatitude(latitude);
         Constants.my_location.setLongtitude(longtitude);
         if (isCanLoadMap) {
-            isCanLoadMap = false;
+//            isCanLoadMap = false;
 
             if (isLoadNewParking == 0) {
                 isLoadNewParking++;
@@ -399,17 +466,34 @@ public class HomeFragment extends IFragment implements
 
     @Override
     public void onClick(View v) {
-        int id = v.getId();
+        switch (v.getId()) {
+            case R.id.btn_dialog_bottom_sheet_chiduong:
+                actionType = 2;
+                presenter.getMyLocation();
+                break;
+            case R.id.fab_parking_fillter:
+                startActivityForResult(FindAdvancedActivity.class, Constants.FIND_MODEL, HomeActivity.find_option, Constants.FIND_ADVANDCED_RQ);
+                break;
+            case R.id.fab_parking_location:
+                if (pickMarker != null)
+                    pickMarker.remove();
 
-        if (id == R.id.fab_parking_fillter) {
-            startActivityForResult(FindAdvancedActivity.class, Constants.FIND_MODEL, HomeActivity.find_option, Constants.FIND_ADVANDCED_RQ);
-        } else if (id == R.id.fab_parking_location) {
-            if (pickMarker != null)
-                pickMarker.remove();
-
-            actionType = 1;
-            presenter.getMyLocation();
+                actionType = 1;
+                presenter.getMyLocation();
+                break;
+            default:
+                break;
         }
+
+//        if (id == R.id.fab_parking_fillter) {
+//
+//        } else if (id == R.id.fab_parking_location) {
+//            if (pickMarker != null)
+//                pickMarker.remove();
+//
+//            actionType = 1;
+//            presenter.getMyLocation();
+//        }
     }
 
     @Override
@@ -589,6 +673,7 @@ public class HomeFragment extends IFragment implements
 
     @Override
     public void onGetMyLocationError(String error) {
+        closeProgressBar();
         showShortToast(error);
     }
 

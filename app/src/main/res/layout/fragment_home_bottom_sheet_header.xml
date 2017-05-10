@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/size_144"
+    android:layout_height="@dimen/size_150"
     android:background="@android:color/transparent">
 
     <LinearLayout
@@ -118,8 +118,9 @@
 
     <ImageButton
         android:id="@+id/btn_dialog_bottom_sheet_direction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/size_60"
+        android:layout_height="@dimen/size_60"
+        android:scaleType="fitXY"
         android:layout_gravity="right|end"
         android:layout_marginEnd="@dimen/size_16"
         android:layout_marginRight="@dimen/size_16"
@@ -127,5 +128,5 @@
         android:clickable="true"
         android:contentDescription="@null"
         android:foreground="?android:attr/selectableItemBackground"
-        android:src="@mipmap/ic_direction" />
+        android:src="@mipmap/ic_direction_p" />
 </FrameLayout>

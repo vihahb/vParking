@@ -8,7 +8,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,7 @@ import com.xtel.vparking.view.widget.ProgressView;
 import java.util.ArrayList;
 
 /**
- * Created by Lê Công Long Vũ on 12/19/2016.
+ * Created by Lê Công Long Vũ on 12/19/2016
  */
 
 public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
@@ -51,8 +50,6 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
         args.putInt(Constants.ID_PARKING, id);
         ViewCheckInFragment fragment = new ViewCheckInFragment();
         fragment.setArguments(args);
-
-        Log.e("vp", "id check in fragment " + id);
 
         return fragment;
     }
@@ -77,10 +74,8 @@ public class ViewCheckInFragment extends BasicFragment implements IViewCheckIn {
     private void initPresenter() {
         try {
             parking_id = getArguments().getInt(Constants.ID_PARKING);
-            Log.e("vp", "fragment get id " + parking_id);
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("vp", "error get id " + parking_id);
         }
 
         presenter = new ViewCheckInPresenter(this, parking_id);

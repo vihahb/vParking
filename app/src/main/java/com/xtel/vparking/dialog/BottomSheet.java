@@ -56,7 +56,7 @@ public class BottomSheet {
     private TextView txt_address, txt_user_name, txt_user_phone, txt_time, txt_parking_name, txt_dat_cho, txt_picture_count;
     private ImageView img_verhicle_car, img_verhicle_moto, img_verhicle_bike;
     private RatingBar ratingBar;
-    private Button btn_danduong;
+//    private Button btn_danduong;
     private View view_header;
     private LinearLayout layout_content, layout_header;
     private ArrayList<String> arrayList_bottom_sheet;
@@ -108,7 +108,7 @@ public class BottomSheet {
         img_verhicle_moto = (ImageView) view.findViewById(R.id.img_dialog_bottom_sheet_parking_moto);
         img_verhicle_bike = (ImageView) view.findViewById(R.id.img_dialog_bottom_sheet_parking_bike);
 
-        btn_danduong = (Button) view.findViewById(R.id.btn_dialog_bottom_sheet_chiduong);
+//        btn_danduong = (Button) view.findViewById(R.id.btn_dialog_bottom_sheet_chiduong);
         img_direction = (ImageButton) view.findViewById(R.id.btn_dialog_bottom_sheet_direction);
     }
 
@@ -292,9 +292,9 @@ public class BottomSheet {
         layout_header.setOnClickListener(onClickListener);
     }
 
-    public void onGuidClicked(View.OnClickListener onClickListener) {
-        btn_danduong.setOnClickListener(onClickListener);
-    }
+//    public void onGuidClicked(View.OnClickListener onClickListener) {
+//        btn_danduong.setOnClickListener(onClickListener);
+//    }
 
     public void onDirectionClicked(View.OnClickListener onClickListener) {
         img_direction.setOnClickListener(onClickListener);

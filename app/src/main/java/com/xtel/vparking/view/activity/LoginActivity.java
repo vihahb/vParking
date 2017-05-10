@@ -11,7 +11,6 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -113,7 +112,6 @@ public class LoginActivity extends BasicActivity implements LoginView, View.OnCl
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == MY_REQUEST_CODE) {
-            Log.e("size permission:", String.valueOf(grantResults.length));
 
             boolean chk = true;
             for (int grantResult : grantResults) {
@@ -130,7 +128,6 @@ public class LoginActivity extends BasicActivity implements LoginView, View.OnCl
             } else
                 showShortToast(getActivity().getString(R.string.permission_not_check));
         } else if (requestCode == FB_REQUEST_CODE) {
-            Log.e("size permission:", String.valueOf(grantResults.length));
 
             boolean chk_fb = true;
             for (int grantResult : grantResults) {
@@ -194,12 +191,10 @@ public class LoginActivity extends BasicActivity implements LoginView, View.OnCl
         } else {
             if (type == 1) {
                 if (PermissionHelper.checkListPermission(PermissionListFb, this, FB_REQUEST_CODE)) {
-                    Log.v("acc", "fb");
                     presenter.initOnLoginFacebook(this);
                 }
             } else if (type == 2){
                 if (PermissionHelper.checkListPermission(PermissionListAccKit, this, MY_REQUEST_CODE)) {
-                    Log.v("acc", "kit");
                     presenter.initOnLoginAccountKit(this, AccountKitActivity.class);
                 }
             }

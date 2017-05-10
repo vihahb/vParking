@@ -17,7 +17,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -203,10 +202,6 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
             year_fill = calendar.get(Calendar.YEAR);
             month_fill = calendar.get(Calendar.MONTH);
             dayOfMonthfill = calendar.get(Calendar.DAY_OF_MONTH);
-            Log.e("Date time:", year_fill + "/" + month_fill + "/" + dayOfMonthfill);
-            Log.e("Year:", String.valueOf(year_fill));
-            Log.e("month:", String.valueOf(month_fill));
-            Log.e("day:", String.valueOf(dayOfMonthfill));
         } else {
             edt_ngaysinh.setHint("Chưa có ngày sinh");
             calendar.getTime();
@@ -597,7 +592,6 @@ public class ProfileActivitys extends BasicActivity implements View.OnClickListe
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CAMERA_REQUEST_CODE) {
-            Log.e("size permission:", String.valueOf(grantResults.length));
 
             boolean chk_camera = true;
             for (int grantResult : grantResults) {

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -120,7 +119,6 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         for (int i = 1; i <= 95; i++) {
             if (i % 5 == 0) {
                 arrPrice.add(String.valueOf(i));
-                Log.v("int ", String.valueOf(i));
             }
         }
     }
@@ -422,9 +420,7 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
         try {
             findModel = new Find();
             findModel = (Find) getIntent().getSerializableExtra(Constants.FIND_MODEL);
-            Log.v("Begin time", findModel.getBegin_time());
         } catch (Exception e) {
-            Log.e("Loi get find", e.getMessage());
         }
 
         if (findModel.getBegin_time().isEmpty()) {
@@ -465,7 +461,6 @@ public class FindAdvancedActivity extends BasicActivity implements View.OnClickL
             for (int i = 0; i < arrPrice.size(); i++) {
                 if (s_price == arrPrice.get(i).toString()) {
                     sp_price.setSelection(i);
-                    Log.v("Spinner price pos", String.valueOf(i));
                 }
             }
 

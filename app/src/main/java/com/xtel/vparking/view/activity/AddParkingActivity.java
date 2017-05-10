@@ -24,7 +24,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.xtel.vparking.R;
-import com.xtel.vparking.callback.NewDialogListener;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.Error;
 import com.xtel.vparking.model.entity.ParkingInfo;
@@ -42,7 +41,7 @@ import com.xtel.vparking.view.widget.BitmapTransform;
 import java.util.ArrayList;
 
 /**
- * Created by Lê Công Long Vũ on 11/28/2016.
+ * Created by Lê Công Long Vũ on 11/28/2016
  */
 
 public class AddParkingActivity extends BasicActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, AddParkingView {

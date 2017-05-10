@@ -45,7 +45,7 @@
         android:layout_height="match_parent"
         android:clickable="true"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="@dimen/size_144"
+        app:behavior_peekHeight="@dimen/size_150"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <include
@@ -53,4 +53,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.v4.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btn_dialog_bottom_sheet_chiduong"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_48"
+        android:layout_gravity="bottom"
+        android:background="@drawable/btn_blue_radius_2"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:text="@string/dan_duong"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:visibility="invisible" />
 </android.support.design.widget.CoordinatorLayout>

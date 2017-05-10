@@ -37,6 +37,7 @@
     <dimen name="size_110">110dp</dimen>
     <dimen name="size_120">120dp</dimen>
     <dimen name="size_144">144dp</dimen>
+    <dimen name="size_148">148dp</dimen>
     <dimen name="size_150">150dp</dimen>
     <dimen name="size_190">190dp</dimen>
     <dimen name="size_210">210dp</dimen>
