@@ -79,7 +79,6 @@ public class HomeFragment extends IFragment implements
     private Marker oldMarker;
     private HashMap<Integer, Boolean> hashMap_Check;
 
-    private Button btn_direction;
     private FloatingActionButton fab_filter, fab_location;
     private static boolean isFindMyLocation;
     private boolean isCanLoadMap = true;
@@ -126,7 +125,7 @@ public class HomeFragment extends IFragment implements
     }
 
     private void initWidget(View view) {
-        btn_direction = (Button) view.findViewById(R.id.btn_dialog_bottom_sheet_chiduong);
+        Button btn_direction = (Button) view.findViewById(R.id.btn_dialog_bottom_sheet_chiduong);
         fab_filter = (FloatingActionButton) view.findViewById(R.id.fab_parking_fillter);
         fab_location = (FloatingActionButton) view.findViewById(R.id.fab_parking_location);
 
@@ -172,8 +171,10 @@ public class HomeFragment extends IFragment implements
                     scrollView.setNestedScrollingEnabled(false);
                     nestedScrollView.setNestedScrollingEnabled(true);
 
-                    dialogBottomSheet.clearData();
+                    scrollView.scrollTo(0, 0);
                     nestedScrollView.scrollTo(0, 0);
+
+                    dialogBottomSheet.clearData();
                     mMap_bottom.clear();
                     resp_parking_info = null;
                     isLoadNewParking = 0;
@@ -182,9 +183,15 @@ public class HomeFragment extends IFragment implements
                         polyline.remove();
                     }
 
+                    if (!isCanLoadMap) {
+                        clearMarker();
+                        isCanLoadMap = true;
+                    }
+
                     changeOldMarkerIcon(R.mipmap.ic_marker_blue);
                     loadParkingAround();
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    scrollView.scrollTo(0, 0);
                     nestedScrollView.scrollTo(0, 0);
 
                     scrollView.setNestedScrollingEnabled(false);
@@ -204,7 +211,7 @@ public class HomeFragment extends IFragment implements
     }
 
     private void loadParkingAround() {
-        if (!isCanLoadMap) {
+        if (isCanLoadMap) {
             double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
             double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
 
