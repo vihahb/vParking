@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
-import com.xtel.vparking.callback.DialogListener;
 import com.xtel.vparking.callback.RequestNoResultListener;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.GetNewSession;
@@ -312,6 +310,11 @@ public class BottomSheet {
         img_header_close.setVisibility(View.VISIBLE);
         img_direction.setVisibility(View.GONE);
 //        img_header_favorite.setVisibility(View.GONE);
+    }
+
+    public void changeFavoriteToOpen() {
+        img_header_close.setVisibility(View.GONE);
+        img_direction.setVisibility(View.VISIBLE);
     }
 
     private DialogProgressBar dialogProgressBar;

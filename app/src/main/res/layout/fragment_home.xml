@@ -44,25 +44,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
+        android:fillViewport="true"
         app:behavior_hideable="true"
         app:behavior_peekHeight="@dimen/size_150"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
-        <include
-            layout="@layout/fragment_home_bottom_sheet"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </android.support.v4.widget.NestedScrollView>
+            android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_dialog_bottom_sheet_chiduong"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_48"
-        android:layout_gravity="bottom"
-        android:background="@drawable/btn_blue_radius_2"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:text="@string/dan_duong"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:visibility="invisible" />
+            <View
+                android:id="@+id/bottom_sheet_content_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                layout="@layout/layout_demo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/bottom_sheet_content_view"
+                android:layout_alignEnd="@+id/bottom_sheet_content_view"
+                android:layout_alignLeft="@+id/bottom_sheet_content_view"
+                android:layout_alignRight="@+id/bottom_sheet_content_view"
+                android:layout_alignStart="@+id/bottom_sheet_content_view"
+                android:layout_alignTop="@+id/bottom_sheet_content_view" />
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

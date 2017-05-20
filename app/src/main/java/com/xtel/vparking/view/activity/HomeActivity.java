@@ -35,7 +35,6 @@ import com.xtel.vparking.R;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.commons.NetWorkInfo;
 import com.xtel.vparking.model.entity.Find;
-import com.xtel.vparking.model.entity.PlaceModel;
 import com.xtel.vparking.presenter.HomePresenter;
 import com.xtel.vparking.utils.PermissionHelper;
 import com.xtel.vparking.utils.SharedPreferencesUtils;

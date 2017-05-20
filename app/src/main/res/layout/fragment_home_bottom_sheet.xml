@@ -32,7 +32,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:background="@color/black_50"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -359,8 +358,6 @@
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/size_10"
-                android:layout_marginRight="@dimen/size_10"
                 tools:context=".view.activity.HomeActivity" />
 
             <View
@@ -372,12 +369,13 @@
         <!--<Button-->
             <!--android:id="@+id/btn_dialog_bottom_sheet_chiduong"-->
             <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="@dimen/size_36"-->
-            <!--android:layout_margin="@dimen/size_8"-->
+            <!--android:layout_height="@dimen/size_48"-->
+            <!--android:layout_gravity="bottom"-->
             <!--android:background="@drawable/btn_blue_radius_2"-->
             <!--android:foreground="?android:attr/selectableItemBackground"-->
             <!--android:text="@string/dan_duong"-->
             <!--android:textAllCaps="false"-->
-            <!--android:textColor="@android:color/white" />-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:visibility="invisible" />-->
     </LinearLayout>
 </FrameLayout>

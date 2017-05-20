@@ -1,18 +1,15 @@
 package com.xtel.vparking.model;
 
-import android.util.Log;
-
 import com.google.gson.JsonObject;
 import com.xtel.vparking.R;
 import com.xtel.vparking.callback.ResponseHandle;
 import com.xtel.vparking.commons.Constants;
 import com.xtel.vparking.model.entity.ParkingInfo;
 import com.xtel.vparking.utils.JsonHelper;
-import com.xtel.vparking.utils.SharedPreferencesUtils;
 import com.xtel.vparking.view.MyApplication;
 
 /**
- * Created by Lê Công Long Vũ on 12/4/2016.
+ * Created by Lê Công Long Vũ on 12/4/2016
  */
 
 public class ParkingModel extends BasicModel {
@@ -26,7 +23,6 @@ public class ParkingModel extends BasicModel {
     }
 
     public void getParkingInfo(String url, String session, ResponseHandle responseHandle) {
-        Log.e("getparkinginfo", url + "     " + session);
         requestServer.getApi(url, session, responseHandle);
     }
 

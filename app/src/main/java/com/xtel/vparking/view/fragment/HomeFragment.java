@@ -1,7 +1,6 @@
 package com.xtel.vparking.view.fragment;
 
 import android.Manifest;
-import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,8 +24,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.Button;
 
@@ -79,6 +76,7 @@ public class HomeFragment extends IFragment implements
     private GoogleMap mMap, mMap_bottom;
     private LocationRequest mLocationRequest;
 
+    private Marker oldMarker;
     private HashMap<Integer, Boolean> hashMap_Check;
 
     private Button btn_direction;
@@ -100,7 +98,6 @@ public class HomeFragment extends IFragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         if (presenter == null)
             presenter = new HomeFragmentPresenter(this);
 
@@ -150,6 +147,20 @@ public class HomeFragment extends IFragment implements
     private void initBottomSheet(View view) {
         final NestedScrollView nestedScrollView = (NestedScrollView) view.findViewById(R.id.bottom_sheet_home);
 
+        final NestedScrollView scrollView = (NestedScrollView) view.findViewById(R.id.bottom_sheet_scroll_content);
+        scrollView.setEnabled(false);
+
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == 0) {
+                    nestedScrollView.setNestedScrollingEnabled(true);
+                } else {
+                    nestedScrollView.setNestedScrollingEnabled(false);
+                }
+            }
+        });
+
         bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottom_sheet_home));
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -157,7 +168,9 @@ public class HomeFragment extends IFragment implements
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     showFloatingActionButton(fab_filter);
                     showFloatingActionButton(fab_location);
-                    hideBottomView(btn_direction);
+
+                    scrollView.setNestedScrollingEnabled(false);
+                    nestedScrollView.setNestedScrollingEnabled(true);
 
                     dialogBottomSheet.clearData();
                     nestedScrollView.scrollTo(0, 0);
@@ -165,13 +178,19 @@ public class HomeFragment extends IFragment implements
                     resp_parking_info = null;
                     isLoadNewParking = 0;
 
-                    if (!isCanLoadMap)
-                        closeGuid();
+                    if (polyline != null) {
+                        polyline.remove();
+                    }
+
+                    changeOldMarkerIcon(R.mipmap.ic_marker_blue);
+                    loadParkingAround();
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     nestedScrollView.scrollTo(0, 0);
-                    hideBottomView(btn_direction);
+
+                    scrollView.setNestedScrollingEnabled(false);
+                    nestedScrollView.setNestedScrollingEnabled(true);
                 } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    showBottomView(btn_direction);
+                    scrollView.setNestedScrollingEnabled(true);
                 }
             }
 
@@ -182,6 +201,15 @@ public class HomeFragment extends IFragment implements
         });
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
+    private void loadParkingAround() {
+        if (!isCanLoadMap) {
+            double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
+            double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
+
+            presenter.getParkingAround(latitude, longtitude, HomeActivity.find_option);
+        }
     }
 
     private void hideFloatingActionButton(View view) {
@@ -220,56 +248,6 @@ public class HomeFragment extends IFragment implements
         });
     }
 
-    private void hideBottomView(final View view) {
-        view.animate().translationY(view.getHeight()).setInterpolator(new AccelerateInterpolator(2)).setListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (view.getVisibility() == View.INVISIBLE)
-                    view.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        }).start();
-    }
-
-    private void showBottomView(final View view) {
-        view.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).setListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (view.getVisibility() == View.INVISIBLE)
-                    view.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        }).start();
-    }
-
     private void initBottomSheetView(View view) {
         dialogBottomSheet = new BottomSheet(getActivity(), view, getChildFragmentManager());
 
@@ -279,14 +257,6 @@ public class HomeFragment extends IFragment implements
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
-
-//        dialogBottomSheet.onGuidClicked(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                actionType = 2 ;
-//                presenter.getMyLocation();
-//            }
-//        });
 
         dialogBottomSheet.onDirectionClicked(new View.OnClickListener() {
             @Override
@@ -307,19 +277,10 @@ public class HomeFragment extends IFragment implements
         dialogBottomSheet.onCloseClicked(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                closeGuid();
+                clearMarker();
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
         });
-    }
-
-    private void closeGuid() {
-        clearMarker();
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-
-        double latitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().latitude;
-        double longtitude = mMap.getProjection().getVisibleRegion().latLngBounds.getCenter().longitude;
-
-        presenter.getParkingAround(latitude, longtitude, HomeActivity.find_option);
     }
 
     private void showDialogParkingDetail() {
@@ -390,6 +351,11 @@ public class HomeFragment extends IFragment implements
         }
     }
 
+    private void changeOldMarkerIcon(int resource) {
+        if (oldMarker != null)
+            oldMarker.setIcon(BitmapDescriptorFactory.fromResource(resource));
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public void onMapLongClick(LatLng latLng) {
@@ -414,7 +380,7 @@ public class HomeFragment extends IFragment implements
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
+    public boolean onMarkerClick(final Marker marker) {
         if (!isFindMyLocation)
             isFindMyLocation = true;
 
@@ -423,6 +389,8 @@ public class HomeFragment extends IFragment implements
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 mMap_bottom.clear();
                 dialogBottomSheet.clearData();
+
+                changeOldMarkerIcon(R.mipmap.ic_marker_blue);
             }
 
             final Parking parking = (Parking) marker.getTag();
@@ -430,6 +398,8 @@ public class HomeFragment extends IFragment implements
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        oldMarker = marker;
+
                         showProgressBar(false, false, null, getString(R.string.parking_get_data));
                         presenter.getParkingInfo(parking.getId());
                     }
@@ -442,8 +412,11 @@ public class HomeFragment extends IFragment implements
     @Override
     public void onMapClick(LatLng latLng) {
         if (isCanLoadMap)
-            if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN)
+            if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+                changeOldMarkerIcon(R.mipmap.ic_marker_blue);
+            }
     }
 
     @Override
@@ -458,8 +431,12 @@ public class HomeFragment extends IFragment implements
 
             if (isLoadNewParking == 0) {
                 isLoadNewParking++;
-            } else if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN)
+            } else if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+                changeOldMarkerIcon(R.mipmap.ic_marker_blue);
+            }
+
             presenter.getParkingAround(latitude, longtitude, HomeActivity.find_option);
         }
     }
@@ -620,6 +597,11 @@ public class HomeFragment extends IFragment implements
     private void clearMarker() {
         mMap.clear();
         hashMap_Check.clear();
+
+        if (oldMarker != null) {
+            oldMarker.remove();
+            oldMarker = null;
+        }
     }
 
     @Override
@@ -647,7 +629,7 @@ public class HomeFragment extends IFragment implements
         if (!isFindMyLocation)
             isFindMyLocation = true;
 
-        actionType = 3;
+//        actionType = 3;
         isCanLoadMap = false;
         showProgressBar(false, false, null, getString(R.string.parking_get_data));
     }
@@ -683,9 +665,12 @@ public class HomeFragment extends IFragment implements
 
         mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng())));
 
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
+        if (isCanLoadMap)
+            changeOldMarkerIcon(R.mipmap.ic_marker_red);
+        else
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
 
         isLoadNewParking = 0;
         this.resp_parking_info = resp_parking_info;
@@ -702,18 +687,21 @@ public class HomeFragment extends IFragment implements
     public void onGetParkingAroundSuccess(ArrayList<Parking> arrayList) {
 
         if (arrayList != null && arrayList.size() > 0) {
-            for (int i = arrayList.size() - 1; i >= 0; i--) {
-                Parking parking = arrayList.get(i);
-
+            for (Parking parking : arrayList) {
                 if (hashMap_Check.get(parking.getId()) == null) {
                     hashMap_Check.put(parking.getId(), true);
 
                     Marker marker = mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(arrayList.get(i).getLat(), arrayList.get(i).getLng()))
+                            .position(new LatLng(parking.getLat(), parking.getLng()))
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
+
                     marker.setTag(parking);
                 }
             }
+
+//            for (int i = arrayList.size() - 1; i >= 0; i--) {
+//                Parking parking = arrayList.get(i);
+//            }
         }
 
         isCanLoadMap = true;
@@ -736,7 +724,7 @@ public class HomeFragment extends IFragment implements
 
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_blue)));
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
 
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
