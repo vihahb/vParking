@@ -33,12 +33,14 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -705,10 +707,6 @@ public class HomeFragment extends IFragment implements
                     marker.setTag(parking);
                 }
             }
-
-//            for (int i = arrayList.size() - 1; i >= 0; i--) {
-//                Parking parking = arrayList.get(i);
-//            }
         }
 
         isCanLoadMap = true;
@@ -717,23 +715,21 @@ public class HomeFragment extends IFragment implements
     @Override
     public void onGetParkingAroundError(Error error) {
         isCanLoadMap = true;
-        debug("Lỗi mịa r");
     }
 
     @Override
     public void onGetPolylineSuccess(LatLng latLng, PolylineOptions polylineOptions) {
         closeProgressBar();
-        isCanLoadMap = false;
-
         clearMarker();
+
+        isCanLoadMap = false;
         dialogBottomSheet.changeFavoriteToClose();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(resp_parking_info.getLat(), resp_parking_info.getLng()))
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker_red)));
-
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
         if (polyline != null)
             polyline.remove();
@@ -741,6 +737,17 @@ public class HomeFragment extends IFragment implements
         polyline = mMap.addPolyline(polylineOptions);
         polyline.setWidth(16);
         polyline.setColor(Color.parseColor("#62B1F6"));
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for(int i = 0; i < polyline.getPoints().size();i++){
+            builder.include(polyline.getPoints().get(i));
+        }
+
+        LatLngBounds bounds = builder.build();
+//        int padding = 100; // offset from edges of the map in pixels
+
+//        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
     }
 
     @Override

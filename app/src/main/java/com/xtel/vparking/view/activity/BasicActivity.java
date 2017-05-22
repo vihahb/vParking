@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -260,12 +261,24 @@ public abstract class BasicActivity extends AppCompatActivity implements BasicVi
     }
 
     //    Khởi chạy fragment giao diện và add vào stack
+//    protected void replaceFragment(int id, Fragment fragment, String tag) {
+//        if (getSupportFragmentManager().findFragmentByTag(tag) == null) {
+//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//            fragmentTransaction.replace(id, fragment, tag);
+//            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//            fragmentTransaction.commit();
+//        }
+//    }
+    //Khởi chạy Fragment giao diện và add vào stack
     protected void replaceFragment(int id, Fragment fragment, String tag) {
-        if (getSupportFragmentManager().findFragmentByTag(tag) == null) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(id, fragment, tag);
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.commit();
+        FragmentManager manager = getSupportFragmentManager();
+        boolean fragmentPopped = manager.popBackStackImmediate(tag, 0);
+
+        if (!fragmentPopped) { //fragment not in back stack, create it.
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.replace(id, fragment, tag);
+            ft.addToBackStack(null);
+            ft.commit();
         }
     }
 
